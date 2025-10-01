@@ -2,13 +2,15 @@
     "name": "layered-rest-api",
     "version": "1.0.0",
     "description": "",
-    "author": "John Bryce",
+    "author": "Itzik Templeman",
     "scripts": {
         "start": "nodemon --exec ts-node src/app.ts --quiet"
     },
     "devDependencies": {
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
+        "@types/express-fileupload": "^1.5.1",
+        "@types/file-saver": "^2.0.7",
         "@types/node": "^24.0.10",
         "nodemon": "^3.1.10",
         "ts-node": "^10.9.2",
@@ -19,7 +21,10 @@
         "cors": "^2.8.5",
         "dotenv": "^17.2.0",
         "express": "^5.1.0",
+        "express-fileupload": "^1.5.2",
+        "file-saver": "^2.0.5",
         "joi": "^17.13.3",
-        "mongoose": "^8.16.5"
+        "mysql2": "^3.14.1",
+        "uploaded-file-saver": "^1.0.1"
     }
 }
