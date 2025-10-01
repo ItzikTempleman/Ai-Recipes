@@ -1,0 +1,39 @@
+import axios from "axios";
+import { appConfig } from "../2-utils/app-config";
+import { GeneratedRecipe, Query } from "../3-models/recipe-model";
+
+
+class GptService {
+  public async getInstructions(query: Query): Promise<GeneratedRecipe> {
+    const body = {
+      model: "gpt-4o-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: query.systemCommandDescription },
+        { role: "user", content: query.userCommandDescription }
+      ],
+    };
+
+    const options = {
+      headers: {
+        Authorization: "Bearer " + appConfig.apiKey,
+        "Content-Type": "application/json"
+      }
+    };
+
+    const response = await axios.post(appConfig.gptUrl, body, options)
+    const content: string = response.data.choices[0].message.content;
+    const formattedResponse = JSON.parse(content);
+
+    if (!Array.isArray(formattedResponse.ingredients) || !Array.isArray(formattedResponse.instructions)) throw new Error("Invalid json")
+
+    return {
+      ingredients: formattedResponse.ingredients,
+      instructions: formattedResponse.instructions
+    };
+  }
+}
+
+export const gptService = new GptService();
+
+export { GeneratedRecipe };
