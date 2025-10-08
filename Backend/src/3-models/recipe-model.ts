@@ -1,12 +1,13 @@
 import Joi from "joi";
 import { ValidationError } from "./client-errors";
+import { UploadedFile } from "express-fileupload";
 
-export class RecipeModel {
+export class RecipeTitleModel {
     public title!: string;
 
-    constructor(recipe: RecipeModel) {
-        if (!recipe) throw new ValidationError("Missing recipe data");
-        this.title = recipe.title;
+    constructor(recipeTitleModel: RecipeTitleModel) {
+        if (!recipeTitleModel) throw new ValidationError("Missing recipe title prompt");
+        this.title = recipeTitleModel.title;
     }
 
     private static validationSchema = Joi.object(
@@ -16,17 +17,17 @@ export class RecipeModel {
     );
 
     public validate(): void {
-        const result = RecipeModel.validationSchema.validate(this);
+        const result = RecipeTitleModel.validationSchema.validate(this);
         if (result.error) throw new ValidationError(result.error.message);
     }
-}
+};
 
 export type IngredientLine = {
     ingredient: string;
     amount: string | null;
 };
 
-export type GeneratedRecipe = {
+export type GeneratedRecipeDataWithoutImage = {
     ingredients: IngredientLine[];
     instructions: string[];
 };
@@ -34,20 +35,41 @@ export type GeneratedRecipe = {
 export type Query = {
     systemCommandDescription: string;
     userCommandDescription: string;
-}
+};
 
 export type GPTImage = {
     fileName: string,
     url: string
-}
+};
 
 
 export type OutputItem =
-  | { type: "image_generation_call"; result: string }
-  | { type: string };
+    | { type: "image_generation_call"; result: string }
+    | { type: string };
+
 
 export function isImageGenerateRequest(
-  item: OutputItem
+    item: OutputItem
 ): item is { type: "image_generation_call"; result: string } {
-  return item.type === "image_generation_call";
-}
+    return item.type === "image_generation_call";
+};
+
+
+export class FullRecipeModel {
+    public id?:number;
+    public title!: RecipeTitleModel;
+    public data!: GeneratedRecipeDataWithoutImage;
+    public image?: UploadedFile;
+    public imageUrl?: string;
+    public imageName: string | null | undefined;
+
+    constructor(recipe: FullRecipeModel) {
+        if (!recipe) throw new ValidationError("Missing recipe data");
+        this.id = recipe.id;
+        this.title = recipe.title;
+        this.data=recipe.data;
+        this.image=recipe.image;
+        this.imageUrl=recipe.imageUrl;
+        this.imageName=recipe.imageName;
+    }
+};

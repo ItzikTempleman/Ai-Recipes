@@ -1,10 +1,10 @@
 import axios from "axios";
 import { appConfig } from "../2-utils/app-config";
-import { GeneratedRecipe, Query } from "../3-models/recipe-model";
+import { GeneratedRecipeDataWithoutImage, Query } from "../3-models/recipe-model";
 
 
 class GptService {
-  public async getInstructions(query: Query, isWithImage:boolean): Promise<GeneratedRecipe> {
+  public async getInstructions(query: Query, isWithImage:boolean): Promise<GeneratedRecipeDataWithoutImage> {
     const body = {
       model: isWithImage? appConfig.modelNumber : appConfig.freeNoImageModelNumber,
       response_format: { type: "json_object" },
@@ -31,9 +31,8 @@ class GptService {
       ingredients: formattedResponse.ingredients,
       instructions:formattedResponse.instructions
     };
-  }
-}
+  };
+};
 
 export const gptService = new GptService();
 
-export { GeneratedRecipe };
