@@ -14,10 +14,6 @@ header, footer {
     grid-column: span 2;
 }
 
-aside, main, footer{
-    border: solid 0.3px;
-}
-
 main {
     overflow: auto;
     min-height: 0;
