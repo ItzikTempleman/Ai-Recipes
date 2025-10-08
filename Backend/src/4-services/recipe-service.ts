@@ -9,10 +9,10 @@ import fs from "fs/promises";
 
 class RecipeService {
 
-    public async generateInstructions(recipe: RecipeModel): Promise<GeneratedRecipe> {
+    public async generateInstructions(recipe: RecipeModel, isWithImage:boolean): Promise<GeneratedRecipe> {
         recipe.validate();
         const recipeTitle = responseInstructions.getQuery(recipe);
-        return await gptService.getInstructions(recipeTitle);
+        return await gptService.getInstructions(recipeTitle,isWithImage);
     }
 
 public async generateImageFromTitle(prompt: string): Promise<GPTImage> {

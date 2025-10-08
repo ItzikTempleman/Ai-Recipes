@@ -6,13 +6,20 @@ import { recipeService } from "../4-services/recipe-service";
 class RecipeController {
     public router: Router = express.Router();
     public constructor() {
-        this.router.post("/api/generate-recipe", this.generateRecipe);
+      this.router.post("/api/generate-free-recipe-without-image", this.generateFreeNoImageRecipe);
+        this.router.post("/api/generate-recipe-with-image", this.generateRecipeWithImage);
          this.router.get("/api/recipes/images/:fileName", this.getImageFile);
     }
 
-    private async generateRecipe(request: Request, response: Response) {
+    private async generateFreeNoImageRecipe(request: Request, response: Response) {
         const recipe = new RecipeModel(request.body);
-        const completion = await recipeService.generateInstructions(recipe);
+        const completion = await recipeService.generateInstructions(recipe, false);
+        response.status(StatusCode.Created).json(completion);
+    }
+
+    private async generateRecipeWithImage(request: Request, response: Response) {
+        const recipe = new RecipeModel(request.body);
+        const completion = await recipeService.generateInstructions(recipe, true);
         const { fileName, url } = await recipeService.generateImageFromTitle(recipe.title);
         response.status(StatusCode.Created).json({ completion, fileName, imageUrl: url });
     }

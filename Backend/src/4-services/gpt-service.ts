@@ -4,9 +4,9 @@ import { GeneratedRecipe, Query } from "../3-models/recipe-model";
 
 
 class GptService {
-  public async getInstructions(query: Query): Promise<GeneratedRecipe> {
+  public async getInstructions(query: Query, isWithImage:boolean): Promise<GeneratedRecipe> {
     const body = {
-      model:appConfig.modelNumber,
+      model: isWithImage? appConfig.modelNumber : appConfig.freeNoImageModelNumber,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: query.systemCommandDescription },
@@ -16,7 +16,7 @@ class GptService {
 
     const options = {
       headers: {
-        Authorization: "Bearer " + appConfig.apiKey,
+        Authorization: "Bearer " + (isWithImage? appConfig.apiKey:appConfig.freeNoImageApiKey),
         "Content-Type": "application/json"
       }
     };

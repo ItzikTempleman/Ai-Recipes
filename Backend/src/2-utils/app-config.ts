@@ -12,8 +12,10 @@ class AppConfig {
   public readonly password = process.env.MYSQL_PASSWORD!;
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";
   public readonly apiKey = process.env.API_KEY;
+  public readonly freeNoImageApiKey=process.env.NO_IMAGE_API_KEY;
   public readonly database = "smart-recipes";
-  public readonly modelNumber="gpt-5"
+  public readonly modelNumber="gpt-5";
+  public readonly freeNoImageModelNumber="gpt-4o-mini";
 }
 
 export const appConfig = new AppConfig();
