@@ -1,4 +1,4 @@
-import { GeneratedRecipeDataWithoutImage, RecipeTitleModel } from "../3-models/recipe-model";
+import { FullRecipeModel, GeneratedRecipeDataWithoutImage, RecipeTitleModel } from "../3-models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -6,6 +6,9 @@ import { appConfig } from "../2-utils/app-config";
 import { openai } from "../2-utils/openai-client";
 import { GPTImage } from "../3-models/recipe-model";
 import fs from "fs/promises";
+import { fileSaver } from "uploaded-file-saver";
+import { OkPacketParams } from "mysql2";
+import { dal } from "../2-utils/dal";
 
 class RecipeService {
 
@@ -41,8 +44,35 @@ class RecipeService {
   };
 
 
-  public async saveRecipeToDB() {
+  public async saveRecipe(recipe: FullRecipeModel): Promise<FullRecipeModel> {
+    let imageName: string | null = null;
+    if (recipe.image) {
+      imageName = await fileSaver.add(recipe.image);    
+    } else if (recipe.imageName) {
+      imageName = recipe.imageName;                       
+    }
+    const title = recipe.title.title.slice(0, 60);
 
+    const ingredients = recipe.data.ingredients.map(
+      i => i.ingredient
+    ).join(", ").slice(0, 350);
+
+    const instructions = recipe.data.instructions
+      .join(" | ")
+      .slice(0, 1000);
+
+    const amounts = recipe.data.ingredients
+      .map(i => i.amount || "N/A")
+      .join(", ")
+      .slice(0, 40);
+
+    const sql = "insert into recipe(title, ingredients, instructions, amounts, imageName) values(?,?,?,?,?)";
+    const values = [title, ingredients, instructions, amounts, imageName];
+    const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    recipe.id = info.insertId;
+    recipe.image = undefined;
+    recipe.imageUrl = imageName ? appConfig.baseImageUrl + imageName : "";
+    return recipe;
   };
 
 

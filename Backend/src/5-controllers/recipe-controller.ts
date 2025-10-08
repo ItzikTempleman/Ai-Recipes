@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { StatusCode } from "../3-models/status-code";
-import { RecipeTitleModel } from "../3-models/recipe-model";
+import { FullRecipeModel, RecipeTitleModel } from "../3-models/recipe-model";
 import { recipeService } from "../4-services/recipe-service";
 
 class RecipeController {
@@ -9,20 +9,40 @@ class RecipeController {
     this.router.post("/api/generate-free-recipe-without-image", this.generateFreeNoImageRecipe);
     this.router.post("/api/generate-recipe-with-image", this.generateRecipeWithImage);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-  }
+  };
 
   private async generateFreeNoImageRecipe(request: Request, response: Response) {
-    const recipe = new RecipeTitleModel(request.body);
-    const completion = await recipeService.generateInstructions(recipe, false);
-    response.status(StatusCode.Created).json(completion);
-  }
+     const titleModel = new RecipeTitleModel(request.body); 
+    const data = await recipeService.generateInstructions(titleModel, false);
+
+    const full = new FullRecipeModel({
+      title: titleModel,
+      data,
+      image: undefined,
+      imageUrl: undefined,
+      imageName: undefined
+    } as any);
+
+    const saved = await recipeService.saveRecipe(full);
+    response.status(StatusCode.Created).json(saved);
+  };
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-    const recipe = new RecipeTitleModel(request.body);
-    const completion = await recipeService.generateInstructions(recipe, true);
-    const { fileName, url } = await recipeService.generateImageFromTitle(recipe.title);
-    response.status(StatusCode.Created).json({ completion, fileName, imageUrl: url });
-  }
+    const titleModel = new RecipeTitleModel(request.body); // expects { title: "..." }
+    const data = await recipeService.generateInstructions(titleModel, true);
+    const { fileName, url } = await recipeService.generateImageFromTitle(titleModel.title);
+    const full = new FullRecipeModel({
+      title: titleModel,
+      data,
+      image: undefined,      
+      imageName: fileName,   
+      imageUrl: url        
+    } as any);
+
+    const saved = await recipeService.saveRecipe(full);
+    response.status(StatusCode.Created).json(saved);
+  };
+
 
   private async getImageFile(request: Request, response: Response) {
     try {
@@ -30,9 +50,9 @@ class RecipeController {
       const imagePath = await recipeService.getImageFilePath(fileName);
       response.sendFile(imagePath);
     } catch (err) {
-      response.status(StatusCode.NotFound).json({ message: "Image not found." });
-    }
-  }
-}
+      response.status(StatusCode.NotFound).json({ message: "Image not found"});
+    };
+  };
+};
 
 export const recipeController = new RecipeController();
