@@ -7,9 +7,6 @@ import { openai } from "../2-utils/openai-client";
 import { GPTImage, OutputItem } from "../3-models/recipe-model";
 import fs from "fs/promises";
 
-
-
-
 class RecipeService {
 
     public async generateInstructions(recipe: RecipeModel): Promise<GeneratedRecipe> {
@@ -21,7 +18,7 @@ class RecipeService {
 public async generateImageFromTitle(prompt: string): Promise<GPTImage> {
   const result = await openai.images.generate({
     model: "gpt-image-1",
-    prompt: `High-resolution, realistic food photo of: ${prompt}`,
+    prompt: `High-resolution, super realistic food photo of: ${prompt}`,
     size: "1024x1024"
   });
 
