@@ -6,7 +6,7 @@ import { GeneratedRecipe, Query } from "../3-models/recipe-model";
 class GptService {
   public async getInstructions(query: Query): Promise<GeneratedRecipe> {
     const body = {
-      model: "gpt-4o-mini",
+      model:appConfig.modelNumber,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: query.systemCommandDescription },
@@ -25,11 +25,11 @@ class GptService {
     const content: string = response.data.choices[0].message.content;
     const formattedResponse = JSON.parse(content);
 
-    if (!Array.isArray(formattedResponse.ingredients) || !Array.isArray(formattedResponse.instructions)) throw new Error("Invalid json")
+    if (!Array.isArray(formattedResponse.ingredients)|| !Array.isArray(formattedResponse.instructions)) throw new Error("Invalid json")
 
     return {
       ingredients: formattedResponse.ingredients,
-      instructions: formattedResponse.instructions
+      instructions:formattedResponse.instructions
     };
   }
 }

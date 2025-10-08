@@ -21,12 +21,33 @@ export class RecipeModel {
     }
 }
 
-export type GeneratedRecipe = {
-  ingredients: string[];
-  instructions: string[];
+export type IngredientLine = {
+    ingredient: string;
+    amount: string | null;
 };
 
-export type Query={
-    systemCommandDescription:string;
-    userCommandDescription:string;
+export type GeneratedRecipe = {
+    ingredients: IngredientLine[];
+    instructions: string[];
+};
+
+export type Query = {
+    systemCommandDescription: string;
+    userCommandDescription: string;
+}
+
+export type GPTImage = {
+    fileName: string,
+    url: string
+}
+
+
+export type OutputItem =
+  | { type: "image_generation_call"; result: string }
+  | { type: string };
+
+export function isImageGenerateRequest(
+  item: OutputItem
+): item is { type: "image_generation_call"; result: string } {
+  return item.type === "image_generation_call";
 }

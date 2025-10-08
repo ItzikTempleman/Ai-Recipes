@@ -25,6 +25,7 @@
         "file-saver": "^2.0.5",
         "joi": "^17.13.3",
         "mysql2": "^3.14.1",
+        "openai": "^6.1.0",
         "uploaded-file-saver": "^1.0.1"
     }
 }
