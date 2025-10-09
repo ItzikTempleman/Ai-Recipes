@@ -1,9 +1,12 @@
 .MainLayout {
     height: 100vh;
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
     display: grid;
     grid-template-rows: minmax(60px, 7%) 1fr minmax(40px, 5%);
     grid-template-columns: 1fr;
+    background-color: #e8e5e5;
 }
 
 .MainLayout>* {
@@ -13,15 +16,12 @@
 header,
 footer {
     grid-column: span 2;
-    padding: 8px;
-    margin: 8px;
 }
 
 main {
     overflow: auto;
     min-height: 0;
 }
-
 
 @media (max-width: 1000px) {
     .MainLayout {

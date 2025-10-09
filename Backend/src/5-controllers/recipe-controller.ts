@@ -12,7 +12,7 @@ class RecipeController {
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
   };
 
-  private async getRecipes(response: Response) {
+  private async getRecipes(request: Request, response: Response) {
     const recipes = await recipeService.getRecipes();
     response.json(recipes);
   }
