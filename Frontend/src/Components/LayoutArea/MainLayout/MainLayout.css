@@ -2,19 +2,38 @@
     height: 100vh;
     box-sizing: border-box;
     display: grid;
-    grid-template-rows: 6% 88% 6%;
-    grid-template-columns: 15% 85%;
+    grid-template-rows: minmax(60px, 7%) 1fr minmax(40px, 5%);
+    grid-template-columns: 1fr;
 }
 
-.MainLayout>*{
+.MainLayout>* {
     font-family: Arial;
 }
 
-header, footer {
+header,
+footer {
     grid-column: span 2;
+    padding: 8px;
+    margin: 8px;
 }
 
 main {
     overflow: auto;
     min-height: 0;
+}
+
+
+@media (max-width: 1000px) {
+    .MainLayout {
+        grid-template-rows: auto 1fr;
+    }
+
+    header {
+        margin: 0;
+        padding: 6px 8px;
+    }
+
+    main {
+        padding: 8px;
+    }
 }
