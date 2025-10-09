@@ -15,34 +15,33 @@ class RecipeController {
      const titleModel = new RecipeTitleModel(request.body); 
     const data = await recipeService.generateInstructions(titleModel, false);
 
-    const full = new FullRecipeModel({
+    const noImageRecipe = new FullRecipeModel({
       title: titleModel,
       data,
       image: undefined,
       imageUrl: undefined,
       imageName: undefined
-    } as any);
+    } as FullRecipeModel);
 
-    const saved = await recipeService.saveRecipe(full);
-    response.status(StatusCode.Created).json(saved);
+    const dbNoImageRecipe = await recipeService.saveRecipe(noImageRecipe);
+    response.status(StatusCode.Created).json(dbNoImageRecipe);
   };
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-    const titleModel = new RecipeTitleModel(request.body); // expects { title: "..." }
+    const titleModel = new RecipeTitleModel(request.body); 
     const data = await recipeService.generateInstructions(titleModel, true);
-    const { fileName, url } = await recipeService.generateImageFromTitle(titleModel.title);
-    const full = new FullRecipeModel({
+    const { fileName, url } = await recipeService.generateImage(titleModel);
+    const fullRecipe = new FullRecipeModel({
       title: titleModel,
       data,
       image: undefined,      
       imageName: fileName,   
       imageUrl: url        
-    } as any);
+    } as FullRecipeModel);
 
-    const saved = await recipeService.saveRecipe(full);
-    response.status(StatusCode.Created).json(saved);
+    const dbFullRecipe = await recipeService.saveRecipe(fullRecipe);
+    response.status(StatusCode.Created).json(dbFullRecipe);
   };
-
 
   private async getImageFile(request: Request, response: Response) {
     try {
