@@ -1,14 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { recipeReducer } from "./RecipeSlice";
 
-
-export type AppState = {
-
-};
-
-export const store = configureStore<AppState>(
+export const store = configureStore(
     {
         reducer: {
- 
+            recipes: recipeReducer
         }
     }
 )
