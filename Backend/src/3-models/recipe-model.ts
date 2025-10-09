@@ -27,7 +27,7 @@ export type IngredientLine = {
     amount: string | null;
 };
 
-export type GeneratedRecipeDataWithoutImage = {
+export type GeneratedRecipeData = {
     ingredients: IngredientLine[];
     instructions: string[];
 };
@@ -58,7 +58,7 @@ export function isImageGenerateRequest(
 export class FullRecipeModel {
     public id?:number;
     public title!: RecipeTitleModel;
-    public data!: GeneratedRecipeDataWithoutImage;
+    public data!: GeneratedRecipeData;
     public image?: UploadedFile;
     public imageUrl?: string;
     public imageName: string | null | undefined;

@@ -34,9 +34,9 @@ class RecipeController {
     const fullRecipe = new FullRecipeModel({
       title: titleModel,
       data,
-      image: undefined,      
-      imageName: fileName,   
-      imageUrl: url        
+      image: undefined,       
+      imageUrl: url,
+      imageName: fileName        
     } as FullRecipeModel);
 
     const dbFullRecipe = await recipeService.saveRecipe(fullRecipe);

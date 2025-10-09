@@ -1,4 +1,4 @@
-import { FullRecipeModel, GeneratedRecipeDataWithoutImage, RecipeTitleModel, GPTImage } from "../3-models/recipe-model";
+import { FullRecipeModel, RecipeTitleModel, GPTImage, GeneratedRecipeData } from "../3-models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -11,32 +11,20 @@ import { dal } from "../2-utils/dal";
 
 class RecipeService {
 
-  public async generateInstructions(recipe: RecipeTitleModel, isWithImage: boolean): Promise<GeneratedRecipeDataWithoutImage> {
+  public async generateInstructions(recipe: RecipeTitleModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
     recipe.validate();
     const recipeTitle = responseInstructions.getQuery(recipe);
     return await gptService.getInstructions(recipeTitle, isWithImage);
   };
 
-
-
   public async generateImage(recipe: RecipeTitleModel): Promise<GPTImage> {
     const promptText = `High-resolution, super realistic food photo of: ${recipe.title}`;
-    const result = await openai.images.generate(
-      {
-        model: "gpt-image-1",
-        prompt: promptText,
-        size: "1024x1024"
-      }
-    );
-
+    const result = await openai.images.generate({ model: "gpt-image-1", prompt: promptText, size: "1024x1024" });
     if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
     const imageBase64 = result.data[0].b64_json;
     const imagesDir = path.join(__dirname, "..", "1-assets", "images");
     await fs.mkdir(imagesDir, { recursive: true });
-    const safeTitle = recipe.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+    const safeTitle = recipe.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const fileName = `${safeTitle}-recipe.png`;
     await fs.writeFile(path.join(imagesDir, fileName), Buffer.from(imageBase64, "base64"));
     return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
@@ -44,16 +32,11 @@ class RecipeService {
 
   public async saveRecipe(recipe: FullRecipeModel): Promise<FullRecipeModel> {
     let imageName: string | null = null;
-    if (recipe.image) {
-      imageName = await fileSaver.add(recipe.image);
-    } else if (recipe.imageName) {
-      imageName = recipe.imageName;
-    }
+    if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
     const title = recipe.title.title.slice(0, 60);
     const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
     const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
     const amounts = recipe.data.ingredients.map(i => i.amount).join(", ").slice(0, 40);
-
     const sql = "insert into recipe(title, ingredients, instructions, amounts, imageName) values(?,?,?,?,?)";
     const values = [title, ingredients, instructions, amounts, imageName];
     const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;

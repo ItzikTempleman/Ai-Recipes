@@ -1,10 +1,10 @@
 import axios from "axios";
 import { appConfig } from "../2-utils/app-config";
-import { GeneratedRecipeDataWithoutImage, Query } from "../3-models/recipe-model";
+import { GeneratedRecipeData, Query } from "../3-models/recipe-model";
 
 
 class GptService {
-  public async getInstructions(query: Query, isWithImage:boolean): Promise<GeneratedRecipeDataWithoutImage> {
+  public async getInstructions(query: Query, isWithImage:boolean): Promise<GeneratedRecipeData> {
     const body = {
       model: isWithImage? appConfig.modelNumber : appConfig.freeNoImageModelNumber,
       response_format: { type: "json_object" },
