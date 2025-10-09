@@ -8,11 +8,17 @@ class RecipeController {
   public constructor() {
     this.router.post("/api/generate-free-recipe-without-image", this.generateFreeNoImageRecipe);
     this.router.post("/api/generate-recipe-with-image", this.generateRecipeWithImage);
+    this.router.get("/api/recipes/all", this.getRecipes);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
   };
 
+  private async getRecipes(request: Request, response: Response) {
+    const recipes = await recipeService.getRecipes();
+    response.json(recipes);
+  }
+
   private async generateFreeNoImageRecipe(request: Request, response: Response) {
-     const titleModel = new RecipeTitleModel(request.body); 
+    const titleModel = new RecipeTitleModel(request.body);
     const data = await recipeService.generateInstructions(titleModel, false);
 
     const noImageRecipe = new FullRecipeModel({
@@ -25,23 +31,23 @@ class RecipeController {
 
     const dbNoImageRecipe = await recipeService.saveRecipe(noImageRecipe);
     response.status(StatusCode.Created).json(dbNoImageRecipe);
-  };
+  }
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-    const titleModel = new RecipeTitleModel(request.body); 
+    const titleModel = new RecipeTitleModel(request.body);
     const data = await recipeService.generateInstructions(titleModel, true);
     const { fileName, url } = await recipeService.generateImage(titleModel);
     const fullRecipe = new FullRecipeModel({
       title: titleModel,
       data,
-      image: undefined,       
+      image: undefined,
       imageUrl: url,
-      imageName: fileName        
+      imageName: fileName
     } as FullRecipeModel);
 
     const dbFullRecipe = await recipeService.saveRecipe(fullRecipe);
     response.status(StatusCode.Created).json(dbFullRecipe);
-  };
+  }
 
   private async getImageFile(request: Request, response: Response) {
     try {
@@ -49,9 +55,9 @@ class RecipeController {
       const imagePath = await recipeService.getImageFilePath(fileName);
       response.sendFile(imagePath);
     } catch (err) {
-      response.status(StatusCode.NotFound).json({ message: "Image not found"});
-    };
-  };
-};
+      response.status(StatusCode.NotFound).json({ message: "Image not found" });
+    }
+  }
+}
 
 export const recipeController = new RecipeController();

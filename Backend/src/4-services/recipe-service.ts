@@ -15,7 +15,7 @@ class RecipeService {
     recipe.validate();
     const recipeTitle = responseInstructions.getQuery(recipe);
     return await gptService.getInstructions(recipeTitle, isWithImage);
-  };
+  }
 
   public async generateImage(recipe: RecipeTitleModel): Promise<GPTImage> {
     const promptText = `High-resolution, super realistic food photo of: ${recipe.title}`;
@@ -28,7 +28,13 @@ class RecipeService {
     const fileName = `${safeTitle}-recipe.png`;
     await fs.writeFile(path.join(imagesDir, fileName), Buffer.from(imageBase64, "base64"));
     return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
-  };
+  }
+
+  public async getRecipes(): Promise<FullRecipeModel[]> {
+    const sql="select * from recipe";
+    const recipes= await dal.execute(sql) as FullRecipeModel[];
+    return recipes;
+  }
 
   public async saveRecipe(recipe: FullRecipeModel): Promise<FullRecipeModel> {
     let imageName: string | null = null;
@@ -44,7 +50,7 @@ class RecipeService {
     recipe.image = undefined;
     recipe.imageUrl = imageName ? appConfig.baseImageUrl + imageName : "";
     return recipe;
-  };
+  }
 
   public async getImageFilePath(fileName: string): Promise<string> {
     const imagePath = path.join(__dirname, "..", "1-assets", "images", fileName);
@@ -54,7 +60,7 @@ class RecipeService {
     } catch {
       throw new Error("Image not found");
     }
-  };
+  }
 }
 
 export const recipeService = new RecipeService();
