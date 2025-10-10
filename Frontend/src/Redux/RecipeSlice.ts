@@ -13,16 +13,16 @@ const initialState: RecipeState={
 };
 
 
-function setLoadingReducer(state: RecipeState, action: PayloadAction<boolean>) {
-  state.loading = action.payload;
-  if (action.payload) state.error = undefined;
+function setIsLoadingReducer(currentState: RecipeState, action: PayloadAction<boolean>) {
+  currentState.loading = action.payload;
+  if (action.payload) currentState.error = undefined;
 }
 
 function setErrorReducer(state: RecipeState, action: PayloadAction<string | undefined>) {
   state.error = action.payload;
 }
 
-function setAllRecipesReducer(state: RecipeState, action: PayloadAction<RecipeModel[]>) {
+function getAllRecipesReducer(state: RecipeState, action: PayloadAction<RecipeModel[]>) {
   state.items = action.payload;
 }
 
@@ -34,13 +34,13 @@ const recipeSlice = createSlice({
   name: "recipes",
   initialState,
   reducers: {
-    setLoading: setLoadingReducer,
+    setIsLoading: setIsLoadingReducer,
     setError: setErrorReducer,
-    setAllRecipes: setAllRecipesReducer,
+    getAllRecipes: getAllRecipesReducer,
     addRecipe: addRecipeReducer,
   },
 });
 
 
-export const { setLoading, setError, setAllRecipes, addRecipe } = recipeSlice.actions;
+export const { setIsLoading, setError, getAllRecipes, addRecipe } = recipeSlice.actions;
 export const recipeReducer = recipeSlice.reducer;

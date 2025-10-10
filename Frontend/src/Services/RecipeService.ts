@@ -2,7 +2,7 @@ import { RecipeModel, RecipeTitleModel } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios from "axios";
-import { addRecipe, setError, setLoading } from "../Redux/RecipeSlice";
+import { getAllRecipes,addRecipe, setError, setIsLoading } from "../Redux/RecipeSlice";
 
 
 
@@ -10,14 +10,14 @@ class RecipeService {
 
     public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise<void> {
         try {
-            store.dispatch(setLoading(true));
+            store.dispatch(setIsLoading(true));
             const response = await axios.post<RecipeModel>(!hasImage ? appConfig.generateNoImageRecipeUrl : appConfig.generateFullRecipeUrl, title);
             const generatedRecipe = response.data;
             store.dispatch(addRecipe(generatedRecipe));
         } catch (err: any) {
             store.dispatch(setError(err?.message || "Failed to generate recipe"));
         } finally {
-            store.dispatch(setLoading(false));
+            store.dispatch(setIsLoading(false));
         }
     }
 
@@ -25,7 +25,7 @@ class RecipeService {
     public async getAllRecipes(): Promise<RecipeModel[]> {
         const response = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
         const recipes = response.data;
-        store.dispatch(setAllRecipesReducer(recipes));
+        store.dispatch(getAllRecipes(recipes));
         return recipes;
     }
 
@@ -33,6 +33,4 @@ class RecipeService {
 }
 export const recipeService = new RecipeService();
 
-function setAllRecipesReducer(recipes: RecipeModel[]): any {
-    throw new Error("Function not implemented.");
-}
+
