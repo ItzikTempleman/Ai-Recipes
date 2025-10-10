@@ -1,0 +1,46 @@
+.RecipeSwitch {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  min-width: 240px;
+}
+
+.ToggleGroup {
+  display: flex;
+  width: 100%;
+  border: 1px solid #1976d2;
+  border-radius: 4px;
+
+}
+
+
+.ToggleGroup .MuiToggleButtonGroup-grouped {
+  flex: 1;
+  border: none;
+  padding: 8px 12px;
+  text-transform: none;
+}
+
+
+.ToggleGroup .MuiToggleButton-root {
+  background: white;
+  color: #1976d2;
+
+}
+
+
+.ToggleGroup .MuiToggleButton-root:hover {
+  background: white;
+}
+
+
+.ToggleGroup .MuiToggleButton-root.Mui-selected {
+  background: #1976d2 !important;
+  color: white !important;
+}
+
+
+.ToggleGroup .MuiToggleButton-root.Mui-selected:hover {
+  background: #1976d2 !important;
+}

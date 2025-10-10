@@ -6,7 +6,7 @@ export function History() {
     
     return (
         <div className="History">
-            <h4 className="history-screen">Recipe history</h4>
+            <h2 className="HistoryTitle">History</h2>
         </div>
     );
 }

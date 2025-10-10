@@ -1,53 +1,70 @@
 .Header {
-    justify-content: space-between;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  position: relative;
 }
 
-.site-title {
-    color: rgb(4, 79, 126);
+.SiteTitle {
+  color: rgb(65, 64, 64);              
+  text-align: center;
 }
 
-.nav-link>* {
-    text-decoration: none;
-    gap: 8px;
-    padding: 8px 12px;
-    color: rgb(90, 90, 90);
-
+.NavLinkContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
 }
 
-.nav-link>*.active {
-    color: #333;
-    font-weight: bold;
-    text-decoration: none;
+.NavLinkContainer > * {
+  text-decoration: none;
+  padding: 4px;
+   color: rgb(65, 64, 64);   
+}
 
+.NavLinkContainer h2 {
+  margin: 0;
+}
+
+
+.NavLinkContainer > *.active h2 {
+    color: rgb(65, 64, 64);   
 }
 
 @media (max-width: 1000px) {
-    .Header {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 70px;
-        gap: 6px;
-        padding: 6px 10px;
-    }
+  .Header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    gap: 4px;
+    padding-top: 20px;
+    position: relative;
+  }
 
-    .site-title {
-        margin: 0;
-        font-size: 20px;
-        text-align: center;
-    }
+  .SiteTitle {
+    position: static;
+    transform: none;
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+  }
 
-    .nav-link {
-        display: flex;
-        gap: 12px;
-    }
+  .NavLinkContainer {
+    display: flex;
+    gap: 12px;
+  }
 
-    .nav-link>* {
-        font-size: 16px;
-        padding: 4px 8px;
-    }
+  .NavLinkContainer > * {
+    font-size: 16px;
+    padding: 4px 8px;
+  }
+
+  .NavLinkContainer h2 {
+    font-size: 18px;
+  }
 }
