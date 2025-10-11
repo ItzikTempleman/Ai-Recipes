@@ -1,0 +1,66 @@
+.IngredientsList {
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+border: 1.5px solid rgb(56, 140, 237);
+border-radius: 20px;
+padding: 20px;
+  margin-top: 16px;
+  gap: 6px;
+ margin-left: auto;
+  margin-right: auto;
+}
+
+.IngredientRow {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 4px 0;
+}
+
+.IngredientRow:last-child {
+  border-bottom: none;
+}
+
+
+.IngredientName {
+  width: 60%;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  padding-right: 12px;
+}
+
+
+.IngredientAmount {
+  width: 40%;
+  text-align: right;
+  color: #555;
+  white-space: nowrap;
+}
+
+
+.InstructionsList {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.InstructionsList h4 {
+  margin-bottom: 8px;
+}
+
+.InstructionsList ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.InstructionsList li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.RecipeImage {
+  width: 600px;
+  height: 400px;
+  border-radius: 16px;
+}

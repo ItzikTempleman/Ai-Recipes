@@ -10,12 +10,13 @@ export class RecipeTitleModel {
     public title!: string;
 }
 
+export type IngredientLine = {
+    ingredient: string;
+    amount: string | null;
+};
+
 export type GeneratedRecipeData = {
     ingredients: IngredientLine[];
     instructions: string[];
 };
 
-export type IngredientLine = {
-    ingredient: string;
-    amount: string | null;
-};
