@@ -8,19 +8,21 @@ import { getAllRecipes,addRecipe, setError, setIsLoading } from "../Redux/Recipe
 
 class RecipeService {
 
-    public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise<void> {
-        try {
-            store.dispatch(setIsLoading(true));
-            const response = await axios.post<RecipeModel>(!hasImage ? appConfig.generateNoImageRecipeUrl : appConfig.generateFullRecipeUrl, title);
-            const generatedRecipe = response.data;
-            store.dispatch(addRecipe(generatedRecipe));
-        } catch (err: any) {
-            store.dispatch(setError(err?.message || "Failed to generate recipe"));
-        } finally {
-            store.dispatch(setIsLoading(false));
-        }
-    }
-
+public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise<RecipeModel> {
+  try {
+    store.dispatch(setIsLoading(true));
+    const url = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
+    const { data } = await axios.post<RecipeModel>(url, title);
+    store.dispatch(addRecipe(data));
+    return data; 
+  } catch (err: any) {
+    const msg = err?.message || "Failed to generate recipe";
+    store.dispatch(setError(msg));
+    throw err; 
+  } finally {
+    store.dispatch(setIsLoading(false));
+  }
+}
 
     public async getAllRecipes(): Promise<RecipeModel[]> {
         const response = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
