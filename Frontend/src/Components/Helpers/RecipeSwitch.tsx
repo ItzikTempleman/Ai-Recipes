@@ -2,12 +2,22 @@ import { useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import "./RecipeSwitch.css";
 
-export function RecipeSwitch() {
-  const [mode, setMode] = useState<"NoImage" | "Full">("NoImage");
+type Props = {
+  onChange: (hasImage: boolean) => void;
+};
 
-  function handleChange(_: React.MouseEvent<HTMLElement>, selectedMode: "NoImage" | "Full" | null) {
-    if (selectedMode !== null) setMode(selectedMode);
+type Mode = "NoImage" | "Full";
+
+export function RecipeSwitch(
+  { onChange }:Props) {
+  const [mode, setMode] = useState<Mode>("NoImage");
+
+  function handleChange(_: React.MouseEvent<HTMLElement>, selected: Mode | null) {
+    if (!selected) return;
+    setMode(selected);
+    onChange(selected === "Full"); 
   }
+
 
   return (
     <div className="RecipeSwitch">
