@@ -4,9 +4,9 @@
     margin: 0;
     box-sizing: border-box;
     display: grid;
-    grid-template-rows: minmax(60px, 7%) 1fr minmax(40px, 5%);
+    grid-template-rows: minmax(50px, 5%) 1fr minmax(40px, 5%);
     grid-template-columns: 1fr;
-    background-color: #e8e5e5;
+ 
 }
 
 .MainLayout>* {
@@ -25,12 +25,7 @@ main {
 
 @media (max-width: 1000px) {
     .MainLayout {
-        grid-template-rows: auto 1fr;
-    }
-
-    header {
-        margin: 0;
-        padding: 6px 8px;
+      grid-template-rows: minmax(50px, 5%) 1fr minmax(40px, 5%);
     }
 
     main {

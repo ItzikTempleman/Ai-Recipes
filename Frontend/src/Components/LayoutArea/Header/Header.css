@@ -6,57 +6,126 @@
   align-items: center;
   padding: 8px;
   position: relative;
+  background-color: rgb(116, 116, 116);
 }
 
+ .HeaderContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 40px;
+} 
+
 .SiteTitle {
-  color: rgb(65, 64, 64);              
-  text-align: center;
+   margin: 0 24px 0 0;
+  font-size: 30px;
+  background: linear-gradient(90deg, #00d0ff, white);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+.HomeLink{
+    color:  #d9a050; 
+  font-weight: 800;
+  font-size: 12px;
+  text-decoration: none;
+  gap: 4px;
+  transition: color 0.2s ease-in-out;
+}
+.HomeLink svg {
+  color:  #d9a050;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.HomeLink:hover, .HomeLink svg:hover {
+  color: #d9a050;
+  transform: scale(1.1);
+}
+.HomeDivText{
+  color: #d9a050;
+}
+
+.HistoryLink{
+    color:  #8faed4; 
+  font-weight: 800;
+  font-size: 12px;
+  text-decoration: none;
+  gap: 4px;
+  transition: color 0.2s ease-in-out;
+}
+.HistoryDivText{
+  color: #8faed4;
+}
+.HistoryLink svg {
+  color:  #8faed4;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.HistoryLink:hover, .HistoryLink svg:hover {
+  color: #8faed4;
+  transform: scale(1.1);
 }
 
 .NavLinkContainer {
   display: flex;
   flex-direction: row;
   gap: 4px;
-  align-items: center;
 }
 
 .NavLinkContainer > * {
   text-decoration: none;
   padding: 4px;
-   color: rgb(65, 64, 64);   
+  color: white;
 }
 
-.NavLinkContainer h2 {
+.NavLinkContainer h2{
   margin: 0;
 }
 
-
 .NavLinkContainer > *.active h2 {
-    color: rgb(65, 64, 64);   
+   color: white;  
 }
 
 @media (max-width: 1000px) {
   .Header {
+    background-color: rgb(116, 116, 116);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70px;
-    gap: 4px;
-    padding-top: 20px;
-    position: relative;
+    height: auto; 
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  
+  .HeaderContainer {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 8px;
+    margin-left: 0; 
   }
 
   .SiteTitle {
-    position: static;
-    transform: none;
     margin: 0;
-    font-size: 20px;
+    font-size: 26px;
+    background: linear-gradient(90deg, #00d0ff, white);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
     text-align: center;
   }
 
   .NavLinkContainer {
     display: flex;
-    gap: 12px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
   }
 
   .NavLinkContainer > * {

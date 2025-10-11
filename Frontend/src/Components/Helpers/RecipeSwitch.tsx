@@ -28,12 +28,9 @@ export function RecipeSwitch(
         onChange={handleChange}
         className="ToggleGroup"
       >
-                <ToggleButton value="Full" className="ToggleBtn">
-          Full
-        </ToggleButton>
-        <ToggleButton value="NoImage" className="ToggleBtn">
-          No Image
-        </ToggleButton>
+         <ToggleButton value="NoImage" className="ToggleBtn">No Image</ToggleButton>
+                <ToggleButton value="Full" className="ToggleBtn">Full</ToggleButton>
+       
 
       </ToggleButtonGroup>
     </div>
