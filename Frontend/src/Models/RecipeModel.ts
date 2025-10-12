@@ -20,3 +20,9 @@ export type GeneratedRecipeData = {
     instructions: string[];
 };
 
+
+export type RecipeState={
+    items:RecipeModel[],
+    loading:boolean;
+    error?:string;
+}

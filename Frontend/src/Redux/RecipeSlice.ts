@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RecipeModel } from "../Models/RecipeModel";
+import { RecipeModel, RecipeState } from "../Models/RecipeModel";
 
-export type RecipeState={
-    items:RecipeModel[],
-    loading:boolean;
-    error?:string;
-}
 
 const initialState: RecipeState={
     items:[],
     loading:false
 };
 
+function resetStateReducer(state: RecipeState) {
+  state.items = [];
+  state.error = undefined;
+  state.loading = false;
+} 
 
 function setIsLoadingReducer(currentState: RecipeState, action: PayloadAction<boolean>) {
   currentState.loading = action.payload;
@@ -30,10 +30,12 @@ function addRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>
   state.items.unshift(action.payload);
 }
 
+
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
   reducers: {
+    resetState:resetStateReducer,
     setIsLoading: setIsLoadingReducer,
     setError: setErrorReducer,
     getAllRecipes: getAllRecipesReducer,
@@ -42,5 +44,8 @@ const recipeSlice = createSlice({
 });
 
 
-export const { setIsLoading, setError, getAllRecipes, addRecipe } = recipeSlice.actions;
+export const { resetState,setIsLoading, setError, getAllRecipes, addRecipe } = recipeSlice.actions;
 export const recipeReducer = recipeSlice.reducer;
+
+
+
