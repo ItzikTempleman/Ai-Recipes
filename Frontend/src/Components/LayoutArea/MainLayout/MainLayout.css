@@ -4,7 +4,7 @@
     margin: 0;
     box-sizing: border-box;
     display: grid;
-    grid-template-rows: minmax(60px, 5%);
+    grid-template-rows: minmax(70px, 8%);
     grid-template-columns: 1fr;
 }
 

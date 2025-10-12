@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import "./RecipeSwitch.css";
+import "./ImageSwitch.css";
 
 type Props = {
   onChange: (hasImage: boolean) => void;
@@ -8,7 +8,7 @@ type Props = {
 
 type Mode = "NoImage" | "Full";
 
-export function RecipeSwitch(
+export function ImageSwitch(
   { onChange }:Props) {
   const [mode, setMode] = useState<Mode>("NoImage");
 
@@ -20,7 +20,7 @@ export function RecipeSwitch(
 
 
   return (
-    <div className="RecipeSwitch">
+    <div className="ImageSwitch">
   
       <ToggleButtonGroup
         value={mode}

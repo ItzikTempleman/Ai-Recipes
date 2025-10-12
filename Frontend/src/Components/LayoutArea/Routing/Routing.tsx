@@ -3,8 +3,6 @@ import { Home } from "../../Screens/Home/Home";
 import { Page404 } from "../Page404/Page404";
 import { History } from "../../Screens/History/History";
 
-
-
 export function Routing() {
 
     return (

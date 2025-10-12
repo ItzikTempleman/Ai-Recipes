@@ -1,18 +1,20 @@
-import { IconButton, TextField, CircularProgress, InputAdornment } from "@mui/material";
+import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import "./Home.css";
 import { useTitle } from "../../../Utils/UseTitle";
-import { RecipeSwitch } from "../../Helpers/RecipeSwitch";
 import { RecipeTitleModel } from "../../../Models/RecipeModel";
 import { notify } from "../../../Utils/Notify";
 import { recipeService } from "../../../Services/RecipeService";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RecipeCard } from "../../Cards/RecipeCard";
 import { RecipeState } from "../../../Redux/RecipeSlice";
+import { ImageSwitch } from "../ImageSwitch/ImageSwitch";
+import { RecipeCard } from "../RecipeCard/RecipeCard";
 
-type RecipeStateType = { recipes: RecipeState };
+type RecipeStateType = {
+   recipes: RecipeState 
+  };
 
 export function Home() {
   useTitle("Home");
@@ -36,7 +38,7 @@ export function Home() {
     <div className="Home">
 
       <div className="MainContainer">
-        <RecipeSwitch onChange={setHasImage} />
+        <ImageSwitch onChange={setHasImage} />
 
         <form onSubmit={handleSubmit(send)}>
           <TextField
@@ -58,7 +60,11 @@ export function Home() {
                     disabled={loading}
                     aria-label="search"
                   >
-                    {loading ? <CircularProgress/> : <SearchIcon/>}
+                    {loading ? <>
+                        <Box>
+      <CircularProgress />
+    </Box>
+                    </> : <SearchIcon/>}
                   </IconButton>
                 </InputAdornment>
               )

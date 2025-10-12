@@ -4,8 +4,6 @@ import { store } from "../Redux/Store";
 import axios from "axios";
 import { getAllRecipes,addRecipe, setError, setIsLoading } from "../Redux/RecipeSlice";
 
-
-
 class RecipeService {
 
 public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise<RecipeModel> {
@@ -30,8 +28,6 @@ public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise
         store.dispatch(getAllRecipes(recipes));
         return recipes;
     }
-
-
 }
 export const recipeService = new RecipeService();
 

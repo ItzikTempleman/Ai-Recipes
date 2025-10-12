@@ -1,6 +1,6 @@
 
 
-import { Header } from "../Header/Header";
+import { Header } from "../../Screens/Header/Header";
 
 import { Routing } from "../Routing/Routing";
 import "./MainLayout.css";

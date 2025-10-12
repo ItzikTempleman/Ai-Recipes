@@ -1,4 +1,4 @@
-.RecipeSwitch {
+.ImageSwitch {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -9,7 +9,7 @@
 .ToggleGroup {
   display: flex;
   width: 100%;
-  border: 1px solid #4a90e2;;
+  border: 1px solid #fa9c30;;
   border-radius: 4px;
 
 }
@@ -25,7 +25,7 @@
 
 .ToggleGroup .MuiToggleButton-root {
   background: white;
-  color: #4a90e2;;
+  color: #fa9c30;;
 
 }
 
@@ -36,11 +36,11 @@
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected {
-  background: #4a90e2 !important;
+  background: #fa9c30 !important;
   color: white !important;
 }
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected:hover {
-  background: #4a90e2 !important;
+  background: #fa9c30 !important;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { RecipeModel } from "../../Models/RecipeModel";
 import "./RecipeCard.css";
+import { RecipeModel } from "../../../Models/RecipeModel";
 
 
 type RecipeProps = { 

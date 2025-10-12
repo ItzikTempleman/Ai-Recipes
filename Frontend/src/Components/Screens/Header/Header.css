@@ -1,0 +1,47 @@
+.Header {
+    background-color: white;
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 100%; 
+    gap: 50px;
+   border-bottom: 1px solid #555;;
+  }
+
+.HistoryLink,
+.HomeLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: 800 16px sans-serif;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.HomeLink {
+  color: #fa9c30;
+}
+
+.HistoryLink {
+  color: #357ab8;
+  position: relative;
+  top: -4px; 
+}
+
+.HomeIcon,
+.HistoryIcon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 4px;
+}
+
+.HomeLink:hover,
+.HistoryLink:hover {
+  transform: scale(1.1);
+}
+
+.HomeLink.active,
+.HistoryLink.active {
+  transform: scale(1.1);
+}
