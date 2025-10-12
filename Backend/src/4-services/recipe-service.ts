@@ -24,7 +24,9 @@ class RecipeService {
     const imageBase64 = result.data[0].b64_json;
     const imagesDir = path.join(__dirname, "..", "1-assets", "images");
     await fs.mkdir(imagesDir, { recursive: true });
-    const safeTitle = recipe.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const safeTitle = recipe.title.toLowerCase()
+  .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-") 
+  .replace(/^-+|-+$/g, "");
     const fileName = `${safeTitle}-recipe.png`;
     await fs.writeFile(path.join(imagesDir, fileName), Buffer.from(imageBase64, "base64"));
     return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
