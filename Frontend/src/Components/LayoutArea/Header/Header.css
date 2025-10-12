@@ -1,32 +1,28 @@
 
   .Header {
     background-color: white;
-    flex-direction: column;
+    display: inline-flex;
+    width: 100%;
     align-items: center;
     justify-content: center;
-    height: auto; 
-    gap: 8px;
-   
+    height: 100%; 
+    gap: 50px;
+   border-bottom: 1px solid #555;;
   }
 
- .HeaderContainer {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-} 
 
 .HomeLink{
     color:  #fa9c30; 
   font-weight: 800;
-  font-size: 12px;
+  font-size: 16px;
   text-decoration: none;
   gap: 4px;
   transition: color 0.2s ;
 }
 .HomeLink svg {
   color:  #fa9c30;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   transition: transform 0.2s, color 0.2s;
 }
 
@@ -41,7 +37,7 @@
 .HistoryLink{
     color:  #357ab8; 
   font-weight: 800;
-  font-size: 12px;
+  font-size: 16px;
   text-decoration: none;
   gap: 4px;
   transition: color 0.2s ;
@@ -51,8 +47,8 @@
 }
 .HistoryLink svg {
   color:  #357ab8;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   transition: transform 0.2s, color 0.2s;
 }
 

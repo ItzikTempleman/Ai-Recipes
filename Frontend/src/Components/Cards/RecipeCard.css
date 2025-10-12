@@ -1,29 +1,48 @@
-.IngredientsList {
-  display: flex;
-  flex-direction: column;
-  width: 440px;
-border: 1.5px solid grey;
-border-radius: 8px;
-padding: 20px;
-  margin: 20px;
-  gap: 6px;
- margin-left: auto;
-  margin-right: auto;
+:root { 
+  --content-width: 500px;
 }
+
 .RecipeCard{
-
-  padding: 16px;
-  margin: 16px;
-
+  max-width: var(--content-width);
+  margin-top: 24px;
 }
-.RecipeCard>h2{
-  color: #4f4e4e
+
+.MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
+  margin-top: 32px;
 }
+
+
+.MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
+  margin-top: 8px;
+}
+
+.RecipeCard > h2,.InstructionsList h2 {
+  color: #4f4e4e;
+  text-align: center;   
+  font-weight:bold; 
+}
+
+.RecipeImage {
+    object-fit: cover;
+  width: 100%;
+  height: 330PX;
+  border-radius: 8px;
+}
+
+.IngredientsList,
+.InstructionsList {
+  padding: 20px;
+  margin: 20px auto;
+  width: 100%;
+  max-width: var(--content-width);
+  box-sizing: border-box;
+}
+
 .IngredientRow {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #eee;
-  padding: 4px 0;
+  border-bottom: 1px solid #c5c3c3;
+  padding: 6px 0;
 }
 
 .IngredientRow:last-child {
@@ -48,31 +67,17 @@ padding: 20px;
 }
 
 
-.InstructionsList {
-  border: 1.5px solid grey;
-padding: 20px;
-  margin: 20px;
-  width: 440px;
-  border-radius: 8px;
-}
-
-.InstructionsList h4 {
-  margin-bottom: 8px;
-}
 
 .InstructionsList ol {
   padding-left: 20px;
   margin: 0;
+
 }
 
 .InstructionsList li {
   margin-bottom: 6px;
   line-height: 1.4;
+    border-bottom: 1px solid #c5c3c3;
+      padding-bottom: 6px;
 }
 
-.RecipeImage {
-  width: 470px;
-  height: 330PX;
-  border-radius: 8px;
-  border: 5px solid #fa9c30;
-}

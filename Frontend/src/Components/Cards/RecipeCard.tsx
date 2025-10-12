@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
 import { RecipeModel } from "../../Models/RecipeModel";
 import "./RecipeCard.css";
-import { appConfig } from "../../Utils/AppConfig";
 
-type RecipeProps = { recipe: RecipeModel };
+
+type RecipeProps = { 
+  recipe: RecipeModel
+ };
 
 export function RecipeCard({ recipe }: RecipeProps) {
-  const [imgSrc, setImgSrc] = useState<string>(appConfig.noImage);
+  const [imgSrc, setImgSrc] = useState<string>("");
 
 useEffect(() => {
-  setImgSrc(
-    recipe.imageUrl && recipe.imageUrl.trim() !== ""
-      ? recipe.imageUrl
-      : appConfig.noImage
-  );
-}, [recipe.imageUrl, appConfig.noImage]);
+  const url = (recipe.imageUrl ?? "").trim();
+  setImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
+}, [recipe.imageUrl]
+)
 
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
 
   return (
     <div className="RecipeCard">
-      <h2>{recipe.title?.title ?? "Untitled recipe"}</h2>
+      <h2>{recipe.title.title}</h2>
 
+   {imgSrc && (
 <img className="RecipeImage" 
   src={imgSrc}
-  onError={() => {
-    if (imgSrc !== appConfig.noImage) setImgSrc(appConfig.noImage);
-  }}
-/>
+  onError={() => setImgSrc("")}
+  />
+   )}
 
 <div className="IngredientsList">
   {ingredients.map((line, index) => (
@@ -40,7 +40,7 @@ useEffect(() => {
 </div>
 
       <div className="InstructionsList">
-        <h4>Instructions</h4>
+        <h2>Instructions</h2>
         <ol>
           {instructions.map((step, index) => (
             <li key={index}>{step}</li>

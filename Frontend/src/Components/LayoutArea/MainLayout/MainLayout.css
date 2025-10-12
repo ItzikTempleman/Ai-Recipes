@@ -4,9 +4,8 @@
     margin: 0;
     box-sizing: border-box;
     display: grid;
-    grid-template-rows: minmax(50px, 5%);
+    grid-template-rows: minmax(60px, 5%);
     grid-template-columns: 1fr;
- 
 }
 
 .MainLayout>* {
@@ -22,14 +21,3 @@ main {
     min-height: 0;
 }
 
-@media (max-width: 1000px) {
-    .MainLayout {
-      grid-template-rows: minmax(50px, 5%);
-   
-    }
-
-    main {
-         overflow: auto;
-    
-    }
-}

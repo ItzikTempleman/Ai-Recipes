@@ -1,4 +1,4 @@
-import { IconButton, TextField, CircularProgress, LinearProgress } from "@mui/material";
+import { IconButton, TextField, CircularProgress, InputAdornment } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import "./Home.css";
@@ -16,11 +16,11 @@ type RecipeStateType = { recipes: RecipeState };
 
 export function Home() {
   useTitle("Home");
+
   const { register, handleSubmit, reset } = useForm<RecipeTitleModel>();
   const [hasImage, setHasImage] = useState(false);
-
   const { loading, items, error } = useSelector((state: RecipeStateType) => state.recipes);
-  const latestRecipe = items[0]; 
+  const recipe = items[0];
 
   async function send(recipeTitle: RecipeTitleModel) {
     try {
@@ -34,35 +34,54 @@ export function Home() {
 
   return (
     <div className="Home">
-   
+
       <div className="MainContainer">
         <RecipeSwitch onChange={setHasImage} />
 
         <form onSubmit={handleSubmit(send)}>
-<TextField
-  className="SearchTF"
-  variant="outlined"
-  size="small"
-  label="Generate recipe"
-  placeholder="Generate recipe"
-  {...register("title", { required: "title is required" })}
-  disabled={loading}
-/>
-          <IconButton className="RoundedBtn" type="submit" disabled={loading}>
-            {loading ? <CircularProgress  /> : <SearchIcon />}
-          </IconButton>
+          <TextField
+            className="SearchTF"
+            variant="outlined"
+            size="small"
+            fullWidth
+            label="Generate recipe"
+            placeholder="Generate recipe"
+            {...register("title", { required: "title is required" })}
+            disabled={loading}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    className="RoundedBtn"
+                    type="submit"
+                    edge="end"
+                    disabled={loading}
+                    aria-label="search"
+                  >
+                    {loading ? <CircularProgress/> : <SearchIcon/>}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }
+            }
+          />
         </form>
-        {error && <div className="ErrorText">{error}</div>}
+        {
+          error && <div className="ErrorText">{error}</div>
+        }
+        {
+          loading && (
+            hasImage ? <h3 className="LoadingWithImage">Generating image... this will take a minute or two...</h3> : <h3 className="LoadingWithoutImage">Generating recipe without an image... this will take a few seconds</h3>
+          )
+        }
       </div>
-
-   
-   
-      {latestRecipe && (
-        <div>
-          <RecipeCard recipe={latestRecipe} />
-        
-        </div>
-      )}
+      {
+        recipe && (
+          <div>
+            <RecipeCard recipe={recipe}/>
+          </div>
+        )
+      }
     </div>
   );
 }

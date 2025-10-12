@@ -12,7 +12,6 @@ export function MainLayout() {
             <header>
                 <Header/>
             </header>
-
             <main>
                 <Routing/>
             </main>

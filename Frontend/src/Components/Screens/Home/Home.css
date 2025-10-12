@@ -1,3 +1,7 @@
+:root {
+  --content-width: 600px; 
+}
+
 .Home {
   display: flex;
   flex-direction: column;
@@ -10,41 +14,40 @@
 
 
 .MainContainer {
-  width:400px;
-    margin-top: 40px;
-  gap: 16px; 
+  width: var(--content-width);
+  margin-top:10px;
+  gap: 16px;
   border-radius: 8px;
-  padding: 40px;
+  padding: 20px;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: center;
-  border: 1.5px solid grey;
 }
 
 .MainContainer form {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-}
-.SearchTF {
-  width: 300px;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-top: 16px auto 0;
+  display: block;
 }
 
+.SearchTF { width: 100%; }
+
 .SearchTF .MuiOutlinedInput-root {
-  height: 40px;
+  height: 44px;
 
 }
 
 form .MuiIconButton-root {
-  height: 40px;
-  width: 40px;
+  height: 44px;
+  width: 44px;
   margin-left: 6px;
 }
 
 .SearchTF .MuiOutlinedInput-input {
-  height: 40px;
-  line-height: 40px;
-  padding: 0 12px;
+  height: 44px;
+  line-height: 44px;
+  padding: 0 14px;
   box-sizing: border-box;
 }
 
@@ -60,21 +63,46 @@ form .MuiIconButton-root {
   opacity: 0;  
 }
 
-.RoundedBtn.MuiIconButton-root {
+
+
+
+.RoundedBtn.MuiIconButton {
   background-color: #4a90e2;
-  color: #fff;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+   width: 36px;
+  height: 36px;
+}
+.RoundedBtn .MuiSvgIcon {
+  font-size: 20px;
+}
+.RoundedBtn .MuiCircularProgress {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.LoadingWithImage,
+.LoadingWithoutImage {
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  line-height: 1.4;
+  margin-left: auto;  
+  margin-right: auto;  
 }
 
 
-.RoundedBtn.MuiIconButton-root:hover {
-  background-color: #357ab8;
-  transform: scale(1.05);
+.LoadingWithImage {
+  background-color: #e8f2ff;
+  color: #4a90e2;
+  border: 1px solid #bcd8ff;
 }
-.RoundedBtn.MuiIconButton-root:active {
-  background-color: #2c6394;
-  transform: scale(0.95);
+
+
+.LoadingWithoutImage {
+  background-color: #f8f8f8;
+  color: #444;
+  border: 1px solid #ddd;
 }
