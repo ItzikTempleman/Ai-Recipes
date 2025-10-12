@@ -1,11 +1,11 @@
 import { useTitle } from "../../../Utils/UseTitle";
-import "./History.css";
+import "./HistoryScreen.css";
 
-export function History() {
-    useTitle("History");
+export function HistoryScreen() {
+    useTitle("History Screen");
     
     return (
-        <div className="History">
+        <div className="HistoryScreen">
             <h2 className="HistoryTitle">History</h2>
         </div>
     );

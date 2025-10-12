@@ -1,17 +1,19 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Home } from "../../Screens/Home/Home";
+
 import { Page404 } from "../Page404/Page404";
-import { History } from "../../Screens/History/History";
+
+import { RecipeScreen } from "../../Screens/RecipeScreen/RecipeScreen";
+import { HistoryScreen } from "../../Screens/HistoryScreen/HistoryScreen";
 
 export function Routing() {
 
     return (
         <div>
             <Routes>
-                <Route path="/" element={<Navigate to="/home" />} />
+                <Route path="/" element={<Navigate to="/recipe-screen" />} />
                 <Route path="*" element={<Page404/>} />
-                <Route path="/home" element={<Home/>} />
-                <Route path="/search-history" element={<History/>} />
+                <Route path="/recipe-screen" element={<RecipeScreen/>} />
+                <Route path="/history-screen" element={<HistoryScreen/>} />
             </Routes>
         </div>
     );

@@ -1,7 +1,7 @@
 import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
-import "./Home.css";
+import "./RecipeScreen.css";
 import { useTitle } from "../../../Utils/UseTitle";
 import { RecipeTitleModel } from "../../../Models/RecipeModel";
 import { notify } from "../../../Utils/Notify";
@@ -16,8 +16,8 @@ type RecipeStateType = {
    recipes: RecipeState 
   };
 
-export function Home() {
-  useTitle("Home");
+export function RecipeScreen() {
+  useTitle("Recipe Screen");
 
   const { register, handleSubmit, reset } = useForm<RecipeTitleModel>();
   const [hasImage, setHasImage] = useState(false);
@@ -35,9 +35,9 @@ export function Home() {
   }
 
   return (
-    <div className="Home">
+    <div className="RecipeScreen">
 
-      <div className="MainContainer">
+      <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
 
         <form onSubmit={handleSubmit(send)}>

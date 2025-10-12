@@ -2,7 +2,7 @@
   --content-width: 600px; 
 }
 
-.Home {
+.RecipeScreen {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +13,7 @@
 }
 
 
-.MainContainer {
+.SearchContainer {
   width: var(--content-width);
   margin-top:10px;
   gap: 16px;
@@ -24,7 +24,7 @@
   align-items: center;
 }
 
-.MainContainer form {
+.SearchContainer form {
   width: 100%;
   max-width: var(--content-width);
   margin-top: 16px auto 0;

@@ -7,13 +7,13 @@ export function Header() {
 
   return (
     <div className="Header">
-      <NavLink to="/home" className="HomeLink">
+      <NavLink to="/recipe-screen" className="HomeLink">
         <FlatwareIcon className="HomeIcon" />
         <span className="HomeText">
-          Recipe <br/> generator
+          Generate <br/> recipe
         </span>
       </NavLink>
-      <NavLink to="/search-history" className="HistoryLink">
+      <NavLink to="/history-screen" className="HistoryLink">
         <HistoryIcon className="HistoryIcon" />
         <span>History</span>
       </NavLink>
