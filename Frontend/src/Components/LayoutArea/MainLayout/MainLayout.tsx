@@ -1,5 +1,3 @@
-
-
 import { Header } from "../../Screens/Header/Header";
 
 import { Routing } from "../Routing/Routing";

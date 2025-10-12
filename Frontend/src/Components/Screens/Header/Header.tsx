@@ -7,9 +7,9 @@ export function Header() {
 
   return (
     <div className="Header">
-      <NavLink to="/recipe-screen" className="HomeLink">
-        <FlatwareIcon className="HomeIcon" />
-        <span className="HomeText">
+      <NavLink to="/recipe-screen" className="RecipeLink">
+        <FlatwareIcon className="RecipeIcon" />
+        <span className="RecipeText">
           Generate <br/> recipe
         </span>
       </NavLink>
