@@ -1,5 +1,5 @@
 
-import { Copyrights } from "../Copyrights/Copyrights";
+
 import { Header } from "../Header/Header";
 
 import { Routing } from "../Routing/Routing";
@@ -16,9 +16,6 @@ export function MainLayout() {
             <main>
                 <Routing/>
             </main>
-            <footer>
-                <Copyrights/>
-            </footer>
         </div>
     );
 }

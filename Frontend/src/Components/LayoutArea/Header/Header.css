@@ -1,73 +1,64 @@
-.Header {
-  justify-content: space-between;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px;
-  position: relative;
-  background-color: rgb(116, 116, 116);
-}
+
+  .Header {
+    background-color: white;
+    border-bottom: 1px solid grey;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto; 
+    gap: 8px;
+   
+  }
 
  .HeaderContainer {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  margin-left: 40px;
 } 
 
-.SiteTitle {
-   margin: 0 24px 0 0;
-  font-size: 30px;
-  background: linear-gradient(90deg, #00d0ff, white);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 1px;
-}
-
 .HomeLink{
-    color:  #d9a050; 
+    color:  #fa9c30; 
   font-weight: 800;
   font-size: 12px;
   text-decoration: none;
   gap: 4px;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.2s ;
 }
 .HomeLink svg {
-  color:  #d9a050;
+  color:  #fa9c30;
   width: 24px;
   height: 24px;
   transition: transform 0.2s, color 0.2s;
 }
 
 .HomeLink:hover, .HomeLink svg:hover {
-  color: #d9a050;
+  color: #fa9c30;
   transform: scale(1.1);
 }
 .HomeDivText{
-  color: #d9a050;
+  color: #fa9c30;
 }
 
 .HistoryLink{
-    color:  #8faed4; 
+    color:  #357ab8; 
   font-weight: 800;
   font-size: 12px;
   text-decoration: none;
   gap: 4px;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.2s ;
 }
 .HistoryDivText{
-  color: #8faed4;
+  color: #357ab8;
 }
 .HistoryLink svg {
-  color:  #8faed4;
+  color:  #357ab8;
   width: 24px;
   height: 24px;
   transition: transform 0.2s, color 0.2s;
 }
 
 .HistoryLink:hover, .HistoryLink svg:hover {
-  color: #8faed4;
+  color: #357ab8;
   transform: scale(1.1);
 }
 
@@ -87,53 +78,3 @@
   margin: 0;
 }
 
-.NavLinkContainer > *.active h2 {
-   color: white;  
-}
-
-@media (max-width: 1000px) {
-  .Header {
-    background-color: rgb(116, 116, 116);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto; 
-    gap: 8px;
-    padding: 12px 0;
-  }
-
-  
-  .HeaderContainer {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    gap: 8px;
-    margin-left: 0; 
-  }
-
-  .SiteTitle {
-    margin: 0;
-    font-size: 26px;
-    background: linear-gradient(90deg, #00d0ff, white);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-
-  .NavLinkContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .NavLinkContainer > * {
-    font-size: 16px;
-    padding: 4px 8px;
-  }
-
-  .NavLinkContainer h2 {
-    font-size: 18px;
-  }
-}

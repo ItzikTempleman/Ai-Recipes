@@ -12,14 +12,14 @@ import { useSelector } from "react-redux";
 import { RecipeCard } from "../../Cards/RecipeCard";
 import { RecipeState } from "../../../Redux/RecipeSlice";
 
-type RootState = { recipes: RecipeState };
+type RecipeStateType = { recipes: RecipeState };
 
 export function Home() {
   useTitle("Home");
   const { register, handleSubmit, reset } = useForm<RecipeTitleModel>();
   const [hasImage, setHasImage] = useState(false);
 
-  const { loading, items, error } = useSelector((s: RootState) => s.recipes);
+  const { loading, items, error } = useSelector((state: RecipeStateType) => state.recipes);
   const latestRecipe = items[0]; 
 
   async function send(recipeTitle: RecipeTitleModel) {
@@ -34,30 +34,22 @@ export function Home() {
 
   return (
     <div className="Home">
-      <h2 className="SearchTitle">Generate recipe</h2>
-      <h4 className="SearchTitleBottomLine">(any language)</h4>
-
+   
       <div className="MainContainer">
         <RecipeSwitch onChange={setHasImage} />
 
         <form onSubmit={handleSubmit(send)}>
           <TextField
             className="SearchTF"
-            label="Search"
-            placeholder="Search"
+            label="Generate recipe"
+            placeholder="Generate recipe"
             {...register("title", { required: "title is required" })}
             disabled={loading}
           />
           <IconButton className="RoundedBtn" type="submit" disabled={loading}>
-            {loading ? <CircularProgress size={20} /> : <SearchIcon />}
+            {loading ? <CircularProgress  /> : <SearchIcon />}
           </IconButton>
         </form>
-
-        {loading && (
-          <div style={{ width: "100%", marginTop: 12 }}>
-            <LinearProgress />
-          </div>
-        )}
         {error && <div className="ErrorText">{error}</div>}
       </div>
 
@@ -66,6 +58,7 @@ export function Home() {
       {latestRecipe && (
         <div>
           <RecipeCard recipe={latestRecipe} />
+        
         </div>
       )}
     </div>

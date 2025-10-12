@@ -4,7 +4,7 @@
     margin: 0;
     box-sizing: border-box;
     display: grid;
-    grid-template-rows: minmax(50px, 5%) 1fr minmax(40px, 5%);
+    grid-template-rows: minmax(50px, 5%);
     grid-template-columns: 1fr;
  
 }
@@ -13,8 +13,7 @@
     font-family: Arial;
 }
 
-header,
-footer {
+header{
     grid-column: span 2;
 }
 
@@ -25,10 +24,12 @@ main {
 
 @media (max-width: 1000px) {
     .MainLayout {
-      grid-template-rows: minmax(50px, 5%) 1fr minmax(40px, 5%);
+      grid-template-rows: minmax(50px, 5%);
+   
     }
 
     main {
-        padding: 8px;
+         overflow: auto;
+    
     }
 }

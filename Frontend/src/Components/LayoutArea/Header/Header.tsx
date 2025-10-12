@@ -6,7 +6,7 @@ export function Header() {
   return (
     <div className="Header">
       <div className="HeaderContainer">
-      <h2 className="SiteTitle">Smart recipes</h2>
+
       <div className="NavLinkContainer">
 
            <NavLink to="/home" className="HomeLink">

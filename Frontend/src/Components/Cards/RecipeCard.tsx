@@ -16,26 +16,16 @@ useEffect(() => {
   );
 }, [recipe.imageUrl, appConfig.noImage]);
 
-<img
-  src={imgSrc}
-  loading="lazy"
-  onError={() => {
-   
-    if (imgSrc !== appConfig.noImage) setImgSrc(appConfig.noImage);
-  }}
-/>
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
 
   return (
     <div className="RecipeCard">
-      <h3>{recipe.title?.title ?? "Untitled recipe"}</h3>
+      <h2>{recipe.title?.title ?? "Untitled recipe"}</h2>
 
 <img className="RecipeImage" 
   src={imgSrc}
-  loading="lazy"
   onError={() => {
-    
     if (imgSrc !== appConfig.noImage) setImgSrc(appConfig.noImage);
   }}
 />
