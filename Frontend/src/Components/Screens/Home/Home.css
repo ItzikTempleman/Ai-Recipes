@@ -32,8 +32,7 @@
 
 .SearchTF .MuiOutlinedInput-root {
   height: 40px;
-  display: flex;
-  align-items: center;
+
 }
 
 form .MuiIconButton-root {
@@ -43,12 +42,12 @@ form .MuiIconButton-root {
 }
 
 .SearchTF .MuiOutlinedInput-input {
-  display: flex;
-  align-items: center;
   height: 40px;
+  line-height: 40px;
   padding: 0 12px;
-  line-height: 40px; 
+  box-sizing: border-box;
 }
+
 
 .SearchTF .MuiOutlinedInput-input::placeholder {
   color: #999;    

@@ -39,13 +39,15 @@ export function Home() {
         <RecipeSwitch onChange={setHasImage} />
 
         <form onSubmit={handleSubmit(send)}>
-          <TextField
-            className="SearchTF"
-            label="Generate recipe"
-            placeholder="Generate recipe"
-            {...register("title", { required: "title is required" })}
-            disabled={loading}
-          />
+<TextField
+  className="SearchTF"
+  variant="outlined"
+  size="small"
+  label="Generate recipe"
+  placeholder="Generate recipe"
+  {...register("title", { required: "title is required" })}
+  disabled={loading}
+/>
           <IconButton className="RoundedBtn" type="submit" disabled={loading}>
             {loading ? <CircularProgress  /> : <SearchIcon />}
           </IconButton>
