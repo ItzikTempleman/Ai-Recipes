@@ -1,9 +1,8 @@
-import { FullRecipeModel, RecipeTitleModel, GPTImage, GeneratedRecipeData } from "../3-models/recipe-model";
+import { FullRecipeModel, RecipeTitleModel, GPTImage, GeneratedRecipeData, openai, DbRecipeRow } from "../3-models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
 import { appConfig } from "../2-utils/app-config";
-import { openai } from "../2-utils/openai-client";
 import fs from "fs/promises";
 import { fileSaver } from "uploaded-file-saver";
 import { OkPacketParams } from "mysql2";
@@ -25,17 +24,50 @@ class RecipeService {
     const imagesDir = path.join(__dirname, "..", "1-assets", "images");
     await fs.mkdir(imagesDir, { recursive: true });
     const safeTitle = recipe.title.toLowerCase()
-  .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-") 
-  .replace(/^-+|-+$/g, "");
+      .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
+      .replace(/^-+|-+$/g, "");
     const fileName = `${safeTitle}-recipe.png`;
     await fs.writeFile(path.join(imagesDir, fileName), Buffer.from(imageBase64, "base64"));
     return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
   }
 
   public async getRecipes(): Promise<FullRecipeModel[]> {
-    const sql="select * from recipe";
-    const recipes= await dal.execute(sql) as FullRecipeModel[];
-    return recipes;
+    const sql = "select * from recipe";
+    const rows = await dal.execute(sql) as DbRecipeRow[];
+
+    return rows.map(row => {
+      const ingredientsArr = row.ingredients
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const amountsArr = (row.amounts ?? "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const ingredientObjects = ingredientsArr.map((ingredient, index) => ({
+        ingredient,
+        amount: amountsArr[index] ?? null,
+      }));
+
+      const instructionsArr = row.instructions
+        .split("|")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const titleModel = new RecipeTitleModel({ title: row.title } as RecipeTitleModel);
+
+      return new FullRecipeModel({
+        id: row.id,
+        title: titleModel,
+        data: { ingredients: ingredientObjects, instructions: instructionsArr },
+        image: undefined,
+        imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : undefined,
+        imageName: row.imageName ?? undefined,
+      } as FullRecipeModel);
+     }
+    );
   }
 
   public async saveRecipe(recipe: FullRecipeModel): Promise<FullRecipeModel> {

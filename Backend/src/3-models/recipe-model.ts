@@ -1,6 +1,8 @@
 import Joi from "joi";
 import { ValidationError } from "./client-errors";
 import { UploadedFile } from "express-fileupload";
+import { appConfig } from "../2-utils/app-config";
+import OpenAI from "openai";
 
 export class RecipeTitleModel {
     public title!: string;
@@ -53,10 +55,22 @@ export function isImageGenerateRequest(
 ): item is { type: "image_generation_call"; result: string } {
     return item.type === "image_generation_call";
 };
+export const openai = new OpenAI({
+    apiKey: appConfig.apiKey
+});
+
+export type DbRecipeRow = {
+    id: number;
+    title: string;
+    ingredients: string;
+    amounts: string | null;
+    instructions: string;
+    imageName: string | null;
+};
 
 
 export class FullRecipeModel {
-    public id?:number;
+    public id?: number;
     public title!: RecipeTitleModel;
     public data!: GeneratedRecipeData;
     public image?: UploadedFile;
@@ -67,9 +81,9 @@ export class FullRecipeModel {
         if (!recipe) throw new ValidationError("Missing recipe data");
         this.id = recipe.id;
         this.title = recipe.title;
-        this.data=recipe.data;
-        this.image=recipe.image;
-        this.imageUrl=recipe.imageUrl;
-        this.imageName=recipe.imageName;
+        this.data = recipe.data;
+        this.image = recipe.image;
+        this.imageUrl = recipe.imageUrl;
+        this.imageName = recipe.imageName;
     }
 };

@@ -25,9 +25,12 @@ public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise
     public async getAllRecipes(): Promise<RecipeModel[]> {
         const response = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
         const recipes = response.data;
+        recipes.map(recipe=>(console.log(recipe)))
         store.dispatch(getAllRecipes(recipes));
         return recipes;
     }
+    
+
 }
 export const recipeService = new RecipeService();
 
