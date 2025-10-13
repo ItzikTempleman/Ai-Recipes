@@ -36,6 +36,18 @@
   height: 44px;
 }
 
+.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #3D7D5E;
+}
+
+.SearchTF .MuiInputLabel-root.Mui-focused {
+  color: #3D7D5E;
+}
+
+.SearchTF .MuiIconButton-root {
+  color: #3D7D5E;
+}
+
 form .MuiIconButton-root {
   height: 44px;
   width: 44px;

@@ -6,7 +6,7 @@
     justify-content: center;
     height: 100%; 
     gap: 50px;
-   border-bottom: 1px solid #555;;
+   background: #f1e7d9;
   }
 
 .HistoryLink,
@@ -20,12 +20,12 @@
 }
 
 .RecipeLink {
-  color: #fa9c30;
+  color: #3D7D5E;
   
 }
 
 .HistoryLink {
-  color: #357ab8;
+  color: #B35C3D;
   position: relative;
    top: -10px; 
 }
@@ -38,11 +38,11 @@
 }
 
 .RecipeLink:hover,
-.HistoryLink:hover {
+.HistoryLink:hover,
+.RecipeLink.active,
+.HistoryLink.active 
+{
   transform: scale(1.1);
 }
 
-.RecipeLink.active,
-.HistoryLink.active {
-  transform: scale(1.1);
-}
+

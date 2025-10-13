@@ -40,10 +40,8 @@ export function RecipeScreen() {
 
   return (
     <div className="RecipeScreen">
-
       <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
-
         <form onSubmit={handleSubmit(send)}>
           <TextField
             className="SearchTF"
@@ -80,7 +78,6 @@ InputProps={{
           <CloseIcon />
         </IconButton>
       ) : (
-
         <IconButton
           className="RoundedBtn"
           type="submit"
@@ -100,11 +97,12 @@ InputProps={{
         }
         {
           loading && (
-            hasImage ? <h3 className="LoadingWithImage">Generating image... this will take a minute or two...</h3> : <h3 className="LoadingWithoutImage">Generating recipe without an image... this will take a few seconds</h3>
+            hasImage ? 
+            <h3 className="LoadingWithImage">Generating image... this will take a minute or two...</h3> : 
+            <h3 className="LoadingWithoutImage">Generating recipe without an image... this will take a few seconds</h3>
           )
         }
       </div>
-      
       {
         recipe && (
           <div>
