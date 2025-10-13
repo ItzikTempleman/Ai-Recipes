@@ -63,8 +63,7 @@ class RecipeService {
         title: titleModel,
         data: { ingredients: ingredientObjects, instructions: instructionsArr },
         image: undefined,
-        imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : undefined,
-        imageName: row.imageName ?? undefined,
+        imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : "",
       } as FullRecipeModel);
      }
     );
