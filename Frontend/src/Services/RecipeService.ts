@@ -2,7 +2,7 @@ import { RecipeModel, RecipeTitleModel } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios from "axios";
-import { getAllRecipes,addRecipe, setError, setIsLoading } from "../Redux/RecipeSlice";
+import { getAllRecipes,addRecipe, setError, setIsLoading, setCurrent } from "../Redux/RecipeSlice";
 
 class RecipeService {
 
@@ -11,7 +11,8 @@ public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise
     store.dispatch(setIsLoading(true));
     const url = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
     const { data } = await axios.post<RecipeModel>(url, title);
-    store.dispatch(addRecipe(data));
+    store.dispatch(addRecipe(data));      
+    store.dispatch(setCurrent(data)); 
     return data; 
   } catch (err: any) {
     const msg = err?.message || "Failed to generate recipe";

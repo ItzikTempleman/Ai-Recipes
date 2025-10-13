@@ -22,7 +22,8 @@ export type GeneratedRecipeData = {
 
 
 export type RecipeState={
-    items:RecipeModel[],
-    loading:boolean;
-    error?:string;
+   items: RecipeModel[];     
+  current?: RecipeModel | null; 
+  loading: boolean;
+  error?: string;
 }

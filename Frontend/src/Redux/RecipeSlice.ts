@@ -3,15 +3,20 @@ import { RecipeModel, RecipeState } from "../Models/RecipeModel";
 
 
 const initialState: RecipeState={
-    items:[],
-    loading:false
+   items: [],
+  current: null,
+  loading: false,
 };
 
-function resetStateReducer(state: RecipeState) {
-  state.items = [];
+function setCurrentReducer(state: RecipeState, action: PayloadAction<RecipeModel|null>) {
+  state.current = action.payload;
+}
+
+function resetGeneratedReducer(state: RecipeState) {
+  state.current = null;                  
   state.error = undefined;
   state.loading = false;
-} 
+}
 
 function setIsLoadingReducer(currentState: RecipeState, action: PayloadAction<boolean>) {
   currentState.loading = action.payload;
@@ -27,24 +32,25 @@ function getAllRecipesReducer(state: RecipeState, action: PayloadAction<RecipeMo
 }
 
 function addRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>) {
-  state.items.unshift(action.payload);
+  state.items.unshift(action.payload);    
+  state.current = action.payload;         
 }
-
 
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
   reducers: {
-    resetState:resetStateReducer,
+    resetGenerated:resetGeneratedReducer,
     setIsLoading: setIsLoadingReducer,
     setError: setErrorReducer,
     getAllRecipes: getAllRecipesReducer,
+    setCurrent: setCurrentReducer,
     addRecipe: addRecipeReducer,
   },
 });
 
 
-export const { resetState,setIsLoading, setError, getAllRecipes, addRecipe } = recipeSlice.actions;
+export const { resetGenerated,setIsLoading, setError, getAllRecipes, addRecipe,setCurrent } = recipeSlice.actions;
 export const recipeReducer = recipeSlice.reducer;
 
 

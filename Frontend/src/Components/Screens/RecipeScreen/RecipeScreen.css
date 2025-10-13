@@ -79,11 +79,9 @@ form .MuiIconButton-root {
   text-align: center;
   margin-top: 12px;
   padding: 8px;
-  border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
   margin-left: auto;  
   margin-right: auto;  
   color: #4b4b4b;
-  border: 1px solid #bcd8ff;
 }

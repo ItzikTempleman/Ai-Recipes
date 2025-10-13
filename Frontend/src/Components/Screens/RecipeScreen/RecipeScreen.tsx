@@ -11,7 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { ImageSwitch } from "../ImageSwitch/ImageSwitch";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
 import CloseIcon from '@mui/icons-material/Close';
-import { resetState } from "../../../Redux/RecipeSlice";
+import { resetGenerated } from "../../../Redux/RecipeSlice";
+
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -25,8 +26,8 @@ export function RecipeScreen() {
   const { register, handleSubmit, reset } = useForm<RecipeTitleModel>();
   const [hasImage, setHasImage] = useState(false);
 
-  const { loading, items, error } = useSelector((state: RecipeStateType) => state.recipes);
-  const recipe = items[0];
+const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
+const recipe = current;
 
   async function send(recipeTitle: RecipeTitleModel) {
     try {
@@ -72,7 +73,7 @@ InputProps={{
           aria-label="clear"
           onClick={() => {
             reset();        
-    dispatch(resetState());
+  dispatch(resetGenerated());
           }}
         >
           <CloseIcon />
