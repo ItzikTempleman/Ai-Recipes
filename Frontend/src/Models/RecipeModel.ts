@@ -1,7 +1,14 @@
+
+export class RecipeQueryModel {
+  public query!: string; 
+}
+
+
 export class RecipeModel {
     public id?: number;
-    public title!: RecipeTitleModel;
+    public title!: string;
     public data!: GeneratedRecipeData;
+    public calories!: number;  
     public image?: File;
     public imageUrl?: string;
 }

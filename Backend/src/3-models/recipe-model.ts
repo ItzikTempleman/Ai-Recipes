@@ -4,22 +4,22 @@ import { UploadedFile } from "express-fileupload";
 import { appConfig } from "../2-utils/app-config";
 import OpenAI from "openai";
 
-export class RecipeTitleModel {
-    public title!: string;
+export class RecipeQueryModel {
+    public query!: string;
 
-    constructor(recipeTitleModel: RecipeTitleModel) {
-        if (!recipeTitleModel) throw new ValidationError("Missing recipe title prompt");
-        this.title = recipeTitleModel.title;
+    constructor(recipeTitleModel: RecipeQueryModel) {
+        if (!recipeTitleModel) throw new ValidationError("Missing recipe query");
+        this.query = recipeTitleModel.query;
     }
 
     private static validationSchema = Joi.object(
         {
-            title: Joi.string().required().max(60)
+            query: Joi.string().required().max(160)
         }
     );
 
     public validate(): void {
-        const result = RecipeTitleModel.validationSchema.validate(this);
+        const result = RecipeQueryModel.validationSchema.validate(this);
         if (result.error) throw new ValidationError(result.error.message);
     }
 };
@@ -30,10 +30,11 @@ export type IngredientLine = {
 };
 
 export type GeneratedRecipeData = {
-    ingredients: IngredientLine[];
-    instructions: string[];
+  title: string;            
+  ingredients: IngredientLine[];
+  instructions: string[];
+  calories: number;       
 };
-
 export type Query = {
     systemCommandDescription: string;
     userCommandDescription: string;
@@ -65,14 +66,16 @@ export type DbRecipeRow = {
     ingredients: string;
     amounts: string | null;
     instructions: string;
+    calories:number;
     imageName: string | null;
 };
 
 
 export class FullRecipeModel {
     public id?: number;
-    public title!: RecipeTitleModel;
+    public title!: string;
     public data!: GeneratedRecipeData;
+    public calories!:number;
     public image?: UploadedFile;
     public imageUrl?: string;
     public imageName: string | null | undefined;
@@ -82,6 +85,7 @@ export class FullRecipeModel {
         this.id = recipe.id;
         this.title = recipe.title;
         this.data = recipe.data;
+        this.calories=recipe.calories;
         this.image = recipe.image;
         this.imageUrl = recipe.imageUrl;
         this.imageName = recipe.imageName;

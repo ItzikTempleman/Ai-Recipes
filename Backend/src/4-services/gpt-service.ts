@@ -4,9 +4,9 @@ import { GeneratedRecipeData, Query } from "../3-models/recipe-model";
 
 
 class GptService {
-  public async getInstructions(query: Query, isWithImage:boolean): Promise<GeneratedRecipeData> {
+  public async getInstructions(query: Query, isWithImage: boolean): Promise<GeneratedRecipeData> {
     const body = {
-      model: isWithImage? appConfig.modelNumber : appConfig.freeNoImageModelNumber,
+      model: isWithImage ? appConfig.modelNumber : appConfig.freeNoImageModelNumber,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: query.systemCommandDescription },
@@ -16,7 +16,7 @@ class GptService {
 
     const options = {
       headers: {
-        Authorization: "Bearer " + (isWithImage? appConfig.apiKey:appConfig.freeNoImageApiKey),
+        Authorization: "Bearer " + (isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey),
         "Content-Type": "application/json"
       }
     };
@@ -25,14 +25,30 @@ class GptService {
     const content: string = response.data.choices[0].message.content;
     const formattedResponse = JSON.parse(content);
 
-    if (!Array.isArray(formattedResponse.ingredients)|| !Array.isArray(formattedResponse.instructions)) throw new Error("Invalid json")
+
+
+    const title = formattedResponse?.title?.trim() || formattedResponse?.tittle?.trim();
+    const ingredients = formattedResponse?.ingredients;
+    const instructions = formattedResponse?.instructions;
+    const calories = Number(formattedResponse?.calories);
+
+    if (
+      !title ||
+      !Array.isArray(ingredients) ||
+      !Array.isArray(instructions) ||
+      !Number.isFinite(calories)
+    ) {
+      throw new Error("Invalid recipe JSON");
+    }
 
     return {
-      ingredients: formattedResponse.ingredients,
-      instructions:formattedResponse.instructions
+      title,
+      ingredients,
+      instructions,
+      calories: Math.max(0, Math.round(calories))
     };
-  };
-};
+  }
+}
 
 export const gptService = new GptService();
 

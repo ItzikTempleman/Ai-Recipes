@@ -60,7 +60,9 @@ form .MuiIconButton-root {
   padding: 0 14px;
   box-sizing: border-box;
 }
-
+.SearchTF .MuiCircularProgress-root {
+  color: #3D7D5E !important;
+}
 
 .SearchTF .MuiOutlinedInput-input::placeholder {
   color: #999;    

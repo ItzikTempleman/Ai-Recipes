@@ -1,16 +1,21 @@
-import { RecipeModel, RecipeTitleModel } from "../Models/RecipeModel";
+import { RecipeModel, RecipeQueryModel, RecipeTitleModel } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios from "axios";
 import { getAllRecipes,addRecipe, setError, setIsLoading, setCurrent } from "../Redux/RecipeSlice";
+
+
 
 class RecipeService {
 
 public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise<RecipeModel> {
   try {
     store.dispatch(setIsLoading(true));
+ const body: RecipeQueryModel = { query: title.title };
     const url = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
-    const { data } = await axios.post<RecipeModel>(url, title);
+
+    const { data } = await axios.post<RecipeModel>(url, body);
+
     store.dispatch(addRecipe(data));      
     store.dispatch(setCurrent(data)); 
     return data; 
@@ -24,11 +29,9 @@ public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise
 }
 
     public async getAllRecipes(): Promise<RecipeModel[]> {
-        const response = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
-        const recipes = response.data;
-        recipes.map(recipe=>(console.log(recipe)))
-        store.dispatch(getAllRecipes(recipes));
-        return recipes;
+    const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
+    store.dispatch(getAllRecipes(data));
+    return data;
     }
     
 

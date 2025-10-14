@@ -10,7 +10,7 @@ class DAL {
         database: appConfig.database
     };
 
-    // Connection line to the database:
+    
     private readonly connection = createPool(this.options);
 
     public execute(sql: string, values?: (string | number | null)[]): Promise<QueryResult> {

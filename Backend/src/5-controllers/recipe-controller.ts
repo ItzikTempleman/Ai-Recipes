@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { StatusCode } from "../3-models/status-code";
-import { FullRecipeModel, RecipeTitleModel } from "../3-models/recipe-model";
+import { FullRecipeModel, RecipeQueryModel } from "../3-models/recipe-model";
 import { recipeService } from "../4-services/recipe-service";
 
 class RecipeController {
@@ -12,18 +12,19 @@ class RecipeController {
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
   };
 
-  private async getRecipes(request: Request, response: Response) {
+  private async getRecipes(_: Request, response: Response) {
     const recipes = await recipeService.getRecipes();
     response.json(recipes);
   }
 
   private async generateFreeNoImageRecipe(request: Request, response: Response) {
-    const titleModel = new RecipeTitleModel(request.body);
+    const titleModel = new RecipeQueryModel(request.body);
     const data = await recipeService.generateInstructions(titleModel, false);
 
     const noImageRecipe = new FullRecipeModel({
-      title: titleModel,
-      data,
+      title: data.title, 
+      data: { ingredients: data.ingredients, instructions: data.instructions },
+      calories: data.calories, 
       image: undefined,
       imageUrl: undefined,
       imageName: undefined
@@ -34,12 +35,13 @@ class RecipeController {
   }
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-    const titleModel = new RecipeTitleModel(request.body);
+    const titleModel = new RecipeQueryModel(request.body);
     const data = await recipeService.generateInstructions(titleModel, true);
     const { fileName, url } = await recipeService.generateImage(titleModel);
     const fullRecipe = new FullRecipeModel({
-      title: titleModel,
-      data,
+      title: data.title, 
+      data: { ingredients: data.ingredients, instructions: data.instructions },
+      calories: data.calories, 
       image: undefined,
       imageUrl: url,
       imageName: fileName

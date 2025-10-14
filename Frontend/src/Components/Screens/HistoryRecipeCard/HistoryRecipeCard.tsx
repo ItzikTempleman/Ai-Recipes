@@ -9,7 +9,7 @@ export function HistoryRecipeCard({ recipe }: RecipeProps) {
     const cardClassName = recipe.imageUrl 
         ? "HistoryRecipeCard" 
         : "NoImageHistoryRecipeCard";
-console.log("🌱 Test change — feature branch only");
+
     return (
         <div className={cardClassName}>
             {recipe.imageUrl && (
@@ -17,7 +17,7 @@ console.log("🌱 Test change — feature branch only");
                 
             )}
             <div className="HistoryCardTitleContainer">
-            <div className="HistoryCardTitle">{recipe.title.title}</div>
+            <div className="HistoryCardTitle">{recipe.title}</div>
             </div>
         </div>
     );

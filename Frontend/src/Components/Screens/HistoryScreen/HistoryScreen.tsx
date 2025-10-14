@@ -22,7 +22,7 @@ export function HistoryScreen() {
             <div className="HistoryCards">
                 {items.map((recipe) => (
                             <HistoryRecipeCard
-                                key={recipe.id ?? recipe.title?.title}
+                                key={recipe.title}
                                 recipe={recipe}/>
                         )
                     )

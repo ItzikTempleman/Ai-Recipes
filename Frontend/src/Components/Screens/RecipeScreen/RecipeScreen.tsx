@@ -22,12 +22,12 @@ export function RecipeScreen() {
   useTitle("Recipe Screen");
 
   const dispatch = useDispatch();
-  
+
   const { register, handleSubmit, reset } = useForm<RecipeTitleModel>();
   const [hasImage, setHasImage] = useState(false);
 
-const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
-const recipe = current;
+  const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
+  const recipe = current;
 
   async function send(recipeTitle: RecipeTitleModel) {
     try {
@@ -57,50 +57,49 @@ const recipe = current;
                   "title is required"
               })}
             disabled={loading}
-InputProps={{
-  endAdornment: (
-    <InputAdornment position="end">
-      {loading ? (
-        <IconButton className="RoundedBtn" edge="end" disabled>
-          <Box><CircularProgress size={22} /></Box>
-        </IconButton>
-      ) : recipe ? (
-    
-        <IconButton
-          className="RoundedBtn"
-          type="button"
-          edge="end"
-          aria-label="clear"
-          onClick={() => {
-            reset();        
-  dispatch(resetGenerated());
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : (
-        <IconButton
-          className="RoundedBtn"
-          type="submit"
-          edge="end"
-          aria-label="search"
-          disabled={loading}
-        >
-          <SearchIcon />
-        </IconButton>
-      )}
-    </InputAdornment>
-  )
-}}/>
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {loading ? (
+                    <IconButton className="RoundedBtn" edge="end" disabled>
+                      <Box><CircularProgress/></Box>
+                    </IconButton>
+                  ) : recipe ? (
+                    <IconButton
+                      className="RoundedBtn"
+                      type="button"
+                      edge="end"
+                      aria-label="clear"
+                      onClick={() => {
+                        reset();
+                        dispatch(resetGenerated());
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      className="RoundedBtn"
+                      type="submit"
+                      edge="end"
+                      aria-label="search"
+                      disabled={loading}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  )}
+                </InputAdornment>
+              )
+            }} />
         </form>
         {
           error && <div className="ErrorText">{error}</div>
         }
         {
           loading && (
-            hasImage ? 
-            <h3 className="LoadingWithImage">Generating image... this will take a minute or two...</h3> : 
-            <h3 className="LoadingWithoutImage">Generating recipe without an image... this will take a few seconds</h3>
+            hasImage ?
+              <h3 className="LoadingWithImage">Generating image... this will take a minute or two...</h3> :
+              <h3 className="LoadingWithoutImage">Generating recipe without an image... this will take a few seconds</h3>
           )
         }
       </div>
