@@ -1,6 +1,38 @@
+.HistoryCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); 
+  gap: 24px;
+  width: 85%;
+  margin: 0 auto; 
+  box-sizing: border-box;
+}
+
+.HistoryRecipeCard,
+.NoImageHistoryRecipeCard {
+  box-sizing: border-box;
+  margin: 0;              
+  width: 100%;        
+}
+
+.HistoryRecipeCard {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  padding: 20px;
+  height: auto;
+}
+
+.NoImageHistoryRecipeCard {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  padding: 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .HistoryCardImage {
-    object-fit: cover;
-    width: 330px;
-    height: 220px;
-    border-radius: 8px;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
 }

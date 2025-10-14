@@ -8,29 +8,24 @@ import { HistoryRecipeCard } from "../HistoryRecipeCard/HistoryRecipeCard";
 
 export function HistoryScreen() {
     useTitle("History Screen");
-    const { items} = useSelector((state: AppState) => state.recipes);
-
+    const { items } = useSelector((state: AppState) => state.recipes);
 
     useEffect(
-        ()=>{
-recipeService.getAllRecipes();
-
-        },[]
+        () => {
+            recipeService.getAllRecipes();
+        }, []
     );
 
     return (
         <div className="HistoryScreen">
-            <h2 className="HistoryTitle">History</h2>
-            <div>
-                {
-items.map(
-    (recipe)=>(
-             <HistoryRecipeCard
-            key={recipe.id ?? recipe.title?.title}
-            recipe={recipe}
-          />
-    )
-)
+            <h2 className="HistoryTitle">Generated recipe History</h2>
+            <div className="HistoryCards">
+                {items.map((recipe) => (
+                            <HistoryRecipeCard
+                                key={recipe.id ?? recipe.title?.title}
+                                recipe={recipe}/>
+                        )
+                    )
                 }
             </div>
         </div>

@@ -11,7 +11,6 @@
   margin-top: 32px;
 }
 
-
 .MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
   margin-top: 8px;
 }
@@ -49,7 +48,6 @@
   border-bottom: none;
 }
 
-
 .IngredientName {
   width: 60%;
   text-align: left;
@@ -58,15 +56,12 @@
   padding-right: 12px;
 }
 
-
 .IngredientAmount {
   width: 40%;
   text-align: right;
   color: #555;
   white-space: nowrap;
 }
-
-
 
 .InstructionsList ol {
   padding-left: 20px;
