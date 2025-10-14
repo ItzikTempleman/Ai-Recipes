@@ -56,10 +56,14 @@ export function isImageGenerateRequest(
 ): item is { type: "image_generation_call"; result: string } {
     return item.type === "image_generation_call";
 };
-export const openai = new OpenAI({
-    apiKey: appConfig.apiKey
+export const openaiText = new OpenAI({
+  apiKey: appConfig.freeNoImageApiKey
 });
 
+// One client for IMAGES (uses the image key/project)
+export const openaiImages = new OpenAI({
+  apiKey: appConfig.apiKey
+});
 export type DbRecipeRow = {
     id: number;
     title: string;

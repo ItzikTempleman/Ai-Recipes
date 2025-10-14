@@ -16,7 +16,7 @@ class GptService {
 
     const options = {
       headers: {
-        Authorization: "Bearer " + (isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey),
+        Authorization: "Bearer " + appConfig.freeNoImageApiKey,
         "Content-Type": "application/json"
       }
     };
