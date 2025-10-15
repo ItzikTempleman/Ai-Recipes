@@ -9,7 +9,7 @@
 .ToggleGroup {
   display: flex;
   width: 100%;
-  border: 1px solid #3D7D5E;;
+  border: 1px solid #4b4b4b;;
   border-radius: 4px;
 
 }
@@ -25,7 +25,7 @@
 
 .ToggleGroup .MuiToggleButton-root {
   background: white;
-  color: #3D7D5E;;
+  color: #4b4b4b;;
 
 }
 
@@ -36,11 +36,11 @@
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected {
-  background: #3D7D5E !important;
+  background: #34a6db !important;
   color: white !important;
 }
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected:hover {
-  background: #3D7D5E !important;
+  background: #34a6db !important;
 }

@@ -1,11 +1,10 @@
 .Header {
-    background-color: white;
     display: inline-flex;
     width: 100%;
     align-items: center;
     justify-content: center;
     height: 100%; 
-    gap: 50px;
+    gap: 80px;
   }
 
 .HistoryLink,
@@ -13,20 +12,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font: 800 16px sans-serif;
+  font: 16px;
   text-decoration: none;
-  transition: transform 0.2s;
 }
 
-.RecipeLink {
-  color: #3D7D5E;
-  
-}
-
+.RecipeLink, 
 .HistoryLink {
-  color: #B35C3D;
-  position: relative;
-   top: -10px; 
+  color: #4b4b4b;
+
+  
 }
 
 .RecipeIcon,
@@ -36,12 +30,11 @@
   margin-bottom: 4px;
 }
 
-.RecipeLink:hover,
-.HistoryLink:hover,
+
 .RecipeLink.active,
 .HistoryLink.active 
 {
-  transform: scale(1.1);
+   border-bottom: 3px solid #4b4b4b;
 }
 
 

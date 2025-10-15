@@ -30,7 +30,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
         />
       )}
 <div className="CalorieCount">
-<h4> Estimates calories: {recipe.calories}</h4>
+<h4> Estimated calories: {recipe.calories}</h4>
 </div>
       <div className="IngredientsList">
         {ingredients.map((line, index) => (

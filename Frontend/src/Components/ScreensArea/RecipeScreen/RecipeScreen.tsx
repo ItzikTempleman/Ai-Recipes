@@ -8,10 +8,10 @@ import { notify } from "../../../Utils/Notify";
 import { recipeService } from "../../../Services/RecipeService";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ImageSwitch } from "../ImageSwitch/ImageSwitch";
-import { RecipeCard } from "../RecipeCard/RecipeCard";
 import CloseIcon from '@mui/icons-material/Close';
 import { resetGenerated } from "../../../Redux/RecipeSlice";
+import { ImageSwitch } from "../../SectionsArea/ImageSwitch/ImageSwitch";
+import { RecipeCard } from "../../CardsArea/RecipeCard/RecipeCard";
 
 
 type RecipeStateType = {
@@ -98,8 +98,8 @@ export function RecipeScreen() {
         {
           loading && (
             hasImage ?
-              <h3 className="LoadingWithImage">Generating image... this will take a minute or two...</h3> :
-              <h3 className="LoadingWithoutImage">Generating recipe without an image... this will take a few seconds</h3>
+              <h3 className="LoadingWithImage">Generating image, this will take a minute or two...</h3> :
+              <h3 className="LoadingWithoutImage">Generating recipe without an image, this will take a few seconds...</h3>
           )
         }
       </div>

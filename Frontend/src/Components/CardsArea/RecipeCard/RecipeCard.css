@@ -16,12 +16,12 @@
 }
 
 .RecipeCard > h2,.InstructionsList h2 {
-  color: #4f4e4e;
+  color: #4b4b4b;
   text-align: center;   
   font-weight:bold; 
 }
 .CalorieCount{
-   color: #555;
+   color: #4b4b4b;
 }
 
 .RecipeImage {

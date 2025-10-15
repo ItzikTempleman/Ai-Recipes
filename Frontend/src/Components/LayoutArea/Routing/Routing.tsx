@@ -1,9 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-
 import { Page404 } from "../Page404/Page404";
-
-import { RecipeScreen } from "../../Screens/RecipeScreen/RecipeScreen";
-import { HistoryScreen } from "../../Screens/HistoryScreen/HistoryScreen";
+import { RecipeScreen } from "../../ScreensArea/RecipeScreen/RecipeScreen";
+import { HistoryScreen } from "../../ScreensArea/HistoryScreen/HistoryScreen";
 
 export function Routing() {
 

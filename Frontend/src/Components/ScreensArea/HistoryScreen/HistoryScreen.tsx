@@ -4,7 +4,8 @@ import "./HistoryScreen.css";
 import { recipeService } from "../../../Services/RecipeService";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
-import { HistoryRecipeCard } from "../HistoryRecipeCard/HistoryRecipeCard";
+import { HistoryRecipeCard } from "../../CardsArea/HistoryRecipeCard/HistoryRecipeCard";
+
 
 export function HistoryScreen() {
     useTitle("History Screen");
@@ -18,7 +19,7 @@ export function HistoryScreen() {
 
     return (
         <div className="HistoryScreen">
-            <h2 className="HistoryTitle">Generated recipe History</h2>
+            <p className="HistoryTitle">History</p>
             <div className="HistoryCards">
                 {items.map((recipe) => (
                             <HistoryRecipeCard
