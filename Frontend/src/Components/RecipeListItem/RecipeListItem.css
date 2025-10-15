@@ -1,0 +1,36 @@
+.RecipeListItem,
+.NoImageListItem {
+  width: 330px;
+  padding: 8px;
+  height: auto;
+  border-radius: 8px;
+    box-shadow: 2px 2px 2px 2px grey;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.NoImageListItem {
+height: 100px ;
+}
+
+.RecipeListItem:hover,
+.NoImageListItem:hover {
+  transform: translateY(-12px);
+}
+
+.CardImage {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+
+}
+
+.CardTitle{
+color: #4d4d4d;
+}
+.MoreInfoBtn{
+    align-self: center;
+  width: 80%;
+  background-color: #34a6db !important;
+  color: white !important;
+}

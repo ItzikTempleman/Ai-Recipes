@@ -7,32 +7,27 @@
     gap: 80px;
   }
 
-.HistoryLink,
-.RecipeLink {
+.AllRecipesLink,
+.CreateLink {
   display: flex;
   flex-direction: column;
   align-items: center;
   font: 16px;
   text-decoration: none;
+    color: #4b4b4b;
 }
 
-.RecipeLink, 
-.HistoryLink {
-  color: #4b4b4b;
 
-  
-}
-
-.RecipeIcon,
-.HistoryIcon {
+.CreateIcon,
+.AllRecipesIcon {
   width: 30px;
   height: 30px;
   margin-bottom: 4px;
 }
 
 
-.RecipeLink.active,
-.HistoryLink.active 
+.CreateLink.active,
+.AllRecipesLink.active 
 {
    border-bottom: 3px solid #4b4b4b;
 }

@@ -1,25 +1,26 @@
-import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@mui/material";
+import { IconButton, TextField, CircularProgress, InputAdornment, Box, ListItem } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
-import "./RecipeScreen.css";
-import { useTitle } from "../../../Utils/UseTitle";
-import { RecipeState, RecipeTitleModel } from "../../../Models/RecipeModel";
-import { notify } from "../../../Utils/Notify";
-import { recipeService } from "../../../Services/RecipeService";
+import "./NewScreen.css";
+import { useTitle } from "../../Utils/UseTitle";
+import { RecipeState, RecipeTitleModel } from "../../Models/RecipeModel";
+import { notify } from "../../Utils/Notify";
+import { recipeService } from "../../Services/RecipeService";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { resetGenerated } from "../../../Redux/RecipeSlice";
-import { ImageSwitch } from "../../SectionsArea/ImageSwitch/ImageSwitch";
-import { RecipeCard } from "../../CardsArea/RecipeCard/RecipeCard";
+import { resetGenerated } from "../../Redux/RecipeSlice";
+import { ImageSwitch } from "../ImageSwitch/ImageSwitch";
+import { RecipeCard } from "../RecipeCard/RecipeCard";
+
 
 
 type RecipeStateType = {
   recipes: RecipeState
 };
 
-export function RecipeScreen() {
-  useTitle("Recipe Screen");
+export function NewScreen() {
+  useTitle("Generate Recipe");
 
   const dispatch = useDispatch();
 
@@ -40,7 +41,8 @@ export function RecipeScreen() {
   }
 
   return (
-    <div className="RecipeScreen">
+    <div className="NewScreen">
+      <p className="NewScreenTitle">Create new recipe</p>
       <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
         <form onSubmit={handleSubmit(send)}>

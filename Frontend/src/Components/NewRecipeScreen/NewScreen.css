@@ -2,16 +2,23 @@
   --content-width: 600px; 
 }
 
-.RecipeScreen {
+.NewScreen {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; 
+  justify-content: flex-start; 
   width: 100%;
   height: 100vh;
   margin: 0;
-  text-align: center;
+  padding: 20px;
 }
-
+.NewScreenTitle{
+    align-items: flex-start;
+  justify-content: flex-start;
+  color: #4b4b4b;
+  margin: 20px;
+  font-size: 28px;
+}
 .SearchContainer {
   width: var(--content-width);
   margin-top:10px;
@@ -21,6 +28,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: auto;   
+  margin-right: auto;
 }
 
 .SearchContainer form {

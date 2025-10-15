@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import "./RecipeCard.css";
-import { RecipeModel } from "../../../Models/RecipeModel";
-
+import { RecipeModel } from "../../Models/RecipeModel";
 
 type RecipeProps = {
   recipe: RecipeModel
 };
 
 export function RecipeCard({ recipe }: RecipeProps) {
+
   const [imgSrc, setImgSrc] = useState<string>("");
+
 
   useEffect(() => {
     const url = (recipe.imageUrl ?? "").trim();
@@ -18,6 +19,8 @@ export function RecipeCard({ recipe }: RecipeProps) {
 
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
+
+
 
   return (
     <div className="RecipeCard">

@@ -1,4 +1,4 @@
-.HistoryScreen {
+.RecipeList {
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
@@ -9,7 +9,7 @@
   padding: 20px;
 }
 
-.HistoryTitle {
+.Title {
   align-items: flex-start;
   justify-content: flex-start;
   color: #4b4b4b;
@@ -17,7 +17,7 @@
   font-size: 28px;
 }
 
-.HistoryCards {
+.List {
   display: flex;
   flex-wrap: wrap;             
   gap: 16px;                   
