@@ -7,6 +7,8 @@ import fs from "fs/promises";
 import { fileSaver } from "uploaded-file-saver";
 import { OkPacketParams } from "mysql2";
 import { dal } from "../2-utils/dal";
+import { mapDbRowToFullRecipe } from "../2-utils/MapFullRecipe";
+import { ResourceNotFound } from "../3-models/client-errors";
 
 class RecipeService {
 
@@ -16,92 +18,66 @@ class RecipeService {
     return await gptService.getInstructions(recipeTitle, isWithImage);
   }
 
-public async generateImage(recipe: RecipeQueryModel): Promise<GPTImage> {
-  const promptText = `High-resolution, super realistic food photo of: ${recipe.query}`;
+  public async generateImage(recipe: RecipeQueryModel): Promise<GPTImage> {
+    const promptText = `High-resolution, super realistic food photo of: ${recipe.query}`;
 
-  let lastErr: any;
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      const result = await openaiImages.images.generate({
-        model: "gpt-image-1",
-        prompt: promptText,
-        size: "1024x1024"
-      });
+    let lastErr: any;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const result = await openaiImages.images.generate({
+          model: "gpt-image-1",
+          prompt: promptText,
+          size: "1024x1024"
+        });
 
-      if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
+        if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
 
-      const imageBase64 = result.data[0].b64_json;
-      const imagesDir = path.join(__dirname, "..", "1-assets", "images");
-      await fs.mkdir(imagesDir, { recursive: true });
+        const imageBase64 = result.data[0].b64_json;
+        const imagesDir = path.join(__dirname, "..", "1-assets", "images");
+        await fs.mkdir(imagesDir, { recursive: true });
 
-      const safeTitle = recipe.query
-        .toLowerCase()
-        .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+        const safeTitle = recipe.query
+          .toLowerCase()
+          .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
+          .replace(/^-+|-+$/g, "");
 
-      const fileName = `${safeTitle}-recipe.png`;
-      await fs.writeFile(
-        path.join(imagesDir, fileName),
-        Buffer.from(imageBase64, "base64")
-      );
+        const fileName = `${safeTitle}-recipe.png`;
+        await fs.writeFile(
+          path.join(imagesDir, fileName),
+          Buffer.from(imageBase64, "base64")
+        );
 
-      return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
-    } catch (err: any) {
-      console.error("OpenAI IMAGE:", err?.response?.data);
-      lastErr = err;
+        return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
+      } catch (err: any) {
+        console.error("OpenAI IMAGE:", err?.response?.data);
+        lastErr = err;
 
-      // Gentle retry only for rate limit
-      if (err?.response?.status === 429) {
-        const retryAfter =
-          Number(err?.response?.headers?.["retry-after"]) || 1500; // ms
-        await new Promise((r) => setTimeout(r, retryAfter));
-        continue;
+        if (err?.response?.status === 429) {
+          const retryAfter =
+            Number(err?.response?.headers?.["retry-after"]) || 1500; // ms
+          await new Promise((r) => setTimeout(r, retryAfter));
+          continue;
+        }
+        throw err;
       }
-      throw err;
     }
+    throw lastErr;
   }
-  throw lastErr;
-}
-
 
   public async getRecipes(): Promise<FullRecipeModel[]> {
     const sql = "select * from recipe";
     const rows = await dal.execute(sql) as DbRecipeRow[];
-
-    return rows.map(row => {
-      const ingredientsArr = row.ingredients
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean);
-
-      const amountsArr = (row.amounts ?? "")
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean);
-
-      const ingredientObjects = ingredientsArr.map((ingredient, index) => ({
-        ingredient,
-        amount: amountsArr[index] ?? null,
-      }));
-
-      const instructionsArr = row.instructions
-        .split("|")
-        .map(s => s.trim())
-        .filter(Boolean);
-
-      const queryModel = new RecipeQueryModel({ query: row.title } as RecipeQueryModel);
-
-      return new FullRecipeModel({
-        id: row.id,
-        title: row.title,
-        data: { ingredients: ingredientObjects, instructions: instructionsArr },
-        calories: row.calories,
-        image: undefined,
-        imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : "",
-      } as FullRecipeModel);
-     }
-    );
+    return rows.map(mapDbRowToFullRecipe);
   }
+
+    public async getSingleRecipe(id: number): Promise<FullRecipeModel> {
+    const sql = "select * from recipe where id=?";
+    const values = [id];
+    const rows = await dal.execute(sql, values) as DbRecipeRow[];
+    const row = rows[0];
+    if (!row) throw new ResourceNotFound(id);
+    return mapDbRowToFullRecipe(row);
+  };
 
   public async saveRecipe(recipe: FullRecipeModel): Promise<FullRecipeModel> {
     let imageName: string | null = null;
@@ -110,9 +86,9 @@ public async generateImage(recipe: RecipeQueryModel): Promise<GPTImage> {
     const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
     const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
     const amounts = recipe.data.ingredients.map(i => i.amount).join(", ").slice(0, 40);
-    const calories= recipe.calories;
+    const calories = recipe.calories;
     const sql = "insert into recipe(title, ingredients, instructions,calories, amounts, imageName) values(?,?,?,?,?,?)";
- const values = [title, ingredients, instructions, calories, amounts, imageName];
+    const values = [title, ingredients, instructions, calories, amounts, imageName];
     const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
     recipe.id = info.insertId;
     recipe.image = undefined;

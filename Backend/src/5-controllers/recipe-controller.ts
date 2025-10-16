@@ -9,11 +9,18 @@ class RecipeController {
     this.router.post("/api/generate-free-recipe-without-image", this.generateFreeNoImageRecipe);
     this.router.post("/api/generate-recipe-with-image", this.generateRecipeWithImage);
     this.router.get("/api/recipes/all", this.getRecipes);
+    this.router.get("/api/recipes/:id", this.getSingleRecipe);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
   };
 
   private async getRecipes(_: Request, response: Response) {
     const recipes = await recipeService.getRecipes();
+    response.json(recipes);
+  }
+
+    private async getSingleRecipe(request: Request, response: Response) {
+      const id= Number(request.params.id)
+    const recipes = await recipeService.getSingleRecipe(id);
     response.json(recipes);
   }
 
