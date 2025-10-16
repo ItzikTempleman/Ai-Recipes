@@ -2,8 +2,16 @@ import { Query, RecipeQueryModel } from "../3-models/recipe-model";
 
 class ResponseInstructions {
   public getQuery(recipeQuery: RecipeQueryModel): Query {
-    const systemCommandDescription =
-      "You are a culinary expert. When asked for a recipe, you output ONLY valid JSON (no markdown, no extra text).";
+const systemCommandDescription = `
+You are a culinary expert.
+Detect the language of the user's query and write the entire recipe in that language.
+If the query is in Hebrew — respond fully in Hebrew.
+If the query is in English — respond fully in English.
+If the query is in any other language — respond fully in that language too.
+Do not mix languages or scripts inside words.
+Return ONLY valid JSON.
+`.trim();
+
     const userCommandDescription = `
 Create a concise home-cook recipe for "${recipeQuery.query}".
 
