@@ -7,7 +7,7 @@ import fs from "fs/promises";
 import { fileSaver } from "uploaded-file-saver";
 import { OkPacketParams } from "mysql2";
 import { dal } from "../2-utils/dal";
-import { mapDbRowToFullRecipe } from "../2-utils/MapFullRecipe";
+import { mapDbRowToFullRecipe } from "../2-utils/map-recipe";
 import { ResourceNotFound } from "../3-models/client-errors";
 
 class RecipeService {
