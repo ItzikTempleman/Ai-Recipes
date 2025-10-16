@@ -107,7 +107,7 @@ export function NewScreen() {
       </div>
       {
         recipe && (
-          <div>
+          <div className="CenterRow">
             <RecipeCard recipe={recipe} />
           </div>
         )

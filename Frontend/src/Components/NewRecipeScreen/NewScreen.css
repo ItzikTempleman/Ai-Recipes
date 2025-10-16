@@ -95,3 +95,9 @@ form .MuiIconButton-root {
   margin-right: auto;  
   color: #4b4b4b;
 }
+
+.CenterRow {
+  width: 100%;
+  display: flex;
+  justify-content: center; 
+}

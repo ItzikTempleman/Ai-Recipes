@@ -3,8 +3,10 @@
 }
 
 .RecipeCard{
-  max-width: var(--content-width);
-  margin-top: 24px;
+  width: var(--content-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 }
 
 .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
