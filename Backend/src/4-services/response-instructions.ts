@@ -10,6 +10,8 @@ If the query is in English — respond fully in English.
 If the query is in any other language — respond fully in that language too.
 Do not mix languages or scripts inside words.
 Return ONLY valid JSON.
+Do not generate food that makes no logic or conceptual sense - 
+example "a pokemon head inside a cake"- but DO allow creative kinds of food as long as its really food.
 `.trim();
 
     const userCommandDescription = `
