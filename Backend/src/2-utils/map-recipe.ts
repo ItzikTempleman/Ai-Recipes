@@ -3,7 +3,7 @@ import { appConfig } from "./app-config";
 
 const parseAmounts = (s?: string | null): (string | null)[] => {
   if (!s) return [];
-  try { 
+  try {
     const a = JSON.parse(s);
     return Array.isArray(a) ? a.map(v => (v == null ? null : String(v))) : [];
   } catch {
@@ -23,8 +23,14 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
 
   return new FullRecipeModel({
     id: row.id,
+    amountOfServings:row.amountOfServings,
     title: row.title,
+    description: row.description,
+    popularity: row.popularity,
     data: { ingredients: ingredientObjects, instructions },
+    totalSugar: row.totalSugar,
+    totalProtein: row.totalProtein,
+    healthLevel: row.healthLevel,
     calories: row.calories,
     imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : "",
     imageName: row.imageName ?? undefined

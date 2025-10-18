@@ -14,8 +14,8 @@ class RecipeService {
 
   public async generateInstructions(query: QueryModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
     query.validate();
-    const recipeTitle = responseInstructions.getQuery(query);
-    return await gptService.getInstructions(recipeTitle, isWithImage);
+    const recipeQuery = responseInstructions.getQuery(query);
+    return await gptService.getInstructions(recipeQuery, isWithImage);
   }
 
   public async generateImage(recipe: QueryModel): Promise<GPTImage> {
@@ -83,12 +83,31 @@ class RecipeService {
     let imageName: string | null = null;
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
     const title = recipe.title.slice(0, 100);
+    const description = recipe.description;
+    const amountOfServings= recipe.amountOfServings;
+    const popularity = recipe.popularity;
     const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
     const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
+    const totalSugar = recipe.totalSugar;
+    const totalProtein = recipe.totalProtein;
+    const healthLevel = recipe.healthLevel;
     const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
-    const sql = "insert into recipe(title, ingredients, instructions,calories, amounts, imageName) values(?,?,?,?,?,?)";
-    const values = [title, ingredients, instructions, calories, amounts, imageName];
+    const sql = "insert into recipe(title, amountOfServings, description, popularity, ingredients, instructions, totalSugar, totalProtein, healthLevel, calories, amounts, imageName) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    const values = [
+      title,
+      amountOfServings,
+      description,
+      popularity,
+      ingredients,
+      instructions,
+      totalSugar,
+      totalProtein,
+      healthLevel,
+      calories,
+      amounts,
+      imageName
+    ];
     const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
     recipe.id = info.insertId;
     recipe.image = undefined;
@@ -115,7 +134,7 @@ class RecipeService {
     const sql = "delete from recipe where id = ?";
     const values = [id];
     const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
-     if (info.affectedRows === 0) throw new ResourceNotFound(id);
+    if (info.affectedRows === 0) throw new ResourceNotFound(id);
 
     if (imageToDelete) {
       try {

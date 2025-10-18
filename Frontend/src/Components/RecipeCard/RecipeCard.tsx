@@ -24,7 +24,10 @@ export function RecipeCard({ recipe }: RecipeProps) {
 
   return (
     <div className="RecipeCard">
-      <h2>{recipe.title}</h2>
+     <h2>{recipe.title}</h2>
+     <div className="Description">
+<p>{recipe.description}</p>
+     </div>
 
       {imgSrc && (
         <img className="RecipeImage"
@@ -32,9 +35,9 @@ export function RecipeCard({ recipe }: RecipeProps) {
           onError={() => setImgSrc("")}
         />
       )}
-<div className="CalorieCount">
-<h4> Estimated calories: {recipe.calories}</h4>
-</div>
+      <div className="CalorieCount">
+        <h4> Estimated calories: {recipe.calories}</h4>
+      </div>
       <div className="IngredientsList">
         {ingredients.map((line, index) => (
           <div key={index} className="IngredientRow">

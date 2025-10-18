@@ -1,14 +1,20 @@
 
-export class RecipeQueryModel {
-  public query!: string; 
+export class QueryModel {
+    public query!: string;
 }
 
 
 export class RecipeModel {
     public id?: number;
+    public amountOfServings!: number;
     public title!: string;
+    public description!: string;
+    public popularity: number | null
     public data!: GeneratedRecipeData;
-    public calories!: number;  
+    public totalSugar!: number;
+    public totalProtein!: number;
+    public healthLevel!: number
+    public calories!: number;
     public image?: File;
     public imageUrl?: string;
 }
@@ -28,9 +34,9 @@ export type GeneratedRecipeData = {
 };
 
 
-export type RecipeState={
-   items: RecipeModel[];     
-  current?: RecipeModel | null; 
-  loading: boolean;
-  error?: string;
+export type RecipeState = {
+    items: RecipeModel[];
+    current?: RecipeModel | null;
+    loading: boolean;
+    error?: string;
 }

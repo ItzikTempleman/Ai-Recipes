@@ -9,6 +9,9 @@
   align-items: center; 
 }
 
+.Description{
+  
+}
 .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
   margin-top: 32px;
 }

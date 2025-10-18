@@ -25,11 +25,15 @@ class GptService {
     const content: string = response.data.choices[0].message.content;
     const formattedResponse = JSON.parse(content);
 
-
-
-    const title = formattedResponse?.title?.trim() || formattedResponse?.tittle?.trim();
+    const title = formattedResponse?.title?.trim();
+    const amountOfServings=formattedResponse?.amountOfServings;
+    const description=formattedResponse?.description;
+    const popularity=formattedResponse?.popularity
     const ingredients = formattedResponse?.ingredients;
     const instructions = formattedResponse?.instructions;
+    const totalSugar=formattedResponse?.totalSugar;
+    const totalProtein=formattedResponse?.totalProtein;
+    const healthLevel=formattedResponse?.healthLevel;
     const calories = Number(formattedResponse?.calories);
 
     if (
@@ -43,8 +47,14 @@ class GptService {
 
     return {
       title,
+      amountOfServings,
+      description,
+      popularity,
       ingredients,
       instructions,
+      totalSugar,
+      totalProtein,
+      healthLevel,
       calories: Math.max(0, Math.round(calories))
     };
   }

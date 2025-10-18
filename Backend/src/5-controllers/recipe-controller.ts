@@ -11,7 +11,7 @@ class RecipeController {
     this.router.get("/api/recipes/all", this.getRecipes);
     this.router.get("/api/recipe/:id", this.getSingleRecipe);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-    this.router.delete("/api/recipe/:id",this.deleteRecipe)
+    this.router.delete("/api/recipe/:id", this.deleteRecipe)
   };
 
   private async getRecipes(_: Request, response: Response) {
@@ -31,7 +31,13 @@ class RecipeController {
 
     const noImageRecipe = new FullRecipeModel({
       title: data.title,
+      amountOfServings:data.amountOfServings,
+      description: data.description,
+      popularity: data.popularity,
       data: { ingredients: data.ingredients, instructions: data.instructions },
+      totalSugar: data.totalSugar,
+      totalProtein: data.totalProtein,
+      healthLevel: data.healthLevel,
       calories: data.calories,
       image: undefined,
       imageUrl: undefined,
@@ -48,7 +54,13 @@ class RecipeController {
     const { fileName, url } = await recipeService.generateImage(titleModel);
     const fullRecipe = new FullRecipeModel({
       title: data.title,
+      amountOfServings:data.amountOfServings,
+      description: data.description,
+      popularity: data.popularity,
       data: { ingredients: data.ingredients, instructions: data.instructions },
+      totalSugar: data.totalSugar,
+      totalProtein: data.totalProtein,
+      healthLevel: data.healthLevel,
       calories: data.calories,
       image: undefined,
       imageUrl: url,
