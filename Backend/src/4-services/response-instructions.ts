@@ -26,7 +26,7 @@ If the query is in Hebrew — respond fully in Hebrew.
     "ingredients": [{ "ingredient": "string", "amount": "string|null" }, ... ], 
     "instructions": ["step 1", "..."],
     "totalSugar": number,         // approximate total sugar in grams for the whole recipe
-    "totalProtein":number,        // approximate total protein in grams for the whole dish
+    "totalProtein":number,        // approximate protein in grams per 100 grams
     "healthLevel":number,         // approximate overall health level from 1 to 10 in 0.1 steps. example: 5.1, 5.2, 5.3
     "calories": number,           // approximate total calories for the whole recipe 
     } 

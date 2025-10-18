@@ -20,14 +20,15 @@ export function RecipeCard({ recipe }: RecipeProps) {
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
 
-
-
   return (
     <div className="RecipeCard">
-     <h2>{recipe.title}</h2>
-     <div className="Description">
-<p>{recipe.description}</p>
-     </div>
+      <h2>{recipe.title}</h2>
+      <div className="Servings:">
+        <p>Servings: {recipe.amountOfServings}</p>
+      </div>
+      <div className="Description">
+        <p>{recipe.description}</p>
+      </div>
 
       {imgSrc && (
         <img className="RecipeImage"
@@ -38,6 +39,15 @@ export function RecipeCard({ recipe }: RecipeProps) {
       <div className="CalorieCount">
         <h4> Estimated calories: {recipe.calories}</h4>
       </div>
+
+      <div className="Popularity">
+        <p>World popularity level {recipe.popularity}/10</p>
+      </div>
+
+      <div className="Sugar">
+        <p> total {recipe.totalSugar}g sugar,<br />{recipe.totalProtein}g protein (per 100 grams) </p>
+      </div>
+      <h3>Health level: {recipe.healthLevel}/10</h3>
       <div className="IngredientsList">
         {ingredients.map((line, index) => (
           <div key={index} className="IngredientRow">

@@ -8,7 +8,7 @@ import { notify } from "../../Utils/Notify";
 import { RecipeModel } from "../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { appConfig } from "../../Utils/AppConfig";
+
 
 export function InfoScreen() {
     useTitle("Info");
@@ -55,9 +55,23 @@ export function InfoScreen() {
                     <img className="RecipeInImage" src={recipe.imageUrl} />
                 )}
                 <h2>{recipe.title}</h2>
+      <div className="Servings:">
+        <p>Servings: {recipe.amountOfServings}</p>
+      </div>
+      <div className="Description">
+        <p>{recipe.description}</p>
+      </div>
                 <div className="CalorieCount">
                     <h4> Estimated calories: {recipe.calories}</h4>
                 </div>
+                      <div className="Popularity">
+        <p>World popularity level {recipe.popularity}/10</p>
+      </div>
+
+      <div className="Sugar">
+        <p> total {recipe.totalSugar}g sugar,<br />{recipe.totalProtein}g protein (per 100 grams) </p>
+      </div>
+      <h3>Health level: {recipe.healthLevel}/10</h3>
                 <div className="IngredientsList">
                     {ingredients.map((line, index) => (
                         <div key={index} className="IngredientRow">
