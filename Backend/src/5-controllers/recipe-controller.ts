@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { StatusCode } from "../3-models/status-code";
-import { FullRecipeModel, RecipeQueryModel } from "../3-models/recipe-model";
+import { FullRecipeModel, QueryModel } from "../3-models/recipe-model";
 import { recipeService } from "../4-services/recipe-service";
 
 class RecipeController {
@@ -26,7 +26,7 @@ class RecipeController {
   }
 
   private async generateFreeNoImageRecipe(request: Request, response: Response) {
-    const titleModel = new RecipeQueryModel(request.body);
+    const titleModel = new QueryModel(request.body);
     const data = await recipeService.generateInstructions(titleModel, false);
 
     const noImageRecipe = new FullRecipeModel({
@@ -43,7 +43,7 @@ class RecipeController {
   }
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-    const titleModel = new RecipeQueryModel(request.body);
+    const titleModel = new QueryModel(request.body);
     const data = await recipeService.generateInstructions(titleModel, true);
     const { fileName, url } = await recipeService.generateImage(titleModel);
     const fullRecipe = new FullRecipeModel({

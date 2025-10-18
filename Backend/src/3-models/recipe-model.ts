@@ -4,12 +4,12 @@ import { UploadedFile } from "express-fileupload";
 import { appConfig } from "../2-utils/app-config";
 import OpenAI from "openai";
 
-export class RecipeQueryModel {
+export class QueryModel {
     public query!: string;
 
-    constructor(recipeTitleModel: RecipeQueryModel) {
-        if (!recipeTitleModel) throw new ValidationError("Missing recipe query");
-        this.query = recipeTitleModel.query;
+    constructor(queryModel: QueryModel) {
+        if (!queryModel) throw new ValidationError("Missing query");
+        this.query = queryModel.query;
     }
 
     private static validationSchema = Joi.object(
@@ -19,7 +19,7 @@ export class RecipeQueryModel {
     );
 
     public validate(): void {
-        const result = RecipeQueryModel.validationSchema.validate(this);
+        const result = QueryModel.validationSchema.validate(this);
         if (result.error) throw new ValidationError(result.error.message);
     }
 };
@@ -45,11 +45,9 @@ export type GPTImage = {
     url: string
 };
 
-
 export type OutputItem =
     | { type: "image_generation_call"; result: string }
     | { type: string };
-
 
 export function isImageGenerateRequest(
     item: OutputItem
@@ -60,7 +58,6 @@ export const openaiText = new OpenAI({
   apiKey: appConfig.freeNoImageApiKey
 });
 
-// One client for IMAGES (uses the image key/project)
 export const openaiImages = new OpenAI({
   apiKey: appConfig.apiKey
 });

@@ -1,4 +1,4 @@
-import { FullRecipeModel, RecipeQueryModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages } from "../3-models/recipe-model";
+import { FullRecipeModel, QueryModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages } from "../3-models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -12,13 +12,13 @@ import { ResourceNotFound } from "../3-models/client-errors";
 
 class RecipeService {
 
-  public async generateInstructions(query: RecipeQueryModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
+  public async generateInstructions(query: QueryModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
     query.validate();
     const recipeTitle = responseInstructions.getQuery(query);
     return await gptService.getInstructions(recipeTitle, isWithImage);
   }
 
-  public async generateImage(recipe: RecipeQueryModel): Promise<GPTImage> {
+  public async generateImage(recipe: QueryModel): Promise<GPTImage> {
     const promptText = `High-resolution, super realistic food photo of: ${recipe.query}`;
 
     let lastErr: any;
@@ -85,8 +85,7 @@ class RecipeService {
     const title = recipe.title.slice(0, 100);
     const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
     const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
-    //const amounts = recipe.data.ingredients.map(i => i.amount).join(", ").slice(0, 40);
-    const amounts= JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
+    const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
     const sql = "insert into recipe(title, ingredients, instructions,calories, amounts, imageName) values(?,?,?,?,?,?)";
     const values = [title, ingredients, instructions, calories, amounts, imageName];

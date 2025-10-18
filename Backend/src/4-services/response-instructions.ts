@@ -1,7 +1,7 @@
-import { Query, RecipeQueryModel } from "../3-models/recipe-model";
+import { Query, QueryModel } from "../3-models/recipe-model";
 
 class ResponseInstructions {
-  public getQuery(recipeQuery: RecipeQueryModel): Query {
+  public getQuery(recipeQuery: QueryModel): Query {
 const systemCommandDescription = `
 You are a culinary expert.
 Detect the language of the user's query and write the entire recipe in that language.
