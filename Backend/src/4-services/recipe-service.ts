@@ -70,7 +70,7 @@ class RecipeService {
     return rows.map(mapDbRowToFullRecipe);
   }
 
-    public async getSingleRecipe(id: number): Promise<FullRecipeModel> {
+  public async getSingleRecipe(id: number): Promise<FullRecipeModel> {
     const sql = "select * from recipe where id=?";
     const values = [id];
     const rows = await dal.execute(sql, values) as DbRecipeRow[];
@@ -103,6 +103,27 @@ class RecipeService {
       return imagePath;
     } catch {
       throw new Error("Image not found");
+    }
+  }
+
+  public async deleteRecipe(id: number): Promise<void> {
+    const image = "select imageName from recipe where id = ?";
+    const row = await dal.execute(image, [id]) as { imageName: string | null }[];
+    if (row.length === 0) throw new ResourceNotFound(id);
+
+    const imageToDelete = row[0].imageName;
+    const sql = "delete from recipe where id = ?";
+    const values = [id];
+    const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+     if (info.affectedRows === 0) throw new ResourceNotFound(id);
+
+    if (imageToDelete) {
+      try {
+        const imagePath = await this.getImageFilePath(imageToDelete);
+        await fs.unlink(imagePath);
+      } catch (err) {
+        throw new Error("Could not delete image");
+      }
     }
   }
 }

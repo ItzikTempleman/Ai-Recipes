@@ -7,6 +7,7 @@ export function Header() {
 
   return (
     <div className="Header">
+      <h2>AI Recipe generator</h2>
       <NavLink to="/create-screen" className="CreateLink">
         <FoodBank className="CreateIcon" />
         <span >

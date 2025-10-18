@@ -11,6 +11,7 @@ class RecipeController {
     this.router.get("/api/recipes/all", this.getRecipes);
     this.router.get("/api/recipe/:id", this.getSingleRecipe);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
+    this.router.delete("/api/recipe/:id",this.deleteRecipe)
   };
 
   private async getRecipes(_: Request, response: Response) {
@@ -18,8 +19,8 @@ class RecipeController {
     response.json(recipes);
   }
 
-    private async getSingleRecipe(request: Request, response: Response) {
-      const id= Number(request.params.id)
+  private async getSingleRecipe(request: Request, response: Response) {
+    const id = Number(request.params.id)
     const recipes = await recipeService.getSingleRecipe(id);
     response.json(recipes);
   }
@@ -29,9 +30,9 @@ class RecipeController {
     const data = await recipeService.generateInstructions(titleModel, false);
 
     const noImageRecipe = new FullRecipeModel({
-      title: data.title, 
+      title: data.title,
       data: { ingredients: data.ingredients, instructions: data.instructions },
-      calories: data.calories, 
+      calories: data.calories,
       image: undefined,
       imageUrl: undefined,
       imageName: undefined
@@ -46,9 +47,9 @@ class RecipeController {
     const data = await recipeService.generateInstructions(titleModel, true);
     const { fileName, url } = await recipeService.generateImage(titleModel);
     const fullRecipe = new FullRecipeModel({
-      title: data.title, 
+      title: data.title,
       data: { ingredients: data.ingredients, instructions: data.instructions },
-      calories: data.calories, 
+      calories: data.calories,
       image: undefined,
       imageUrl: url,
       imageName: fileName
@@ -66,6 +67,12 @@ class RecipeController {
     } catch (err) {
       response.status(StatusCode.NotFound).json({ message: "Image not found" });
     }
+  }
+
+  private async deleteRecipe(request: Request, response: Response) {
+    const id = Number(request.params.id);
+    await recipeService.deleteRecipe(id);
+    response.sendStatus(StatusCode.NoContent);
   }
 }
 
