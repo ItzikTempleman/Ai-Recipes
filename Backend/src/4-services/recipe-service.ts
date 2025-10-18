@@ -85,7 +85,8 @@ class RecipeService {
     const title = recipe.title.slice(0, 100);
     const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
     const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
-    const amounts = recipe.data.ingredients.map(i => i.amount).join(", ").slice(0, 40);
+    //const amounts = recipe.data.ingredients.map(i => i.amount).join(", ").slice(0, 40);
+    const amounts= JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
     const sql = "insert into recipe(title, ingredients, instructions,calories, amounts, imageName) values(?,?,?,?,?,?)";
     const values = [title, ingredients, instructions, calories, amounts, imageName];

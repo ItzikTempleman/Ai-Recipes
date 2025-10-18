@@ -2,18 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RecipeModel, RecipeState } from "../Models/RecipeModel";
 
 
-const initialState: RecipeState={
-   items: [],
+const initialState: RecipeState = {
+  items: [],
   current: null,
   loading: false,
 };
 
-function setCurrentReducer(state: RecipeState, action: PayloadAction<RecipeModel|null>) {
+function setCurrentReducer(state: RecipeState, action: PayloadAction<RecipeModel | null>) {
   state.current = action.payload;
 }
 
 function resetGeneratedReducer(state: RecipeState) {
-  state.current = null;                  
+  state.current = null;
   state.error = undefined;
   state.loading = false;
 }
@@ -32,25 +32,38 @@ function getAllRecipesReducer(state: RecipeState, action: PayloadAction<RecipeMo
 }
 
 function addRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>) {
-  state.items.unshift(action.payload);    
-  state.current = action.payload;         
+  state.items.unshift(action.payload);
+  state.current = action.payload;
+}
+
+function deleteRecipeReducer(state: RecipeState, action: PayloadAction<number>) {
+  const idOfRecipeToDelete = action.payload;
+  let recipes= state.items;
+  let recipeToDelete = state.current;
+  recipes = recipes.filter(recipe => recipe.id !== idOfRecipeToDelete);
+  if (recipeToDelete?.id === idOfRecipeToDelete) recipeToDelete = null;
+
+    state.items = recipes;
+  state.current = recipeToDelete;
 }
 
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
   reducers: {
-    resetGenerated:resetGeneratedReducer,
+    resetGenerated: resetGeneratedReducer,
     setIsLoading: setIsLoadingReducer,
     setError: setErrorReducer,
     getAllRecipes: getAllRecipesReducer,
     setCurrent: setCurrentReducer,
     addRecipe: addRecipeReducer,
-  },
-});
+    deleteRecipe: deleteRecipeReducer
+  }
+}
+);
 
 
-export const { resetGenerated,setIsLoading, setError, getAllRecipes, addRecipe,setCurrent } = recipeSlice.actions;
+export const { resetGenerated, setIsLoading, setError, getAllRecipes, addRecipe, setCurrent, deleteRecipe } = recipeSlice.actions;
 export const recipeReducer = recipeSlice.reducer;
 
 
