@@ -1,13 +1,14 @@
 import express, { Request, Response, Router } from "express";
 import { StatusCode } from "../3-models/status-code";
-import { FullRecipeModel, QueryModel } from "../3-models/recipe-model";
+import { FullRecipeModel } from "../3-models/recipe-model";
 import { recipeService } from "../4-services/recipe-service";
+import { InputModel } from "../3-models/InputModel";
 
 class RecipeController {
   public router: Router = express.Router();
   public constructor() {
-    this.router.post("/api/generate-free-recipe-without-image", this.generateFreeNoImageRecipe);
-    this.router.post("/api/generate-recipe-with-image", this.generateRecipeWithImage);
+    this.router.post("/api/generate-free-recipe-without-image/:amount", this.generateFreeNoImageRecipe);
+    this.router.post("/api/generate-recipe-with-image/:amount", this.generateRecipeWithImage);
     this.router.get("/api/recipes/all", this.getRecipes);
     this.router.get("/api/recipe/:id", this.getSingleRecipe);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
@@ -26,12 +27,14 @@ class RecipeController {
   }
 
   private async generateFreeNoImageRecipe(request: Request, response: Response) {
-    const titleModel = new QueryModel(request.body);
-    const data = await recipeService.generateInstructions(titleModel, false);
+    const quantity = Number(request.params.amount);
+    const inputModel = new InputModel({ query: request.body.query, quantity } as InputModel);
+
+    const data = await recipeService.generateInstructions(inputModel, false);
 
     const noImageRecipe = new FullRecipeModel({
       title: data.title,
-      amountOfServings:data.amountOfServings,
+      amountOfServings:quantity,
       description: data.description,
       popularity: data.popularity,
       data: { ingredients: data.ingredients, instructions: data.instructions },
@@ -49,12 +52,13 @@ class RecipeController {
   }
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-    const titleModel = new QueryModel(request.body);
-    const data = await recipeService.generateInstructions(titleModel, true);
-    const { fileName, url } = await recipeService.generateImage(titleModel);
+    const quantity = Number(request.params.amount);
+    const inputModel = new InputModel({ query: request.body.query, quantity } as InputModel);
+    const data = await recipeService.generateInstructions(inputModel, true);
+    const { fileName, url } = await recipeService.generateImage(inputModel);
     const fullRecipe = new FullRecipeModel({
       title: data.title,
-      amountOfServings:data.amountOfServings,
+      amountOfServings:quantity,
       description: data.description,
       popularity: data.popularity,
       data: { ingredients: data.ingredients, instructions: data.instructions },

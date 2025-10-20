@@ -1,7 +1,9 @@
-import { Query, QueryModel } from "../3-models/recipe-model";
+import { InputModel } from "../3-models/InputModel";
+import { Query } from "../3-models/recipe-model";
+
 
 class ResponseInstructions {
-  public getQueryFromText(text: string): Query {
+  public getQueryFromText(query: string, quantity:number): Query {
     
 const systemCommandDescription = `
 You are a culinary expert. 
@@ -16,11 +18,11 @@ If the query is in Hebrew — respond fully in Hebrew.
     .trim();
  const userCommandDescription = `
  Create a concise home-cook recipe 
- for "${text}".
+ for "${query}" and amount is "${quantity}".
   Return ONLY a JSON object in exactly this shape:
    { 
     "title":string,               // the real-world dish name (not the user's query if it differs) 
-    "amountOfServings":number,
+    "amountOfServings":number,    //MUST EQUAL ${quantity} exactly.
     "description":string,          // describe in simple words what the dish is. if the dish is fictional- start with "fictional dish" 
     "popularity":number,           // rate based on real world survey approximately from 1 to 10 only rounded numbers. if no data is available return 0
     "ingredients": [{ "ingredient": "string", "amount": "string|null" }, ... ], 
@@ -37,8 +39,8 @@ If the query is in Hebrew — respond fully in Hebrew.
     return { systemCommandDescription, userCommandDescription };
   }
 
-  public getQuery(recipeQuery: QueryModel): Query {
-    return this.getQueryFromText(recipeQuery.query);
+  public getQuery(recipeInput: InputModel): Query {
+    return this.getQueryFromText(recipeInput.query, recipeInput.quantity);
   }
 }
 

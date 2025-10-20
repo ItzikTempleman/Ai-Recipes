@@ -1,9 +1,9 @@
-import { IconButton, TextField, CircularProgress, InputAdornment, Box, ListItem } from "@mui/material";
+import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import "./NewScreen.css";
 import { useTitle } from "../../Utils/UseTitle";
-import { RecipeState, RecipeTitleModel } from "../../Models/RecipeModel";
+import { RecipeState, InputModel } from "../../Models/RecipeModel";
 import { notify } from "../../Utils/Notify";
 import { recipeService } from "../../Services/RecipeService";
 import { useState } from "react";
@@ -24,16 +24,16 @@ export function NewScreen() {
 
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, reset } = useForm<RecipeTitleModel>();
+  const { register, handleSubmit, reset } = useForm<InputModel>();
   const [hasImage, setHasImage] = useState(false);
 
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
 
-  async function send(recipeTitle: RecipeTitleModel) {
+  async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
-      await recipeService.generateRecipe(recipeTitle, hasImage);
+      await recipeService.generateRecipe(recipeTitle, hasImage, 4);
       reset();
     } catch (err: unknown) {
       notify.error(err);
@@ -53,7 +53,7 @@ export function NewScreen() {
             fullWidth
             label="Generate recipe"
             placeholder="Generate recipe"
-            {...register("title",
+            {...register("query",
               {
                 required:
                   "title is required"

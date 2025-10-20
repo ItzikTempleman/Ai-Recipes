@@ -1,5 +1,5 @@
 
-export class QueryModel {
+export class InputModel {
     public query!: string;
 }
 
@@ -19,9 +19,6 @@ export class RecipeModel {
     public imageUrl?: string;
 }
 
-export class RecipeTitleModel {
-    public title!: string;
-}
 
 export type IngredientLine = {
     ingredient: string;

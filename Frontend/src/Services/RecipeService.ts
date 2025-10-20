@@ -1,4 +1,4 @@
-import { RecipeModel, QueryModel, RecipeTitleModel } from "../Models/RecipeModel";
+import { RecipeModel, InputModel } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios from "axios";
@@ -8,11 +8,13 @@ import { getAllRecipes, addRecipe, setError, setIsLoading, setCurrent, deleteRec
 
 class RecipeService {
 
-  public async generateRecipe(title: RecipeTitleModel, hasImage: boolean): Promise<RecipeModel> {
+  public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1): Promise<RecipeModel> {
     try {
       store.dispatch(setIsLoading(true));
-      const body: QueryModel = { query: title.title };
-      const url = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
+      const body: InputModel = { query: title.query };
+
+           const base = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
+      const url = `${base}/${Number(quantity) || 1}`;
 
       const { data } = await axios.post<RecipeModel>(url, body);
 

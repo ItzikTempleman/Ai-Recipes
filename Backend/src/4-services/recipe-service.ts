@@ -1,4 +1,4 @@
-import { FullRecipeModel, QueryModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages } from "../3-models/recipe-model";
+import { FullRecipeModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages } from "../3-models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -9,16 +9,18 @@ import { OkPacketParams } from "mysql2";
 import { dal } from "../2-utils/dal";
 import { mapDbRowToFullRecipe } from "../2-utils/map-recipe";
 import { ResourceNotFound } from "../3-models/client-errors";
+import { InputModel } from "../3-models/InputModel";
 
 class RecipeService {
 
-  public async generateInstructions(query: QueryModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
-    query.validate();
-    const recipeQuery = responseInstructions.getQuery(query);
-    return await gptService.getInstructions(recipeQuery, isWithImage);
+  public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
+    input.validate();
+    const recipeQuery = responseInstructions.getQuery(input);
+    const data = await gptService.getInstructions(recipeQuery, isWithImage);
+    return { ...data, amountOfServings: input.quantity };
   }
 
-  public async generateImage(recipe: QueryModel): Promise<GPTImage> {
+  public async generateImage(recipe: InputModel): Promise<GPTImage> {
     const promptText = `High-resolution, super realistic food photo of: ${recipe.query}`;
 
     let lastErr: any;

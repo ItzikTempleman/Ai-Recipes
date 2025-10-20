@@ -4,25 +4,6 @@ import { UploadedFile } from "express-fileupload";
 import { appConfig } from "../2-utils/app-config";
 import OpenAI from "openai";
 
-export class QueryModel {
-    public query!: string;
-
-    constructor(queryModel: QueryModel) {
-        if (!queryModel) throw new ValidationError("Missing query");
-        this.query = queryModel.query;
-    }
-
-    private static validationSchema = Joi.object(
-        {
-            query: Joi.string().required().max(160)
-        }
-    );
-
-    public validate(): void {
-        const result = QueryModel.validationSchema.validate(this);
-        if (result.error) throw new ValidationError(result.error.message);
-    }
-};
 
 export type IngredientLine = {
     ingredient: string;
