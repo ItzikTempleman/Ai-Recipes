@@ -20,11 +20,12 @@ type RecipeStateType = {
 };
 
 export function NewScreen() {
-  useTitle("Generate Recipe");
+  useTitle("Generate");
 
   const dispatch = useDispatch();
 
   const { register, handleSubmit, reset } = useForm<InputModel>();
+  const [initialQuantity, setQuantity] = useState(1);
   const [hasImage, setHasImage] = useState(false);
 
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
@@ -33,7 +34,7 @@ export function NewScreen() {
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
-      await recipeService.generateRecipe(recipeTitle, hasImage, 4);
+      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity);
       reset();
     } catch (err: unknown) {
       notify.error(err);
@@ -46,53 +47,68 @@ export function NewScreen() {
       <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
         <form onSubmit={handleSubmit(send)}>
-          <TextField
-            className="SearchTF"
-            variant="outlined"
-            size="small"
-            fullWidth
-            label="Generate recipe"
-            placeholder="Generate recipe"
-            {...register("query",
+          <div className="InputData">
+            <TextField
+              className="SearchTF"
+              variant="outlined"
+              size="small"
+              fullWidth
+              label="Generate recipe"
+              placeholder="Generate recipe"
+              {...register("query",
+                {
+                  required:
+                    "title is required"
+                })}
+              disabled={loading}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {loading ? (
+                      <IconButton className="RoundedBtn" edge="end" disabled>
+                        <Box><CircularProgress /></Box>
+                      </IconButton>
+                    ) : recipe ? (
+                      <IconButton
+                        className="RoundedBtn"
+                        type="button"
+                        edge="end"
+                        aria-label="clear"
+                        onClick={() => {
+                          reset();
+                          dispatch(resetGenerated());
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        className="RoundedBtn"
+                        type="submit"
+                        edge="end"
+                        aria-label="search"
+                        disabled={loading}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    )}
+                  </InputAdornment>
+                )
+              }}
+            />
+         
+ <p>Servings</p>
+            <select className="QuantitySelector" value={initialQuantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            >
               {
-                required:
-                  "title is required"
-              })}
-            disabled={loading}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {loading ? (
-                    <IconButton className="RoundedBtn" edge="end" disabled>
-                      <Box><CircularProgress/></Box>
-                    </IconButton>
-                  ) : recipe ? (
-                    <IconButton
-                      className="RoundedBtn"
-                      type="button"
-                      edge="end"
-                      aria-label="clear"
-                      onClick={() => {
-                        reset();
-                        dispatch(resetGenerated());
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  ) : (
-                    <IconButton
-                      className="RoundedBtn"
-                      type="submit"
-                      edge="end"
-                      aria-label="search"
-                      disabled={loading}
-                    >
-                      <SearchIcon />
-                    </IconButton>
-                  )}
-                </InputAdornment>
-              )
-            }} />
+                [...Array(20)].map((_,i) => (
+                  <option key={i+1} value={i+1}>{i+1}</option>
+                ))
+              }
+            </select>
+          </div>
+         
         </form>
         {
           error && <div className="ErrorText">{error}</div>

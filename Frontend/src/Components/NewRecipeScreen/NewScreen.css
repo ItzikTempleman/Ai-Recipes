@@ -101,3 +101,22 @@ form .MuiIconButton-root {
   display: flex;
   justify-content: center; 
 }
+
+
+.InputData {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.QuantitySelector{
+width: 80px;
+height: 40px;
+  font-size: 18px;
+  font-weight: 600;
+    text-align: center;        
+  text-align-last: center;
+}
+
+.QuantitySelector option {
+ font-size: 18px;
+}
