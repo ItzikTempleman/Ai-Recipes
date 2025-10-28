@@ -1,9 +1,9 @@
-
+const API = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 class AppConfig {
-  public readonly generateNoImageRecipeUrl = "http://localhost:4000/api/generate-free-recipe-without-image";
-  public readonly generateFullRecipeUrl = "http://localhost:4000/api/generate-recipe-with-image";
-  public readonly getAllRecipesUrl = "http://localhost:4000/api/recipes/all";
-public readonly getSingleRecipeUrl = "http://localhost:4000/api/recipe/";
+  public readonly generateNoImageRecipeUrl = `${API}/generate-free-recipe-without-image`;
+  public readonly generateFullRecipeUrl   = `${API}/generate-recipe-with-image`;
+  public readonly getAllRecipesUrl        = `${API}/recipes/all`;
+  public readonly getSingleRecipeUrl      = `${API}/recipe/`;
 }
 
 export const appConfig = new AppConfig();

@@ -30,11 +30,12 @@ class RecipeService {
     }
   }
 
-  public async getAllRecipes(): Promise<RecipeModel[]> {
-    const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
-    store.dispatch(getAllRecipes(data));
-    return data;
-  };
+public async getAllRecipes(): Promise<RecipeModel[]> {
+  const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
+  const list = Array.isArray(data) ? data : [];                       
+  store.dispatch(getAllRecipes(list));
+  return list;
+}
 
   public async getSingleRecipe(id: Number): Promise<RecipeModel> {
     const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`);

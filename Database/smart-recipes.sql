@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `smart-recipes` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `smart-recipes`;
 -- MySQL dump 10.13  Distrib 8.0.42, for macos15 (arm64)
 --
 -- Host: localhost    Database: smart-recipes
@@ -18,29 +16,6 @@ USE `smart-recipes`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `amount`
---
-
-DROP TABLE IF EXISTS `amount`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `amount` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `amount` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `amount`
---
-
-LOCK TABLES `amount` WRITE;
-/*!40000 ALTER TABLE `amount` DISABLE KEYS */;
-/*!40000 ALTER TABLE `amount` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `recipe`
 --
 
@@ -49,16 +24,21 @@ DROP TABLE IF EXISTS `recipe`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `recipe` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(60) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `title` varchar(160) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `ingredients` varchar(350) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `instructions` varchar(1000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `amountId` int NOT NULL,
-  `imageName` varchar(90) DEFAULT NULL,
+  `amounts` varchar(2000) NOT NULL,
+  `calories` int NOT NULL,
+  `imageName` varchar(140) DEFAULT NULL,
+  `description` varchar(1000) NOT NULL,
+  `popularity` int NOT NULL,
+  `totalSugar` int NOT NULL,
+  `totalProtein` int NOT NULL,
+  `healthLevel` int NOT NULL,
+  `amountOfServings` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `imageName_UNIQUE` (`imageName`),
-  KEY `recipeToAmount_idx` (`amountId`),
-  CONSTRAINT `recipeToAmount` FOREIGN KEY (`amountId`) REFERENCES `amount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `imageName_UNIQUE` (`imageName`)
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-01 21:40:32
+-- Dump completed on 2025-10-22 15:22:33

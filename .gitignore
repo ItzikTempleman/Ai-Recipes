@@ -1,1 +1,24 @@
-.env
+# --- secrets / runtime config (never push) ---
+docker-compose.yml
+*.env
+*.env.*
+Backend/.env
+Backend/.env.*
+Backend/.env.docker
+Backend/.env.docker.*
+Frontend/.env
+Frontend/.env.*
+
+# --- build output / generated code ---
+dist/
+Backend/dist/
+Frontend/dist/
+
+# --- dependencies (reinstallable) ---
+node_modules/
+Backend/node_modules/
+Frontend/node_modules/
+Frontend/node_modules/.vite/
+
+# --- OS/editor junk ---
+.DS_Store

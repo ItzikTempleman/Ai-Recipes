@@ -35,9 +35,8 @@ class RecipeService {
         if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
 
         const imageBase64 = result.data[0].b64_json;
-        const imagesDir = path.join(__dirname, "..", "1-assets", "images");
+        const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
         await fs.mkdir(imagesDir, { recursive: true });
-
         const safeTitle = recipe.query
           .toLowerCase()
           .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
@@ -49,7 +48,8 @@ class RecipeService {
           Buffer.from(imageBase64, "base64")
         );
 
-        return { fileName, url: `${appConfig.baseImageUrl}${fileName}` };
+        const url = new URL(encodeURIComponent(fileName), appConfig.baseImageUrl).toString();
+        return { fileName, url };
       } catch (err: any) {
         console.error("OpenAI IMAGE:", err?.response?.data);
         lastErr = err;
@@ -86,7 +86,7 @@ class RecipeService {
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
     const title = recipe.title.slice(0, 100);
     const description = recipe.description;
-    const amountOfServings= recipe.amountOfServings;
+    const amountOfServings = recipe.amountOfServings;
     const popularity = recipe.popularity;
     const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
     const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
@@ -117,15 +117,16 @@ class RecipeService {
     return recipe;
   }
 
-  public async getImageFilePath(fileName: string): Promise<string> {
-    const imagePath = path.join(__dirname, "..", "1-assets", "images", fileName);
-    try {
-      await fs.access(imagePath);
-      return imagePath;
-    } catch {
-      throw new Error("Image not found");
-    }
+public async getImageFilePath(fileName: string): Promise<string> {
+  const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
+  const imagePath = path.join(imagesDir, fileName);
+  try {
+    await fs.access(imagePath);
+    return imagePath;
+  } catch {
+    throw new Error("Image not found");
   }
+}
 
   public async deleteRecipe(id: number): Promise<void> {
     const image = "select imageName from recipe where id = ?";

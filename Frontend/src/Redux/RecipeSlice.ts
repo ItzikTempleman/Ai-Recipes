@@ -26,9 +26,8 @@ function setIsLoadingReducer(currentState: RecipeState, action: PayloadAction<bo
 function setErrorReducer(state: RecipeState, action: PayloadAction<string | undefined>) {
   state.error = action.payload;
 }
-
 function getAllRecipesReducer(state: RecipeState, action: PayloadAction<RecipeModel[]>) {
-  state.items = action.payload;
+  state.items = Array.isArray(action.payload) ? action.payload : [];   
 }
 
 function addRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>) {

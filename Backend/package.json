@@ -4,7 +4,7 @@
     "description": "",
     "author": "Itzik Templeman",
     "scripts": {
-        "start": "nodemon --exec ts-node src/app.ts --quiet",
+        "start": "node dist/app.js",
         "build": "tsc -p tsconfig.json",
         "start:prod": "node dist/app.js"
     },
@@ -13,10 +13,10 @@
         "@types/express": "^5.0.3",
         "@types/express-fileupload": "^1.5.1",
         "@types/file-saver": "^2.0.7",
-        "@types/node": "^24.0.10",
+        "@types/node": "^20.11.0",
         "nodemon": "^3.1.10",
         "ts-node": "^10.9.2",
-        "typescript": "^5.8.3"
+        "typescript": "^5.6.3"
     },
     "dependencies": {
         "axios": "^1.11.0",

@@ -1,0 +1,84 @@
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: smart-recipes
+      MARIADB_USER: appuser
+      MARIADB_PASSWORD: "REPLACE_ME_DB_PASSWORD"
+      MARIADB_ROOT_PASSWORD: "REPLACE_ME_DB_PASSWORD"
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./Database/smart-recipes.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+    # exposing DB locally is optional in example, but it's nice for dev:
+    # ports:
+    #   - "3306:3306"
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+
+    environment:
+      ENVIRONMENT: "production"
+      NODE_ENV: "production"
+
+      PUBLIC_HOST: "YOUR_SERVER_IP_OR_DOMAIN"
+
+      # 👇 placeholders, not your real keys
+      API_KEY: "REPLACE_ME_OPENAI_KEY_FOR_IMAGE"
+      NO_IMAGE_API_KEY: "REPLACE_ME_OPENAI_KEY_FOR_TEXT"
+
+      HOST: "0.0.0.0"
+      PORT: "4000"
+
+      MYSQL_HOST: "db"
+      MYSQL_USER: "appuser"
+      MYSQL_PASSWORD: "REPLACE_ME_DB_PASSWORD"
+      MYSQL_DB: "smart-recipes"
+
+      IMAGE_DIR: "/var/images"
+      BASE_IMAGE_URL: "http://YOUR_SERVER_IP_OR_DOMAIN:4000/api/recipes/images/"
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    volumes:
+      - images:/var/images
+
+    ports:
+      - "4000:4000"
+
+    restart: unless-stopped
+
+    # health check uses an existing route:
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:4000/api/recipes/all || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+      args:
+        PUBLIC_HOST: "YOUR_SERVER_IP_OR_DOMAIN"
+        VITE_API_URL: "http://YOUR_SERVER_IP_OR_DOMAIN:4000/api"
+        VITE_IMAGE_BASE_URL: "http://YOUR_SERVER_IP_OR_DOMAIN:4000/api/recipes/images"
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "80:5173"
+    restart: unless-stopped
+
+volumes:
+  dbdata: {}
+  images: {}

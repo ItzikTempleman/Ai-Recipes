@@ -17,19 +17,20 @@ export function RecipeList() {
             recipeService.getAllRecipes();
         }, []
     );
+const list = Array.isArray(items) ? items : []; 
 
-    return (
-        <div className="RecipeList">
-            <p className="Title">All recipes</p>
-            <div className="List">
-                {items.map((recipe) => (
-                            <RecipeListItem
-                                key={recipe.title}
-                                recipe={recipe}/>
-                        )
-                    )
-                }
-            </div>
-        </div>
-    );
+  return (
+    <div className="RecipeList">
+      <p className="Title">All recipes</p>
+      <div className="List">
+        {list.length === 0 ? (
+          <div>No recipes yet. Create one on the Generate page.</div>
+        ) : (
+          list.map((recipe) => (
+            <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
+          ))
+        )}
+      </div>
+    </div>
+  );
 }
