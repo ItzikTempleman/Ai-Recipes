@@ -1,5 +1,11 @@
-:root {
-  --content-width: 600px; 
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .NewScreen {
@@ -119,4 +125,84 @@ height: 40px;
 
 .QuantitySelector option {
  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  :root { --content-width: 92vw; }
+
+ 
+ .NewScreen {
+    width: auto !important;
+    padding: 12px;
+    height: auto;
+    min-height: 100dvh;
+    max-width: 90%;
+    overflow-x: hidden;
+  }
+
+  .InputData {
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;  
+    width: 90%;
+  }
+
+  .SearchTF {
+    width: 90%;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .SearchContainer {
+    width: min(94vw, 340px);
+    max-width: 340px;
+    padding: 12px;
+    gap: 10px;
+    margin: 8px auto 0;
+  }
+
+  .SearchContainer form {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  .SearchTF .MuiOutlinedInput-root {
+    height: 40px;
+    width: 90%;
+    overflow: hidden;
+  }
+  .SearchTF .MuiOutlinedInput-input {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 12px;
+    min-width: 0;    
+  }
+
+  form .MuiIconButton-root {
+    height: 36px;
+    width: 36px;
+    margin-left: 4px;
+  }
+
+  .NewScreenTitle { font-size: 22px; margin: 12px 0; }
+  .CenterRow { padding: 0 6px; }
+
+  .InputData {
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .QuantitySelector {
+    width: 72px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  .LoadingWithImage,
+  .LoadingWithoutImage {
+    margin-top: 8px;
+    padding: 6px;
+  }
 }

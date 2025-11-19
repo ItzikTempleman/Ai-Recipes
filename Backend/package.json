@@ -4,9 +4,9 @@
     "description": "",
     "author": "Itzik Templeman",
     "scripts": {
-        "start": "node dist/app.js",
-        "build": "tsc -p tsconfig.json",
-        "start:prod": "node dist/app.js"
+    "start": "nodemon --exec ts-node src/app.ts --quiet",
+    "build": "tsc -p tsconfig.json",
+    "start:prod": "node dist/app.js"
     },
     "devDependencies": {
         "@types/cors": "^2.8.19",

@@ -26,3 +26,36 @@
   justify-content: space-between;
   box-sizing: border-box;
 }
+
+@media (max-width: 600px) {
+  .RecipeList {
+    padding: 12px;
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .Title {
+    font-size: 22px;
+    margin: 12px 0;
+  }
+
+  .List {
+    width: 100%;
+    gap: 12px;
+    flex-direction: column;   /* stack cards */
+    align-items: stretch;     /* full-width cards */
+    justify-content: flex-start;
+  }
+}
+
+/* Optional: keep two-up layout on slightly wider small screens */
+@media (min-width: 481px) and (max-width: 600px) {
+  .List {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .List > * {
+    flex: 1 1 calc(50% - 12px);
+    box-sizing: border-box;
+  }
+}

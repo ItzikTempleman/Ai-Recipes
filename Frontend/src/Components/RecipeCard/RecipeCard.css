@@ -9,9 +9,7 @@
   align-items: center; 
 }
 
-.Description{
-  
-}
+
 .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
   margin-top: 32px;
 }
@@ -84,3 +82,40 @@
       padding-bottom: 6px;
 }
 
+@media (max-width: 600px) {
+  :root { --content-width: 92vw; }
+
+  .RecipeCard{
+    width: 100%;
+  }
+
+  .RecipeCard > h2,
+  .InstructionsList h2 {
+    font-size: 22px;
+  }
+
+  .RecipeImage {
+    height: 220px;
+    border-radius: 8px;
+  }
+
+  .IngredientsList,
+  .InstructionsList {
+    padding: 12px;
+    margin: 12px auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .IngredientRow { padding: 6px 0; }
+
+  .IngredientName { width: 65%; }
+  .IngredientAmount { width: 35%; }
+
+  .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
+    margin-top: 20px;
+  }
+  .MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
+    margin-top: 6px;
+  }
+}

@@ -2,9 +2,14 @@ import { RecipeModel, InputModel } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios from "axios";
-import { getAllRecipes, addRecipe, setError, setIsLoading, setCurrent, deleteRecipe } from "../Redux/RecipeSlice";
-
-
+import {
+  getAllRecipes,
+  addRecipe,
+  setError,
+  setIsLoading,
+  setCurrent,
+  deleteRecipe
+} from "../Redux/RecipeSlice";
 
 class RecipeService {
 
@@ -37,19 +42,16 @@ public async getAllRecipes(): Promise<RecipeModel[]> {
   return list;
 }
 
-  public async getSingleRecipe(id: Number): Promise<RecipeModel> {
-    const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`);
-    return data;
-  };
+public async getSingleRecipe(id: number): Promise<RecipeModel> {
+  const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`);
+  return data;
+};
 
-
-  public async deleteRecipe(recipeId: number): Promise<void> {
-    await axios.delete(appConfig.getSingleRecipeUrl + recipeId);
-    store.dispatch(deleteRecipe(recipeId));
-  };
+public async deleteRecipe(recipeId: number): Promise<void> {
+  await axios.delete(appConfig.getSingleRecipeUrl + recipeId);
+  store.dispatch(deleteRecipe(recipeId));
+};
 }
 
 
 export const recipeService = new RecipeService();
-
-
