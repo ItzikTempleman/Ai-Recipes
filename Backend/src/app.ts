@@ -6,6 +6,7 @@ import fs from "fs/promises";
 import { appConfig } from "./2-utils/app-config";
 import { recipeController } from "./5-controllers/recipe-controller";
 import { errorMiddleware } from "./6-middleware/error-middleware";
+import { userController } from "./5-controllers/user-controller";
 
 export class App {
   public async start(): Promise<void> {
@@ -26,7 +27,7 @@ export class App {
       const imageDir = process.env.IMAGE_DIR || path.join(__dirname, "1-assets", "images");
     await fs.mkdir(imageDir, { recursive: true });
     server.use("/api/recipes/images", express.static(imageDir));
-
+    server.use("/api", userController.router);
     server.use(recipeController.router);
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);

@@ -4,7 +4,9 @@ dotenv.config({ quiet: true });
 class AppConfig {
   public readonly isDevelopment = process.env.ENVIRONMENT === "development";
   public readonly isProduction  = process.env.ENVIRONMENT === "production";
-
+  public readonly jwtSecretKey = process.env.JWT_SECRET_KEY!;
+    public readonly hashSaltKey = process.env.HASH_SALT_KEY!;
+    
   public readonly port = Number(process.env.PORT ?? 4000);
   public readonly serverHost = "0.0.0.0";
 
@@ -16,7 +18,7 @@ class AppConfig {
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";
   public readonly apiKey = process.env.API_KEY;
   public readonly freeNoImageApiKey = process.env.NO_IMAGE_API_KEY;
-  public readonly modelNumber = "gpt-5";
+  public readonly modelNumber = "gpt-5.1";
   public readonly freeNoImageModelNumber = "gpt-4o-mini";
 
   public readonly baseImageUrl = this.normalizeBaseImageUrl();

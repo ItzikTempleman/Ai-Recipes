@@ -30,4 +30,10 @@
         };
     }
 
+    export class AuthorizationError extends ClientErrors {
+    public constructor(message:string) {
+        super(StatusCode.Unauthorized, message);
+    };
+}
+
 
