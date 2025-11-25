@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Page404 } from "../Page404/Page404";
 
-import { InfoScreen } from "../../Screens/InfoScreen/InfoScreen";
+import { InfoScreen } from "../../Screens/RecipeInfoScreen/InfoScreen";
 
 import { LoginScreen } from "../../Screens/AuthScreens/LoginScreen/LoginScreen";
 import { RegistrationScreen } from "../../Screens/AuthScreens/RegistrationScreen/RegistrationScreen";
