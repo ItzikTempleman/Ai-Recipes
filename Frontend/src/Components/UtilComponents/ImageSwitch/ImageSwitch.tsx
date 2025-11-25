@@ -28,8 +28,8 @@ export function ImageSwitch(
         onChange={handleChange}
         className="ToggleGroup"
       >
-         <ToggleButton value="NoImage" className="ToggleBtn">No Image</ToggleButton>
-                <ToggleButton value="Full" className="ToggleBtn">Full</ToggleButton>
+         <ToggleButton value="NoImage" className="ToggleBtn">Without image</ToggleButton>
+                <ToggleButton value="Full" className="ToggleBtn">With image</ToggleButton>
        
 
       </ToggleButtonGroup>
