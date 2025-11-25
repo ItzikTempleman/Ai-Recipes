@@ -1,11 +1,11 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-import { useTitle } from "../../Utils/UseTitle";
+import { useTitle } from "../../../Utils/UseTitle";
 import "./InfoScreen.css";
 import { useEffect, useState } from "react";
-import { recipeService } from "../../Services/RecipeService";
-import { notify } from "../../Utils/Notify";
-import { RecipeModel } from "../../Models/RecipeModel";
+import { recipeService } from "../../../Services/RecipeService";
+import { notify } from "../../../Utils/Notify";
+import { RecipeModel } from "../../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
@@ -33,7 +33,7 @@ export function InfoScreen() {
         }, [recipeId, navigate]
     )
     function returnToList() {
-        navigate("/all-recipes-screen");
+        navigate("/recipes-screen");
     }
 
     if (!recipe) return null;

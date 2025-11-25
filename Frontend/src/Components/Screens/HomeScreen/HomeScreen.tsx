@@ -1,26 +1,26 @@
 import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
-import "./NewScreen.css";
-import { useTitle } from "../../Utils/UseTitle";
-import { RecipeState, InputModel } from "../../Models/RecipeModel";
-import { notify } from "../../Utils/Notify";
-import { recipeService } from "../../Services/RecipeService";
+import "./HomeScreen.css";
+
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { resetGenerated } from "../../Redux/RecipeSlice";
-import { ImageSwitch } from "../ImageSwitch/ImageSwitch";
-import { RecipeCard } from "../RecipeCard/RecipeCard";
-
+import { InputModel, RecipeState } from "../../../Models/RecipeModel";
+import { useTitle } from "../../../Utils/UseTitle";
+import { recipeService } from "../../../Services/RecipeService";
+import { notify } from "../../../Utils/Notify";
+import { ImageSwitch } from "../../UtilComponents/ImageSwitch/ImageSwitch";
+import { resetGenerated } from "../../../Redux/RecipeSlice";
+import { RecipeCard } from "../../RecipeCard/RecipeCard";
 
 
 type RecipeStateType = {
   recipes: RecipeState
 };
 
-export function NewScreen() {
-  useTitle("Generate");
+export function HomeScreen() {
+  useTitle("Home");
 
   const dispatch = useDispatch();
 
@@ -42,8 +42,8 @@ export function NewScreen() {
   }
 
   return (
-    <div className="NewScreen">
-      <p className="NewScreenTitle">Create new recipe</p>
+    <div className="HomeScreen">
+      <p className="HomeScreenTitle">Home</p>
       <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
         <form onSubmit={handleSubmit(send)}>
@@ -97,7 +97,7 @@ export function NewScreen() {
               }}
             />
          
- <p>Servings</p>
+               <p>Servings</p>
             <select className="QuantitySelector" value={initialQuantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             >
