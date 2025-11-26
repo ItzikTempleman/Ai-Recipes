@@ -1,4 +1,4 @@
-import { useTitle } from "../../../Utils/UseTitle";
+import { useTitle } from "../../../Utils/Utils";
 import "./AboutScreen.css";
 
 export function AboutScreen() {

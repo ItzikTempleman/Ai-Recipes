@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
 import { InputModel, RecipeState } from "../../../Models/RecipeModel";
-import { useTitle } from "../../../Utils/UseTitle";
+import { useTitle } from "../../../Utils/Utils";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
 import { ImageSwitch } from "../../UtilComponents/ImageSwitch/ImageSwitch";

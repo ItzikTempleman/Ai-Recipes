@@ -82,5 +82,3 @@ class UserService {
 export const userService = new UserService();
 
 
-  // await userService.loginOrRegister({ login: credentials });
-  // await userService.loginOrRegister({ register: user });

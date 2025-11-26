@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useTitle } from "../../../Utils/UseTitle";
+import { useTitle } from "../../../Utils/Utils";
 
 export function Page404() {
     useTitle("Page not found")

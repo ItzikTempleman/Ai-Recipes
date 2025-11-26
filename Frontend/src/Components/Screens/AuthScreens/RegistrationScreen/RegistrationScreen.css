@@ -1,18 +1,42 @@
 .RegistrationScreen {
-  overflow-x: hidden;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; 
-  justify-content: flex-start; 
-  width: 100%;
+  justify-content: center;   
+  align-items: flex-start;   
   height: 100vh;
+  width: 100%;
   margin: 0;
+  padding-top: 60px; 
 }
 
+.RegistrationForm {
+  border-radius: 10px;
+  padding: 60px;
+  width: 280px;
+  margin: 40px;
+  height: auto;
+  box-shadow: 1px 2px black, 0 6px 18px black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .RegistrationScreenTitle{
   align-items: flex-start;
   justify-content: flex-start;
-  color: #4b4b4b;
+  color: #323232;
   margin-left: 20px;
   font-size: 20px;
 }
+
+.RegistrationBtn{
+    background: #ff9900 !important;
+  padding: 6px;
+
+} 
+
+.BackBtn{
+    background: #ff9900 !important;
+  padding: 6px;
+  width: 90px;
+}
+

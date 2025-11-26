@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useTitle } from "../../../Utils/UseTitle";
+import { useTitle } from "../../../Utils/Utils";
 import "./RecipesScreen.css";
 import { recipeService } from "../../../Services/RecipeService";
 import { useSelector } from "react-redux";

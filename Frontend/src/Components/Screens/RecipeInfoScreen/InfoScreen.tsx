@@ -1,6 +1,6 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-import { useTitle } from "../../../Utils/UseTitle";
+import { useTitle } from "../../../Utils/Utils";
 import "./InfoScreen.css";
 import { useEffect, useState } from "react";
 import { recipeService } from "../../../Services/RecipeService";
