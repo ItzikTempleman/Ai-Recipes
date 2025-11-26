@@ -17,44 +17,10 @@
   font-size: 20px;
 }
 
-.List {
-  display: flex;
-  flex-wrap: wrap;             
-  gap: 16px;                   
-  width: 85%;                   
-  margin: 0 auto;              
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  .RecipesScreen {
-    padding: 12px;
-    height: auto;
-    min-height: 100dvh;
-  }
-
-  .RecipesScreenTitle {
-    font-size: 22px;
-    margin: 12px 0;
-  }
-
-  .List {
+.RecipeList {
     width: 100%;
     gap: 12px;
     flex-direction: column;  
-    align-items: stretch;   
     justify-content: flex-start;
-  }
 }
 
-@media (min-width: 480px) and (max-width: 600px) {
-  .List {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .List > * {
-    flex: 1 1 calc(50% - 12px);
-    box-sizing: border-box;
-  }
-}

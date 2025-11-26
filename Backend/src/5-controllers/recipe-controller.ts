@@ -1,18 +1,19 @@
-import express, { Request, Response, Router } from "express";
+import express, { NextFunction,Request, Response, Router } from "express";
 import { StatusCode } from "../3-models/status-code";
 import { FullRecipeModel } from "../3-models/recipe-model";
 import { recipeService } from "../4-services/recipe-service";
 import { InputModel } from "../3-models/InputModel";
+import { verificationMiddleware } from "../6-middleware/verification-middleware";
 
 class RecipeController {
   public router: Router = express.Router();
   public constructor() {
     this.router.post("/api/generate-free-recipe-without-image/:amount", this.generateFreeNoImageRecipe);
     this.router.post("/api/generate-recipe-with-image/:amount", this.generateRecipeWithImage);
-    this.router.get("/api/recipes/all", this.getRecipes);
-    this.router.get("/api/recipe/:id", this.getSingleRecipe);
-    this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-    this.router.delete("/api/recipe/:id", this.deleteRecipe)
+    this.router.get("/api/recipes/all", verificationMiddleware.verifyLoggedIn, this.getRecipes);
+    this.router.get("/api/recipe/:id",  verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
+    this.router.get("/api/recipes/images/:fileName", verificationMiddleware.verifyLoggedIn,this.getImageFile);
+    this.router.delete("/api/recipe/:id", verificationMiddleware.verifyLoggedIn,this.deleteRecipe)
   };
 
   private async getRecipes(_: Request, response: Response) {

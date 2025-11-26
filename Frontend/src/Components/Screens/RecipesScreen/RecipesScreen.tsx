@@ -22,7 +22,7 @@ const list = Array.isArray(items) ? items : [];
   return (
     <div className="RecipesScreen">
       <p className="RecipesScreenTitle">Recipes</p>
-      <div className="List">
+      <div className="RecipeList">
         {list.length === 0 ? (
           <div>No recipes</div>
         ) : (

@@ -1,7 +1,7 @@
 import { RecipeModel, InputModel } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
-import axios from "axios";
+import axios ,{ AxiosRequestConfig } from "axios";
 import {
   getAllRecipes,
   addRecipe,
@@ -12,6 +12,11 @@ import {
 } from "../Redux/RecipeSlice";
 
 class RecipeService {
+
+      private getAuth(): AxiosRequestConfig {
+        const token = localStorage.getItem("token") ?? "";
+        return { headers: { Authorization: `Bearer ${token}` } };
+    }
 
   public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1): Promise<RecipeModel> {
     try {
@@ -36,19 +41,19 @@ class RecipeService {
   }
 
 public async getAllRecipes(): Promise<RecipeModel[]> {
-  const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl);
+  const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
   const list = Array.isArray(data) ? data : [];                       
   store.dispatch(getAllRecipes(list));
   return list;
 }
 
 public async getSingleRecipe(id: number): Promise<RecipeModel> {
-  const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`);
+  const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`,this.getAuth());
   return data;
 };
 
 public async deleteRecipe(recipeId: number): Promise<void> {
-  await axios.delete(appConfig.getSingleRecipeUrl + recipeId);
+  await axios.delete(appConfig.getSingleRecipeUrl + recipeId, this.getAuth());
   store.dispatch(deleteRecipe(recipeId));
 };
 }

@@ -1,7 +1,7 @@
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../../Utils/Utils";
-import "./InfoScreen.css";
+import "./RecipeInfoScreen.css";
 import { useEffect, useState } from "react";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
@@ -10,7 +10,7 @@ import { Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
-export function InfoScreen() {
+export function RecipeInfoScreen() {
     useTitle("Info");
     const params = useParams();
     const recipeId = Number(params.id);
@@ -20,7 +20,7 @@ export function InfoScreen() {
     useEffect(
         () => {
             if (!recipeId) {
-                navigate("/all-recipes-screen");
+                navigate("/recipes-screen");
                 return;
             };
             recipeService.getSingleRecipe(recipeId)
@@ -41,8 +41,9 @@ export function InfoScreen() {
     const instructions = recipe.data?.instructions ?? [];
 
     return (
-        <div>
-            <div className="TopSection">
+        <div className="RecipeInfoScreen">
+
+            <div className="BackBtnContainer">
                 <Button className="BackBtn" variant="contained" onClick={returnToList}>
                     <ArrowBackIosIcon />
                     Back

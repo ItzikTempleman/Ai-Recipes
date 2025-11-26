@@ -2,7 +2,6 @@ import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@m
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import "./HomeScreen.css";
-
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
@@ -43,7 +42,10 @@ export function HomeScreen() {
 
   return (
     <div className="HomeScreen">
-      <p className="HomeScreenTitle">Home</p>
+
+
+
+  
       <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
         <form onSubmit={handleSubmit(send)}>

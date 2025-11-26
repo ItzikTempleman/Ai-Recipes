@@ -17,11 +17,11 @@
   margin-left: auto;     
 }
 
+.LogoutLink,
 .HomeScreenLink,
 .AboutScreenLink,
 .RecipesScreenLink,
 .LoginScreenLink,
-.RegistrationScreenLink,
 .ProfileScreenLink {
   display: flex;
   flex-direction: column;
@@ -35,7 +35,6 @@
 .AboutScreenLink.active,
 .RecipesScreenLink.active,
 .LoginScreenLink.active,
-.RegistrationScreenLink.active,
 .ProfileScreenLink.active {
   color: #ff9900;
 }

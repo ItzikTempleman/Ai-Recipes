@@ -1,21 +1,10 @@
 .HomeScreen {
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; 
-  justify-content: flex-start; 
+
   width: 100%;
   height: 100vh;
   margin: 0;
 }
 
-.HomeScreenTitle{
-  align-items: flex-start;
-  justify-content: flex-start;
-  color: #4b4b4b;
-  margin-left: 20px;
-  font-size: 20px;
-}
 
 .SearchContainer {
   width: var(--content-width);
@@ -41,6 +30,8 @@
 
 .SearchTF .MuiOutlinedInput-root {
   height: 44px;
+   background-color: #ffffff; 
+    border-radius: 6px;
 }
 
 .SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
@@ -63,6 +54,8 @@ form .MuiIconButton-root {
 
 .SearchTF .MuiOutlinedInput-input {
   height: 44px;
+   background-color: #ffffff; 
+   border-radius: 6px;
   line-height: 44px;
   padding: 0 14px;
   box-sizing: border-box;
@@ -120,17 +113,18 @@ height: 40px;
 }
 
 @media (max-width: 600px) {
-  :root { --content-width: 92vw; }
 
- 
+
  .HomeScreen {
-    width: auto !important;
-    padding: 12px;
+    width: 100%;
     height: auto;
     min-height: 100dvh;
-    max-width: 90%;
     overflow-x: hidden;
   }
+
+
+
+
 
   .InputData {
     justify-content: center;
@@ -198,3 +192,4 @@ height: 40px;
     padding: 6px;
   }
 }
+

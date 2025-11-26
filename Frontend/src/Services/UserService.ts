@@ -8,20 +8,21 @@ import { appConfig } from "../Utils/AppConfig";
 
 export type DecodedToken = {
     user: UserModel;
-    tokenExpiration: number;
+    exp: number;
 }
 
 class UserService {
     private logoutTimer: number | null = null;
 
+
     private logoutAfterTimeout(token: string) {
         try {
             const decoded = jwtDecode<DecodedToken>(token);
             if (this.logoutTimer) clearTimeout(this.logoutTimer);
-            const delay = Math.max(0, decoded.tokenExpiration * 1000 - Date.now()); // Math.max (0, ...) will turn a theoretically negative delay into 0 
+            const delay = Math.max(0, decoded.exp * 1000 - Date.now()); // Math.max (0, ...) will turn a theoretically negative delay into 0 
             this.logoutTimer = setTimeout(() => {
                 this.logout()
-            },delay);
+            }, delay);
         } catch (err) {
             notify.error(err);
             this.logout()
@@ -34,7 +35,7 @@ class UserService {
         try {
             const decoded = jwtDecode<DecodedToken>(savedToken);
             const user = decoded.user;
-            if ((decoded.tokenExpiration * 1000) > Date.now() && user) {
+            if ((decoded.exp * 1000) > Date.now() && user) {
                 store.dispatch(userSlice.actions.registrationAndLogin(user));
                 this.logoutAfterTimeout(savedToken);
             } else {
@@ -56,7 +57,7 @@ class UserService {
             const token: string = response.data;
             const decoded = jwtDecode<DecodedToken>(token);
             const dbUser = decoded.user;
-            if ((decoded.tokenExpiration * 1000) > Date.now() && dbUser) {
+            if ((decoded.exp * 1000) > Date.now() && dbUser) {
                 store.dispatch(userSlice.actions.registrationAndLogin(dbUser));
                 localStorage.setItem("token", token);
                 this.logoutAfterTimeout(token);
@@ -66,8 +67,14 @@ class UserService {
         } catch (err) {
             notify.error(err);
             this.logout();
+            throw err;
         }
     }
+
+
+
+
+
 
     public logout(): void {
         if (this.logoutTimer) {
