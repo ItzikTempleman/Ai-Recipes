@@ -33,6 +33,7 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
     healthLevel: row.healthLevel,
     calories: row.calories,
     imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : "",
-    imageName: row.imageName ?? undefined
+    imageName: row.imageName ?? undefined,
+    userId: row.userId ?? undefined  
   } as FullRecipeModel);
 }

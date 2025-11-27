@@ -17,6 +17,7 @@ export class RecipeModel {
     public calories!: number;
     public image?: File;
     public imageUrl?: string;
+    public userId?:number;
 }
 
 

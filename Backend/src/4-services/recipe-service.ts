@@ -66,22 +66,23 @@ class RecipeService {
     throw lastErr;
   }
 
-  public async getRecipes(): Promise<FullRecipeModel[]> {
-    const sql = "select * from recipe";
-    const rows = await dal.execute(sql) as DbRecipeRow[];
+  public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
+    const sql = "select * from recipe where usrId = ?";
+    const values=[userId];
+    const rows = await dal.execute(sql,values) as DbRecipeRow[];
     return rows.map(mapDbRowToFullRecipe);
   }
 
-  public async getSingleRecipe(id: number): Promise<FullRecipeModel> {
-    const sql = "select * from recipe where id=?";
-    const values = [id];
+  public async getSingleRecipe(id: number,userId: number): Promise<FullRecipeModel> {
+    const sql = "select * from recipe where id=? and userId=?";
+    const values = [id, userId];
     const rows = await dal.execute(sql, values) as DbRecipeRow[];
     const row = rows[0];
     if (!row) throw new ResourceNotFound(id);
     return mapDbRowToFullRecipe(row);
   };
 
-  public async saveRecipe(recipe: FullRecipeModel): Promise<FullRecipeModel> {
+  public async saveRecipe(recipe: FullRecipeModel,  userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
     const title = recipe.title.slice(0, 100);
@@ -95,7 +96,7 @@ class RecipeService {
     const healthLevel = recipe.healthLevel;
     const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
-    const sql = "insert into recipe(title, amountOfServings, description, popularity, ingredients, instructions, totalSugar, totalProtein, healthLevel, calories, amounts, imageName) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    const sql = "insert into recipe(title, amountOfServings, description, popularity, ingredients, instructions, totalSugar, totalProtein, healthLevel, calories, amounts, imageName, userId) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
     const values = [
       title,
       amountOfServings,
@@ -108,12 +109,14 @@ class RecipeService {
       healthLevel,
       calories,
       amounts,
-      imageName
+      imageName,
+      userId
     ];
     const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
     recipe.id = info.insertId;
     recipe.image = undefined;
     recipe.imageUrl = imageName ? appConfig.baseImageUrl + imageName : "";
+    recipe.userId = userId;
     return recipe;
   }
 

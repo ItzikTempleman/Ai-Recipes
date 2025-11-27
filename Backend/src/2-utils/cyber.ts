@@ -6,12 +6,12 @@ import { appConfig } from "./app-config";
 
 
 class Cyber {
+
     public hash(plainText: string): string {
         return  crypto.createHmac("sha512", appConfig.hashSaltKey).update(plainText).digest("hex"); 
     }
 
     public generateToken(user: UserModel): string {
-
         delete (user as any).password;
         const container = { user };
         const options: SignOptions = {
@@ -29,7 +29,6 @@ class Cyber {
             return false;
         }
     }
-
 };
 
 export const cyber = new Cyber();

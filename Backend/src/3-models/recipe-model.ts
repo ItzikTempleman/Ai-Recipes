@@ -64,6 +64,7 @@ export type DbRecipeRow = {
     healthLevel: number | null
     calories: number;
     imageName: string | null;
+    userId: number | null;  
 };
 
 
@@ -81,6 +82,7 @@ export class FullRecipeModel {
     public image?: UploadedFile;
     public imageUrl?: string;
     public imageName: string | null | undefined;
+    public userId?: number;   
 
     constructor(recipe: FullRecipeModel) {
         if (!recipe) throw new ValidationError("Missing recipe data");
@@ -97,6 +99,7 @@ export class FullRecipeModel {
         this.image = recipe.image;
         this.imageUrl = recipe.imageUrl;
         this.imageName = recipe.imageName;
+        this.userId = recipe.userId;
     }
 
     private static validationSchema = Joi.object(

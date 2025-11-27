@@ -26,7 +26,7 @@ class RecipeService {
            const base = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
       const url = `${base}/${Number(quantity) || 1}`;
 
-      const { data } = await axios.post<RecipeModel>(url, body);
+      const { data } = await axios.post<RecipeModel>(url, body, this.getAuth());
 
       store.dispatch(addRecipe(data));
       store.dispatch(setCurrent(data));
