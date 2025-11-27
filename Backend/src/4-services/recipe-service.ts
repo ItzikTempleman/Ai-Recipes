@@ -67,7 +67,7 @@ class RecipeService {
   }
 
   public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
-    const sql = "select * from recipe where usrId = ?";
+    const sql = "select * from recipe where userId = ?";
     const values=[userId];
     const rows = await dal.execute(sql,values) as DbRecipeRow[];
     return rows.map(mapDbRowToFullRecipe);

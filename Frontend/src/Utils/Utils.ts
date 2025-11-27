@@ -6,25 +6,37 @@ export function useTitle(title: string): void {
     }, [])
 }
 
+export function showDate(birthDateStr:string):string{
+    if (!birthDateStr) return "";
+
+     const [datePart] = birthDateStr.split("T");
+     const [year, month, day] = datePart.split("-"); 
+
+
+return `${day}/${month}/${year}`
+}
 
 export function getAge(birthDateStr: string): number {
-    const today = new Date();
-    const parts = birthDateStr.split("-");
-    const numbers = parts.map(Number); //turns it into numbers
-    const year = numbers[0];
-    const month = numbers[1];
-    const day = numbers[2];
+  const today = new Date();
 
-    const birthDate = new Date(year, month - 1, day);
+  // now we expect "DD/MM/YYYY"
+  const [dayStr, monthStr, yearStr] = birthDateStr.split("/");
+  const day = Number(dayStr);
+  const month = Number(monthStr);
+  const year = Number(yearStr);
 
-    let age = today.getFullYear() - birthDate.getFullYear();
+  const birthDate = new Date(year, month - 1, day);
 
-    if (!didBirthDatPassThisYear(today, birthDate)) {
-        age--;
-    }
+  let age = today.getFullYear() - birthDate.getFullYear();
 
-    return age;
+  if (!didBirthDatPassThisYear(today, birthDate)) {
+    age--;
+  }
+
+  return age;
 }
+
+
 
 function didBirthDatPassThisYear(today: Date, birthDate: Date): boolean {
     return today.getMonth() > birthDate.getMonth() ||
