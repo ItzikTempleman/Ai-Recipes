@@ -6,10 +6,11 @@
     display: grid;
  grid-template-rows: 80px 1fr;
     grid-template-columns: 1fr;
+      overflow: hidden !important;
 }
 
 .MainLayout>* {
-    font-family: Arial;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 header{

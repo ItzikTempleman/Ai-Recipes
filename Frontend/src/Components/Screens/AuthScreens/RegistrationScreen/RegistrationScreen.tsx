@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { getAge, useTitle } from "../../../../Utils/Utils";
+import { useTitle } from "../../../../Utils/Utils";
 import "./RegistrationScreen.css";
-import { Gender, UserModel } from "../../../../Models/UserModel";
+import { Gender, User } from "../../../../Models/UserModel";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { userService } from "../../../../Services/UserService";
@@ -17,31 +17,23 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 
-
 export function RegistrationScreen() {
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
-
-  const { register, handleSubmit, reset,   control, formState: { errors } } = useForm<UserModel>({ mode: "onChange",    defaultValues: {
-      gender: Gender.MALE,  
-    },})
-
+  const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({
+    mode: "onChange", defaultValues: {
+      gender: Gender.MALE,
+    }
+  })
   const navigate = useNavigate();
-
-  async function send(user: UserModel) {
+  async function send(user: User) {
     try {
-
-      user.age = getAge(user.birthDate);
-
-      await userService.loginOrRegister(
-        { register: user }
-      );
-
+      await userService.loginOrRegister({ register: user });
       navigate("/home-screen");
       reset();
-
     } catch (err) {
-      notify.error(err)
+      console.error("Registration failed", err);
+      notify.error(err);
     }
   }
 
@@ -57,7 +49,6 @@ export function RegistrationScreen() {
           Back
         </Button>
         <h2 className="RegistrationScreenTitle">Registration</h2>
-
         <TextField
           label="Enter first name"
           placeholder="first name"
@@ -76,7 +67,6 @@ export function RegistrationScreen() {
               )
             }}
         />
-
         <TextField
           label="Enter family name"
           placeholder="family name"
@@ -116,8 +106,8 @@ export function RegistrationScreen() {
               )
             }}
           error={!!errors.email}
-          helperText={errors.email?.message} />
-
+          helperText={errors.email?.message}
+        />
         <TextField
           autoComplete="current-password"
           label="Enter password"
@@ -144,68 +134,69 @@ export function RegistrationScreen() {
             )
           }}
         />
-
         <TextField
           fullWidth
           type="date"
           {...register("birthDate", {
             required: "Birth date is required",
+            validate: (value) => {
+              const today = new Date();
+              const chosen = new Date(value);
+              if (chosen > today) return "Birth date cannot be in the future";
+              return true;
+            }
           })}
           error={!!errors.birthDate}
           helperText={errors.birthDate?.message}
         />
-
-<TextField
-  label="Enter phone number"
-  placeholder="Phone number"
-  fullWidth
-  type="tel"
-  variant="outlined"
-  InputProps={{
-    endAdornment: (
-      <InputAdornment position="end">
-        <PhoneAndroidIcon />
-      </InputAdornment>
-    ),
-  }}
-  inputProps={{
-    inputMode: "tel",
-    pattern: "[0-9]*",
-  }}
-  {...register("phoneNumber", {
-    required: "Phone number is required",
-  })}
-  error={!!errors.phoneNumber}
-  helperText={errors.phoneNumber?.message}
-/>
-
-<FormControl>
-  <Controller
-    name="gender"
-    control={control}
-    render={({ field }) => (
-      <RadioGroup row {...field}>
-        <FormControlLabel
-          value={Gender.MALE}
-          control={<Radio />}
-          label="Male"
+        <TextField
+          label="Enter phone number"
+          placeholder="Phone number"
+          fullWidth
+          type="tel"
+          variant="outlined"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <PhoneAndroidIcon />
+              </InputAdornment>
+            ),
+          }}
+          inputProps={{
+            inputMode: "tel",
+            pattern: "[0-9]*",
+          }}
+          {...register("phoneNumber", {
+            required: "Phone number is required",
+          })}
+          error={!!errors.phoneNumber}
+          helperText={errors.phoneNumber?.message}
         />
-        <FormControlLabel
-          value={Gender.FEMALE}
-          control={<Radio />}
-          label="Female"
-        />
-        <FormControlLabel
-          value={Gender.OTHER}
-          control={<Radio />}
-          label="Other"
-        />
-      </RadioGroup>
-    )}
-  />
-</FormControl>
-
-
+        <FormControl>
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <RadioGroup row {...field}>
+                <FormControlLabel
+                  value={Gender.MALE}
+                  control={<Radio />}
+                  label="Male"
+                />
+                <FormControlLabel
+                  value={Gender.FEMALE}
+                  control={<Radio />}
+                  label="Female"
+                />
+                <FormControlLabel
+                  value={Gender.OTHER}
+                  control={<Radio />}
+                  label="Other"
+                />
+              </RadioGroup>
+            )}
+          />
+        </FormControl>
         <Button
           type="submit"
           className="RegistrationBtn"

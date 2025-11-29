@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserModel } from "../Models/UserModel";
+import { User } from "../Models/UserModel";
 
 
-function registerOrLogin(_: UserModel, action: PayloadAction<UserModel>) {
+function registerOrLogin(_: User, action: PayloadAction<User>) {
     return action.payload;
 };
 
@@ -14,7 +14,7 @@ function logoutUser(): null{
 export const userSlice = createSlice(
     {
         name: "users",
-        initialState: null as UserModel | null,
+        initialState: null as User | null,
         reducers: {
         registrationAndLogin:registerOrLogin,
         logout: logoutUser

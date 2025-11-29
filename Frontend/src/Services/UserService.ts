@@ -1,4 +1,4 @@
-import { CredentialsModel, UserModel } from "../Models/UserModel";
+import { Credentials, User } from "../Models/UserModel";
 import { jwtDecode } from "jwt-decode";
 import { notify } from "../Utils/Notify";
 import { store } from "../Redux/Store";
@@ -7,13 +7,12 @@ import axios from "axios";
 import { appConfig } from "../Utils/AppConfig";
 
 export type DecodedToken = {
-    user: UserModel;
+    user: User;
     exp: number;
 }
 
 class UserService {
     private logoutTimer: number | null = null;
-
 
     private logoutAfterTimeout(token: string) {
         try {
@@ -48,7 +47,7 @@ class UserService {
         }
     }
 
-    public async loginOrRegister(data: | { login: CredentialsModel; register?: never } | { register: UserModel; login?: never }): Promise<void> {
+    public async loginOrRegister(data: | { login: Credentials; register?: never } | { register: User; login?: never }): Promise<void> {
         try {
             const isLogin = "login" in data;
             const url = isLogin ? appConfig.loginUrl : appConfig.registerUrl;
@@ -70,11 +69,6 @@ class UserService {
             throw err;
         }
     }
-
-
-
-
-
 
     public logout(): void {
         if (this.logoutTimer) {

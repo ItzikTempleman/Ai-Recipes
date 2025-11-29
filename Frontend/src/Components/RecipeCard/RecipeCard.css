@@ -1,16 +1,11 @@
-:root { 
-  --content-width: 500px;
-}
-
 .RecipeCard{
-  width: var(--content-width);
+  width: 500px;
   display: flex;
+  height: auto;
   flex-direction: column;
   align-items: center; 
   background-color: white;
-  
 }
-
 
 .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
   margin-top: 32px;
@@ -41,7 +36,7 @@
   padding: 20px;
   margin: 20px auto;
   width: 100%;
-  max-width: var(--content-width);
+  width: 500px;;
   box-sizing: border-box;
 }
 
@@ -85,15 +80,9 @@
 }
 
 @media (max-width: 600px) {
-  :root { --content-width: 92vw; }
 
   .RecipeCard{
     width: 100%;
-  }
-
-  .RecipeCard > h2,
-  .InstructionsList h2 {
-    font-size: 22px;
   }
 
   .RecipeImage {

@@ -9,9 +9,10 @@ class UserService {
     public async register(user: UserModel): Promise<string> {
         const emailTaken = await this.isEmailTaken(user.email);
         if (emailTaken) throw new ValidationError("Email already exists")
-        const sql = "insert into user(firstName,familyName,email,password, birthDate,phoneNumber, gender) values (?,?,?,?,?,?,?)"
+        const sql = "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate) values (?,?,?,?,?,?,?)";
+
         user.password = cyber.hash(user.password);
-        const values = [user.firstName, user.familyName, user.email, user.password, user.birthDate, user.phoneNumber,user.gender  ];
+        const values = [user.firstName, user.familyName, user.email, user.password, user.phoneNumber,user.gender,user.birthDate];
         const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
         user.id = info.insertId!;
         return cyber.generateToken(user);

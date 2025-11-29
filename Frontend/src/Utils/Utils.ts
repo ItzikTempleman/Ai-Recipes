@@ -15,21 +15,24 @@ export function showDate(birthDateStr:string):string{
 
 return `${day}/${month}/${year}`
 }
+export function getAge(
+    birthDate: string | Date | null | undefined): number {
+  if (!birthDate) return NaN;
 
-export function getAge(birthDateStr: string): number {
+  // Normalize to Date object:
+  const d =
+    birthDate instanceof Date
+      ? birthDate
+      : new Date(birthDate as string);
+
+  // If still invalid, bail out:
+  if (Number.isNaN(d.getTime())) return NaN;
+
   const today = new Date();
+  let age = today.getFullYear() - d.getFullYear();
+  const m = today.getMonth() - d.getMonth();
 
-  // now we expect "DD/MM/YYYY"
-  const [dayStr, monthStr, yearStr] = birthDateStr.split("/");
-  const day = Number(dayStr);
-  const month = Number(monthStr);
-  const year = Number(yearStr);
-
-  const birthDate = new Date(year, month - 1, day);
-
-  let age = today.getFullYear() - birthDate.getFullYear();
-
-  if (!didBirthDatPassThisYear(today, birthDate)) {
+  if (m < 0 || (m === 0 && today.getDate() < d.getDate())) {
     age--;
   }
 

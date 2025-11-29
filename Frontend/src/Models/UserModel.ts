@@ -1,10 +1,9 @@
-export type UserModel= {
+export type User= {
      id?: number;
      firstName: string;
      familyName: string;
      email: string;
      password: string;
-     age?: number;
      birthDate: string;
      phoneNumber: string;
      gender: Gender;
@@ -16,7 +15,7 @@ export enum Gender {
     OTHER = "OTHER"
 }
 
-export type CredentialsModel ={
+export type Credentials ={
      email?: string;
      password?: string;
 }

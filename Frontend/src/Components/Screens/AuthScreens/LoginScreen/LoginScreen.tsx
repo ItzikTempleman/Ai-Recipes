@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTitle } from "../../../../Utils/Utils";
 import "./LoginScreen.css";
-import { CredentialsModel } from "../../../../Models/UserModel";
+import { Credentials } from "../../../../Models/UserModel";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { userService } from "../../../../Services/UserService";
@@ -15,11 +15,11 @@ export function LoginScreen() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<CredentialsModel>({ mode: "onChange" })
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })
 
   const navigate = useNavigate();
 
-  async function send(credentials: CredentialsModel) {
+  async function send(credentials: Credentials) {
     try {
       await userService.loginOrRegister({ login: credentials })
       navigate("/home-screen");

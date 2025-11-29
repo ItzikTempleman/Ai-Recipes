@@ -4,6 +4,8 @@
   gap: 12px;
   max-width: 400px;
   min-width: 240px;
+  margin: 0 auto;     
+  align-items: center; 
 }
 
 .ToggleGroup {

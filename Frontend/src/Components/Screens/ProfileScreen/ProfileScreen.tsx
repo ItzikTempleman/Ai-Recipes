@@ -9,25 +9,27 @@ export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
 
   useTitle("Profile");
+  if (!user) return null;
 
-    const birthDateStr = showDate(user.birthDate)
+  const rawBirthDate = user.birthDate ?? "";           // "1997-07-09T00:00:00.000Z"
+  const birthDateStr = showDate(rawBirthDate);         // "09/07/1997"
+  const gender = user.gender ?? (user as any).Gender ?? "";
 
+  // Use the ISO date part (YYYY-MM-DD) for age calculation:
+  const isoDate = rawBirthDate.split("T")[0];          // "1997-07-09"
+  const age = isoDate ? getAge(isoDate) : "";
 
-    
-const gender = user.gender ?? (user as any).Gender ?? "";
-    const age = birthDateStr ? getAge(birthDateStr) : "";
   return (
     <div className="ProfileScreen">
-      <h2 className="ProfileScreenTitle">Profile</h2>
+      <p className="ProfileScreenTitle">Profile</p>
 
       <div className="ProfileSection">
 
-<p>{user.firstName} {user.familyName}</p>
-<p>Age: {age}</p>
+<p>{user.firstName} {user.familyName}, {age}, {gender}</p>
+<div className="divider" />
 <p>Email: {user.email}</p>
-<p>Gender: {gender}</p>
-<p>Phone number: {user.phoneNumber}</p>
-<p>Birth date: {birthDateStr}</p>
+<p>phone number: {user.phoneNumber}</p>
+<p>birth date: {birthDateStr}</p>
       </div>
     </div>
   );

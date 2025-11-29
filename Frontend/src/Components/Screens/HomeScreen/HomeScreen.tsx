@@ -49,7 +49,7 @@ export function HomeScreen() {
   return (
     <div className="HomeScreen">
 
-                <div className="WallpaperContainer">
+                {/* <div className="WallpaperContainer">
         <div className="TopImg"><img src={images[0]}/></div>
 
         <div className="MidRow">
@@ -59,7 +59,7 @@ export function HomeScreen() {
         </div>
 
         <div className="BottomImg"><img src={images[4]}/></div>
-    </div>
+    </div> */}
 
   
       <div className="SearchContainer">

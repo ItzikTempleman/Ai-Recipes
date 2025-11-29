@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { recipeReducer } from "./RecipeSlice";
 import { RecipeState } from "../Models/RecipeModel";
-import { UserModel } from "../Models/UserModel";
+import { User } from "../Models/UserModel";
 import { userSlice } from "./UserSlice";
 
 export type AppState = {
-    user: UserModel | null;
+    user: User | null;
     recipes: RecipeState;
 };
 
