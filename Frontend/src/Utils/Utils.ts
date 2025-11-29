@@ -38,12 +38,3 @@ export function getAge(
 
   return age;
 }
-
-
-
-function didBirthDatPassThisYear(today: Date, birthDate: Date): boolean {
-    return today.getMonth() > birthDate.getMonth() ||
-        (
-            today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate()
-        );
-}

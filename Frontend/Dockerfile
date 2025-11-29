@@ -1,9 +1,18 @@
 FROM node:20-alpine
 WORKDIR /app
+
+ARG VITE_API_URL
+ARG VITE_IMAGE_BASE_URL
+ARG PUBLIC_HOST
+
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_IMAGE_BASE_URL=$VITE_IMAGE_BASE_URL
+ENV PUBLIC_HOST=$PUBLIC_HOST
+
 COPY package*.json ./
 RUN npm ci
 COPY . .
-# Vite needs env at build time; they come in via build args in compose
+
 RUN npm run build
 RUN npm install -g serve
 EXPOSE 5173

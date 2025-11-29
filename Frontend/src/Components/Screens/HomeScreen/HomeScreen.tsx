@@ -13,13 +13,13 @@ import { ImageSwitch } from "../../UtilComponents/ImageSwitch/ImageSwitch";
 import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { RecipeCard } from "../../RecipeCard/RecipeCard";
 
-import img1 from "../../../Assets/images/img1.jpg";
-import img2 from "../../../Assets/images/img2.jpg";
-import img3 from "../../../Assets/images/img3.jpg";
-import img4 from "../../../Assets/images/img4.jpg";
-import img5 from "../../../Assets/images/img5.jpg";
+// import img1 from "../../../Assets/images/img1.jpg";
+// import img2 from "../../../Assets/images/img2.jpg";
+// import img3 from "../../../Assets/images/img3.jpg";
+// import img4 from "../../../Assets/images/img4.jpg";
+// import img5 from "../../../Assets/images/img5.jpg";
 
-const images = [img1, img2, img3, img4, img5];
+// const images = [img1, img2, img3, img4, img5];
 type RecipeStateType = {
   recipes: RecipeState
 };
