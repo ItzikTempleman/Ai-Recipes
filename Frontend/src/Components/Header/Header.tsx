@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink,useLocation } from "react-router-dom";
 import "./Header.css";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
@@ -12,6 +12,10 @@ export function Header() {
     notify.success(`Good bye ${user.firstName} ${user.familyName}`)
     userService.logout();
   }
+  const location = useLocation();
+  const isAuthPage =
+    location.pathname === "/login-screen" ||
+    location.pathname === "/registration-screen";
 
   return (
     <div className="Header">
@@ -22,17 +26,24 @@ export function Header() {
         </div>
       )}
       <NavLink to="/about-screen" className="AboutScreenLink">About</NavLink>
-      <div className="UserNavigation">
-        <>{!user && (
-          <NavLink to="/login-screen" className="LoginScreenLink">Login</NavLink>
-          )}</>
-        {user && accountProtection.isUser() && (
-          <>
-          <NavLink to="/profile-screen" className="ProfileScreenLink">Profile</NavLink>
-          <NavLink to="/login-screen" className="LogoutLink" onClick={logout}>Logout</NavLink>
-          </>
-        )}
-      </div>
+      
+<div className="UserNavigation">
+  <>
+    {!user && !isAuthPage && (
+      <NavLink to="/login-screen" className="LoginScreenLink">
+        Login
+      </NavLink>
+    )}
+  </>
+  {user && accountProtection.isUser() && (
+    <>
+      <NavLink to="/profile-screen" className="ProfileScreenLink">Profile</NavLink>
+      <NavLink to="/login-screen" className="LogoutLink" onClick={logout}>
+        Logout
+      </NavLink>
+    </>
+  )}
+</div>
     </div>
   );
 }
