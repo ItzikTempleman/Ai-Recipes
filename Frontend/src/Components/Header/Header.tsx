@@ -22,22 +22,23 @@ export function Header() {
       {user && accountProtection.isUser() && (
         <div className="GeneralNavigation">
           <NavLink to="/recipes-screen" className="RecipesScreenLink">My Recipes</NavLink>
+          |
             <NavLink to="/home-screen" className="HomeScreenLink">Generate Recipe</NavLink>
         </div>
       )}
-      <NavLink to="/about-screen" className="AboutScreenLink">About</NavLink>
+       | <NavLink to="/about-screen" className="AboutScreenLink">About</NavLink>
       
 <div className="UserNavigation">
   <>
     {!user && !isAuthPage && (
       <NavLink to="/login-screen" className="LoginScreenLink">
         Login
-      </NavLink>
-    )}
+      </NavLink> 
+    )}  |
   </>
   {user && accountProtection.isUser() && (
     <>
-      <NavLink to="/profile-screen" className="ProfileScreenLink">Profile</NavLink>
+      <NavLink to="/profile-screen" className="ProfileScreenLink">Profile</NavLink>  |
       <NavLink to="/login-screen" className="LogoutLink" onClick={logout}>
         Logout
       </NavLink>
