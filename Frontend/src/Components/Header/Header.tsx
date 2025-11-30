@@ -17,8 +17,8 @@ export function Header() {
     <div className="Header">
       {user && accountProtection.isUser() && (
         <div className="GeneralNavigation">
-          <NavLink to="/home-screen" className="HomeScreenLink">Home</NavLink>
-          <NavLink to="/recipes-screen" className="RecipesScreenLink">Recipes</NavLink>
+          <NavLink to="/recipes-screen" className="RecipesScreenLink">My Recipes</NavLink>
+            <NavLink to="/home-screen" className="HomeScreenLink">Create new</NavLink>
         </div>
       )}
       <NavLink to="/about-screen" className="AboutScreenLink">About</NavLink>

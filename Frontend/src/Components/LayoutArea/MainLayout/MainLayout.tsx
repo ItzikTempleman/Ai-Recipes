@@ -5,12 +5,7 @@ import "./MainLayout.css";
 
 export function MainLayout() {
     return (
-
-        
         <div className="MainLayout">
-
-
-
             <header>
                 <Header/>
             </header>

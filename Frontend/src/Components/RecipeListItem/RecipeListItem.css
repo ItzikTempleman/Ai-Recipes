@@ -1,36 +1,80 @@
+/* ===== Card for each recipe in the list ===== */
+
 .RecipeListItem,
 .NoImageListItem {
-  width: 330px;
-  padding: 8px;
-  height: auto;
-  border-radius: 8px;
-    box-shadow: 2px 2px 2px 2px grey;
-  background-color: #fff;
-  overflow: hidden;
-}
+  width: 100%;
+  max-width: 640px;    /* was 800px */
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
 
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* For items without image, just ensure decent height */
 .NoImageListItem {
-height: 100px ;
+  min-height: 100px;
 }
 
+/* Hover state */
 .RecipeListItem:hover,
 .NoImageListItem:hover {
-  transform: translateY(-12px);
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
+
+/* ===== Image inside the list card ===== */
 
 .CardImage {
+  display: block;
+  margin: 0 auto 16px;
+
   width: 100%;
-  height: 220px;
+  max-width: 560px;     /* narrower than the card */
+  aspect-ratio: 16 / 9; /* nicer banner proportion */
+  height: auto;
   object-fit: cover;
 
+  border-radius: 8px;
 }
 
-.CardTitle{
-color: #4d4d4d;
+/* ===== Text & button ===== */
+
+.CardTitle {
+  margin: 4px 0;
+  color: #4d4d4d;
+  font-weight: 600;
 }
-.MoreInfoBtn{
-    align-self: center;
-  width: 80%;
-  background-color: #ff9900 !important;
-  color: white !important;
+
+.MoreInfoBtn {
+  align-self: center;
+  width: 60%;
+  max-width: 260px;
+  margin-top: 8px;
+  background-color: #68cced !important;
+  color: #ffffff !important;
+}
+
+/* ===== Mobile tweaks ===== */
+
+@media (max-width: 600px) {
+  .RecipeListItem,
+  .NoImageListItem {
+    padding: 12px;
+    max-width: 100%;
+  }
+
+  .CardImage {
+    max-height: 200px;
+  }
+
+  .MoreInfoBtn {
+    width: 80%;
+  }
 }

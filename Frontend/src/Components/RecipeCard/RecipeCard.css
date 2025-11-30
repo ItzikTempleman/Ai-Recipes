@@ -1,50 +1,85 @@
-.RecipeCard{
-  width: 500px;
-  display: flex;
-  height: auto;
+/* ===== Card container ===== */
+
+.RecipeCard {
+  width: 100%;
+  max-width: 640px;  
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+   display: flex;
   flex-direction: column;
-  align-items: center; 
-  background-color: white;
+  align-items: center;
+  text-align: left;
 }
 
+/* When loading text is shown, adjust spacing to sit nicely below it */
 .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
   margin-top: 32px;
 }
 
 .MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
-.RecipeCard > h2,.InstructionsList h2 {
-  color: #4b4b4b;
-  text-align: center;   
-  font-weight:bold; 
+/* ===== Headings ===== */
+
+.RecipeCard > h2,
+.InstructionsList h2 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: center;
 }
-.CalorieCount{
-   color: #4b4b4b;
+
+/* ===== Info blocks ===== */
+
+.Servings,
+.Description,
+.CalorieCount,
+.Popularity,
+.Sugar {
+  margin-bottom: 8px;
 }
+
+.Servings p,
+.Description p,
+.Popularity p,
+.Sugar p,
+.CalorieCount h4 {
+  margin: 0;
+}
+
+/* ===== Image ===== */
 
 .RecipeImage {
-    object-fit: cover;
-  width: 100%;
-  height: 330px;
-  border-radius: 8px;
+  display: block;
+  margin: 0 auto 20px;
+
+  width: 100%;              /* responsive inside the card */
+  max-width: 480px;         /* don’t let it span the whole card width */
+  aspect-ratio: 4 / 3;      /* keeps a nice proportion */
+  height: auto;             /* no fixed height stretching */
+  object-fit: cover;        /* crop nicely if needed */
+
+  border-radius: 10px;
 }
 
-.IngredientsList,
-.InstructionsList {
-  padding: 20px;
-  margin: 20px auto;
-  width: 100%;
-  width: 500px;;
-  box-sizing: border-box;
+/* ===== Ingredients ===== */
+
+.IngredientsList {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .IngredientRow {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #c5c3c3;
-  padding: 6px 0;
+  gap: 12px;
+  padding: 4px 0;
 }
 
 .IngredientRow:last-child {
@@ -52,61 +87,52 @@
 }
 
 .IngredientName {
-  width: 60%;
-  text-align: left;
-  font-weight: 600;
-  color: #333;
-  padding-right: 12px;
+  font-weight: 500;
 }
 
 .IngredientAmount {
-  width: 40%;
-  text-align: right;
   color: #555;
-  white-space: nowrap;
+}
+
+/* ===== Instructions ===== */
+
+.InstructionsList {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .InstructionsList ol {
   padding-left: 20px;
-  margin: 0;
-
 }
 
 .InstructionsList li {
-  margin-bottom: 6px;
-  line-height: 1.4;
-    border-bottom: 1px solid #c5c3c3;
-      padding-bottom: 6px;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 600px) {
+/* ===== Mobile tweaks ===== */
 
-  .RecipeCard{
-    width: 100%;
+@media (max-width: 600px) {
+  .RecipeCard {
+    padding: 16px;
+    max-width: 100%;
   }
 
   .RecipeImage {
-    height: 220px;
-    border-radius: 8px;
-  }
-
-  .IngredientsList,
-  .InstructionsList {
-    padding: 12px;
-    margin: 12px auto;
     max-width: 100%;
-    width: 100%;
+    max-height: 260px;
   }
 
-  .IngredientRow { padding: 6px 0; }
-
-  .IngredientName { width: 65%; }
-  .IngredientAmount { width: 35%; }
+  .IngredientRow {
+    flex-direction: row;
+    font-size: 0.95rem;
+  }
 
   .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
     margin-top: 20px;
   }
+
   .MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
-    margin-top: 6px;
+    margin-top: 10px;
   }
 }

@@ -1,26 +1,33 @@
 .MainLayout {
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    display: grid;
- grid-template-rows: 80px 1fr;
-    grid-template-columns: 1fr;
-      overflow: hidden !important;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* Simple grid: header + main */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
 }
 
-.MainLayout>* {
-    font-family:Arial, Helvetica, sans-serif;
+/* Global font for app content inside layout */
+.MainLayout > * {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-header{
-    grid-column: span 2;
+/* Header row */
+header {
+  grid-row: 1;
+  grid-column: 1;
+  z-index: 10;           /* keep it visually on top if needed */
 }
 
+/* Main content row (scrolls) */
 main {
-     grid-row: 2;
-    overflow: auto;
-    min-height: 0;
+  grid-row: 2;
+  grid-column: 1;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 0;            /* no extra “mystery gap” at the top */
+  box-sizing: border-box;
 }
-
-

@@ -6,6 +6,8 @@ useTitle("About");
   return (
     <div className="AboutScreen">
  <p className="AboutScreenTitle">About</p>
+ <div className="TopSection"><h2 className="TopContent">Welcome! I’m Itzik, a full-stack developer with a passion for combining creativity and technology. I built this platform to make recipe creation smarter, simpler, and more inspiring</h2></div>
+   <div className="RestOfSection"><h3 className="RestOfContent">Using advanced AI tools, the site generates fully customized recipes—including clear instructions, ingredient lists, and even images—across all languages and cuisines. I’m constantly adding new features to improve accuracy, personalization, and user experience. My goal is to help anyone, anywhere, turn their ideas into delicious dishes with just a few clicks</h3></div>
     </div>
   );
 }

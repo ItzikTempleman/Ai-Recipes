@@ -1,7 +1,157 @@
+/* ===== Page background ===== */
+
 .AboutScreen {
-    width: 100%;
-    height: 100vh;
-    padding: 0;
-    margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 40px 16px 56px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* subtle background to separate from the card */
+  background: radial-gradient(circle at top left, #9abfc3 0, #ffffff 45%, #fafafa 100%);
 }
 
+/* ===== Title ===== */
+
+.AboutScreenTitle {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 0 20px;
+
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #68cced;
+  text-transform: uppercase;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* little accent line next to the word “About” */
+.AboutScreenTitle::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, #ffb74d, transparent);
+}
+
+/* ===== Card ===== */
+
+.AboutCard {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 28px 24px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.06),
+    0 2px 4px rgba(0, 0, 0, 0.03);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+  color: #333333;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* soft color strip at the top of the card */
+
+.AboutCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ffb74d, #ff9900);
+}
+
+/* subtle corner accent */
+
+.AboutCard::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 193, 79, 0.28), transparent 60%);
+}
+
+/* ensure content sits below the colored top strip */
+.AboutCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Divider between top + bottom text */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, #a7cdda, #f0f0f0);
+  margin: 4px 0 8px;
+}
+
+/* ===== Text styling ===== */
+
+.TopContent {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #333333;
+}
+
+.RestOfContent {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #555555;
+}
+
+/* emphasize “AI” style text if you ever wrap span tags later */
+.RestOfContent strong,
+.TopContent strong {
+  color: #68cced;
+}
+
+/* ===== Mobile tweaks ===== */
+
+@media (max-width: 600px) {
+  .AboutScreen {
+    padding: 24px 12px 32px;
+  }
+
+  .AboutScreenTitle {
+    max-width: 100%;
+    font-size: 20px;
+  }
+
+  .AboutCard {
+    padding: 20px 18px 18px;
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .TopContent {
+    font-size: 18px;
+  }
+
+  .RestOfContent {
+    font-size: 15px;
+  }
+}

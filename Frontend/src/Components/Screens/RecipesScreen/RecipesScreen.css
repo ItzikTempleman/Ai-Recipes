@@ -1,25 +1,50 @@
 .RecipesScreen {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px 16px 40px;
+  box-sizing: border-box;
+
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;     
-  justify-content: flex-start;
-  width: 100%;
-  margin: 0;
+  align-items: center;
 }
 
-
+/* Title above the list */
 .RecipesScreenTitle {
+  width: 100%;
+  max-width: 640px;
   color: #4b4b4b;
   font-size: 20px;
-  margin: 20px 0;          
-  text-align: center;     
+  font-weight: 600;
+  margin: 0 0 16px;
+  text-align: left;
 }
+
+/* List wrapper */
 .RecipeList {
   width: 100%;
-  display: flex;           
-  flex-direction: column;  
-  align-items: center;    
-  gap: 12px;                
-  margin-top: 10px;      
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .RecipesScreen {
+    padding: 16px 8px 24px;
+  }
+
+  .RecipesScreenTitle {
+    max-width: 100%;
+    font-size: 18px;
+  }
+
+  .RecipeList {
+    max-width: 100%;
+  }
 }

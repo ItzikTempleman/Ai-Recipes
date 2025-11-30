@@ -1,201 +1,117 @@
+/* ===== Layout wrapper ===== */
+
 .HomeScreen {
-  overflow-y: hidden; 
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
-  display: flex;             
-  flex-direction: column;    
-  align-items: center;        
-  justify-content: flex-start;/
-}
-
-
-.SearchContainer {
-  width: var(--content-width);
-  margin-top:10px;
-  gap: 16px;
-  border-radius: 8px;
-  padding: 20px;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: auto;   
-  margin-right: auto;
 }
 
-.SearchContainer form {
+/* ===== Search card ===== */
+
+.SearchContainer {
   width: 100%;
-  max-width: var(--content-width);
-  margin-top: 16px auto 0;
-  display: block;
-}
-
-.SearchTF { width: 100%; }
-
-.SearchTF .MuiOutlinedInput-root {
-  height: 44px;
-   background-color: #ffffff; 
-    border-radius: 6px;
-}
-
-.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #4b4b4b;
-}
-
-.SearchTF .MuiInputLabel-root.Mui-focused {
-  color: #4b4b4b;
-}
-
-.SearchTF .MuiIconButton-root {
-  color: #4b4b4b;
-}
-
-form .MuiIconButton-root {
-  height: 44px;
-  width: 44px;
-  margin-left: 6px;
-}
-
-.SearchTF .MuiOutlinedInput-input {
-  height: 44px;
-   background-color: #ffffff; 
-   border-radius: 6px;
-  line-height: 44px;
-  padding: 0 14px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
   box-sizing: border-box;
-}
-.SearchTF .MuiCircularProgress-root {
-  color: #4b4b4b !important;
-}
-
-.SearchTF .MuiOutlinedInput-input::placeholder {
-  color: #999;    
-  opacity: 1;  
-    align-items: center;
-}
-
-.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input::placeholder {
-    align-items: center;
-  opacity: 0;  
-}
-
-.LoadingWithImage,
-.LoadingWithoutImage{
-  text-align: center;
-  margin-top: 12px;
-  padding: 8px;
-  width: 100%;
-  box-sizing: border-box;
-  margin-left: auto;  
-  margin-right: auto;  
-  color: #4b4b4b;
-}
-
-.CenterRow {
-  width: 100%;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
-  justify-content: center; 
+  flex-direction: column;
+  gap: 16px;
 }
 
-
+/* Wrapper around TextField + servings selector */
 .InputData {
   display: flex;
   align-items: center;
-  justify-content: center; 
   gap: 12px;
-  flex-wrap: wrap;   
-  width: 100%;  
-}
-.QuantitySelector{
-width: 80px;
-height: 40px;
-  font-size: 18px;
-  font-weight: 600;
-    text-align: center;        
-  text-align-last: center;
+  margin-top: 8px;
 }
 
-.QuantitySelector option {
- font-size: 18px;
+/* Text field */
+.SearchTF {
+  flex: 1;
 }
+
+/* Rounded icon buttons inside the text field */
+.RoundedBtn {
+  border-radius: 9999px !important;
+}
+
+/* Servings selector */
+.QuantitySelector {
+  width: 80px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  padding: 4px 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Error + loading text */
+.ErrorText {
+  margin-top: 8px;
+  color: #d32f2f;
+  font-size: 0.9rem;
+}
+
+.LoadingWithImage,
+.LoadingWithoutImage {
+  margin-top: 12px;
+  padding: 8px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Where the RecipeCard sits */
+.CenterRow {
+  width: 100%;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Just in case other screens use this class name */
+.NewScreenTitle {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* ===== Mobile tweaks ===== */
 
 @media (max-width: 600px) {
-
-
   .HomeScreen {
-    width: 100%;
-    height: 100vh;     
-    min-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: hidden; 
-    display: flex;       
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .InputData {
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;  
-    width: 90%;
-  }
-
-  .SearchTF {
-    width: 90%;
-    max-width: 90%;
-    margin: 0 auto;
+    padding: 16px 8px 24px;
   }
 
   .SearchContainer {
-    width: min(94vw, 340px);
-    max-width: 340px;
-    padding: 12px;
-    gap: 10px;
-    margin: 8px auto 0;
-  }
-
-  .SearchContainer form {
-    width: 100%;
+    padding: 16px;
     max-width: 100%;
-    margin: 0;
   }
-  .SearchTF .MuiOutlinedInput-root {
-    height: 40px;
-    width: 90%;
-    overflow: hidden;
-  }
-  .SearchTF .MuiOutlinedInput-input {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 12px;
-    min-width: 0;    
-  }
-
-  form .MuiIconButton-root {
-    height: 36px;
-    width: 36px;
-    margin-left: 4px;
-  }
-
-  .NewScreenTitle { font-size: 22px; margin: 12px 0; }
-  .CenterRow { padding: 0 6px; }
 
   .InputData {
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .QuantitySelector {
-    width: 72px;
-    height: 38px;
-    font-size: 16px;
+    width: 100%;
+    max-width: 200px;
+    align-self: center;
   }
 
   .LoadingWithImage,
   .LoadingWithoutImage {
     margin-top: 8px;
-    padding: 6px;
   }
 }
