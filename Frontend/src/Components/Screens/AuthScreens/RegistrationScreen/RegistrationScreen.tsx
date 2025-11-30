@@ -134,21 +134,23 @@ export function RegistrationScreen() {
             )
           }}
         />
-        <TextField
-          fullWidth
-          type="date"
-          {...register("birthDate", {
-            required: "Birth date is required",
-            validate: (value) => {
-              const today = new Date();
-              const chosen = new Date(value);
-              if (chosen > today) return "Birth date cannot be in the future";
-              return true;
-            }
-          })}
-          error={!!errors.birthDate}
-          helperText={errors.birthDate?.message}
-        />
+<TextField
+  fullWidth
+  type="date"
+  {...register("birthDate", {
+    required: "Birth date is required",
+    validate: (value) => {
+      const today = new Date();
+      const chosen = new Date(value);
+      if (chosen > today) return "Birth date cannot be in the future";
+      return true;
+    }
+  })}
+  label="Birth date"              
+  InputLabelProps={{ shrink: true }} 
+  error={!!errors.birthDate}
+  helperText={errors.birthDate?.message}
+/>
         <TextField
           label="Enter phone number"
           placeholder="Phone number"

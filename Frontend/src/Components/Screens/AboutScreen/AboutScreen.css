@@ -11,10 +11,8 @@
   flex-direction: column;
   align-items: center;
 
-  /* subtle background to separate from the card */
-  background: radial-gradient(circle at top left, #9abfc3 0, #ffffff 45%, #fafafa 100%);
+  background: radial-gradient(circle at top left, #b9d3e0 0, #ffffff 45%, #d7ebef 100%);
 }
-
 /* ===== Title ===== */
 
 .AboutScreenTitle {
@@ -25,7 +23,7 @@
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.03em;
-  color: #68cced;
+  color: #0f7394;
   text-transform: uppercase;
 
   display: flex;
@@ -74,7 +72,7 @@
   position: absolute;
   inset: 0;
   height: 6px;
-  background: linear-gradient(90deg, #ffb74d, #ff9900);
+  background: linear-gradient(90deg, #a7d4e4, #0f7394);
 }
 
 /* subtle corner accent */
@@ -131,6 +129,25 @@
 
 /* ===== Mobile tweaks ===== */
 
+.Copyrights {
+  width: 100%;
+  max-width: 640px;
+  margin: 24px auto 0;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  text-align: center;
+  font-size: 12px;
+  color: #888888;
+
+  /* push it to the bottom of the page */
+  margin-top: auto;
+}
+
+.Copyrights p {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   .AboutScreen {
     padding: 24px 12px 32px;
@@ -153,5 +170,10 @@
 
   .RestOfContent {
     font-size: 15px;
+  }
+    .Copyrights {
+    max-width: 100%;
+    font-size: 11px;
+    padding-top: 10px;
   }
 }
