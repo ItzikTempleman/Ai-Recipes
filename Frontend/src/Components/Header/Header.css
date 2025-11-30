@@ -50,7 +50,9 @@
 .RecipesScreenLink.active,
 .LoginScreenLink.active,
 .ProfileScreenLink.active {
-  color: #68cced;
+  color: #2294ba;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 /* ===== Mobile layout ===== */

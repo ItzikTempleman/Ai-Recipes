@@ -77,16 +77,6 @@
 
 /* subtle corner accent */
 
-.AboutCard::after {
-  content: "";
-  position: absolute;
-  right: -40px;
-  top: -40px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 193, 79, 0.28), transparent 60%);
-}
 
 /* ensure content sits below the colored top strip */
 .AboutCard > * {
