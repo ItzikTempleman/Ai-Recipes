@@ -6,6 +6,7 @@ class Notify {
         position: {x: "center", y: "top"},
         dismissible: true,
         ripple: true
+    
     });
 
     public success(message: string): void {
