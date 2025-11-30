@@ -8,8 +8,7 @@ import { notify } from "../../../Utils/Notify";
 import { RecipeModel } from "../../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { AppState } from "../../../Redux/Store";
-import { useSelector } from "react-redux";
+
 
 
 export function RecipeInfoScreen() {
@@ -18,7 +17,7 @@ export function RecipeInfoScreen() {
     const recipeId = Number(params.id);
     const navigate = useNavigate();
     const [recipe, setRecipe] = useState<RecipeModel>();
-const user = useSelector((state: AppState) => state.user);
+
     useEffect(
         () => {
             if (!recipeId) {
