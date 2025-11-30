@@ -11,7 +11,7 @@ import { RecipeListItem } from "../../RecipeListItem/RecipeListItem";
 export function RecipesScreen() {
     useTitle("Recipes");
     const { items } = useSelector((state: AppState) => state.recipes);
-
+const user = useSelector((state: AppState) => state.user);
     useEffect(
         () => {
             recipeService.getAllRecipes();
@@ -21,7 +21,7 @@ const list = Array.isArray(items) ? items : [];
 
   return (
     <div className="RecipesScreen">
-      <p className="RecipesScreenTitle">Recipes</p>
+      <p className="RecipesScreenTitle">{user.firstName.trim()}'s saved  recipes</p>
       <div className="RecipeList">
         {list.length === 0 ? (
           <div>No recipes</div>

@@ -1,4 +1,4 @@
-import { NavLink,useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./Header.css";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
@@ -8,43 +8,69 @@ import { userService } from "../../Services/UserService";
 
 export function Header() {
   const user = useSelector((state: AppState) => state.user);
+
   async function logout(): Promise<void> {
-    notify.success(`Good bye ${user.firstName} ${user.familyName}`)
+    notify.success(`Good bye ${user.firstName} ${user.familyName}`);
     userService.logout();
   }
+
   const location = useLocation();
   const isAuthPage =
     location.pathname === "/login-screen" ||
     location.pathname === "/registration-screen";
 
+  const isLoggedInUser = !!user && accountProtection.isUser();
+
+  const showLoginLink = !isLoggedInUser && !isAuthPage;
+  const showUserLinks = isLoggedInUser;
+  const showUserNav = showLoginLink || showUserLinks;
+
   return (
     <div className="Header">
-      {user && accountProtection.isUser() && (
-        <div className="GeneralNavigation">
-          <NavLink to="/recipes-screen" className="RecipesScreenLink">My Recipes</NavLink>
-          |
-            <NavLink to="/home-screen" className="HomeScreenLink">Generate Recipe</NavLink>
+      {/* Left group – only when logged in */}
+      {isLoggedInUser && (
+        <div className="GeneralNavigation nav-group">
+          <NavLink to="/recipes-screen" className="RecipesScreenLink">
+            My Recipes
+          </NavLink>
+          <NavLink to="/home-screen" className="HomeScreenLink">
+            Generate
+          </NavLink>
         </div>
       )}
-       | <NavLink to="/about-screen" className="AboutScreenLink">About</NavLink>
-      
-<div className="UserNavigation">
-  <>
-    {!user && !isAuthPage && (
-      <NavLink to="/login-screen" className="LoginScreenLink">
-        Login
-      </NavLink> 
-    )}  |
-  </>
-  {user && accountProtection.isUser() && (
-    <>
-      <NavLink to="/profile-screen" className="ProfileScreenLink">Profile</NavLink>  |
-      <NavLink to="/login-screen" className="LogoutLink" onClick={logout}>
-        Logout
-      </NavLink>
-    </>
-  )}
-</div>
+
+      {/* Center – About is always shown */}
+      <div className="CenterNavigation">
+        <NavLink to="/about-screen" className="AboutScreenLink">
+          About
+        </NavLink>
+      </div>
+
+      {/* Right group – auth / user actions */}
+      {showUserNav && (
+        <div className="UserNavigation nav-group">
+          {showLoginLink && (
+            <NavLink to="/login-screen" className="LoginScreenLink">
+              Login
+            </NavLink>
+          )}
+
+          {showUserLinks && (
+            <>
+              <NavLink to="/profile-screen" className="ProfileScreenLink">
+                Profile
+              </NavLink>
+              <NavLink
+                to="/login-screen"
+                className="LogoutLink"
+                onClick={logout}
+              >
+                Logout
+              </NavLink>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

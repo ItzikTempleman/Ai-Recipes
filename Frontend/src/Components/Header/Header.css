@@ -1,7 +1,7 @@
 .Header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   padding: 12px 24px;
   box-sizing: border-box;
@@ -9,23 +9,45 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* Left / center / right nav groups */
-
+/* Groups */
 .GeneralNavigation,
-.UserNavigation {
+.UserNavigation,
+.CenterNavigation {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 
-/* Put the About link between left and right groups nicely */
-.AboutScreenLink {
-  margin: 0 24px;
-}
-
-/* On larger screens, push user nav to the right */
 .UserNavigation {
   margin-left: auto;
+}
+
+/* ----- Dividers between links inside the same group ----- */
+.nav-group a + a {
+  border-left: 1px solid #ccc;
+  padding-left: 18px; /* space after divider */
+  margin-left: 18px; 
+  margin-right: 18px; /* space before divider */
+}
+
+/* ----- Dividers around the About link (center block) ----- */
+.CenterNavigation {
+  padding: 0 18px; /* space around About */
+}
+
+/* By default, draw dividers on both sides of the center block */
+.Header > .CenterNavigation {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+/* If CenterNavigation is the FIRST child, there is no left group => remove left divider */
+.Header > .CenterNavigation:first-child {
+  border-left: none;
+}
+
+/* If CenterNavigation is the LAST child, there is no right group => remove right divider */
+.Header > .CenterNavigation:last-child {
+  border-right: none;
 }
 
 /* ===== Links ===== */
@@ -39,6 +61,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 8px 0; /* clickable height without affecting border height */
   font-size: 14px;
   text-decoration: none;
   color: #4b4b4b;
@@ -65,16 +88,18 @@
   }
 
   .GeneralNavigation,
-  .UserNavigation {
+  .UserNavigation,
+  .CenterNavigation {
     margin: 4px 0;
-    gap: 16px;
-  }
-
-  .AboutScreenLink {
-    margin: 4px 12px;
   }
 
   .UserNavigation {
     margin-left: 0;
+  }
+
+  /* Optional: remove vertical dividers on About when stacked */
+  .Header > .CenterNavigation {
+    border-left: none;
+    border-right: none;
   }
 }
