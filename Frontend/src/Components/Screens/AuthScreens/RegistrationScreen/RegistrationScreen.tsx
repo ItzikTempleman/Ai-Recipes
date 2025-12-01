@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTitle } from "../../../../Utils/Utils";
+import { isAgeOk, useTitle } from "../../../../Utils/Utils";
 import "./RegistrationScreen.css";
 import { Gender, User } from "../../../../Models/UserModel";
 import { useForm, Controller } from "react-hook-form";
@@ -142,7 +142,9 @@ export function RegistrationScreen() {
     validate: (value) => {
       const today = new Date();
       const chosen = new Date(value);
+      const isAgeValid = isAgeOk(chosen)
       if (chosen > today) return "Birth date cannot be in the future";
+      if(!isAgeValid) return "User must be at least 12 to register";
       return true;
     }
   })}

@@ -38,3 +38,9 @@ export function getAge(
 
   return age;
 }
+
+
+export function isAgeOk(chosenDate:Date):boolean{
+  const selectedAge = getAge(chosenDate);
+  return selectedAge>12;
+}
