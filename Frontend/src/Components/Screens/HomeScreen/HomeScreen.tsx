@@ -1,4 +1,4 @@
-import { IconButton, TextField, CircularProgress, InputAdornment, Box } from "@mui/material";
+import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import "./HomeScreen.css";
@@ -41,9 +41,6 @@ export function HomeScreen() {
 
   return (
     <div className="HomeScreen">
-
-
-  
       <div className="SearchContainer">
         <ImageSwitch onChange={setHasImage} />
         <form onSubmit={handleSubmit(send)}>
@@ -61,18 +58,16 @@ export function HomeScreen() {
                     "title is required"
                 })}
               disabled={loading}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {loading ? (
+            />
+         {loading ? (
                       <IconButton className="RoundedBtn" edge="end" disabled>
                         <Box><CircularProgress /></Box>
                       </IconButton>
                     ) : recipe ? (
-                      <IconButton
-                        className="RoundedBtn"
+                      <Button
+                       variant="contained"
+                        className="RectangularBtn"
                         type="button"
-                        edge="end"
                         aria-label="clear"
                         onClick={() => {
                           reset();
@@ -80,23 +75,18 @@ export function HomeScreen() {
                         }}
                       >
                         <CloseIcon />
-                      </IconButton>
+                      </Button>
                     ) : (
-                      <IconButton
-                        className="RoundedBtn"
+                      <Button
+                        variant="contained"
+                        className="RectangularBtn"
                         type="submit"
-                        edge="end"
                         aria-label="search"
                         disabled={loading}
                       >
                         <SearchIcon />
-                      </IconButton>
+                      </Button>
                     )}
-                  </InputAdornment>
-                )
-              }}
-            />
-         
                <p>Servings</p>
             <select className="QuantitySelector" value={initialQuantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
@@ -116,8 +106,8 @@ export function HomeScreen() {
         {
           loading && (
             hasImage ?
-              <h3 className="LoadingWithImage">Generating image, this will take a minute or two...</h3> :
-              <h3 className="LoadingWithoutImage">Generating recipe without an image, this will take a few seconds...</h3>
+              <h3 className="LoadingWithImage">Preparing your recipe… Loading image…</h3> :
+              <h3 className="LoadingWithoutImage">Preparing your recipe…</h3>
           )
         }
       </div>

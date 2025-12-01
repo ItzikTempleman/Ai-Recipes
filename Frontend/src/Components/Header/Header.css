@@ -5,8 +5,8 @@
   width: 100%;
   padding: 12px 24px;
   box-sizing: border-box;
-  background: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+background-color: white;
+  
 }
 
 /* Groups */
@@ -73,7 +73,7 @@
 .RecipesScreenLink.active,
 .LoginScreenLink.active,
 .ProfileScreenLink.active {
-  color: #2294ba;
+  color: #215898;
   font-weight: bold;
   font-size: 16px;
 }
@@ -87,6 +87,14 @@
     padding: 10px 12px;
   }
 
+  .LogoutLink,
+.HomeScreenLink,
+.AboutScreenLink,
+.RecipesScreenLink,
+.LoginScreenLink,
+.ProfileScreenLink {
+  font-size: 13px;
+}
   .GeneralNavigation,
   .UserNavigation,
   .CenterNavigation {

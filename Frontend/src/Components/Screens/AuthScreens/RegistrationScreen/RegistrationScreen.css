@@ -29,14 +29,31 @@
 }
 
 .RegistrationBtn{
-    background: #68cced !important;
+    background: #215898 !important;
   padding: 6px;
 
 } 
 
 .BackBtn{
-    background: #68cced !important;
+    background: #215898 !important;
   padding: 6px;
   width: 90px;
 }
 
+@media (max-width: 600px) {
+
+  .RegistrationForm {
+    padding: 60px 30px; 
+  }
+
+  .InputTextField {
+
+    margin: 4px 0;  
+    padding: 0;     
+  }
+.FromController{
+      align-items: center;
+    margin: 4px 0;  
+    padding: 0;     
+}
+  }

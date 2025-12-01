@@ -44,7 +44,7 @@ export function RecipeListItem({ recipe }: RecipeProps) {
                     <Button className="MoreInfoBtn"
                         onClick={moveToInfo}
                         variant="contained">
-                        More info
+                        Show Recipe
                         <ArrowForwardIosIcon />
                     </Button>
                 </div>

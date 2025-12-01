@@ -49,7 +49,7 @@ export function RegistrationScreen() {
           Back
         </Button>
         <h2 className="RegistrationScreenTitle">Registration</h2>
-        <TextField
+        <TextField  className="InputTextField"
           label="Enter first name"
           placeholder="first name"
           {...register("firstName", {
@@ -67,7 +67,7 @@ export function RegistrationScreen() {
               )
             }}
         />
-        <TextField
+        <TextField  className="InputTextField"
           label="Enter family name"
           placeholder="family name"
           {...register("familyName", {
@@ -85,7 +85,7 @@ export function RegistrationScreen() {
               )
             }}
         />
-        <TextField
+        <TextField  className="InputTextField"
           autoComplete="email"
           label="Enter email"
           placeholder="Email"
@@ -108,7 +108,7 @@ export function RegistrationScreen() {
           error={!!errors.email}
           helperText={errors.email?.message}
         />
-        <TextField
+        <TextField  className="InputTextField"
           autoComplete="current-password"
           label="Enter password"
           placeholder="Password"
@@ -134,7 +134,7 @@ export function RegistrationScreen() {
             )
           }}
         />
-<TextField
+<TextField  className="InputTextField"
   fullWidth
   type="date"
   {...register("birthDate", {
@@ -153,7 +153,7 @@ export function RegistrationScreen() {
   error={!!errors.birthDate}
   helperText={errors.birthDate?.message}
 />
-        <TextField
+        <TextField  className="InputTextField"
           label="Enter phone number"
           placeholder="Phone number"
           fullWidth
@@ -176,7 +176,7 @@ export function RegistrationScreen() {
           error={!!errors.phoneNumber}
           helperText={errors.phoneNumber?.message}
         />
-        <FormControl>
+        <FormControl  className="FromController">
           <Controller
             name="gender"
             control={control}

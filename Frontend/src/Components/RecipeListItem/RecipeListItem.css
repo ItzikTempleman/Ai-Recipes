@@ -36,8 +36,8 @@
   margin: 0 auto 16px;
 
   width: 100%;
-  max-width: 560px;     /* narrower than the card */
-  aspect-ratio: 16 / 9; /* nicer banner proportion */
+  max-width: 500px;     /* narrower than the card */
+  aspect-ratio: 4/3; /* nicer banner proportion */
   height: auto;
   object-fit: cover;
 
@@ -57,9 +57,12 @@
   width: 60%;
   max-width: 260px;
   margin-top: 8px;
-  background-color: #68cced !important;
-  color: #ffffff !important;
+  font-size: 18px !important;
+  background-color: #e0dfdf !important;
+  font-weight: bold  !important;
+  color: #206dba !important;
 }
+
 
 /* ===== Mobile tweaks ===== */
 

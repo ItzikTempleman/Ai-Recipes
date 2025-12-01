@@ -34,7 +34,7 @@ export function LoginScreen() {
       <form className="LoginForm" onSubmit={handleSubmit(send)}>
         <h2 className="LoginScreenTitle">Log in</h2>
 
-        <TextField
+        <TextField className="InputTextField"
           autoComplete="email" label="Enter Email" placeholder="Email" fullWidth
           InputProps={
             {
@@ -57,7 +57,7 @@ export function LoginScreen() {
           helperText={errors.email?.message}
         ></TextField>
 
-        <TextField
+        <TextField className="InputTextField"
           autoComplete="password"
           label="Enter password"
           placeholder="Password"

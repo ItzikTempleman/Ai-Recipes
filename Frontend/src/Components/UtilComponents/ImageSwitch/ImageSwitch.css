@@ -38,11 +38,11 @@
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected {
-  background: #68cced !important;
+  background: #215898 !important;
   color: white !important;
 }
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected:hover {
-  background: #68cced !important;
+  background: #215898 !important;
 }
