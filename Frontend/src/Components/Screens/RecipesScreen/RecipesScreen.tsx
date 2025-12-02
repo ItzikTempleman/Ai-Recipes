@@ -6,8 +6,6 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { RecipeListItem } from "../../RecipeListItem/RecipeListItem";
 
-
-
 export function RecipesScreen() {
     useTitle("Recipes");
     const { items } = useSelector((state: AppState) => state.recipes);

@@ -1,83 +1,59 @@
-/* ===== Card for each recipe in the list ===== */
-
-.RecipeListItem,
-.NoImageListItem {
-  width: 100%;
-  max-width: 640px;    /* was 800px */
-  margin: 0 auto;
-  padding: 16px;
+.RecipeListItem {
+  width: 360px; 
+  margin-left: 20px;
+  margin-top: 12px;
+  height: 250px;
+   padding: 32px 16px 8px; 
   box-sizing: border-box;
-
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: 16px;
   border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-/* For items without image, just ensure decent height */
-.NoImageListItem {
-  min-height: 100px;
+  gap: 20px;
+  position: relative;
+  overflow: visible;
 }
 
-/* Hover state */
-.RecipeListItem:hover,
-.NoImageListItem:hover {
+.RecipeListItem:hover {
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
-
-/* ===== Image inside the list card ===== */
 
 .CardImage {
-  display: block;
-  margin: 0 auto 16px;
-
-  width: 100%;
-  max-width: 500px;     /* narrower than the card */
-  aspect-ratio: 4/3; /* nicer banner proportion */
-  height: auto;
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-
-  border-radius: 8px;
+  border-radius: 100px;
 }
 
-/* ===== Text & button ===== */
+.RecipeListItem .DeleteIcon {
+  position: absolute !important;
+  top: 8px;
+  right: 8px;
+}
+
+
+.CardTitleContainer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;  
+  margin-bottom: 16px;
+}
 
 .CardTitle {
-  margin: 4px 0;
   color: #4d4d4d;
-  font-weight: 600;
+  margin: 0 0 12px 0;
+  text-align: center;
 }
 
 .MoreInfoBtn {
-  align-self: center;
-  width: 60%;
-  max-width: 260px;
-  margin-top: 8px;
-  font-size: 18px !important;
-  background-color: #e0dfdf !important;
-  font-weight: bold  !important;
-  color: #206dba !important;
+  margin-top: 12px; 
+  align-self: center;      
 }
 
-
-/* ===== Mobile tweaks ===== */
-
-@media (max-width: 600px) {
-  .RecipeListItem,
-  .NoImageListItem {
-    padding: 12px;
-    max-width: 100%;
-  }
-
-  .CardImage {
-    max-height: 200px;
-  }
-
-  .MoreInfoBtn {
-    width: 80%;
-  }
-}
