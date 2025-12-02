@@ -13,31 +13,28 @@ import { AboutScreen } from "../../Screens/AboutScreen/AboutScreen";
 import { ProfileScreen } from "../../Screens/ProfileScreen/ProfileScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
-import { accountProtection } from "../../../Utils/AccountProtection";
 
 
 export function Routing() {
+    const user = useSelector((state: AppState) => state.user);
+    const isLoggedIn = user && localStorage.getItem("token");
 
-      const user = useSelector((state: AppState) => state.user);
-  const isLoggedIn = !!user && accountProtection.isUser();
-  
     return (
         <div>
             <Routes>
-                
-                <Route path="/" element={<Navigate to={isLoggedIn
-                ? "/home-screen" : "/login-screen"}></Navigate>} />
+                <Route path="/" element={<Navigate to={isLoggedIn ? "/recipes-screen" : "/login-screen"} replace />} />
                 <Route path="*" element={<Page404 />} />
-                <Route path={isLoggedIn
-                ? "/home-screen" : "/login-screen"} element={    isLoggedIn
-            ? <HomeScreen  />
-            : <LoginScreen  />} />
+                <Route path="/home-screen" element={isLoggedIn ? <HomeScreen /> : <Navigate to="/login-screen" replace />} />
                 <Route path="/about-screen" element={<AboutScreen />} />
-                <Route path="/recipes-screen" element={<RecipesScreen />} />
-                <Route path="/recipe/:id" element={<RecipeInfoScreen />} />
-                <Route path="/login-screen" element={<LoginScreen />} />
-                <Route path="/registration-screen" element={<RegistrationScreen />} />
-                <Route path="/profile-screen" element={<ProfileScreen />} />
+
+                <Route path="/recipes-screen" element={isLoggedIn ? <RecipesScreen /> : <Navigate to="/login-screen" replace />} />
+
+                <Route path="/recipe/:id" element={isLoggedIn ? <RecipeInfoScreen /> : < Navigate to="/login-screen" replace />} />
+
+                <Route path="/login-screen" element={isLoggedIn ? <Navigate to="/recipes-screen" replace /> : <LoginScreen />} />
+
+                <Route path="/registration-screen" element={isLoggedIn ? <Navigate to="/recipes-screen" replace /> : <RegistrationScreen />} />
+                <Route path="/profile-screen" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/login-screen" replace />} />
             </Routes>
         </div>
     );

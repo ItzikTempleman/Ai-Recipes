@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import "./Header.css";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import { accountProtection } from "../../Utils/AccountProtection";
+
 import { notify } from "../../Utils/Notify";
 import { userService } from "../../Services/UserService";
 
@@ -16,14 +16,14 @@ export function Header() {
 
   const location = useLocation();
   const isAuthPage = location.pathname === "/login-screen" ||location.pathname === "/registration-screen";
-  const isLoggedInUser = !!user && accountProtection.isUser();
+  const isLoggedInUser = user && localStorage.getItem("token");
   const showLoginLink = !isLoggedInUser && !isAuthPage;
   const showUserLinks = isLoggedInUser;
   const showUserNav = showLoginLink || showUserLinks;
 
   return (
     <div className="Header">
-      {/* Left group – only when logged in */}
+
       {isLoggedInUser && (
         <div className="GeneralNavigation nav-group">
           <NavLink to="/recipes-screen" 
@@ -37,7 +37,6 @@ export function Header() {
         </div>
       )}
 
-      {/* About is always shown */}
       <div className="CenterNavigation">
         <NavLink to="/about-screen" 
         className="AboutScreenLink">
@@ -45,7 +44,6 @@ export function Header() {
         </NavLink>
       </div>
 
-      {/* Right group - user actions */}
       {showUserNav && (
         <div className="UserNavigation nav-group">
           {showLoginLink && (

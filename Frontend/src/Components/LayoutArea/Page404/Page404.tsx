@@ -2,14 +2,13 @@ import { NavLink } from "react-router-dom";
 import { useTitle } from "../../../Utils/Utils";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
-import { accountProtection } from "../../../Utils/AccountProtection";
 import "./Page404.css";
 
 export function Page404() {
     useTitle("Page not found")
 
     const user = useSelector((state: AppState) => state.user);
-    const isLoggedIn = !!user && accountProtection.isUser();
+    const isLoggedIn = user && localStorage.getItem("token");
 
     return (
         <div className="Page404">

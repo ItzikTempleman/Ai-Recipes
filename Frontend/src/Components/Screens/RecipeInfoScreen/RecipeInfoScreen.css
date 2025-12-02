@@ -1,5 +1,3 @@
-/* ===== Layout wrapper ===== */
-
 .RecipeInfoScreen {
   width: 100%;
   min-height: 100vh;
@@ -11,8 +9,6 @@
   flex-direction: column;
   align-items: center;
 }
-
-/* ===== Back button ===== */
 
 .BackBtnContainer {
   width: 100%;
@@ -27,11 +23,9 @@
   padding: 6px 12px !important;
 }
 
-/* ===== Main card ===== */
-
 .InfoScreenContainer {
   width: 100%;
-  max-width: 800px;                 /* nice width on desktop */
+  max-width: 800px;              
   margin: 0 auto;
   padding: 24px;
   box-sizing: border-box;
@@ -42,19 +36,15 @@
   text-align: left;
 }
 
-/* ===== Image ===== */
-
 .RecipeInImage {
   display: block;
   margin: 0 auto 20px;
-  width: 100%;                      /* responsive */
-  max-width: 600px;                 /* never wider than this */
-  max-height: 320px;                /* keep it from being huge */
-  object-fit: cover;                /* crop nicely if needed */
+  width: 100%;              
+  max-width: 600px;           
+  max-height: 320px;                
+  object-fit: cover;              
   border-radius: 10px;
 }
-
-/* ===== Typography & sections ===== */
 
 .InfoScreenContainer h2,
 .InfoScreenContainer h3,
@@ -80,8 +70,6 @@
   margin: 0;
 }
 
-/* ===== Ingredients ===== */
-
 .IngredientsList {
   margin-top: 20px;
   padding-top: 16px;
@@ -103,8 +91,6 @@
   color: #555;
 }
 
-/* ===== Instructions ===== */
-
 .InstructionsList {
   margin-top: 24px;
   padding-top: 16px;
@@ -124,8 +110,6 @@
   margin-bottom: 10px;
 }
 
-/* ===== Mobile tweaks ===== */
-
 @media (max-width: 600px) {
   .RecipeInfoScreen {
     padding: 16px 8px 24px;
@@ -133,7 +117,7 @@
 
   .InfoScreenContainer {
     padding: 16px;
-    max-width: 100%;          /* full width, no overflow */
+    max-width: 100%;  
   }
 
   .RecipeInImage {
