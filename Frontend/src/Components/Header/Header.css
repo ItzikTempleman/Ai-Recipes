@@ -1,56 +1,41 @@
 .Header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-start; 
   width: 100%;
   padding: 12px 24px;
   box-sizing: border-box;
-background-color: white;
-  
+  background-color: white;
 }
 
-/* Groups */
 .GeneralNavigation,
-.UserNavigation,
-.CenterNavigation {
+.CenterNavigation,
+.UserNavigation {
   display: flex;
   align-items: center;
 }
 
 .UserNavigation {
-  margin-left: auto;
+  margin-left: auto; 
 }
 
-/* ----- Dividers between links inside the same group ----- */
-.nav-group a + a {
+.GeneralNavigation a + a{
   border-left: 1px solid #ccc;
-  padding-left: 18px; /* space after divider */
-  margin-left: 18px; 
-  margin-right: 18px; /* space before divider */
+  margin-left: 14px;
+  padding-left: 14px;
 }
 
-/* ----- Dividers around the About link (center block) ----- */
+.UserNavigation a + a {
+ margin-left: 14px;
+  padding-left: 14px;
+}
+
 .CenterNavigation {
-  padding: 0 18px; /* space around About */
-}
-
-/* By default, draw dividers on both sides of the center block */
-.Header > .CenterNavigation {
+  margin: 0 14px;
+  padding: 0 14px;
   border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+ 
 }
-
-/* If CenterNavigation is the FIRST child, there is no left group => remove left divider */
-.Header > .CenterNavigation:first-child {
-  border-left: none;
-}
-
-/* If CenterNavigation is the LAST child, there is no right group => remove right divider */
-.Header > .CenterNavigation:last-child {
-  border-right: none;
-}
-
-/* ===== Links ===== */
 
 .LogoutLink,
 .HomeScreenLink,
@@ -61,13 +46,12 @@ background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 0; /* clickable height without affecting border height */
+  padding: 8px 0;        
   font-size: 14px;
   text-decoration: none;
   color: #4b4b4b;
 }
 
-/* Active nav item */
 .HomeScreenLink.active,
 .AboutScreenLink.active,
 .RecipesScreenLink.active,
@@ -78,36 +62,32 @@ background-color: white;
   font-size: 16px;
 }
 
-/* ===== Mobile layout ===== */
+.LogoutLink {
+  color: #ff0000 !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
 
 @media (max-width: 600px) {
   .Header {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px 12px;
+   padding: 12px 24px; 
+    flex-wrap: wrap;   
   }
 
-  .LogoutLink,
-.HomeScreenLink,
-.AboutScreenLink,
-.RecipesScreenLink,
-.LoginScreenLink,
-.ProfileScreenLink {
-  font-size: 13px;
-}
-  .GeneralNavigation,
-  .UserNavigation,
+  .GeneralNavigation a + a{
+    margin-left: 14px;
+    padding-left: 14px;
+    border-left: 1px solid #ccc;
+  }
+
+  .UserNavigation a + a {
+    margin-left: 14px;
+    padding-left: 14px;
+  }
+
   .CenterNavigation {
-    margin: 4px 0;
-  }
-
-  .UserNavigation {
-    margin-left: 0;
-  }
-
-  /* Optional: remove vertical dividers on About when stacked */
-  .Header > .CenterNavigation {
-    border-left: none;
-    border-right: none;
+    margin: 0 14px;
+    padding: 0 14px;
+    border-right: 1px solid #5f5f5f;
   }
 }

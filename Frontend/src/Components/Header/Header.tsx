@@ -15,12 +15,8 @@ export function Header() {
   }
 
   const location = useLocation();
-  const isAuthPage =
-    location.pathname === "/login-screen" ||
-    location.pathname === "/registration-screen";
-
+  const isAuthPage = location.pathname === "/login-screen" ||location.pathname === "/registration-screen";
   const isLoggedInUser = !!user && accountProtection.isUser();
-
   const showLoginLink = !isLoggedInUser && !isAuthPage;
   const showUserLinks = isLoggedInUser;
   const showUserNav = showLoginLink || showUserLinks;
@@ -30,34 +26,38 @@ export function Header() {
       {/* Left group – only when logged in */}
       {isLoggedInUser && (
         <div className="GeneralNavigation nav-group">
-          <NavLink to="/recipes-screen" className="RecipesScreenLink">
+          <NavLink to="/recipes-screen" 
+          className="RecipesScreenLink">
             My Recipes
           </NavLink>
-          <NavLink to="/home-screen" className="HomeScreenLink">
+          <NavLink to="/home-screen" 
+          className="HomeScreenLink">
             Generate
           </NavLink>
         </div>
       )}
 
-      {/* Center – About is always shown */}
+      {/* About is always shown */}
       <div className="CenterNavigation">
-        <NavLink to="/about-screen" className="AboutScreenLink">
+        <NavLink to="/about-screen" 
+        className="AboutScreenLink">
           About
         </NavLink>
       </div>
 
-      {/* Right group – auth / user actions */}
+      {/* Right group - user actions */}
       {showUserNav && (
         <div className="UserNavigation nav-group">
           {showLoginLink && (
-            <NavLink to="/login-screen" className="LoginScreenLink">
+            <NavLink to="/login-screen"
+             className="LoginScreenLink">
               Login
             </NavLink>
           )}
-
           {showUserLinks && (
             <>
-              <NavLink to="/profile-screen" className="ProfileScreenLink">
+              <NavLink to="/profile-screen" 
+              className="ProfileScreenLink">
                 Profile
               </NavLink>
               <NavLink
