@@ -3,9 +3,14 @@
   align-items: center;
   justify-content: flex-start; 
   width: 100%;
-  padding: 12px 24px;
+  padding: 6px 20px;
   box-sizing: border-box;
   background-color: white;
+}
+
+.Header p {
+  margin: 1px 0 0;   
+  line-height: 1.1;  
 }
 
 .GeneralNavigation,
@@ -20,7 +25,7 @@
 }
 
 .GeneralNavigation a + a{
-  border-left: 1px solid #ccc;
+
   margin-left: 12px;
   padding-left: 12px;
 }
@@ -33,7 +38,7 @@
 .CenterNavigation {
   margin: 0 12px;
   padding: 0 12px;
-  border-left: 1px solid #ccc;
+
 }
 
 .Header > .CenterNavigation:first-child {
@@ -61,8 +66,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 0;        
-  font-size: 14px;
+  padding: 2px 0;       
+  font-size: 12px;
   text-decoration: none;
   color: #4b4b4b;
 }
@@ -74,7 +79,7 @@
 .ProfileScreenLink.active {
   color: #215898;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .LogoutLink {
@@ -85,8 +90,13 @@
 
 @media (max-width: 600px) {
   .Header {
-    padding: 12px; 
+    padding: 6px 12px;
     flex-wrap: wrap;   
+  }
+
+    .Header p {  
+    margin: 1px 0 0;
+    line-height: 1.1;
   }
 
   .HomeScreenLink,
@@ -94,13 +104,13 @@
   .RecipesScreenLink,
   .LoginScreenLink,
   .ProfileScreenLink {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .GeneralNavigation a + a{
     margin-left: 12px;
     padding-left: 12px;
-    border-left: 1px solid #ccc;
+
   }
 
   .UserNavigation a + a {
