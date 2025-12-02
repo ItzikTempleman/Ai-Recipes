@@ -16,7 +16,6 @@
 
 }
 
-
 .ToggleGroup .MuiToggleButtonGroup-grouped {
   flex: 1;
   border: none;
@@ -28,7 +27,9 @@
 .ToggleGroup .MuiToggleButton-root {
   background: white;
   color: #4b4b4b;;
-
+  padding: 4px 10px;
+  min-height: 38px;    
+  line-height: 1.2;
 }
 
 
@@ -38,11 +39,8 @@
 
 
 .ToggleGroup .MuiToggleButton-root.Mui-selected {
-  background: #215898 !important;
+  background: #285487 !important;
   color: white !important;
 }
 
 
-.ToggleGroup .MuiToggleButton-root.Mui-selected:hover {
-  background: #215898 !important;
-}

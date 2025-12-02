@@ -67,7 +67,6 @@ export type DbRecipeRow = {
     userId: number | null;  
 };
 
-
 export class FullRecipeModel {
     public id?: number;
     public title!: string;
