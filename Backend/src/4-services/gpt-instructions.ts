@@ -1,4 +1,7 @@
-export function getInstructions() :string {
+import { CaloryRestrictions, DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, QueryRestrictions, SugarRestriction } from "../3-models/filters"
+
+
+export function getInstructions(): string {
   return `You are a culinary expert who writes clear, reliable recipes for home cooks.
 
 LANGUAGE & DIRECTION:
@@ -37,24 +40,103 @@ CONSTRAINTS & VALIDITY:
 }
 
 
-export function getBreakDownInstructions(query:string,quantity:number):string{
+export function getBreakDownInstructions(
+  query: string,
+  quantity: number,
+  sugarRestriction: SugarRestriction,
+  lactoseRestrictions: LactoseRestrictions,
+  glutenRestrictions: GlutenRestrictions,
+  dietaryRestrictions: DietaryRestrictions,
+  caloryRestrictions: CaloryRestrictions,
+  queryRestrictions: QueryRestrictions
+): string {
   return `
-  Create a concise home-cook recipe 
- for "${query}" and amount is "${quantity}".
-  Return ONLY a JSON object in exactly this shape:
-   { 
-    "title":string,               // the real-world dish name (not the user's query if it differs) 
-    "amountOfServings":number,    //MUST EQUAL ${quantity} exactly.
-    "description":string,          // describe in simple words what the dish is. if the dish is fictional- start with "fictional dish" 
-    "popularity":number,           // rate based on real world survey approximately from 1 to 10 only rounded numbers. if no data is available return 0
-    "ingredients": [{ "ingredient": "string", "amount": "string|null" }, ... ], 
-    "instructions": ["step 1", "..."],
-    "totalSugar": number,         // approximate total sugar in grams for the whole recipe
-    "totalProtein":number,        // approximate protein in grams per 100 grams
-    "healthLevel":number,         // approximate overall health level from 1 to 10 in 0.1 steps. example: 5.1, 5.2, 5.3
-    "calories": number,           // approximate total calories for the whole recipe 
-    } 
-    - Keep ingredients and amounts paired per item.
-    - If there’s no precise amount, set "amount": null or a readable phrase. - The "title" must be the commonly-used dish name for what you’re actually describing.
-  `
+Create a concise home-cook recipe 
+for "${query}" and amount is "${quantity}".
+
+You receive the following RESTRICTION FLAGS (numeric enums):
+
+- SugarRestriction: 0 = DEFAULT, 1 = LOW, 2 = NONE
+- LactoseRestrictions: 0 = DEFAULT, 1 = NONE (lactose free)
+- GlutenRestrictions: 0 = DEFAULT, 1 = NONE (gluten free)
+- DietaryRestrictions: 0 = DEFAULT, 1 = VEGAN, 2 = KOSHER, 3 = HALAL
+- CaloryRestrictions: 0 = DEFAULT, 1 = LOW
+
+THESE VALUES ARE ALREADY DECIDED FOR THIS REQUEST:
+
+- sugarRestriction = ${sugarRestriction}
+- lactoseRestrictions = ${lactoseRestrictions}
+- glutenRestrictions = ${glutenRestrictions}
+- dietaryRestrictions = ${dietaryRestrictions}
+- caloryRestrictions = ${caloryRestrictions}
+- queryRestrictions = ${JSON.stringify(queryRestrictions)}
+
+YOU MUST:
+
+1. **Copy these values EXACTLY into the JSON output.**
+   - Do NOT change their numeric value.
+   - Do NOT replace them with other numbers.
+
+2. **Make the RECIPE follow the restrictions:**
+   - If DietaryRestrictions = 1 (VEGAN):
+     - No meat, fish, eggs, dairy, gelatin or any animal-derived products.
+   - If DietaryRestrictions = 2 (KOSHER):
+     - No pork or shellfish.
+     - Do NOT mix meat and dairy in the same recipe.
+       - If the query is for a dish that normally mixes meat and cheese
+         (for example, a cheeseburger), you MUST:
+           - Either use non-dairy (pareve/vegan) cheese with real meat,
+           - Or make a vegetarian patty with real cheese,
+           - Or otherwise adjust the recipe so it is fully kosher.
+   - If DietaryRestrictions = 3 (HALAL):
+     - No pork or pork-derived products.
+     - No alcohol.
+   - If LactoseRestrictions = 1:
+     - Do NOT use regular milk, cream, butter or cheese. Use lactose-free or plant-based alternatives.
+   - If GlutenRestrictions = 1:
+     - Do NOT use wheat, barley, rye, or regular bread/flour. Use gluten-free alternatives.
+   - If CaloryRestrictions = 1:
+     - Prefer leaner cooking methods and lighter ingredients. Reduce obvious fats/sugars where reasonable.
+   - If SugarRestriction = 1 or 2:
+     - Reduce or remove added sugar accordingly.
+
+3. **Respect queryRestrictions strictly:**
+   - "queryRestrictions" is a list of ingredients or keywords the user DOES NOT WANT.
+   - NONE of the items in queryRestrictions may appear in the ingredients list.
+   - Do NOT add new items to queryRestrictions or remove any.
+
+Return ONLY a JSON object in exactly this shape (no comments inside the JSON):
+
+{
+  "title": "string",
+  "amountOfServings": ${quantity},
+  "description": "string",
+  "popularity": 0,
+  "ingredients": [
+    { "ingredient": "string", "amount": "string|null" }
+  ],
+  "instructions": [
+    "step 1"
+  ],
+  "totalSugar": 0,
+  "totalProtein": 0,
+  "healthLevel": 0,
+  "calories": 0,
+
+  "sugarRestriction": ${sugarRestriction},
+  "lactoseRestrictions": ${lactoseRestrictions},
+  "glutenRestrictions": ${glutenRestrictions},
+  "dietaryRestrictions": ${dietaryRestrictions},
+  "caloryRestrictions": ${caloryRestrictions},
+
+  "queryRestrictions": ${JSON.stringify(queryRestrictions)}
+}
+
+VERY IMPORTANT:
+- The values for "sugarRestriction", "lactoseRestrictions", "glutenRestrictions",
+  "dietaryRestrictions", "caloryRestrictions" MUST be exactly the numbers provided above.
+- The value for "queryRestrictions" MUST be exactly the JSON array provided above
+  (same items, same order, no additions or removals).
+- Do NOT include any of the "queryRestrictions" items in the ingredients list.
+`;
 }

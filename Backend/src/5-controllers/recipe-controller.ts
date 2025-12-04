@@ -1,4 +1,4 @@
-import express, { NextFunction,Request, Response, Router } from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
 import { StatusCode } from "../3-models/status-code";
 import { FullRecipeModel } from "../3-models/recipe-model";
 import { recipeService } from "../4-services/recipe-service";
@@ -9,16 +9,16 @@ import { UserModel } from "../3-models/user-model";
 class RecipeController {
   public router: Router = express.Router();
   public constructor() {
-    this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyLoggedIn,this.generateFreeNoImageRecipe);
-    this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyLoggedIn,this.generateRecipeWithImage);
+    this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyLoggedIn, this.generateFreeNoImageRecipe);
+    this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyLoggedIn, this.generateRecipeWithImage);
     this.router.get("/api/recipes/all", verificationMiddleware.verifyLoggedIn, this.getRecipes);
-    this.router.get("/api/recipe/:id",  verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
-    this.router.get("/api/recipes/images/:fileName", verificationMiddleware.verifyLoggedIn,this.getImageFile);
-    this.router.delete("/api/recipe/:id", verificationMiddleware.verifyLoggedIn,this.deleteRecipe)
+    this.router.get("/api/recipe/:id", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
+    this.router.get("/api/recipes/images/:fileName", verificationMiddleware.verifyLoggedIn, this.getImageFile);
+    this.router.delete("/api/recipe/:id", verificationMiddleware.verifyLoggedIn, this.deleteRecipe)
   };
 
   private async getRecipes(request: Request, response: Response) {
-const user = (request as any).user as UserModel;
+    const user = (request as any).user as UserModel;
     const recipes = await recipeService.getRecipes(user.id);
     response.json(recipes);
   }
@@ -33,13 +33,22 @@ const user = (request as any).user as UserModel;
   private async generateFreeNoImageRecipe(request: Request, response: Response) {
     const user = (request as any).user as UserModel;
     const quantity = Number(request.params.amount);
-    const inputModel = new InputModel({ query: request.body.query, quantity } as InputModel);
+    const inputModel = new InputModel({
+      query: request.body.query,
+      quantity,
+      sugarRestriction: request.body.sugarRestriction,
+      lactoseRestrictions: request.body.lactoseRestrictions,
+      glutenRestrictions: request.body.glutenRestrictions,
+      dietaryRestrictions: request.body.dietaryRestrictions,
+      caloryRestrictions: request.body.caloryRestrictions,
+      queryRestrictions: request.body.queryRestrictions
+    } as InputModel);
 
     const data = await recipeService.generateInstructions(inputModel, false);
 
     const noImageRecipe = new FullRecipeModel({
       title: data.title,
-      amountOfServings:quantity,
+      amountOfServings: quantity,
       description: data.description,
       popularity: data.popularity,
       data: { ingredients: data.ingredients, instructions: data.instructions },
@@ -47,10 +56,16 @@ const user = (request as any).user as UserModel;
       totalProtein: data.totalProtein,
       healthLevel: data.healthLevel,
       calories: data.calories,
+      sugarRestriction: data.sugarRestriction,
+      lactoseRestrictions: data.lactoseRestrictions,
+      glutenRestrictions: data.glutenRestrictions,
+      dietaryRestrictions: data.dietaryRestrictions,
+      caloryRestrictions: data.caloryRestrictions,
+      queryRestrictions: data.queryRestrictions,
       image: undefined,
       imageUrl: undefined,
       imageName: undefined,
-      userId:user.id
+      userId: user.id
     } as FullRecipeModel);
 
     const dbNoImageRecipe = await recipeService.saveRecipe(noImageRecipe, user.id);
@@ -58,9 +73,18 @@ const user = (request as any).user as UserModel;
   }
 
   private async generateRecipeWithImage(request: Request, response: Response) {
-     const user = (request as any).user as UserModel;
+    const user = (request as any).user as UserModel;
     const quantity = Number(request.params.amount);
-    const inputModel = new InputModel({ query: request.body.query, quantity } as InputModel);
+    const inputModel = new InputModel({
+      query: request.body.query,
+      quantity,
+      sugarRestriction: request.body.sugarRestriction,
+      lactoseRestrictions: request.body.lactoseRestrictions,
+      glutenRestrictions: request.body.glutenRestrictions,
+      dietaryRestrictions: request.body.dietaryRestrictions,
+      caloryRestrictions: request.body.caloryRestrictions,
+      queryRestrictions: request.body.queryRestrictions
+    } as InputModel);
     const data = await recipeService.generateInstructions(inputModel, true);
     const { fileName, url } = await recipeService.generateImage(inputModel);
 
@@ -74,6 +98,12 @@ const user = (request as any).user as UserModel;
       totalProtein: data.totalProtein,
       healthLevel: data.healthLevel,
       calories: data.calories,
+      sugarRestriction: data.sugarRestriction,
+      lactoseRestrictions: data.lactoseRestrictions,
+      glutenRestrictions: data.glutenRestrictions,
+      dietaryRestrictions: data.dietaryRestrictions,
+      caloryRestrictions: data.caloryRestrictions,
+      queryRestrictions: data.queryRestrictions,
       image: undefined,
       imageUrl: url,
       imageName: fileName,

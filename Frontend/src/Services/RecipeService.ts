@@ -1,4 +1,4 @@
-import { RecipeModel, InputModel } from "../Models/RecipeModel";
+import { RecipeModel, InputModel, SugarRestriction } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios ,{ AxiosRequestConfig } from "axios";
@@ -18,10 +18,10 @@ class RecipeService {
         return { headers: { Authorization: `Bearer ${token}` } };
     }
 
-  public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1): Promise<RecipeModel> {
+  public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1, sugarLevel:SugarRestriction): Promise<RecipeModel> {
     try {
       store.dispatch(setIsLoading(true));
-      const body: InputModel = { query: title.query };
+      const body: InputModel = { query: title.query , sugarLevel};
 
            const base = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
       const url = `${base}/${Number(quantity) || 1}`;

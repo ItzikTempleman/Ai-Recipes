@@ -1,26 +1,30 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
-import "./HomeScreen.css";
+import "./GenerateScreen.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { InputModel, RecipeState } from "../../../Models/RecipeModel";
+import { InputModel, RecipeState, SugarRestriction } from "../../../Models/RecipeModel";
 import { useTitle } from "../../../Utils/Utils";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
 import { ImageSwitch } from "../../UtilComponents/ImageSwitch/ImageSwitch";
 import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { RecipeCard } from "../../RecipeCard/RecipeCard";
+import AutoAwesome from "@mui/icons-material/AutoAwesome";
+import TuneIcon from '@mui/icons-material/Tune';
+
+import { Filters } from "../../UtilComponents/Filters/Filters";
 
 type RecipeStateType = {
   recipes: RecipeState
 };
 
-export function HomeScreen() {
-  useTitle("Home");
+export function GenerateScreen() {
+  useTitle("Generate");
 
   const dispatch = useDispatch();
+const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
 
   const { register, handleSubmit, reset } = useForm<InputModel>();
   const [initialQuantity, setQuantity] = useState(1);
@@ -32,7 +36,7 @@ export function HomeScreen() {
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
-      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity);
+      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel);
       reset();
     } catch (err: unknown) {
       notify.error(err);
@@ -40,9 +44,9 @@ export function HomeScreen() {
   }
 
   return (
-    <div className="HomeScreen">
+    <div className="GenerateScreen">
       <div className="SearchContainer">
-        <ImageSwitch onChange={setHasImage} />
+
         <form onSubmit={handleSubmit(send)}>
           <div className="InputData">
             <TextField
@@ -59,47 +63,62 @@ export function HomeScreen() {
                 })}
               disabled={loading}
             />
-         {loading ? (
-                      <IconButton className="RoundedBtn" edge="end" disabled>
-                        <Box><CircularProgress /></Box>
-                      </IconButton>
-                    ) : recipe ? (
-                      <Button
-                       variant="contained"
-                        className="RectangularBtn"
-                        type="button"
-                        aria-label="clear"
-                        onClick={() => {
-                          reset();
-                          dispatch(resetGenerated());
-                        }}
-                      >
-                        <CloseIcon />
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        className="RectangularBtn"
-                        type="submit"
-                        aria-label="search"
-                        disabled={loading}
-                      >
-                        <SearchIcon />
-                      </Button>
-                    )}
-               <p>Servings</p>
-            <select className="QuantitySelector" value={initialQuantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-            >
-              {
-                [...Array(20)].map((_,i) => (
-                  <option key={i+1} value={i+1}>{i+1}</option>
-                ))
-              }
-            </select>
+            {loading ? (
+              <IconButton className="RoundedBtn" edge="end" disabled>
+                <Box><CircularProgress /></Box>
+              </IconButton>
+            ) : recipe ? (
+              <Button
+                variant="contained"
+                className="RectangularBtn"
+                type="button"
+                aria-label="clear"
+                onClick={() => {
+                  reset();
+                  dispatch(resetGenerated());
+                }}
+              >
+                <CloseIcon />
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                className="RectangularBtn"
+                type="submit"
+                aria-label="search"
+                disabled={loading}
+              >
+                Go <AutoAwesome className="BtnIcon" />
+              </Button>
+            )}
           </div>
-         
+
+          <TuneIcon />
+          <div className="FiltersColumn">
+
+            <div className="Servings">
+              <p>Servings</p>
+              <select className="QuantitySelector" value={initialQuantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+              >
+                {
+                  [...Array(10)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <div className="ImageSwitchRow">
+              <ImageSwitch onChange={setHasImage} />
+            </div>
+            <div>
+              <Filters onSugarLevelSelect={(sl)=>{
+                setSugarLevel(sl)
+              }}/>
+            </div>
+          </div>
         </form>
+
         {
           error && <div className="ErrorText">{error}</div>
         }

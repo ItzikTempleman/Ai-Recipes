@@ -25,7 +25,6 @@
 }
 
 .GeneralNavigation a + a{
-
   margin-left: 12px;
   padding-left: 12px;
 }
@@ -58,7 +57,7 @@
 }
 
 .LogoutLink,
-.HomeScreenLink,
+.GenerateScreenLink,
 .AboutScreenLink,
 .RecipesScreenLink,
 .LoginScreenLink,
@@ -72,7 +71,7 @@
   color: #4b4b4b;
 }
 
-.HomeScreenLink.active,
+.GenerateScreenLink.active,
 .AboutScreenLink.active,
 .RecipesScreenLink.active,
 .LoginScreenLink.active,
@@ -99,7 +98,7 @@
     line-height: 1.1;
   }
 
-  .HomeScreenLink,
+  .GenerateScreenLink,
   .AboutScreenLink,
   .RecipesScreenLink,
   .LoginScreenLink,

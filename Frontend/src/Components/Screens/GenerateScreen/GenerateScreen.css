@@ -1,6 +1,4 @@
-/* ===== Layout wrapper ===== */
-
-.HomeScreen {
+.GenerateScreen {
   width: 100%;
   min-height: 100vh;
   margin: 0;
@@ -12,11 +10,8 @@
   align-items: center;
 }
 
-/* ===== Search card ===== */
-
 .SearchContainer {
-  width: 100%;
-  max-width: 800px;
+  width: 700px;
   margin: 0 auto;
   padding: 24px;
   box-sizing: border-box;
@@ -29,7 +24,6 @@
   gap: 16px;
 }
 
-/* Wrapper around TextField + servings selector */
 .InputData {
   display: flex;
   align-items: center;
@@ -37,19 +31,36 @@
   margin-top: 8px;
 }
 
-/* Text field */
+.FiltersColumn {
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.28); 
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;   
+  border-radius: 4px;
+  gap: 8px;               
+  text-align: right;  
+  padding: 8px;     
+}
+
+.Servings {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ImageSwitchRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .SearchTF {
   flex: 1;
 }
 
-/* Rounded icon buttons inside the text field */
-.RoundedBtn {
-  border-radius: 9999px !important;
-}
-
-/* Servings selector */
 .QuantitySelector {
-  width: 80px;
+  width: 60px;
   height: 40px;
   border-radius: 6px;
   border: 1px solid #d0d0d0;
@@ -58,7 +69,6 @@
   box-sizing: border-box;
 }
 
-/* Error + loading text */
 .ErrorText {
   margin-top: 8px;
   color: #d32f2f;
@@ -73,7 +83,6 @@
   font-size: 0.95rem;
 }
 
-/* Where the RecipeCard sits */
 .CenterRow {
   width: 100%;
   margin-top: 24px;
@@ -81,16 +90,20 @@
   justify-content: center;
 }
 
-/* Just in case other screens use this class name */
 .NewScreenTitle {
   margin-bottom: 12px;
   text-align: center;
 }
 
-/* ===== Mobile tweaks ===== */
-.RectangularBtn{
-  border-radius: 12px;
-  width: 50px;
+.RectangularBtn {
+  border-radius: 8px;
+  width: auto;
+
+}
+
+.BtnIcon {
+  margin-left: 12px;
+  color: #f0b43a;
 }
 
 @media (max-width: 600px) {
@@ -101,16 +114,12 @@
   .SearchContainer {
     padding: 16px;
     max-width: 100%;
-    
+
   }
-.RectangularBtn{
-  border-radius: 12px;
-  width: 20%;
- align-self: center;
-}
+
   .InputData {
-     flex-direction: column;
-    align-items: stretch; 
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .QuantitySelector {

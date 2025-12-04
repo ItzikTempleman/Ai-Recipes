@@ -18,7 +18,6 @@ export function ImageSwitch(
     onChange(selected === "Full"); 
   }
 
-
   return (
     <div className="ImageSwitch">
   
@@ -28,8 +27,9 @@ export function ImageSwitch(
         onChange={handleChange}
         className="ToggleGroup"
       >
+        <ToggleButton value="Full" className="ToggleBtn">With image</ToggleButton>
          <ToggleButton value="NoImage" className="ToggleBtn">Without image</ToggleButton>
-                <ToggleButton value="Full" className="ToggleBtn">With image</ToggleButton>
+         
        
 
       </ToggleButtonGroup>

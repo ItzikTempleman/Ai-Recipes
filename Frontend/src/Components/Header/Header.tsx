@@ -39,7 +39,7 @@ export function Header() {
             </div>
           </NavLink>
 
-          <NavLink to="/home-screen" className="HomeScreenLink">
+          <NavLink to="/generate-screen" className="GenerateScreenLink">
             <div className="Generate">
               <LibraryAdd />
               <p>Generate</p>
@@ -48,7 +48,6 @@ export function Header() {
         </div>
       )}
 
-      {/* Right side: About + Login/Profile/Logout */}
       <div className="UserNavigation nav-group">
         <NavLink to="/about-screen" className="AboutScreenLink">
           <div className="About">

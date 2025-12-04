@@ -96,7 +96,36 @@ class RecipeService {
     const healthLevel = recipe.healthLevel;
     const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
-    const sql = "insert into recipe(title, amountOfServings, description, popularity, ingredients, instructions, totalSugar, totalProtein, healthLevel, calories, amounts, imageName, userId) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    const sugarRestriction = recipe.sugarRestriction;           // enum SugarRestriction
+    const lactoseRestrictions = recipe.lactoseRestrictions;     // enum LactoseRestrictions
+    const glutenRestrictions = recipe.glutenRestrictions;       // enum GlutenRestrictions
+    const dietaryRestrictions = recipe.dietaryRestrictions;     // enum DietaryRestrictions
+    const caloryRestrictions = recipe.caloryRestrictions;       // enum CaloryRestrictions
+    const queryRestrictionsJson = JSON.stringify(
+      recipe.queryRestrictions ?? []
+    ); 
+
+    const sql = `insert into recipe(
+        title,
+        amountOfServings,
+        description,
+        popularity,
+        ingredients,
+        instructions,
+        totalSugar,
+        totalProtein,
+        healthLevel,
+        calories,
+        amounts,
+        sugarRestriction,
+        lactoseRestrictions,
+        glutenRestrictions,
+        dietaryRestrictions,
+        caloryRestrictions,
+        queryRestrictions,
+        imageName,
+        userId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        `;
     const values = [
       title,
       amountOfServings,
@@ -109,6 +138,12 @@ class RecipeService {
       healthLevel,
       calories,
       amounts,
+      sugarRestriction,
+      lactoseRestrictions,
+      glutenRestrictions,
+      dietaryRestrictions,
+      caloryRestrictions,
+      queryRestrictionsJson,
       imageName,
       userId
     ];

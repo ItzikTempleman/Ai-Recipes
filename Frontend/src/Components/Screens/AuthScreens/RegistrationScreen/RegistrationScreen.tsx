@@ -29,7 +29,7 @@ export function RegistrationScreen() {
   async function send(user: User) {
     try {
       await userService.loginOrRegister({ register: user });
-      navigate("/home-screen");
+      navigate("/generate-screen");
       reset();
     } catch (err) {
       console.error("Registration failed", err);

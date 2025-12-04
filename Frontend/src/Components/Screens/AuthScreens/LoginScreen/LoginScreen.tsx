@@ -22,7 +22,7 @@ export function LoginScreen() {
   async function send(credentials: Credentials) {
     try {
       await userService.loginOrRegister({ login: credentials })
-      navigate("/home-screen");
+      navigate("/generate-screen");
       reset()
     } catch (err) {
       notify.error(err)

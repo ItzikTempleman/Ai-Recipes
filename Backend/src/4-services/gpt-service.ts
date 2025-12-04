@@ -44,6 +44,12 @@ class GptService {
     const totalProtein = formattedResponse?.totalProtein;
     const healthLevel = formattedResponse?.healthLevel;
     const calories = Number(formattedResponse?.calories);
+    const sugarRestriction = formattedResponse.sugarRestriction;
+    const lactoseRestrictions = formattedResponse.lactoseRestrictions;
+    const glutenRestrictions = formattedResponse.glutenRestrictions;
+    const dietaryRestrictions = formattedResponse.dietaryRestrictions;
+    const caloryRestrictions = formattedResponse.caloryRestrictions;
+    const queryRestrictions = formattedResponse.queryRestriction;
 
     if (
       !title ||
@@ -64,8 +70,15 @@ class GptService {
       totalSugar,
       totalProtein,
       healthLevel,
-      calories: Math.max(0, Math.round(calories))
+      calories: Math.max(0, Math.round(calories)),
+      sugarRestriction,
+      lactoseRestrictions,
+      glutenRestrictions, 
+      dietaryRestrictions, 
+      caloryRestrictions,
+       queryRestrictions
     };
+
   }
 }
 

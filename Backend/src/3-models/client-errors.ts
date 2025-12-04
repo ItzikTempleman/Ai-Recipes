@@ -2,7 +2,6 @@
     import { StatusCode } from "./status-code";
 
     export class ClientErrors {
-
         public status: StatusCode;
         public message: string;
 
