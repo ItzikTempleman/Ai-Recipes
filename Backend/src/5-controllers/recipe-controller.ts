@@ -5,6 +5,7 @@ import { recipeService } from "../4-services/recipe-service";
 import { InputModel } from "../3-models/InputModel";
 import { verificationMiddleware } from "../6-middleware/verification-middleware";
 import { UserModel } from "../3-models/user-model";
+import { generateImage } from "../4-services/image-service";
 
 class RecipeController {
   public router: Router = express.Router();
@@ -86,7 +87,7 @@ class RecipeController {
       queryRestrictions: request.body.queryRestrictions
     } as InputModel);
     const data = await recipeService.generateInstructions(inputModel, true);
-    const { fileName, url } = await recipeService.generateImage(inputModel);
+    const { fileName, url } = await generateImage(inputModel);
 
     const fullRecipe = new FullRecipeModel({
       title: data.title,

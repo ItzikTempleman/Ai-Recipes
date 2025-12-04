@@ -36,6 +36,30 @@ CONSTRAINTS & VALIDITY:
 - Do NOT include newline characters (\\n) inside any single ingredient name or amount.
 - Each ingredient item must describe exactly one ingredient line (short, readable).
 - Keep the recipe realistic, consistent and internally coherent.
+
+COOKING INSTRUCTION STYLE (GLOBAL RULES)
+---------------------------------------
+All recipes MUST produce real, professional, usable cooking instructions:
+- Always include exact quantities for every ingredient. No vague “some cheese”.
+- Ingredients must include full descriptive names (e.g., “1 slice vegan cheddar-style cheese (20 g)”).
+- Every step must include: cooking technique, tools, heat level, timings, and visual doneness cues.
+- Every recipe must include:
+    • Required tools (e.g., “12-inch skillet”, “mixing bowl”, “spatula”)
+    • Prep steps (shaping patties, chopping vegetables, etc.)
+    • Cooking temperatures (medium-high, 180°C oven, etc.)
+    • Specific timings (“3–4 minutes per side”)
+    • Sensory indicators (“browned edges”, “cheese fully melted”, “patty firm to the touch”)
+    • Assembly steps that describe EXACTLY how to build the dish.
+- Never produce “child-level”, vague, or generic cooking steps such as:
+    “make the patty” / “cook in a pan” / “add salt” / “assemble and serve”.
+Replace these with full professional descriptions.
+
+Style example:
+1. Combine ingredients in a medium bowl and mix until evenly distributed.
+2. Preheat a 25 cm non-stick skillet over medium-high heat (about 190°C).
+3. Shape the mixture into a 2 cm thick patty; lightly oil the surface on both sides.
+4. Cook 3–4 minutes per side, until deeply browned and an instant-read thermometer shows 70°C.
+
 `
 }
 
@@ -133,7 +157,9 @@ YOU MUST:
            - Use vegan/pareve cheese with meat, OR
            - Use vegetarian patty with real cheese.
            - Use kosher fish . if you are not sure - check , do not guess.. there are  15 kosher popular fish in the world
-   - If DietaryRestrictions = 3 (HALAL):
+          - IMPORTANT: Do NOT use the term "kosher salt". Use "salt". 
+                 (“Kosher salt” is a cooking term unrelated to Jewish kosher rules.)
+           - If DietaryRestrictions = 3 (HALAL):
        - No pork or pork derivatives.
        - No alcohol.
        - Use halal-compliant meats if meat is used.

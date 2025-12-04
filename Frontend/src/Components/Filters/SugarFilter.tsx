@@ -33,7 +33,7 @@ export function SugarFilter(
             <ToggleButtonGroup value={sugarMode} exclusive onChange={handleSugarLevelSelection} className="FilterToggleGroup">
                 <ToggleButton value="Regular sugar" className="ToggleBtn">Regular sugar</ToggleButton>
                 <ToggleButton value="Low sugar" className="ToggleBtn">Low sugar</ToggleButton>
-                <ToggleButton value="No sugar" className="ToggleBtn">No sugar</ToggleButton>
+                <ToggleButton value="No sugar" className="ToggleBtn">Sugar free</ToggleButton>
             </ToggleButtonGroup>
         </div>
     );

@@ -26,7 +26,7 @@ export function GlutenFilter(
         exclusive
         onChange={handleChange}>
         <ToggleButton value="Regular Gluten">Regular Gluten</ToggleButton>
-         <ToggleButton value="No Gluten">No Gluten</ToggleButton>
+         <ToggleButton value="No Gluten">Gluten free</ToggleButton>
       </ToggleButtonGroup>
     </div>
    )

@@ -26,7 +26,7 @@ export function LactoseFilter(
         exclusive
         onChange={handleChange}>
         <ToggleButton value="Regular milk">Regular milk</ToggleButton>
-         <ToggleButton value="No Lactose">No Lactose</ToggleButton>
+         <ToggleButton value="No Lactose">Lactose free</ToggleButton>
       </ToggleButtonGroup>
     </div>
    )

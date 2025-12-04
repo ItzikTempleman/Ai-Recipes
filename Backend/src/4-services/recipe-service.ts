@@ -20,51 +20,6 @@ class RecipeService {
     return { ...data, amountOfServings: input.quantity };
   }
 
-  public async generateImage(recipe: InputModel): Promise<GPTImage> {
-    const promptText = `High-resolution, super realistic food photo of: ${recipe.query}`;
-
-    let lastErr: any;
-    for (let attempt = 0; attempt < 2; attempt++) {
-      try {
-        const result = await openaiImages.images.generate({
-          model: "gpt-image-1",
-          prompt: promptText,
-          size: "1024x1024"
-        });
-
-        if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
-
-        const imageBase64 = result.data[0].b64_json;
-        const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
-        await fs.mkdir(imagesDir, { recursive: true });
-        const safeTitle = recipe.query
-          .toLowerCase()
-          .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-
-        const fileName = `${safeTitle}-recipe.png`;
-        await fs.writeFile(
-          path.join(imagesDir, fileName),
-          Buffer.from(imageBase64, "base64")
-        );
-
-        const url = new URL(encodeURIComponent(fileName), appConfig.baseImageUrl).toString();
-        return { fileName, url };
-      } catch (err: any) {
-        console.error("OpenAI IMAGE:", err?.response?.data);
-        lastErr = err;
-
-        if (err?.response?.status === 429) {
-          const retryAfter =
-            Number(err?.response?.headers?.["retry-after"]) || 1500; // ms
-          await new Promise((r) => setTimeout(r, retryAfter));
-          continue;
-        }
-        throw err;
-      }
-    }
-    throw lastErr;
-  }
 
   public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
     const sql = "select * from recipe where userId = ?";
