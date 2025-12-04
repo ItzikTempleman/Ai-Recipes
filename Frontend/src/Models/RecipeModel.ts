@@ -2,6 +2,9 @@
 export type InputModel ={
      query: string;
      sugarLevel:SugarRestriction;
+     lactoseRestrictions: LactoseRestrictions;
+     glutenRestrictions:GlutenRestrictions;
+     dietType:DietaryRestrictions;
 }
 
 

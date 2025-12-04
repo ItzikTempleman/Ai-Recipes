@@ -1,4 +1,4 @@
-import { RecipeModel, InputModel, SugarRestriction } from "../Models/RecipeModel";
+import { RecipeModel, InputModel, SugarRestriction, LactoseRestrictions, GlutenRestrictions, DietaryRestrictions } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios, { AxiosRequestConfig } from "axios";
@@ -18,13 +18,23 @@ class RecipeService {
     return { headers: { Authorization: `Bearer ${token}` } };
   }
 
-  public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1, sugarLevel: SugarRestriction): Promise<RecipeModel> {
+  public async generateRecipe(
+    title: InputModel, hasImage: boolean,
+    quantity: number = 1,
+    sugarLevel: SugarRestriction,
+    hasLactose: LactoseRestrictions,
+    hasGluten:GlutenRestrictions,
+    dietaryRestrictions:DietaryRestrictions
+  ): Promise<RecipeModel> {
     try {
       store.dispatch(setIsLoading(true));
 
       const body = {
         query: title.query,
-        sugarRestriction: sugarLevel
+        sugarRestriction: sugarLevel,
+        lactoseRestrictions: hasLactose,
+        glutenRestrictions:hasGluten,
+        dietaryRestrictions:dietaryRestrictions
       };
 
 

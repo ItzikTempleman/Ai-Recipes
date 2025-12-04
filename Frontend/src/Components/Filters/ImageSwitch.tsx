@@ -1,37 +1,31 @@
 import { useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import "./ImageSwitch.css";
 
 type Props = {
   onChange: (hasImage: boolean) => void;
 };
 
-type Mode = "NoImage" | "Full";
+type Mode = "Full" | "No Image";
 
 export function ImageSwitch(
-  { onChange }:Props) {
-  const [mode, setMode] = useState<Mode>("NoImage");
+  { onChange }: Props) {
+  const [mode, setMode] = useState<Mode>("Full");
 
   function handleChange(_: React.MouseEvent<HTMLElement>, selected: Mode | null) {
     if (!selected) return;
     setMode(selected);
-    onChange(selected === "Full"); 
+    onChange(selected === "No Image");
   }
 
   return (
-    <div className="ImageSwitch">
-  
+    <div>
       <ToggleButtonGroup
         value={mode}
         exclusive
         onChange={handleChange}
-        className="ToggleGroup"
-      >
+        className="ToggleGroup">
         <ToggleButton value="Full" className="ToggleBtn">With image</ToggleButton>
-         <ToggleButton value="NoImage" className="ToggleBtn">Without image</ToggleButton>
-         
-       
-
+        <ToggleButton value="No Image" className="ToggleBtn">No image</ToggleButton>
       </ToggleButtonGroup>
     </div>
   );

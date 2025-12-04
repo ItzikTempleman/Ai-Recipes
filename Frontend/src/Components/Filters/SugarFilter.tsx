@@ -1,18 +1,17 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import "./Filters.css";
-import { SugarRestriction } from "../../../Models/RecipeModel";
 import { useState } from "react";
+import { SugarRestriction } from "../../Models/RecipeModel";
 
 type SugarLevelProp = {
     onSugarLevelSelect: (sugarLevel: SugarRestriction) => void
 }
 
-type SugarMode = "Regular" | "Low sugar" | "No sugar"
+type SugarMode = "Regular sugar" | "Low sugar" | "No sugar"
 
-export function Filters(
+export function SugarFilter(
     { onSugarLevelSelect }: SugarLevelProp
 ) {
-    const [sugarMode, setSugarMode] = useState<SugarMode>("Regular")
+    const [sugarMode, setSugarMode] = useState<SugarMode>("Regular sugar")
 
     function toSugarRestriction(mode: SugarMode): SugarRestriction {
         switch (mode) {
@@ -30,12 +29,14 @@ export function Filters(
     }
 
     return (
-        <div className="Filters">
+        <div className="SugarFilter">
             <ToggleButtonGroup value={sugarMode} exclusive onChange={handleSugarLevelSelection} className="FilterToggleGroup">
-                <ToggleButton value="Regular" className="ToggleBtn">Regular</ToggleButton>
+                <ToggleButton value="Regular sugar" className="ToggleBtn">Regular sugar</ToggleButton>
                 <ToggleButton value="Low sugar" className="ToggleBtn">Low sugar</ToggleButton>
                 <ToggleButton value="No sugar" className="ToggleBtn">No sugar</ToggleButton>
             </ToggleButtonGroup>
         </div>
     );
 }
+
+

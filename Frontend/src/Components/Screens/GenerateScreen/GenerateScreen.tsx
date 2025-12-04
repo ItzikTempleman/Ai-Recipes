@@ -4,17 +4,19 @@ import "./GenerateScreen.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
-import { InputModel, RecipeState, SugarRestriction } from "../../../Models/RecipeModel";
+import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeState, SugarRestriction } from "../../../Models/RecipeModel";
 import { useTitle } from "../../../Utils/Utils";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
-import { ImageSwitch } from "../../UtilComponents/ImageSwitch/ImageSwitch";
 import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { RecipeCard } from "../../RecipeCard/RecipeCard";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
-import TuneIcon from '@mui/icons-material/Tune';
+import { ImageSwitch } from "../../Filters/ImageSwitch";
+import { SugarFilter } from "../../Filters/SugarFilter";
+import { LactoseFilter } from "../../Filters/LactoseFilter";
+import { GlutenFilter } from "../../Filters/GlutenFilter";
+import { DietaryFilter } from "../../Filters/DietaryFilter";
 
-import { Filters } from "../../UtilComponents/Filters/Filters";
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -24,11 +26,14 @@ export function GenerateScreen() {
   useTitle("Generate");
 
   const dispatch = useDispatch();
-const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
+  const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
+  const [hasImage, setHasImage] = useState(true);
+  const [hasLactose, setHasLactose] = useState(LactoseRestrictions.DEFAULT);
+  const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
+  const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
 
   const { register, handleSubmit, reset } = useForm<InputModel>();
   const [initialQuantity, setQuantity] = useState(1);
-  const [hasImage, setHasImage] = useState(false);
 
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
@@ -36,7 +41,7 @@ const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
-      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel);
+      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType);
       reset();
     } catch (err: unknown) {
       notify.error(err);
@@ -92,8 +97,6 @@ const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.
               </Button>
             )}
           </div>
-
-          <TuneIcon />
           <div className="FiltersColumn">
 
             <div className="Servings">
@@ -112,9 +115,20 @@ const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.
               <ImageSwitch onChange={setHasImage} />
             </div>
             <div>
-              <Filters onSugarLevelSelect={(sl)=>{
+              <SugarFilter onSugarLevelSelect={(sl) => {
                 setSugarLevel(sl)
-              }}/>
+              }} />
+            </div>
+            <div>
+              <LactoseFilter onChange={setHasLactose} />
+            </div>
+            <div>
+              <GlutenFilter onChange={setHasGluten} />
+            </div>
+            <div>
+              <DietaryFilter onDietSelect={(d) => {
+                setDietType(d)
+              }} />
             </div>
           </div>
         </form>
