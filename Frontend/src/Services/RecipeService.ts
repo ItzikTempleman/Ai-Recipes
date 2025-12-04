@@ -24,7 +24,8 @@ class RecipeService {
     sugarLevel: SugarRestriction,
     hasLactose: LactoseRestrictions,
     hasGluten:GlutenRestrictions,
-    dietaryRestrictions:DietaryRestrictions
+    dietaryRestrictions:DietaryRestrictions,
+    excludedIngredients:string[]
   ): Promise<RecipeModel> {
     try {
       store.dispatch(setIsLoading(true));
@@ -34,7 +35,8 @@ class RecipeService {
         sugarRestriction: sugarLevel,
         lactoseRestrictions: hasLactose,
         glutenRestrictions:hasGluten,
-        dietaryRestrictions:dietaryRestrictions
+        dietaryRestrictions:dietaryRestrictions,
+        queryRestrictions:excludedIngredients
       };
 
 

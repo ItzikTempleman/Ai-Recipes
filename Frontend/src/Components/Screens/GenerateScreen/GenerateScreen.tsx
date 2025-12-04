@@ -32,7 +32,15 @@ export function GenerateScreen() {
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
 
-  const { register, handleSubmit, reset } = useForm<InputModel>();
+
+  const { register, handleSubmit, reset } = useForm<InputModel>(
+    {
+      defaultValues: {
+        query: "",
+        excludedIngredients: ["", "", ""]
+      },
+    }
+  );
   const [initialQuantity, setQuantity] = useState(1);
 
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
@@ -41,8 +49,11 @@ export function GenerateScreen() {
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
-      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType);
-      reset();
+      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, recipeTitle.excludedIngredients);
+      reset({
+        query: "",
+        excludedIngredients: ["", "", ""],
+      });
     } catch (err: unknown) {
       notify.error(err);
     }
@@ -129,6 +140,39 @@ export function GenerateScreen() {
               <DietaryFilter onDietSelect={(d) => {
                 setDietType(d)
               }} />
+            </div>
+            <div className="ExcludedSection">
+              <div><h4> I don't want: </h4></div>
+
+              <div className="ExcludedIngredients">
+                <p >1</p>
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Ingredient 1"
+                  {...register("excludedIngredients.0")}
+                />
+              </div>
+
+              <div className="ExcludedIngredients">
+                <p >2</p>
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Ingredient 2"
+                  {...register("excludedIngredients.1")}
+                />
+              </div>
+
+              <div className="ExcludedIngredients">
+                <p>3</p>
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Ingredient 3"
+                  {...register("excludedIngredients.2")}
+                />
+              </div>
             </div>
           </div>
         </form>

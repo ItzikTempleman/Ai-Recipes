@@ -11,7 +11,7 @@
 }
 
 .SearchContainer {
-  width: 650px;
+  width: 640px;
   margin: 0 auto;
   padding: 24px;
   box-sizing: border-box;
@@ -105,6 +105,24 @@
   margin-left: 12px;
   color: #f0b43a;
 }
+
+.ExcludedSection{
+display: flex;
+flex-direction: column;
+border: 0.5px solid grey;
+padding: 16px;
+align-items: center;
+border-radius: 8px;
+gap: 12px;
+}
+
+.ExcludedIngredients{
+display: flex;
+flex-direction: row;
+gap: 12px;
+align-items: center;
+}
+
 
 @media (max-width: 600px) {
   .HomeScreen {

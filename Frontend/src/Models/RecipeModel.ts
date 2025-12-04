@@ -5,6 +5,7 @@ export type InputModel ={
      lactoseRestrictions: LactoseRestrictions;
      glutenRestrictions:GlutenRestrictions;
      dietType:DietaryRestrictions;
+     excludedIngredients:string[];
 }
 
 
