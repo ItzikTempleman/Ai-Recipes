@@ -73,55 +73,127 @@ THESE VALUES ARE ALREADY DECIDED FOR THIS REQUEST:
 
 YOU MUST:
 
-1. **Copy these values EXACTLY into the JSON output.**
-   - Do NOT change their numeric value.
-   - Do NOT replace them with other numbers.
+1. **Copy these values EXACTLY into the JSON output:**
+   - "sugarRestriction" = ${sugarRestriction}
+   - "lactoseRestrictions" = ${lactoseRestrictions}
+   - "glutenRestrictions" = ${glutenRestrictions}
+   - "dietaryRestrictions" = ${dietaryRestrictions}
+   - "caloryRestrictions" = ${caloryRestrictions}
+   - "queryRestrictions" = ${JSON.stringify(queryRestrictions)}
+   Do NOT change these numbers or modify the array.
 
-2. **Make the RECIPE follow the restrictions:**
-   - If DietaryRestrictions = 1 (VEGAN):
-     - No meat, fish, eggs, dairy, gelatin or any animal-derived products.
-   - If DietaryRestrictions = 2 (KOSHER):
-     - No pork or shellfish.
-     - Do NOT mix meat and dairy in the same recipe.
-       - If the query is for a dish that normally mixes meat and cheese
-         (for example, a cheeseburger), you MUST:
-           - Either use non-dairy (pareve/vegan) cheese with real meat,
-           - Or make a vegetarian patty with real cheese,
-           - Or otherwise adjust the recipe so it is fully kosher.
-   - If DietaryRestrictions = 3 (HALAL):
-     - No pork or pork-derived products.
-     - No alcohol.
+2. **Make the RECIPE follow ALL restrictions exactly and intelligently:**
+
+   GENERAL RULES FOR ALL RESTRICTIONS:
+   - Always preserve the original dish concept and core flavor unless:
+       (a) the user explicitly requests a different flavor, or
+       (b) a restriction absolutely forbids the original ingredient.
+   - When an ingredient is forbidden:
+       - Replace it with the closest realistic alternative that respects
+         the restriction AND keeps the dish as close as possible to the
+         original version.
+       - Do NOT replace ingredients with unrelated flavors (e.g., do not
+         replace vanilla ice cream with banana unless the user asks for
+         banana).
+   - Never introduce completely new flavors or ingredients unless the user
+     asks for them or they are required by the restriction.
+
+   SUGAR RESTRICTIONS:
+   - If SugarRestriction = 1 (LOW):
+       - Reduce added sugar moderately but keep the dish flavor intact.
+   - If SugarRestriction = 2 (NONE):
+       - Do NOT use added sugar of any kind (white/brown sugar, syrups,
+         honey, molasses, coconut sugar, artificial sweeteners, sugar alcohols).
+       - Create an unsweetened version of the dish that preserves the same
+         base flavor (e.g., “ice cream” → unsweetened vanilla ice cream).
+       - Do NOT replace with fruit-based versions unless the user explicitly
+         requests fruit.
+
+   LACTOSE RESTRICTIONS:
    - If LactoseRestrictions = 1:
-     - Do NOT use regular milk, cream, butter or cheese. Use lactose-free or plant-based alternatives.
+       - Do NOT use milk, cream, butter, cheese, yogurt, or dairy-based products.
+       - Use lactose-free OR plant-based alternatives (unsweetened unless the
+         sugar rules allow otherwise).
+       - Preserve the same flavor profile whenever possible.
+
+   GLUTEN RESTRICTIONS:
    - If GlutenRestrictions = 1:
-     - Do NOT use wheat, barley, rye, or regular bread/flour. Use gluten-free alternatives.
+       - Do NOT use wheat, barley, rye, semolina, or gluten-containing flour.
+       - Use gluten-free alternatives (rice flour, almond flour, GF pasta, GF bread, etc.).
+       - Keep the recipe concept identical (e.g., pizza remains pizza).
+
+   DIETARY RESTRICTIONS:
+   - If DietaryRestrictions = 1 (VEGAN):
+       - No meat, fish, eggs, dairy, gelatin, or animal-derived ingredients.
+       - Use plant-based alternatives that maintain the flavor/concept.
+   - If DietaryRestrictions = 2 (KOSHER):
+       - No pork or shellfish.
+       - Do NOT mix meat and dairy in the same recipe.
+       - When the original dish mixes meat + cheese (e.g., cheeseburger):
+           - Use vegan/pareve cheese with meat, OR
+           - Use vegetarian patty with real cheese.
+           - Use kosher fish . if you are not sure - check , do not guess.. there are  15 kosher popular fish in the world
+   - If DietaryRestrictions = 3 (HALAL):
+       - No pork or pork derivatives.
+       - No alcohol.
+       - Use halal-compliant meats if meat is used.
+
+   CALORY RESTRICTIONS:
    - If CaloryRestrictions = 1:
-     - Prefer leaner cooking methods and lighter ingredients. Reduce obvious fats/sugars where reasonable.
-   - If SugarRestriction = 1 or 2:
-     - Reduce or remove added sugar accordingly.
+       - Prefer lighter cooking methods (baking, steaming, grilling).
+       - Reduce fats and sugars where reasonable.
+       - Maintain flavor and concept — no extreme changes.
 
-3. **Respect queryRestrictions strictly:**
-   - "queryRestrictions" is a list of ingredients or keywords the user DOES NOT WANT.
-   - NONE of the items in queryRestrictions may appear in the ingredients list.
-   - Do NOT add new items to queryRestrictions or remove any.
+   QUERY RESTRICTIONS:
+   - "queryRestrictions" is an EXACT list of forbidden items.
+   - NONE of these items may appear anywhere in the ingredients.
+   - Do NOT add or remove items from this list.
+   - Replace forbidden items with the closest safe equivalent that preserves
+     the original flavor and role in the dish.
 
-Return ONLY a JSON object in exactly this shape (no comments inside the JSON):
+3. **Popularity (VERY IMPORTANT):**
+   - "popularity" must be an integer from 0 to 10.
+   - 10 = extremely popular worldwide, 5 = moderately common, 1 = very niche.
+   - Use 0 ONLY if there is no real-world information or the dish is clearly
+     fictional or invented.
+
+4. **Nutrition & health fields (VERY IMPORTANT):**
+   - "calories":
+     - Must be a realistic, non-zero estimate of the TOTAL calories for the whole recipe.
+     - Only use 0 if the recipe literally has no caloric ingredients (almost never).
+   - "totalProtein":
+     - Estimated grams of protein in the whole recipe.
+     - Must be >= 0, and > 0 if the recipe contains meat, fish, eggs, dairy,
+       legumes, nuts, tofu or any obvious protein source.
+   - "totalSugar":
+     - Estimated grams of sugar in the whole recipe.
+     - If SugarRestriction = 2 (NONE) and the recipe has no naturally sweet ingredients,
+       you MAY use 0. Otherwise, use a realistic positive estimate.
+   - "healthLevel":
+     - An integer from 0 to 10 describing overall healthiness.
+     - 0 = extremely unhealthy, 10 = extremely healthy.
+     - Consider fat, sugar, fiber, overall balance and portion size.
+   - These four values MUST NOT all be 0 at the same time unless the recipe
+     truly has no calories or nutrients.
+
+Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
+The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
 
 {
   "title": "string",
   "amountOfServings": ${quantity},
   "description": "string",
-  "popularity": 0,
+  "popularity": 7,
   "ingredients": [
     { "ingredient": "string", "amount": "string|null" }
   ],
   "instructions": [
     "step 1"
   ],
-  "totalSugar": 0,
-  "totalProtein": 0,
-  "healthLevel": 0,
-  "calories": 0,
+  "totalSugar": 10,
+  "totalProtein": 20,
+  "healthLevel": 6,
+  "calories": 500,
 
   "sugarRestriction": ${sugarRestriction},
   "lactoseRestrictions": ${lactoseRestrictions},

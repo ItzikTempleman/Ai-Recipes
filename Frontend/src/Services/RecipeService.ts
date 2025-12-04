@@ -1,7 +1,7 @@
 import { RecipeModel, InputModel, SugarRestriction } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
-import axios ,{ AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import {
   getAllRecipes,
   addRecipe,
@@ -13,17 +13,22 @@ import {
 
 class RecipeService {
 
-      private getAuth(): AxiosRequestConfig {
-        const token = localStorage.getItem("token") ?? "";
-        return { headers: { Authorization: `Bearer ${token}` } };
-    }
+  private getAuth(): AxiosRequestConfig {
+    const token = localStorage.getItem("token") ?? "";
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
 
-  public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1, sugarLevel:SugarRestriction): Promise<RecipeModel> {
+  public async generateRecipe(title: InputModel, hasImage: boolean, quantity: number = 1, sugarLevel: SugarRestriction): Promise<RecipeModel> {
     try {
       store.dispatch(setIsLoading(true));
-      const body: InputModel = { query: title.query , sugarLevel};
 
-           const base = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
+      const body = {
+        query: title.query,
+        sugarRestriction: sugarLevel
+      };
+
+
+      const base = hasImage ? appConfig.generateFullRecipeUrl : appConfig.generateNoImageRecipeUrl;
       const url = `${base}/${Number(quantity) || 1}`;
 
       const { data } = await axios.post<RecipeModel>(url, body, this.getAuth());
@@ -40,22 +45,22 @@ class RecipeService {
     }
   }
 
-public async getAllRecipes(): Promise<RecipeModel[]> {
-  const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
-  const list = Array.isArray(data) ? data : [];                       
-  store.dispatch(getAllRecipes(list));
-  return list;
-}
+  public async getAllRecipes(): Promise<RecipeModel[]> {
+    const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
+    const list = Array.isArray(data) ? data : [];
+    store.dispatch(getAllRecipes(list));
+    return list;
+  }
 
-public async getSingleRecipe(id: number): Promise<RecipeModel> {
-  const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`,this.getAuth());
-  return data;
-};
+  public async getSingleRecipe(id: number): Promise<RecipeModel> {
+    const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`, this.getAuth());
+    return data;
+  };
 
-public async deleteRecipe(recipeId: number): Promise<void> {
-  await axios.delete(appConfig.getSingleRecipeUrl + recipeId, this.getAuth());
-  store.dispatch(deleteRecipe(recipeId));
-};
+  public async deleteRecipe(recipeId: number): Promise<void> {
+    await axios.delete(appConfig.getSingleRecipeUrl + recipeId, this.getAuth());
+    store.dispatch(deleteRecipe(recipeId));
+  };
 }
 
 
