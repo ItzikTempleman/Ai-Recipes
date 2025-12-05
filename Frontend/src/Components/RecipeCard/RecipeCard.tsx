@@ -19,7 +19,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
 
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
-
+  const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
   return (
     <div className="RecipeCard">
       <h2>{recipe.title}</h2>
@@ -59,7 +59,10 @@ export function RecipeCard({ recipe }: RecipeProps) {
 
       <div className="InstructionsList">
         <h2>Instructions</h2>
-        <ol>
+        <ol
+          className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
+          dir={isRTL ? "rtl" : "ltr"}
+        >
           {instructions.map((step, index) => (
             <li key={index}>{step}</li>
           ))}

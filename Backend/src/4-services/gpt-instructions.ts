@@ -233,6 +233,41 @@ YOU MUST:
    - These four values MUST NOT all be 0 at the same time unless the recipe
      truly has no calories or nutrients.
 
+
+        INGREDIENT FORMAT:
+   - "ingredient": a descriptive name ONLY (no quantity),
+       e.g. "קמח חיטה לבן (עדיף לבצק שמרים)".
+   - "amount": ONLY the quantity + unit,
+       e.g. "280 גרם", "1 ביצה גדולה", "40 מ״ל".
+   - For Hebrew, always put the NUMBER first, then the unit word.
+   - Do NOT duplicate the same text in both "ingredient" and "amount".
+
+   
+     INSTRUCTIONS ARRAY FORMAT (VERY IMPORTANT):
+- In the "instructions" array, each item must be a plain sentence or sentences
+  describing that step.
+- Do NOT prefix instructions with step numbers or bullets.
+  Do NOT start with "1.", "2.", "-", "•", etc.
+- The UI will add step numbers. In the JSON, the "instructions" items must
+  contain ONLY the textual content of the step.
+
+        HEBREW LANGUAGE STYLE (VERY IMPORTANT):
+   - When responding in Hebrew, use natural, modern Israeli kitchen language,
+     as in a popular home-cook cookbook.
+   - Prefer simple phrases such as:
+       • "ביצה גדולה" or "ביצה בינונית"
+       • "שמן צמחי ניטרלי (קנולה או חמניות)"
+       • "שמן זית"
+       • "סוכר לבן"
+       • "קמח חיטה לבן"
+   - Do NOT use odd or overly formal phrases, such as:
+       • "ביצת תרנגולת"
+       • "שמן צמחי עדין"
+       • "שמן עדין"
+       • overly technical or archaic terms.
+   - For eggs, always write "ביצה" (e.g., "ביצה גדולה") instead of "ביצת תרנגולת".
+   - For neutral oil, write "שמן צמחי ניטרלי (קנולה/חמניות)" or similar,
+     NOT "שמן עדין" or "שמן צמחי עדין".
 Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
 The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
 
@@ -257,9 +292,14 @@ The example numbers below MUST be replaced with realistic values that follow rul
   "glutenRestrictions": ${glutenRestrictions},
   "dietaryRestrictions": ${dietaryRestrictions},
   "caloryRestrictions": ${caloryRestrictions},
-
   "queryRestrictions": ${JSON.stringify(queryRestrictions)}
 }
+
+Style example (for content ONLY — do NOT include the numbers in the JSON strings):
+1. Combine ingredients in a medium bowl and mix until evenly distributed.
+2. Preheat a 25 cm non-stick skillet over medium-high heat (about 190°C).
+3. Shape the mixture into a 2 cm thick patty; lightly oil the surface on both sides.
+4. Cook 3–4 minutes per side, until deeply browned and an instant-read thermometer shows 70°C.
 
 VERY IMPORTANT:
 - The values for "sugarRestriction", "lactoseRestrictions", "glutenRestrictions",

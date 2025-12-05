@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.SearchContainer {
+.GenerateContainer {
   width: 640px;
   margin: 0 auto;
   padding: 24px;
@@ -45,27 +45,28 @@
 
 .Servings {
   display: flex;
+  border: 1px solid;
   justify-content: flex-end;
   align-items: center;
+  padding: 4px;
+  border-radius: 4px;
+  border: 0.5px solid grey;
 }
-
-.ImageSwitchRow {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.Servings>*{
+  font-size: 14px;
 }
-
-.SearchTF {
-  flex: 1;
-}
-
+  
 .QuantitySelector {
   width: 60px;
-  height: 40px;
   border-radius: 6px;
-  border: 1px solid #d0d0d0;
-  padding: 4px 8px;
-  font-size: 14px;
+  border: 1px solid transparent;
+  padding-left: 20px;
+  font-size: 16px;
+}
+  
+
+.ExcludeTF .MuiOutlinedInput-root {
+  height: 30px;             
   box-sizing: border-box;
 }
 
@@ -109,45 +110,14 @@
 .ExcludedSection{
 display: flex;
 flex-direction: column;
-border: 0.5px solid grey;
-padding: 16px;
+padding: 4px;
 align-items: center;
-border-radius: 8px;
-gap: 12px;
+gap: 4px;
 }
-
-.ExcludedIngredients{
-display: flex;
-flex-direction: row;
-gap: 12px;
-align-items: center;
-}
-
 
 @media (max-width: 600px) {
-  .HomeScreen {
-    padding: 16px 8px 24px;
-  }
-
-  .SearchContainer {
-    padding: 16px;
-    max-width: 100%;
-
-  }
-
-  .InputData {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .QuantitySelector {
-    width: 100%;
-    max-width: 200px;
-    align-self: center;
-  }
-
-  .LoadingWithImage,
-  .LoadingWithoutImage {
-    margin-top: 8px;
+  .GenerateContainer {
+  padding: 8px;
+   width: 100%;
   }
 }

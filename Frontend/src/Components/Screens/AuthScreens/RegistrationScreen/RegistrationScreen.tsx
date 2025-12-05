@@ -50,7 +50,7 @@ export function RegistrationScreen() {
         </Button>
         <h2 className="RegistrationScreenTitle">Registration</h2>
         <TextField  className="InputTextField"
-          label="Enter first name"
+          label="First name"
           placeholder="first name"
           {...register("firstName", {
             required: "First name is required",
@@ -68,10 +68,10 @@ export function RegistrationScreen() {
             }}
         />
         <TextField  className="InputTextField"
-          label="Enter family name"
-          placeholder="family name"
+          label="Last name"
+          placeholder="last name"
           {...register("familyName", {
-            required: "Family name is required",
+            required: "Last name is required",
             minLength: { value: 3, message: "Minimum 3 characters required" }
           })}
           error={!!errors.familyName}

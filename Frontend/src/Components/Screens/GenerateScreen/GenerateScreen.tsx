@@ -17,7 +17,6 @@ import { LactoseFilter } from "../../Filters/LactoseFilter";
 import { GlutenFilter } from "../../Filters/GlutenFilter";
 import { DietaryFilter } from "../../Filters/DietaryFilter";
 
-
 type RecipeStateType = {
   recipes: RecipeState
 };
@@ -32,7 +31,6 @@ export function GenerateScreen() {
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
 
-
   const { register, handleSubmit, reset } = useForm<InputModel>(
     {
       defaultValues: {
@@ -42,7 +40,6 @@ export function GenerateScreen() {
     }
   );
   const [initialQuantity, setQuantity] = useState(1);
-
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
 
@@ -61,8 +58,7 @@ export function GenerateScreen() {
 
   return (
     <div className="GenerateScreen">
-      <div className="SearchContainer">
-
+      <div className="GenerateContainer">
         <form onSubmit={handleSubmit(send)}>
           <div className="InputData">
             <TextField
@@ -77,8 +73,7 @@ export function GenerateScreen() {
                   required:
                     "title is required"
                 })}
-              disabled={loading}
-            />
+              disabled={loading}/>
             {loading ? (
               <IconButton className="RoundedBtn" edge="end" disabled>
                 <Box><CircularProgress /></Box>
@@ -92,8 +87,7 @@ export function GenerateScreen() {
                 onClick={() => {
                   reset();
                   dispatch(resetGenerated());
-                }}
-              >
+                }}>
                 <CloseIcon />
               </Button>
             ) : (
@@ -102,19 +96,16 @@ export function GenerateScreen() {
                 className="RectangularBtn"
                 type="submit"
                 aria-label="search"
-                disabled={loading}
-              >
+                disabled={loading}>
                 Go <AutoAwesome className="BtnIcon" />
               </Button>
             )}
           </div>
           <div className="FiltersColumn">
-
             <div className="Servings">
               <p>Servings</p>
               <select className="QuantitySelector" value={initialQuantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-              >
+                onChange={(e) => setQuantity(Number(e.target.value))}>
                 {
                   [...Array(10)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>{i + 1}</option>
@@ -139,44 +130,38 @@ export function GenerateScreen() {
             <div>
               <DietaryFilter onDietSelect={(d) => {
                 setDietType(d)
-              }} />
+              }}/>
             </div>
             <div className="ExcludedSection">
-              <div><h4> I don't want: </h4></div>
-
-              <div className="ExcludedIngredients">
-                <p >1</p>
-                <TextField
+              <div>
+                <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Ingredient 1"
+                  placeholder="Exclude ingredient 1"
                   {...register("excludedIngredients.0")}
                 />
               </div>
 
-              <div className="ExcludedIngredients">
-                <p >2</p>
-                <TextField
+              <div >
+                <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Ingredient 2"
+                  placeholder="Exclude ingredient 2"
                   {...register("excludedIngredients.1")}
                 />
               </div>
 
-              <div className="ExcludedIngredients">
-                <p>3</p>
-                <TextField
+              <div>
+                <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Ingredient 3"
+                  placeholder="Exclude ingredient 3"
                   {...register("excludedIngredients.2")}
                 />
               </div>
             </div>
           </div>
         </form>
-
         {
           error && <div className="ErrorText">{error}</div>
         }
