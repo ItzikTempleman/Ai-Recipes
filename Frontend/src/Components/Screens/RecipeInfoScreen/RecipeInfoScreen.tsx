@@ -40,7 +40,7 @@ export function RecipeInfoScreen() {
     if (!recipe) return null;
     const ingredients = recipe.data?.ingredients ?? [];
     const instructions = recipe.data?.instructions ?? [];
-
+  const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
     return (
         <div className="RecipeInfoScreen">
 
@@ -85,11 +85,14 @@ export function RecipeInfoScreen() {
 
                 <div className="InstructionsList">
                     <h2>Instructions</h2>
-                    <ol>
-                        {instructions.map((step, index) => (
-                            <li key={index}>{step}</li>
-                        ))}
-                    </ol>
+        <ol
+          className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
+          dir={isRTL ? "rtl" : "ltr"}
+        >
+          {instructions.map((step, index) => (
+            <li key={index}>{step}</li>
+          ))}
+        </ol>
                 </div>
             </div>
         </div >
