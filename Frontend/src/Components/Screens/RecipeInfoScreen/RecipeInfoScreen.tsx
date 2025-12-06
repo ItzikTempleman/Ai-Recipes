@@ -21,7 +21,7 @@ export function RecipeInfoScreen() {
     useEffect(
         () => {
             if (!recipeId) {
-                navigate("/recipes-screen");
+                navigate("/home-screen");
                 return;
             };
             recipeService.getSingleRecipe(recipeId)
@@ -34,7 +34,7 @@ export function RecipeInfoScreen() {
         }, [recipeId, navigate]
     )
     function returnToList() {
-        navigate("/recipes-screen");
+        navigate("/home-screen");
     }
 
     if (!recipe) return null;
