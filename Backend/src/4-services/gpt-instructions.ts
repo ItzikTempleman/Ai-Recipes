@@ -242,7 +242,13 @@ YOU MUST:
    - For Hebrew, always put the NUMBER first, then the unit word.
    - Do NOT duplicate the same text in both "ingredient" and "amount".
 
-   
+   INGREDIENT–INSTRUCTION CONSISTENCY (CRITICAL):
+
+- Every ingredient that appears in the cooking "instructions" MUST have a matching item in the "ingredients" array.
+- Do NOT mention any ingredient in the instructions that is not listed in the "ingredients" array.
+- Do NOT forget to include in the "ingredients" array any item that is used in the instructions (including water, oil, salt, spices, etc.).
+- Before returning the JSON, mentally cross-check that the "ingredients" list and "instructions" refer to the exact same set of ingredients.
+
      INSTRUCTIONS ARRAY FORMAT (VERY IMPORTANT):
 - In the "instructions" array, each item must be a plain sentence or sentences
   describing that step.
