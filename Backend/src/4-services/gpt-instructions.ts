@@ -76,7 +76,12 @@ export function getBreakDownInstructions(
 ): string {
   return `
 Create a concise home-cook recipe 
-for "${query}" and amount is "${quantity}".
+for "${query}".
+
+The number of servings is "${quantity}".
+Use this ONLY to calculate ingredient quantities and to fill "amountOfServings" in the JSON.
+Do NOT mention the number of servings or write phrases like "for 1", "for two", "for 4 people", etc. in the "title" field.
+The "title" must be just the name of the dish, without serving counts.
 
 You receive the following RESTRICTION FLAGS (numeric enums):
 
@@ -184,13 +189,20 @@ YOU MUST:
    - If DietaryRestrictions = 2 (KOSHER):
        - No pork or shellfish.
        - Do NOT mix meat and dairy in the same recipe.
+       - For any recipe that contains meat (beef, chicken, turkey, lamb, etc.):
+           - Do NOT use dairy ingredients at all (no cheese, butter, cream, yogurt, milk).
+       - For any recipe that contains dairy (cheese, butter, cream, yogurt, milk):
+           - Do NOT use meat ingredients at all.
        - When the original dish mixes meat + cheese (e.g., cheeseburger):
-           - Use vegan/pareve cheese with meat, OR
-           - Use vegetarian patty with real cheese.
-           - Use kosher fish . if you are not sure - check , do not guess.. there are  15 kosher popular fish in the world
-          - IMPORTANT: Do NOT use the term "kosher salt". Use "salt". 
-                 (“Kosher salt” is a cooking term unrelated to Jewish kosher rules.)
-           - If DietaryRestrictions = 3 (HALAL):
+           - You MUST choose ONE of the following kosher options:
+               • Keep a meat patty and use ONLY vegan/pareve cheese (no dairy anywhere).
+               • OR keep real dairy cheese and use a vegetarian patty (no meat).
+       - For burger recipes specifically:
+           - The final ingredients, description and instructions must NEVER include both meat and dairy together.
+           - Do NOT claim that the patty is "meatless" or "vegan" if the ingredients list contains meat.
+       - Use only fish that are commonly known to be kosher (e.g., salmon, tuna, cod, halibut, carp, herring, sardines), and do not guess about fish that might not be kosher.
+       - IMPORTANT: Do NOT use the term "kosher salt". Use "salt" instead.
+   - If DietaryRestrictions = 3 (HALAL):
        - No pork or pork derivatives.
        - No alcohol.
        - Use halal-compliant meats if meat is used.
@@ -274,6 +286,8 @@ YOU MUST:
    - For eggs, always write "ביצה" (e.g., "ביצה גדולה") instead of "ביצת תרנגולת".
    - For neutral oil, write "שמן צמחי ניטרלי (קנולה/חמניות)" or similar,
      NOT "שמן עדין" or "שמן צמחי עדין".
+
+
 Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
 The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
 
@@ -300,6 +314,11 @@ The example numbers below MUST be replaced with realistic values that follow rul
   "caloryRestrictions": ${caloryRestrictions},
   "queryRestrictions": ${JSON.stringify(queryRestrictions)}
 }
+
+- "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
+  The serving count is provided only in "amountOfServings".
+- When calculating protein level - return the actual real life accurate protein level per 100 grams and do not make up.
+- When calculating level of popularity - use the most accurate data you have.
 
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.

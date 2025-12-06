@@ -2,13 +2,11 @@ import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/mater
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import CloseIcon from '@mui/icons-material/Close';
+import { useSelector } from "react-redux";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeState, SugarRestriction } from "../../../Models/RecipeModel";
 import { useTitle } from "../../../Utils/Utils";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
-import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { RecipeCard } from "../../RecipeCard/RecipeCard";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { ImageSwitch } from "../../Filters/ImageSwitch";
@@ -24,14 +22,11 @@ type RecipeStateType = {
 
 export function GenerateScreen() {
   useTitle("Generate");
-
-  const dispatch = useDispatch();
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
   const [hasImage, setHasImage] = useState(true);
   const [hasLactose, setHasLactose] = useState(LactoseRestrictions.DEFAULT);
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
-
   const { register, handleSubmit, reset } = useForm<InputModel>(
     {
       defaultValues: {
@@ -43,6 +38,7 @@ export function GenerateScreen() {
   const [initialQuantity, setQuantity] = useState(1);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
+  const [filtersResetKey, setFiltersResetKey] = useState(0);
 
   async function send(recipeTitle: InputModel) {
     try {
@@ -60,12 +56,12 @@ export function GenerateScreen() {
   return (
     <div className="GenerateScreen">
       <div>
-                <h2 className="GenerateTitle">
+        <h2 className="GenerateTitle">
           <RestaurantMenuIcon className="TitleIcon" />
           <span>So, what are we eating today?</span>
         </h2>
       </div>
-    
+
       <div className="GenerateContainer">
         <form onSubmit={handleSubmit(send)}>
           <div className="InputData">
@@ -81,23 +77,26 @@ export function GenerateScreen() {
                   required:
                     "title is required"
                 })}
-              disabled={loading}/>
+              disabled={loading} />
             {loading ? (
               <IconButton className="RoundedBtn" edge="end" disabled>
                 <Box><CircularProgress /></Box>
               </IconButton>
             ) : recipe ? (
-              <Button
-                variant="contained"
-                className="RectangularBtn"
-                type="button"
-                aria-label="clear"
+              <div className="ClearPromptIcon"
                 onClick={() => {
-                  reset();
-                  dispatch(resetGenerated());
-                }}>
-                <CloseIcon />
-              </Button>
+                  reset({
+                    query: "",
+                    excludedIngredients: ["", "", ""],
+                  });
+                  setQuantity(1);
+                  setHasImage(true);
+                  setSugarLevel(SugarRestriction.DEFAULT);
+                  setHasLactose(LactoseRestrictions.DEFAULT);
+                  setHasGluten(GlutenRestrictions.DEFAULT);
+                  setDietType(DietaryRestrictions.DEFAULT);
+                  setFiltersResetKey(k => k + 1);
+                }}>❌</div>
             ) : (
               <Button
                 variant="contained"
@@ -109,10 +108,12 @@ export function GenerateScreen() {
               </Button>
             )}
           </div>
-          <div className="FiltersColumn">
+          <div className="FiltersColumn" key={filtersResetKey}>
             <div className="Servings">
               <p>Servings</p>
-              <select className="QuantitySelector" value={initialQuantity}
+              <select
+                className="QuantitySelector"
+                value={initialQuantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}>
                 {
                   [...Array(10)].map((_, i) => (
@@ -121,6 +122,7 @@ export function GenerateScreen() {
                 }
               </select>
             </div>
+
             <div className="ImageSwitchRow">
               <ImageSwitch onChange={setHasImage} />
             </div>
@@ -138,7 +140,7 @@ export function GenerateScreen() {
             <div>
               <DietaryFilter onDietSelect={(d) => {
                 setDietType(d)
-              }}/>
+              }} />
             </div>
             <div className="ExcludedSection">
               <div>

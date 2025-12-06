@@ -22,6 +22,13 @@
   position: relative;
 }
 
+.ClearPromptIcon:hover{
+    cursor: pointer;
+}
+.ClearPromptIcon:active{
+  transform: scale(1.2) translateY(1px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
 
 .GenerateTitle::after {
   content: "";
@@ -36,14 +43,14 @@
   opacity: 0.7;
 }
 
-/* Small “chip” behind the icon so it feels culinary, but not loud */
+
 .TitleIcon {
   font-size: 2rem;
   padding: 6px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-  color: #f59e0b; /* warm food-ish accent */
+  color: #f59e0b; 
 }
 
 .GenerateContainer {
@@ -60,6 +67,7 @@
   gap: 16px;
 }
 
+
 .InputData {
   display: flex;
   align-items: center;
@@ -70,6 +78,7 @@
 .FiltersColumn {
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.28); 
   margin-top: 12px;
+  background-color: rgb(220, 220, 220);
   display: flex;
   flex-direction: column;
   align-items: center;   

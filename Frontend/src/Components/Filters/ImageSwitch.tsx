@@ -14,7 +14,8 @@ export function ImageSwitch(
   function handleChange(_: React.MouseEvent<HTMLElement>, selected: Mode | null) {
     if (!selected) return;
     setMode(selected);
-    onChange(selected === "No Image");
+        const hasImage = selected === "Full";
+    onChange(hasImage);
   }
 
   return (
@@ -23,9 +24,9 @@ export function ImageSwitch(
         value={mode}
         exclusive
         onChange={handleChange}
-        className="ToggleGroup">
-        <ToggleButton value="Full" className="ToggleBtn">With image</ToggleButton>
-        <ToggleButton value="No Image" className="ToggleBtn">No image</ToggleButton>
+       >
+        <ToggleButton value="Full" >With image</ToggleButton>
+        <ToggleButton value="No Image" >No image</ToggleButton>
       </ToggleButtonGroup>
     </div>
   );

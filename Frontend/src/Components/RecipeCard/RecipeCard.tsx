@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import "./RecipeCard.css";
 import { RecipeModel } from "../../Models/RecipeModel";
+import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { resetGenerated } from "../../Redux/RecipeSlice";
 
 type RecipeProps = {
   recipe: RecipeModel
 };
 
+
+
 export function RecipeCard({ recipe }: RecipeProps) {
 
   const [imgSrc, setImgSrc] = useState<string>("");
 
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const url = (recipe.imageUrl ?? "").trim();
     setImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
@@ -22,6 +27,13 @@ export function RecipeCard({ recipe }: RecipeProps) {
   const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
   return (
     <div className="RecipeCard">
+          <div className="ClearFormDiv">
+            <Button className="ClearFormBtn" 
+            variant="contained"
+          onClick={()=>{
+              dispatch(resetGenerated());
+          }}
+          >Clear</Button></div>
       <h2>{recipe.title}</h2>
       <div className="Servings:">
         <p>Servings: {recipe.amountOfServings}</p>
