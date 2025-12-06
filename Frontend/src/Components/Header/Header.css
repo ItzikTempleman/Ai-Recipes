@@ -59,7 +59,7 @@
 .LogoutLink,
 .GenerateScreenLink,
 .AboutScreenLink,
-.RecipesScreenLink,
+.HomeScreenLink,
 .LoginScreenLink,
 .ProfileScreenLink {
   display: flex;
@@ -73,7 +73,7 @@
 
 .GenerateScreenLink.active,
 .AboutScreenLink.active,
-.RecipesScreenLink.active,
+.HomeScreenLink.active,
 .LoginScreenLink.active,
 .ProfileScreenLink.active {
   color: #215898;
@@ -100,7 +100,7 @@
 
   .GenerateScreenLink,
   .AboutScreenLink,
-  .RecipesScreenLink,
+  .HomeScreenLink,
   .LoginScreenLink,
   .ProfileScreenLink {
     font-size: 12px;

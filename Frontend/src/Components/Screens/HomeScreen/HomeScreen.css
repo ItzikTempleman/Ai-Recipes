@@ -1,4 +1,4 @@
-.RecipesScreen {
+.HomeScreen {
   width: 100%;
   min-height: 100vh;
   margin: 0;
@@ -9,7 +9,7 @@
   align-items: flex-start;  
 }
 
-.RecipesScreenTitle {
+.HomeScreenTitle {
   width: 100%;
   color: #4b4b4b;
   font-size: 20px;
@@ -33,7 +33,7 @@
 }
 
 @media (max-width: 600px) {
-  .RecipeList {
+  .HomeScreen {
     max-width: 100%;
     flex-wrap: nowrap;    
     flex-direction: column; 

@@ -16,6 +16,7 @@ import { SugarFilter } from "../../Filters/SugarFilter";
 import { LactoseFilter } from "../../Filters/LactoseFilter";
 import { GlutenFilter } from "../../Filters/GlutenFilter";
 import { DietaryFilter } from "../../Filters/DietaryFilter";
+import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -58,6 +59,13 @@ export function GenerateScreen() {
 
   return (
     <div className="GenerateScreen">
+      <div>
+                <h2 className="GenerateTitle">
+          <RestaurantMenuIcon className="TitleIcon" />
+          <span>So, what are we eating today?</span>
+        </h2>
+      </div>
+    
       <div className="GenerateContainer">
         <form onSubmit={handleSubmit(send)}>
           <div className="InputData">
@@ -137,7 +145,7 @@ export function GenerateScreen() {
                 <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Exclude ingredient 1"
+                  placeholder="Exclude ingredient"
                   {...register("excludedIngredients.0")}
                 />
               </div>
@@ -146,7 +154,7 @@ export function GenerateScreen() {
                 <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Exclude ingredient 2"
+                  placeholder="Exclude ingredient"
                   {...register("excludedIngredients.1")}
                 />
               </div>
@@ -155,7 +163,7 @@ export function GenerateScreen() {
                 <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Exclude ingredient 3"
+                  placeholder="Exclude ingredient"
                   {...register("excludedIngredients.2")}
                 />
               </div>

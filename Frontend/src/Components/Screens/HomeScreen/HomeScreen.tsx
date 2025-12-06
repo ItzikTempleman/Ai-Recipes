@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useTitle } from "../../../Utils/Utils";
-import "./RecipesScreen.css";
+import "./HomeScreen.css";
 import { recipeService } from "../../../Services/RecipeService";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { RecipeListItem } from "../../RecipeListItem/RecipeListItem";
 
-export function RecipesScreen() {
-    useTitle("Recipes");
+export function HomeScreen() {
+    useTitle("Home");
     const { items } = useSelector((state: AppState) => state.recipes);
 const user = useSelector((state: AppState) => state.user);
     useEffect(
@@ -18,8 +18,8 @@ const user = useSelector((state: AppState) => state.user);
 const list = Array.isArray(items) ? items : []; 
 
   return (
-    <div className="RecipesScreen">
-      <p className="RecipesScreenTitle">{user.firstName.trim()}'s saved  recipes</p>
+    <div className="HomeScreen">
+      <p className="HomeScreenTitle">{user.firstName.trim()}'s recipes</p>
       <div className="RecipeList">
         {list.length === 0 ? (
           <div>No recipes</div>

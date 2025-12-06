@@ -32,7 +32,7 @@ export function Header() {
     <div className="Header">
       {isLoggedInUser && (
         <div className="GeneralNavigation nav-group">
-          <NavLink to="/recipes-screen" className="RecipesScreenLink">
+          <NavLink to="/home-screen" className="HomeScreenLink">
             <div className="Home">
               <HomeOutlined />
               <p>Home</p>
