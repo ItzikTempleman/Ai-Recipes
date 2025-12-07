@@ -78,6 +78,7 @@
 
 .IngredientRow {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   gap: 12px;
   padding: 4px 0;
@@ -88,11 +89,11 @@
 }
 
 .IngredientName {
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .IngredientAmount {
-  color: #555;
+  color: #d21c1c;
 }
 
 .InstructionsList {
@@ -114,7 +115,16 @@
   list-style-position: inside;
 }
 
-
+.divider {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 8px 0;
+}
+.IngredientsDiv{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 @media (max-width: 600px) {
   .RecipeCard {
     padding: 16px;

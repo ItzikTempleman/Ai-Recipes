@@ -90,7 +90,7 @@ export function RecipeInfoScreen() {
           dir={isRTL ? "rtl" : "ltr"}
         >
           {instructions.map((step, index) => (
-            <li key={index}>{step}</li>
+            <><li key={index}>{step}</li><hr className="divider" /></>
           ))}
         </ol>
                 </div>

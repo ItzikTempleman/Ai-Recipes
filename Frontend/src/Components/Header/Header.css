@@ -5,7 +5,8 @@
   width: 100%;
   padding: 6px 20px;
   box-sizing: border-box;
-  background-color: white;
+border-bottom: 1px solid grey;
+
 }
 
 .Header p {
@@ -68,7 +69,7 @@
   padding: 2px 0;       
   font-size: 12px;
   text-decoration: none;
-  color: #4b4b4b;
+  color: #232323;
 }
 
 .GenerateScreenLink.active,

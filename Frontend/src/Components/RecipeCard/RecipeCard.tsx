@@ -48,6 +48,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
           onError={() => setImgSrc("")}
         />
       )}
+   
       <div className="CalorieCount">
         <h4> Estimated calories: {recipe.calories}</h4>
       </div>
@@ -63,8 +64,11 @@ export function RecipeCard({ recipe }: RecipeProps) {
       <div className="IngredientsList">
         {ingredients.map((line, index) => (
           <div key={index} className="IngredientRow">
+            <div className="IngredientsDiv">
             <span className="IngredientName">{line.ingredient}</span>
             <span className="IngredientAmount">{line.amount ?? ""}</span>
+            <hr className="divider" />
+            </div>
           </div>
         ))}
       </div>
@@ -76,10 +80,13 @@ export function RecipeCard({ recipe }: RecipeProps) {
           dir={isRTL ? "rtl" : "ltr"}
         >
           {instructions.map((step, index) => (
-            <li key={index}>{step}</li>
+            <li key={index}>{step}
+            <hr className="divider" />
+            </li>
+            
           ))}
         </ol>
       </div>
-    </div>
+      </div>
   );
 }
