@@ -3,30 +3,32 @@ import { getAge, showDate, useTitle } from "../../../Utils/Utils";
 import "./ProfileScreen.css";
 import { AppState } from "../../../Redux/Store";
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { Button, Dialog, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Button, Dialog, TextField } from "@mui/material";
 import { useState } from "react";
 import { User } from "../../../Models/UserModel";
 import { notify } from "../../../Utils/Notify";
 import { userService } from "../../../Services/UserService";
 import { useForm } from "react-hook-form";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 export function ProfileScreen() {
-
   const user = useSelector((state: AppState) => state.user);
-
   useTitle("Profile");
   if (!user) return null;
-  const rawBirthDate = user.birthDate ?? "";           // "1997-07-09T00:00:00.000Z"
-  const birthDateStr = showDate(rawBirthDate);         // "09/07/1997"
-  // Use the ISO date part (YYYY-MM-DD) for age calculation:
-  const isoDate = rawBirthDate.split("T")[0];          // "1997-07-09"
+  const rawBirthDate = user.birthDate ?? "";
+  const birthDateStr = showDate(rawBirthDate);
+  const isoDate = rawBirthDate.split("T")[0];
   const age = isoDate ? getAge(isoDate) : "";
   const rawGender = (user.gender ?? (user as any).Gender ?? "").toString();
   const gender = rawGender.charAt(0).toUpperCase() + rawGender.slice(1).toLowerCase();
-
   const [open, setOpen] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<User>();
+  const { register, handleSubmit } = useForm<User>({
+    defaultValues: {
+      firstName: user.firstName,
+      familyName: user.familyName,
+      email: user.email,
+      phoneNumber: user.phoneNumber
+    }
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,9 +37,14 @@ export function ProfileScreen() {
     setOpen(false);
   };
 
-  async function send(user: User) {
+  async function send(formUser: User) {
+    if (!user) return;
+    const updatedUser: User = {
+      ...user,
+      ...formUser
+    };
     try {
-      await userService.updateUserInfo(user);
+      await userService.updateUserInfo(updatedUser);
       notify.success("User has been updated");
       setOpen(false);
     } catch (err: unknown) {
@@ -56,19 +63,14 @@ export function ProfileScreen() {
               handleClickOpen
             }>Edit</Button>
         </div>
-        <Dialog 
+        <Dialog
           open={open}
           onClose={handleClose}
-          fullScreen={false}
-          fullWidth
-          PaperProps={{ className: "EditProfileDialogPaper" }}
-        >
-
+          fullScreen={false}>
+            <div className="DialogDiv">
           <div className="CloseDialogBtn" onClick={handleClose}>❌</div>
-
           <form className="EditProfileContainer" onSubmit={handleSubmit(send)}>
-
-            <TextField         variant="outlined"
+            <TextField variant="outlined"
               size="small"
               label="Update first name"
               fullWidth
@@ -77,10 +79,9 @@ export function ProfileScreen() {
               {
               ...register("firstName")
               } />
-
-            <TextField 
+            <TextField
               label="Update last name"
-                      variant="outlined"
+              variant="outlined"
               size="small"
               fullWidth
               inputProps={{ minLength: 2, maxLength: 30 }}
@@ -88,9 +89,8 @@ export function ProfileScreen() {
               {
               ...register("familyName")
               } />
-
-            <TextField 
-                    variant="outlined"
+            <TextField
+              variant="outlined"
               size="small"
               label="Update email"
               fullWidth
@@ -99,38 +99,20 @@ export function ProfileScreen() {
               {
               ...register("email")
               } />
-
-            <TextField         variant="outlined"
+            <TextField
+              variant="outlined"
               size="small"
-              autoComplete="update-password"
-              label="Update password"
-              placeholder="Update password"
+              label="Update phone number"
               fullWidth
-              type={showPassword ? "text" : "password"}
-              {...register("password", {
-                minLength: { value: 8, message: "At least 8 characters" }
-              })}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      edge="end"
-                      tabIndex={-1}
-                      onClick={() => setShowPassword((password) => !password)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}>
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-
-            <Button variant="contained" fullWidth className="UpdateBtn">Update profile</Button>
+              inputProps={{ minLength: 2, maxLength: 30 }}
+              placeholder="Update phone number"
+              {
+              ...register("phoneNumber")
+              } />
+            <Button variant="contained" type="submit" fullWidth className="UpdateBtn">Update profile</Button>
           </form>
+            </div>
         </Dialog>
-
         <div className="Name"><PersonRoundedIcon /><h3>{user.firstName} {user.familyName}</h3></div>
         <p>{age}, {gender}</p>
         <div className="divider" />

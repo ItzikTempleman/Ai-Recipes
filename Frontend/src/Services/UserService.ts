@@ -85,13 +85,11 @@ class UserService {
                 "Content-Type": "multipart/form-data"
             }
         };
-        try {
+
             const response = await axios.put<User>(appConfig.userUrl + user.id, user, options)
             const dbUser = response.data;
             store.dispatch(userSlice.actions.updateUserProfile(dbUser));
-        } catch (err: unknown) {
-            notify.error(err)
-        }
+        
     }
 
     public async deleteAccount(id: number): Promise<void> {

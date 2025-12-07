@@ -76,6 +76,7 @@ CREATE TABLE `user` (
   `phoneNumber` varchar(45) NOT NULL,
   `Gender` enum('MALE','FEMALE','OTHER') NOT NULL,
   `birthDate` date NOT NULL,
+  `imageName` varchar(90) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

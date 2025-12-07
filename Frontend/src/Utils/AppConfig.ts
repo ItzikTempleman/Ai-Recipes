@@ -7,6 +7,6 @@ class AppConfig {
   public readonly getSingleRecipeUrl = `${API}/recipe/`;
   public readonly registerUrl = `${API}/register/`;
   public readonly loginUrl = `${API}/login/`;
-  public readonly userUrl = `${API}/user/`;
+  public readonly userUrl = `${API}/users/`;
 }
 export const appConfig = new AppConfig();

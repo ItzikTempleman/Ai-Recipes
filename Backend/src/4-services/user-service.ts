@@ -59,8 +59,8 @@ class UserService {
         user.validate();
         const oldImageName = await this.getImageName(user.id);
         const newImageName = user.image ? await fileSaver.update(oldImageName!, user.image) : oldImageName;
-        const sql = "update user set firstName = ?, familyName = ?, email = ?,password=?, phoneNumber=?, imageName=? where id = ?";
-        const values = [user.firstName, user.familyName, user.email, user.password, user.phoneNumber, newImageName, user.id];
+        const sql = "update user set firstName = ?, familyName = ?, email = ?, phoneNumber=?, imageName=? where id = ?";
+        const values = [user.firstName, user.familyName, user.email, user.phoneNumber, newImageName, user.id];
         const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
         if (info.affectedRows === 0) throw new ResourceNotFound(user.id);
         const dbUser = await this.getOneUser(user.id);

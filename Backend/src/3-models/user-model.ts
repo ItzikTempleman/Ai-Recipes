@@ -37,9 +37,11 @@ export class UserModel {
             firstName: Joi.string().required().min(2).max(50),
             familyName: Joi.string().required().min(2).max(50),
             email: Joi.string().required().min(0).max(1000),
-            password: Joi.string().required().min(0).max(1000),
-            birthDate: Joi.string().required(),
+            password: Joi.string().optional().min(0).max(1000),
+            birthDate: Joi.string().optional(),
             phoneNumber: Joi.string().required().min(9).max(16),
+            age: Joi.number().optional(),
+            gender: Joi.string().valid("MALE", "FEMALE", "OTHER").optional(),
             image: Joi.object().optional(),
             imageUrl: Joi.string().optional().uri,
             imageName: Joi.string().optional().max(50)
