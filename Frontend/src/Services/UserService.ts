@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { notify } from "../Utils/Notify";
 import { store } from "../Redux/Store";
 import { userSlice } from "../Redux/UserSlice";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { appConfig } from "../Utils/AppConfig";
 
 export type DecodedToken = {
@@ -77,6 +77,26 @@ class UserService {
         }
         store.dispatch(userSlice.actions.logout());
         localStorage.removeItem("token");
+    }
+
+    public async updateUserInfo(user: User): Promise<void> {
+        const options: AxiosRequestConfig = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        };
+        try {
+            const response = await axios.put<User>(appConfig.userUrl + user.id, user, options)
+            const dbUser = response.data;
+            store.dispatch(userSlice.actions.updateUserProfile(dbUser));
+        } catch (err: unknown) {
+            notify.error(err)
+        }
+    }
+
+    public async deleteAccount(id: number): Promise<void> {
+        await axios.delete(appConfig.userUrl + id);
+        store.dispatch(userSlice.actions.deleteAccount(id));
     }
 }
 

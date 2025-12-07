@@ -1,26 +1,32 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../Models/UserModel";
 
-
-function registerOrLogin(_: User, action: PayloadAction<User>) {
-    return action.payload;
-};
-
-function logoutUser(): null{
-     return null;
-};
-
-
+const initialState: User | null = null;
 export const userSlice = createSlice(
     {
-        name: "users",
-        initialState: null as User | null,
+        name: "user",
+        initialState:initialState,
         reducers: {
-        registrationAndLogin:registerOrLogin,
-        logout: logoutUser
+            registrationAndLogin(_state, action: PayloadAction<User>)  {
+                return action.payload;
+            },
+            updateUserProfile(_state, action: PayloadAction<User>)  {
+                return action.payload;
+            },
+            logout(_state) {
+                return null;
+            },
+            deleteAccount(state, action: PayloadAction<number>) {
+                const idToDelete = action.payload;
+                if (state && state.id === idToDelete) {
+                    return null;
+                }
+                return state;
+            }
         }
     }
 );
 
-export const {registrationAndLogin,logout}= userSlice.actions;
-export const userReducer= userSlice.reducer;
+
+export const { registrationAndLogin, logout, updateUserProfile, deleteAccount } = userSlice.actions;
+export const userReducer = userSlice.reducer;

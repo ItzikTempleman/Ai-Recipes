@@ -1,4 +1,4 @@
-export type User= {
+export type User = {
      id?: number;
      firstName: string;
      familyName: string;
@@ -7,15 +7,17 @@ export type User= {
      birthDate: string;
      phoneNumber: string;
      gender: Gender;
+     imageUrl?: string;
+     image?: File;
 }
 
 export enum Gender {
-    MALE = "MALE",
-    FEMALE = "FEMALE",
-    OTHER = "OTHER"
+     MALE = "MALE",
+     FEMALE = "FEMALE",
+     OTHER = "OTHER"
 }
 
-export type Credentials ={
+export type Credentials = {
      email?: string;
      password?: string;
 }

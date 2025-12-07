@@ -1,18 +1,21 @@
 import { OkPacketParams } from "mysql2";
 import { cyber } from "../2-utils/cyber";
 import { dal } from "../2-utils/dal";
-import { AuthorizationError, ValidationError } from "../3-models/client-errors";
+import { AuthorizationError, ResourceNotFound, ValidationError } from "../3-models/client-errors";
 import { CredentialsModel, UserModel } from "../3-models/user-model";
-import { start } from "repl";
+import { fileSaver } from "uploaded-file-saver";
+import { appConfig } from "../2-utils/app-config";
 
 class UserService {
     public async register(user: UserModel): Promise<string> {
+        user.validate();
+        const imageName = user.image ? await fileSaver.add(user.image) : null;
         const emailTaken = await this.isEmailTaken(user.email);
         if (emailTaken) throw new ValidationError("Email already exists")
-        const sql = "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate) values (?,?,?,?,?,?,?)";
+        const sql = "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate,imageName) values (?,?,?,?,?,?,?,?)";
 
         user.password = cyber.hash(user.password);
-        const values = [user.firstName, user.familyName, user.email, user.password, user.phoneNumber,user.gender,user.birthDate];
+        const values = [user.firstName, user.familyName, user.email, user.password, user.phoneNumber, user.gender, user.birthDate, imageName];
         const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
         user.id = info.insertId!;
         return cyber.generateToken(user);
@@ -28,9 +31,18 @@ class UserService {
         return cyber.generateToken(user);
     }
 
-    public async getAllUsers():Promise<UserModel[]>{
-        const sql="select * from user";
+    public async getAllUsers(): Promise<UserModel[]> {
+        const sql = "select * from user";
         return await dal.execute(sql) as UserModel[];
+    }
+
+    public async getOneUser(id: number): Promise<UserModel> {
+        const sql = `select * , concat(?,imageName) as imageUrl from user where id = ?`;
+        const values = [appConfig.baseImageUrl, id];
+        const users = await dal.execute(sql, values) as UserModel[];
+        const user = users[0];
+        if (!users) throw new ResourceNotFound(id);
+        return user;
     }
 
     private async isEmailTaken(email: string): Promise<boolean> {
@@ -39,6 +51,42 @@ class UserService {
         const users = await dal.execute(sql, value) as UserModel[];
         return users.length > 0
     }
+
+    public async updateUser(user: UserModel): Promise<UserModel> {
+        if (user.id === undefined) {
+            throw new ValidationError("Missing user id for updating profile");
+        }
+        user.validate();
+        const oldImageName = await this.getImageName(user.id);
+        const newImageName = user.image ? await fileSaver.update(oldImageName!, user.image) : oldImageName;
+        const sql = "update user set firstName = ?, familyName = ?, email = ?,password=?, phoneNumber=?, imageName=? where id = ?";
+        const values = [user.firstName, user.familyName, user.email, user.password, user.phoneNumber, newImageName, user.id];
+        const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+        if (info.affectedRows === 0) throw new ResourceNotFound(user.id);
+        const dbUser = await this.getOneUser(user.id);
+        return dbUser;
+    }
+
+    private async getImageName(id: number): Promise<string | null> {
+        const sql = `select imageName from user where id=?`;
+        const values = [id];
+        const users = await dal.execute(sql, values) as UserModel[];
+        const user = users[0];
+        if (!user) return null;
+        return user.imageName
+    }
+
+    public async deleteUser(id: number): Promise<void> {
+        const oldImageName = await this.getImageName(id);
+        //if later i will attach liked table- than delete the liked table entries for this user first
+        const sql = "delete from user where id = ?";
+        const info: OkPacketParams = await dal.execute(sql, [id]) as OkPacketParams;
+        if (oldImageName) {
+            await fileSaver.delete(oldImageName);
+        }
+        if (info.affectedRows === 0) throw new ResourceNotFound(id);
+    }
+
 }
 
 export const userService = new UserService();
