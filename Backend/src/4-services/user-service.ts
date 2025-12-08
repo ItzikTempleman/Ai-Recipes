@@ -53,49 +53,20 @@ class UserService {
     }
 
 
-public async updateUser(user: UserModel): Promise<UserModel> {
+public async updateUser(user: UserModel): Promise<string> {
     if (user.id === undefined) {
         throw new ValidationError("Missing user id for updating profile");
     }
-
     user.validate();
-
     const oldImageName = await this.getImageName(user.id);
     let newImageName = oldImageName;
-
-    if (user.image) {
-        if (oldImageName) {
-            // Replace existing image file
-            newImageName = await fileSaver.update(oldImageName, user.image);
-        } else {
-            // First time uploading profile image
-            newImageName = await fileSaver.add(user.image);
-        }
-    }
-
-    const sql = `
-        update user
-        set firstName = ?,
-            familyName = ?,
-            email = ?,
-            phoneNumber = ?,
-            imageName = ?
-        where id = ?
-    `;
-    const values = [
-        user.firstName,
-        user.familyName,
-        user.email,
-        user.phoneNumber,
-        newImageName,
-        user.id
-    ];
-
+    if (user.image) {oldImageName?  newImageName = await fileSaver.update(oldImageName, user.image): newImageName = await fileSaver.add(user.image);}
+    const sql = `update user set firstName = ?, familyName = ?, email = ?, phoneNumber = ?, imageName = ? where id = ?`;
+    const values = [user.firstName,user.familyName,user.email,user.phoneNumber,newImageName,user.id];
     const info = await dal.execute(sql, values) as OkPacketParams;
     if (info.affectedRows === 0) throw new ResourceNotFound(user.id);
-
     const dbUser = await this.getOneUser(user.id);
-    return dbUser;
+   return cyber.generateToken(dbUser);
 }
 
     private async getImageName(id: number): Promise<string | null> {
@@ -109,7 +80,6 @@ public async updateUser(user: UserModel): Promise<UserModel> {
 
     public async deleteUser(id: number): Promise<void> {
         const oldImageName = await this.getImageName(id);
-        //if later i will attach liked table- than delete the liked table entries for this user first
         const sql = "delete from user where id = ?";
         const info: OkPacketParams = await dal.execute(sql, [id]) as OkPacketParams;
         if (oldImageName) {

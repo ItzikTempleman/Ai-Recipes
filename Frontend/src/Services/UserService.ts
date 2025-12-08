@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { notify } from "../Utils/Notify";
 import { store } from "../Redux/Store";
 import { userSlice } from "../Redux/UserSlice";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import { appConfig } from "../Utils/AppConfig";
 
 export type DecodedToken = {
@@ -79,22 +79,15 @@ class UserService {
         localStorage.removeItem("token");
     }
 
-public async updateUserInfo(userId: number, formData: FormData): Promise<void> {
-    const response = await axios.put<User>(
-        appConfig.userUrl + userId, // e.g. "/api/users/17"
-        formData,
-        {
-            headers: {
-                // Let axios set proper boundary, but this is also fine:
-                "Content-Type": "multipart/form-data"
-            }
-        }
-    );
-
-    const dbUser = response.data;
-    // This uses your existing redux slice; no changes to redux structure:
-    store.dispatch(userSlice.actions.updateUserProfile(dbUser));
-}
+    public async updateUserInfo(userId: number, formData: FormData): Promise<void> {
+        const response = await axios.put<string>(appConfig.userUrl + userId, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        const token = response.data;
+        localStorage.setItem("token", token);
+        const decoded = jwtDecode<DecodedToken>(token);
+         const dbUser = decoded.user;
+        store.dispatch(userSlice.actions.updateUserProfile(dbUser));
+        this.logoutAfterTimeout(token);
+    }
 
     public async deleteAccount(id: number): Promise<void> {
         await axios.delete(appConfig.userUrl + id);

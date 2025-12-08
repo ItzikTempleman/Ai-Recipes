@@ -1,11 +1,9 @@
-// src/Components/Layout/ProfileArea/ProfileScreen.tsx
-
 import { useSelector } from "react-redux";
 import { getAge, showDate, useTitle } from "../../../Utils/Utils";
 import "./ProfileScreen.css";
 import { AppState } from "../../../Redux/Store";
 import { Button, Dialog, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../../../Models/UserModel";
 import { notify } from "../../../Utils/Notify";
 import { userService } from "../../../Services/UserService";
@@ -14,21 +12,18 @@ import { useForm } from "react-hook-form";
 export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
   useTitle("Profile");
-
   if (!user) return null;
-
   const rawBirthDate = user.birthDate ?? "";
   const birthDateStr = showDate(rawBirthDate);
   const isoDate = rawBirthDate.split("T")[0];
   const age = isoDate ? getAge(isoDate) : "";
   const rawGender = (user.gender ?? (user as any).Gender ?? "").toString();
-  const gender =
-    rawGender.charAt(0).toUpperCase() + rawGender.slice(1).toLowerCase();
-
+  const gender =rawGender.charAt(0).toUpperCase() + rawGender.slice(1).toLowerCase();
   const [open, setOpen] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+ user?.imageUrl ?? null
+);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const { register, handleSubmit } = useForm<Partial<User>>({
     defaultValues: {
       firstName: user.firstName,
@@ -37,35 +32,30 @@ export function ProfileScreen() {
       phoneNumber: user.phoneNumber
     }
   });
-
-  const fallbackAvatar = "person-21.png";
-
+  const fallbackAvatar = "/person-21.png";
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  useEffect(
+    ()=>{
+if(user?.imageUrl && !selectedFile){
+setImagePreview(user.imageUrl);
+}
+    },[user?.imageUrl, selectedFile]
+  )
   async function send(formUser: Partial<User>) {
     if (!user) return;
-
-    // Use existing values when the form field is left unchanged
     const finalFirstName = formUser.firstName ?? user.firstName;
     const finalFamilyName = formUser.familyName ?? user.familyName;
     const finalEmail = formUser.email ?? user.email;
     const finalPhone = formUser.phoneNumber ?? user.phoneNumber;
-
     const formData = new FormData();
-    // id comes from route param on backend, so we don't *need* it in body,
-    // but it doesn't hurt:
     formData.append("id", String(user.id));
     formData.append("firstName", finalFirstName);
     formData.append("familyName", finalFamilyName);
     formData.append("email", finalEmail);
     formData.append("phoneNumber", finalPhone);
-
-    if (selectedFile) {
-      // VERY IMPORTANT: the field name "image" must match request.files.image on backend
-      formData.append("image", selectedFile);
-    }
-
+    if (selectedFile) {formData.append("image", selectedFile);}
     try {
       await userService.updateUserInfo(user.id, formData);
       notify.success("User has been updated");
@@ -78,15 +68,12 @@ export function ProfileScreen() {
   return (
     <div className="ProfileScreen">
       <p className="ProfileScreenTitle">Profile</p>
-
       <div className="ProfileSection">
-        {/* Edit button + dialog */}
         <div className="EditProfileDiv">
           <Button
             className="EditProfileBtn"
             variant="contained"
-            onClick={handleClickOpen}
-          >
+            onClick={handleClickOpen} >
             Edit
           </Button>
         </div>
@@ -142,15 +129,13 @@ export function ProfileScreen() {
                 variant="contained"
                 type="submit"
                 fullWidth
-                className="UpdateBtn"
-              >
+                className="UpdateBtn">
                 Update profile
               </Button>
             </form>
           </div>
         </Dialog>
 
-        {/* Avatar + file selector (outside dialog) */}
         <img
           className="ImagePreview"
           src={imagePreview || fallbackAvatar}
@@ -161,7 +146,6 @@ export function ProfileScreen() {
           variant="standard"
           InputProps={{ disableUnderline: true }}
           type="file"
-          fullWidth
           inputProps={{ accept: "image/*" }}
           onChange={e => {
             const target = e.target as HTMLInputElement;
@@ -170,8 +154,7 @@ export function ProfileScreen() {
               setSelectedFile(file);
               setImagePreview(URL.createObjectURL(file));
             }
-          }}
-        />
+          }}/>
 
         <h3 className="Name">
           {user.firstName} {user.familyName}
