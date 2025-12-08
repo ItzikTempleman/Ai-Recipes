@@ -61,17 +61,17 @@ export function RecipeCard({ recipe }: RecipeProps) {
         <p> total {recipe.totalSugar}g sugar,<br />{recipe.totalProtein}g protein (per 100 grams) </p>
       </div>
       <h3>Health level: {recipe.healthLevel}/10</h3>
-      <div className="IngredientsList">
-        {ingredients.map((line, index) => (
-          <div key={index} className="IngredientRow">
-            <div className="IngredientsDiv">
-            <span className="IngredientName">{line.ingredient}</span>
-            <span className="IngredientAmount">{line.amount ?? ""}</span>
-            <hr className="divider" />
-            </div>
-          </div>
-        ))}
-      </div>
+<div
+  className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
+  dir={isRTL ? "rtl" : "ltr"}
+>
+  {ingredients.map((line, index) => (
+    <div key={index} className="IngredientRow">
+      <span className="IngredientName">{line.ingredient}</span>
+      <span className="IngredientAmount">{line.amount ?? ""}</span>
+    </div>
+  ))}
+</div>
 
       <div className="InstructionsList">
         <h2>Instructions</h2>

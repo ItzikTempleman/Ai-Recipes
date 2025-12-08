@@ -38,7 +38,7 @@ class UserService {
 
     public async getOneUser(id: number): Promise<UserModel> {
         const sql = `select * , concat(?,imageName) as imageUrl from user where id = ?`;
-        const values = [appConfig.baseImageUrl, id];
+        const values = [appConfig.baseUserImageUrl, id];
         const users = await dal.execute(sql, values) as UserModel[];
         const user = users[0];
         if (!users) throw new ResourceNotFound(id);

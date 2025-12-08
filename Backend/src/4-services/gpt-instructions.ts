@@ -169,6 +169,15 @@ YOU MUST:
        - Do NOT replace with fruit-based versions unless the user explicitly
          requests fruit.
 
+         STEAK-SPECIFIC RULES (VERY IMPORTANT):
+- For plain beef steaks (like ribeye, sirloin, entrecote, striploin):
+  - Do NOT add any vegetable oil to the ingredients.
+  - Use the steak’s own fat for searing.
+  - You may add a small amount of butter at the end for basting, if there is no calorie restriction.
+
+  - Do NOT add neutral vegetable oil unless it is really necessary for the technique.
+  For naturally fatty cuts of meat (like ribeye steak), avoid extra oil.
+  
    LACTOSE RESTRICTIONS:
    - If LactoseRestrictions = 1:
        - Do NOT use milk, cream, butter, cheese, yogurt, or dairy-based products.

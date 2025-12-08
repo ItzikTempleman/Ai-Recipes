@@ -73,22 +73,40 @@
 .IngredientsList {
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #ccc;
 }
 
 .IngredientRow {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   gap: 12px;
   padding: 4px 0;
+    border-bottom: 1px solid #ccc; 
+  align-items: center;       
 }
 
+.IngredientsList.rtl .IngredientRow {
+  flex-direction: row-reverse;  
+}
+.IngredientRow:last-child {
+  border-bottom: none;
+}
+.IngredientsList.rtl .IngredientName {
+  order: 2;         
+  text-align: right;
+}
+
+.IngredientsList.rtl .IngredientAmount {
+  order: 1;         
+  text-align: left;
+}
 .IngredientName {
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .IngredientAmount {
-  color: #555;
+  color: #d21c1c;
 }
 
 .InstructionsList {
@@ -97,19 +115,29 @@
   border-top: 1px solid #f0f0f0;
 }
 
-.InstructionsList h2 {
-  text-align: center;
-  margin-bottom: 12px;
+.instructions-list.rtl {
+  direction: rtl;        
+  text-align: right;
+  padding-right: 1.5rem;
+  padding-left: 0;
 }
 
-.InstructionsList ol {
-  padding-left: 20px;
+.instructions-list.rtl li {
+  direction: rtl;
+  text-align: right;
+  list-style-position: inside;
 }
 
-.InstructionsList li {
-  margin-bottom: 10px;
+.divider {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 8px 0;
 }
-
+.IngredientsDiv{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 @media (max-width: 600px) {
   .RecipeInfoScreen {
     padding: 16px 8px 24px;

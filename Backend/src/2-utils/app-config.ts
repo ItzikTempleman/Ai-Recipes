@@ -22,6 +22,23 @@ class AppConfig {
   public readonly freeNoImageModelNumber = "gpt-4o-mini";
 
   public readonly baseImageUrl = this.normalizeBaseImageUrl();
+public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
+
+
+  private normalizeBaseUserImageUrl(): string {
+ const raw = process.env.BASE_USER_IMAGE_URL;
+
+    if (raw && /^https?:\/\//i.test(raw)) {
+      return raw.endsWith("/") ? raw : raw + "/";
+    }
+
+    const host = this.isProduction
+      ? (process.env.PUBLIC_HOST || "localhost")
+      : "localhost";
+
+    return `http://${host}:${this.port}/api/users/images/`;
+  }
+
 
   private normalizeBaseImageUrl(): string {
     const raw = process.env.BASE_IMAGE_URL;
