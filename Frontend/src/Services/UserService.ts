@@ -79,18 +79,22 @@ class UserService {
         localStorage.removeItem("token");
     }
 
-    public async updateUserInfo(user: User): Promise<void> {
-        const options: AxiosRequestConfig = {
+public async updateUserInfo(userId: number, formData: FormData): Promise<void> {
+    const response = await axios.put<User>(
+        appConfig.userUrl + userId, // e.g. "/api/users/17"
+        formData,
+        {
             headers: {
+                // Let axios set proper boundary, but this is also fine:
                 "Content-Type": "multipart/form-data"
             }
-        };
+        }
+    );
 
-            const response = await axios.put<User>(appConfig.userUrl + user.id, user, options)
-            const dbUser = response.data;
-            store.dispatch(userSlice.actions.updateUserProfile(dbUser));
-        
-    }
+    const dbUser = response.data;
+    // This uses your existing redux slice; no changes to redux structure:
+    store.dispatch(userSlice.actions.updateUserProfile(dbUser));
+}
 
     public async deleteAccount(id: number): Promise<void> {
         await axios.delete(appConfig.userUrl + id);

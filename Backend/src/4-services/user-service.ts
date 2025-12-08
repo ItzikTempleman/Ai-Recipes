@@ -52,20 +52,51 @@ class UserService {
         return users.length > 0
     }
 
-    public async updateUser(user: UserModel): Promise<UserModel> {
-        if (user.id === undefined) {
-            throw new ValidationError("Missing user id for updating profile");
-        }
-        user.validate();
-        const oldImageName = await this.getImageName(user.id);
-        const newImageName = user.image ? await fileSaver.update(oldImageName!, user.image) : oldImageName;
-        const sql = "update user set firstName = ?, familyName = ?, email = ?, phoneNumber=?, imageName=? where id = ?";
-        const values = [user.firstName, user.familyName, user.email, user.phoneNumber, newImageName, user.id];
-        const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
-        if (info.affectedRows === 0) throw new ResourceNotFound(user.id);
-        const dbUser = await this.getOneUser(user.id);
-        return dbUser;
+
+public async updateUser(user: UserModel): Promise<UserModel> {
+    if (user.id === undefined) {
+        throw new ValidationError("Missing user id for updating profile");
     }
+
+    user.validate();
+
+    const oldImageName = await this.getImageName(user.id);
+    let newImageName = oldImageName;
+
+    if (user.image) {
+        if (oldImageName) {
+            // Replace existing image file
+            newImageName = await fileSaver.update(oldImageName, user.image);
+        } else {
+            // First time uploading profile image
+            newImageName = await fileSaver.add(user.image);
+        }
+    }
+
+    const sql = `
+        update user
+        set firstName = ?,
+            familyName = ?,
+            email = ?,
+            phoneNumber = ?,
+            imageName = ?
+        where id = ?
+    `;
+    const values = [
+        user.firstName,
+        user.familyName,
+        user.email,
+        user.phoneNumber,
+        newImageName,
+        user.id
+    ];
+
+    const info = await dal.execute(sql, values) as OkPacketParams;
+    if (info.affectedRows === 0) throw new ResourceNotFound(user.id);
+
+    const dbUser = await this.getOneUser(user.id);
+    return dbUser;
+}
 
     private async getImageName(id: number): Promise<string | null> {
         const sql = `select imageName from user where id=?`;

@@ -78,7 +78,12 @@
   justify-content: flex-end;
   margin: 16px;
 }
-
+.ImagePreview{
+  border-radius: 180px;
+  border: 1px solid grey;
+  width: 130px;
+  height: 130px;
+}
 .DialogDiv{
   background: #e8e8e8;
 }

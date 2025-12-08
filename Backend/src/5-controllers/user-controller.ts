@@ -41,14 +41,22 @@ class UserController {
         response.json(user);
     }
 
-    public async updateUser(request: Request, response: Response) {
-        request.body.image = request.files?.image;
-        request.body.id = Number(request.params.id);
-        const user = new UserModel(request.body);
-        const dbUser = await userService.updateUser(user);
-        response.json(dbUser);
-    }
+public async updateUser(request: Request, response: Response) {
+    const id = Number(request.params.id);
 
+    // express-fileupload puts files under request.files
+    const image = request.files?.image;
+
+    // request.body has the text fields from FormData
+    const user = new UserModel({
+        ...request.body,
+        id,
+        image
+    } as any);
+
+    const dbUser = await userService.updateUser(user);
+    response.json(dbUser);
+}
     public async getImage(request: Request, response: Response) {
         const imageName = request.params.imageName
         const imagePath = fileSaver.getFilePath(imageName);
