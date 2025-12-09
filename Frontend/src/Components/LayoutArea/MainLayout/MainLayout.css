@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: radial-gradient( #5ea6ca, #78aec9, #cfe5ef); 
+  background: white;
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;

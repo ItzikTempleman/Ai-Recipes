@@ -1,12 +1,9 @@
-/* ===== Layout wrapper ===== */
-
 .ProfileScreen {
   width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 24px 16px 40px;
   box-sizing: border-box;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,25 +19,20 @@
   text-align: left;
 }
 
-
-
 .ProfileSection {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
   padding: 24px;
   box-sizing: border-box;
-
-  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #dedede;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
   display: flex;
   flex-direction: column;
   gap: 8px;
   text-align: left;
-  color: #333333;
   font-size: 15px;
 }
 
@@ -50,7 +42,6 @@
   align-items: center;
 
 }
-
 
 .divider {
   width: 100%;
@@ -85,9 +76,6 @@
   object-position:center;
 }
 
-
-
-
 .DialogDiv{
   background: #e8e8e8;
 }
@@ -118,6 +106,15 @@
   .ProfileSection {
     padding: 16px;
     max-width: 100%;
-    font-size: 14px;
+     box-sizing: border-box;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #dedede;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  font-size: 15px;
   }
 }

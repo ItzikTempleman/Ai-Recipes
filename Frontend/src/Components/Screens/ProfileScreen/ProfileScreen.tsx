@@ -159,7 +159,8 @@ export function ProfileScreen() {
           variant="standard"
           InputProps={{ disableUnderline: true }}
           type="file"
-          inputProps={{ accept: "image/*" , className:"ImageInput"}}
+          inputProps={{ accept: "image/*"}}
+          
           onChange={async e => {
             const target = e.target as HTMLInputElement;
             const file = target.files?.[0];

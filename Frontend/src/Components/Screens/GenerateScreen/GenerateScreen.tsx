@@ -79,7 +79,7 @@ export function GenerateScreen() {
                 })}
               disabled={loading} />
             {loading ? (
-              <IconButton className="RoundedBtn" edge="end" disabled>
+              <IconButton className="RoundedBtn small-loading" edge="end" disabled>
                 <Box><CircularProgress /></Box>
               </IconButton>
             ) : recipe ? (
