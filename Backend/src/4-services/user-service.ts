@@ -59,7 +59,11 @@ class UserService {
         user.validate();
         const oldImageName = await this.getImageName(user.id);
         let newImageName = oldImageName;
-        if (user.image) { oldImageName ? newImageName = await fileSaver.update(oldImageName, user.image) : newImageName = await fileSaver.add(user.image); }
+        if (user.image) {
+  newImageName = oldImageName
+    ? await fileSaver.update(oldImageName, user.image)
+    : await fileSaver.add(user.image);
+}
         const sql = `update user set firstName = ?, familyName = ?, email = ?, phoneNumber = ?, imageName = ? where id = ?`;
         const values = [user.firstName, user.familyName, user.email, user.phoneNumber, newImageName, user.id];
         const info = await dal.execute(sql, values) as OkPacketParams;
