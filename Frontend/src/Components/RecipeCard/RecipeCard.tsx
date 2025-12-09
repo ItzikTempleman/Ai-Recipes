@@ -33,7 +33,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
         >Clear</Button></div>
       <h2>{recipe.title}</h2>
 
-      <div className="Description">
+      <div className="DescriptionInInfoScreen">
         <p>{recipe.description}</p>
       </div>
 

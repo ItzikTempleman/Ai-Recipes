@@ -103,6 +103,11 @@ export function RecipeInfoScreen() {
           </div>
         </div>
       </div>
+
+         <div className="DescriptionInInfoScreen">
+        <p > {recipe.description}</p>
+      </div>
+
         <div
           className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
           dir={isRTL ? "rtl" : "ltr"}

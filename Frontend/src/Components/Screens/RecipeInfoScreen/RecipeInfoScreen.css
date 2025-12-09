@@ -10,6 +10,16 @@
   align-items: center;
 }
 
+.DescriptionInInfoScreen{
+display: flex; 
+  text-align: center;    
+}
+
+  .DescriptionInInfoScreen >p{
+font-size: 18px;
+font-weight: bold;
+
+  }
 .BackBtnContainer {
   width: 100%;
   max-width: 800px;
@@ -19,8 +29,20 @@
 }
 
 .BackBtn {
-  background: #215898 !important;
+  background-color: #0f7394 !important;
   padding: 6px 12px !important;
+}
+
+.BackBtn:hover {
+  background-color: #0f7394 !important; 
+}
+
+.BackBtn.MuiButton-root {
+  background-color: #0f7394 !important;
+}
+
+.BackBtn.MuiButton-root:hover {
+  background-color: #0f7394 !important;
 }
 
 .InfoScreenContainer {
@@ -41,9 +63,9 @@
   margin: 0 auto 20px;
   width: 100%;              
   max-width: 600px;           
-  max-height: 320px;                
+  max-height: 450px;                
   object-fit: cover;              
-  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 2);
 }
 
 .InfoScreenContainer h2,
@@ -142,4 +164,6 @@
     flex-direction: row;
     font-size: 0.95rem;
   }
+
+
 }

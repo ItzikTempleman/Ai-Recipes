@@ -1,5 +1,5 @@
 .RecipeListItem {
-  width: 360px; 
+  width: 300px; 
   margin-left: 20px;
   margin-top: 12px;
   height: 230px;
@@ -49,12 +49,13 @@
 
 .CardTitle {
   color: #4d4d4d;
-  margin: 0 0 12px 0;
+  margin: 0 0 6px 0;
   text-align: center;
 }
 
 .MoreInfoBtn {
-  margin-top: 12px; 
+  margin-top: 6px; 
   align-self: center;      
+  background-color: #0f7394 !important;
 }
 
