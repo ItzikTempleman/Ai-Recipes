@@ -169,15 +169,6 @@ YOU MUST:
        - Do NOT replace with fruit-based versions unless the user explicitly
          requests fruit.
 
-         STEAK-SPECIFIC RULES (VERY IMPORTANT):
-- For plain beef steaks (like ribeye, sirloin, entrecote, striploin):
-  - Do NOT add any vegetable oil to the ingredients.
-  - Use the steak’s own fat for searing.
-  - You may add a small amount of butter at the end for basting, if there is no calorie restriction.
-
-  - Do NOT add neutral vegetable oil unless it is really necessary for the technique.
-  For naturally fatty cuts of meat (like ribeye steak), avoid extra oil.
-  
    LACTOSE RESTRICTIONS:
    - If LactoseRestrictions = 1:
        - Do NOT use milk, cream, butter, cheese, yogurt, or dairy-based products.
@@ -222,6 +213,14 @@ YOU MUST:
        - Reduce fats and sugars where reasonable.
        - Maintain flavor and concept — no extreme changes.
 
+   COOKING OIL CHOICE (VERY IMPORTANT):
+   - When a recipe needs oil for frying, sautéing, roasting or greasing pans:
+       - Use ONLY canola oil or olive oil (choose what makes most culinary sense).
+   - Do NOT use or write generic terms like "vegetable oil", "neutral oil" or similar.
+   - You may only use a different specific oil (such as sesame oil, coconut oil, peanut oil, etc.)
+     if the traditional flavor or a special technique clearly requires it, and you must always
+     name that oil explicitly.
+
    QUERY RESTRICTIONS:
    - "queryRestrictions" is an EXACT list of forbidden items.
    - NONE of these items may appear anywhere in the ingredients.
@@ -236,24 +235,24 @@ YOU MUST:
      fictional or invented.
 
 4. **Nutrition & health fields (VERY IMPORTANT):**
+
    - "calories":
      - Must be a realistic, non-zero estimate of the TOTAL calories for the whole recipe.
      - Only use 0 if the recipe literally has no caloric ingredients (almost never).
+
    - "totalProtein":
-     - Estimated grams of protein in the whole recipe.
-     - Must be >= 0, and > 0 if the recipe contains meat, fish, eggs, dairy,
-       legumes, nuts, tofu or any obvious protein source.
+     - Real-life accurate grams of protein **per 100 grams of the final dish** (not for the whole recipe).
+     - Use realistic values based on typical nutrition data for the ingredients; do NOT just invent random numbers.
+
    - "totalSugar":
-     - Estimated grams of sugar in the whole recipe.
-     - If SugarRestriction = 2 (NONE) and the recipe has no naturally sweet ingredients,
-       you MAY use 0. Otherwise, use a realistic positive estimate.
+     - Realistic estimate of **tablespoons of sugar per 100 grams of the final dish** (not total for the whole recipe).
+     - Count only actual sugar sources (white sugar, brown sugar, honey, syrups, etc.).
+     - Use 0 only if there is no added sugar and no naturally sweet ingredients; otherwise use a realistic positive value.
+
    - "healthLevel":
      - An integer from 0 to 10 describing overall healthiness.
      - 0 = extremely unhealthy, 10 = extremely healthy.
      - Consider fat, sugar, fiber, overall balance and portion size.
-   - These four values MUST NOT all be 0 at the same time unless the recipe
-     truly has no calories or nutrients.
-
 
         INGREDIENT FORMAT:
    - "ingredient": a descriptive name ONLY (no quantity),
@@ -274,7 +273,7 @@ YOU MUST:
 - In the "instructions" array, each item must be a plain sentence or sentences
   describing that step.
 - Do NOT prefix instructions with step numbers or bullets.
-  Do NOT start with "1.", "2.", "-", "•", etc.
+- Do NOT start with "1.", "2.", "-", "•", etc.
 - The UI will add step numbers. In the JSON, the "instructions" items must
   contain ONLY the textual content of the step.
 
@@ -283,19 +282,17 @@ YOU MUST:
      as in a popular home-cook cookbook.
    - Prefer simple phrases such as:
        • "ביצה גדולה" or "ביצה בינונית"
-       • "שמן צמחי ניטרלי (קנולה או חמניות)"
        • "שמן זית"
-       • "סוכר לבן"
+       • "שמן קנולה"
        • "קמח חיטה לבן"
    - Do NOT use odd or overly formal phrases, such as:
        • "ביצת תרנגולת"
-       • "שמן צמחי עדין"
-       • "שמן עדין"
+       • "שמן צמחי"
+       • "שמן צמחי ניטרלי"
        • overly technical or archaic terms.
    - For eggs, always write "ביצה" (e.g., "ביצה גדולה") instead of "ביצת תרנגולת".
-   - For neutral oil, write "שמן צמחי ניטרלי (קנולה/חמניות)" or similar,
-     NOT "שמן עדין" or "שמן צמחי עדין".
-
+   - For oils, always name the specific oil (e.g., "שמן זית", "שמן קנולה", "שמן שומשום")
+     and never use a generic phrase like "שמן צמחי".
 
 Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
 The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
@@ -326,8 +323,8 @@ The example numbers below MUST be replaced with realistic values that follow rul
 
 - "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
   The serving count is provided only in "amountOfServings".
-- When calculating protein level - return the actual real life accurate protein level per 100 grams and do not make up.
-- When calculating level of popularity - use the most accurate data you have.
+- When calculating protein level, return the actual real-life accurate protein level **per 100 grams** and do not make up random values.
+- When calculating sugar, return the number of **tablespoons of sugar per 100 grams** of the final dish.
 
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.

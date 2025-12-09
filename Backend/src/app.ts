@@ -34,7 +34,7 @@ export class App {
 
 
     server.listen(appConfig.port, appConfig.serverHost, () => {
-      console.log(`Listening on http://${appConfig.serverHost}:${appConfig.port}`);
+      console.log(`Listening to port ${appConfig.port}`);
     });
   }
 }

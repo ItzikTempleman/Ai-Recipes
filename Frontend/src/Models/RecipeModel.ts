@@ -69,3 +69,5 @@ export enum CaloryRestrictions {
 }
 
 export type QueryRestrictions = string[];
+
+

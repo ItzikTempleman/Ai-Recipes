@@ -9,8 +9,6 @@ type RecipeProps = {
   recipe: RecipeModel
 };
 
-
-
 export function RecipeCard({ recipe }: RecipeProps) {
 
   const [imgSrc, setImgSrc] = useState<string>("");

@@ -83,10 +83,31 @@
   border: 1px solid grey;
   width: 130px;
   height: 130px;
+  object-fit: cover;    
+  object-position:center;
 }
+
+input[type="file"].ImageInput {
+  margin-left: 20px;
+  width: 100px;      
+  overflow: hidden;  
+  cursor: pointer;
+}
+
+
+input[type="file"].ImageInput::file-selector-button {
+  border-radius: 4px;
+  color: white;
+  height: auto;
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: rgb(44, 105, 196);
+}
+
 .DialogDiv{
   background: #e8e8e8;
 }
+
 .EditProfileContainer {
   display: flex; 
   width: 300px;

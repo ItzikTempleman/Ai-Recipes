@@ -1,6 +1,5 @@
 import { Credentials, User } from "../Models/UserModel";
 import { jwtDecode } from "jwt-decode";
-import { notify } from "../Utils/Notify";
 import { store } from "../Redux/Store";
 import { userSlice } from "../Redux/UserSlice";
 import axios from "axios";
@@ -23,7 +22,6 @@ class UserService {
                 this.logout()
             }, delay);
         } catch (err) {
-            notify.error(err);
             this.logout()
         }
     };
@@ -42,7 +40,6 @@ class UserService {
             }
         }
         catch (err) {
-            notify.error(err);
             this.logout();
         }
     }
@@ -64,7 +61,6 @@ class UserService {
                 this.logout();
             }
         } catch (err) {
-            notify.error(err);
             this.logout();
             throw err;
         }

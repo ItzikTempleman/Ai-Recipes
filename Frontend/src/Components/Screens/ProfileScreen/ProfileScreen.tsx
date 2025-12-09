@@ -63,7 +63,6 @@ export function ProfileScreen() {
     formData.append("email", finalEmail);
     formData.append("phoneNumber", finalPhone);
 
-    // If auto-save on file selection failed, we still send the image here
     if (selectedFile) {
       formData.append("image", selectedFile);
     }
@@ -71,7 +70,7 @@ export function ProfileScreen() {
     try {
       await userService.updateUserInfo(user.id, formData);
       notify.success("User has been updated");
-      setOpen(false); // update dialog (close it)
+      setOpen(false);
     } catch (err: unknown) {
       notify.error(err);
     }
@@ -156,23 +155,21 @@ export function ProfileScreen() {
           alt="Profile"
         />
 
-        <TextField
+        <TextField 
           variant="standard"
           InputProps={{ disableUnderline: true }}
           type="file"
-          inputProps={{ accept: "image/*" }}
+          inputProps={{ accept: "image/*" , className:"ImageInput"}}
           onChange={async e => {
             const target = e.target as HTMLInputElement;
             const file = target.files?.[0];
 
             if (!file || !user) return;
 
-            // Local preview so user sees result immediately
-            const blobUrl = URL.createObjectURL(file);
+            const uri = URL.createObjectURL(file);
             setSelectedFile(file);
-            setImagePreview(blobUrl);
+            setImagePreview(uri);
 
-            // Auto-save image to backend (so it persists across tabs / reload)
             const formData = new FormData();
             formData.append("id", String(user.id));
             formData.append("firstName", user.firstName);
@@ -184,13 +181,11 @@ export function ProfileScreen() {
             try {
               await userService.updateUserInfo(user.id!, formData);
               notify.success("Profile image updated");
-              // After success, Redux.user.imageUrl has final URL; we can clear draft
               setSelectedFile(null);
             } catch (err) {
               notify.error(err);
             }
-          }}
-        />
+          }}/>
 
         <h3 className="Name">
           {user.firstName} {user.familyName}
