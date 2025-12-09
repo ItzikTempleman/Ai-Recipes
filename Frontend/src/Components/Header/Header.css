@@ -14,6 +14,14 @@ border-bottom: 1px solid grey;
   line-height: 1.1;  
 }
 
+.HeaderImagePreview{
+  border-radius: 180px;
+  border: 4px solid rgb(29, 71, 110);
+  width: 60px;
+  height: 60px;
+
+}
+
 .GeneralNavigation,
 .CenterNavigation,
 .UserNavigation {

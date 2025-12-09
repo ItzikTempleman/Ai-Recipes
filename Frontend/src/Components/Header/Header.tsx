@@ -9,16 +9,28 @@ import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import Info from "@mui/icons-material/Info";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const user = useSelector((state: AppState) => state.user);
+   const fallbackAvatar = "/person-21.png";
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    fallbackAvatar
+  );
 
   async function logout(): Promise<void> {
     notify.success(`Good bye ${user.firstName} ${user.familyName}`);
     userService.logout();
   }
 
+  useEffect(() => {
+    if (user?.imageUrl) {
+      setImagePreview(user.imageUrl);
+    } else {
+      setImagePreview(fallbackAvatar);
+    }
+  }, [user, fallbackAvatar]);
+    
   const location = useLocation();
   const isAuthPage =
     location.pathname === "/login-screen" ||
@@ -67,11 +79,14 @@ export function Header() {
 
         {showUserLinks && (
           <>
-            <NavLink to="/profile-screen" className="ProfileScreenLink">
-              <div className="Profile">
-                <PersonOutlineOutlinedIcon />
-                <p>Profile</p>
-              </div>
+            <NavLink to="/profile-screen">
+  
+                   <img
+          className="HeaderImagePreview"
+          src={imagePreview || fallbackAvatar}
+    
+        />
+  
             </NavLink>
 
             <NavLink
