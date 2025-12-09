@@ -54,22 +54,6 @@
   text-align: center;
 }
 
-.Description,
-.Servings,
-.CalorieCount,
-.Popularity,
-.Sugar {
-  margin-bottom: 8px;
-}
-
-.Description p,
-.Servings p,
-.CalorieCount h4,
-.Popularity p,
-.Sugar p {
-  margin: 0;
-}
-
 .IngredientsList {
   margin-top: 20px;
   padding-top: 16px;

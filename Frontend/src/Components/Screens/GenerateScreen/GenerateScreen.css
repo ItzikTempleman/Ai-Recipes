@@ -34,6 +34,19 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
 
+.Servings{
+
+  align-items: center;
+  margin: 4px;
+  gap: 4px;
+  border-radius: 8px;
+  display: flex;
+
+}
+.GenerateAmountDiv{
+  display: flex;
+  align-items: center;
+}
 .GenerateTitle::after {
   content: "";
   position: absolute;
@@ -42,11 +55,10 @@
   transform: translateX(-50%);
   width: 400px;
   height: 3px;
-  border-radius: 999px;
+  border-radius: 180px;
   background: linear-gradient(90deg, #03517a, #92bcd1);
   opacity: 0.7;
 }
-
 
 .TitleIcon {
   font-size: 2rem;
@@ -87,23 +99,12 @@
   gap: 8px;               
 }
 
-.Servings {
-  display: flex;
-  border: 1px solid;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 4px;
-  border-radius: 4px;
-  border: 0.5px solid grey;
-}
-.Servings>*{
-  font-size: 14px;
-}
+
   
 .QuantitySelector {
   width: 60px;
   border-radius: 6px;
-  border: 1px solid transparent;
+  border: 1px solid grey;
   padding-left: 20px;
   font-size: 16px;
 }

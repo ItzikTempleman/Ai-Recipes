@@ -15,6 +15,9 @@ import { LactoseFilter } from "../../Filters/LactoseFilter";
 import { GlutenFilter } from "../../Filters/GlutenFilter";
 import { DietaryFilter } from "../../Filters/DietaryFilter";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+
+
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -110,7 +113,10 @@ export function GenerateScreen() {
           </div>
           <div className="FiltersColumn" key={filtersResetKey}>
             <div className="Servings">
-              <p>Servings</p>
+                      <div className="GenerateAmountDiv">
+        <RestaurantIcon fontSize="medium"/>
+          <p>x</p>
+        </div>
               <select
                 className="QuantitySelector"
                 value={initialQuantity}

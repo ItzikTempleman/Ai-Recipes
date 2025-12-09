@@ -10,7 +10,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  align-items: stretch;   /* full-width children */
+  align-items: stretch;   
+  
 }
 
 .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
@@ -31,22 +32,6 @@
 .InstructionsList {
   width: 100%;
 }
-.Servings,
-.Description,
-.CalorieCount,
-.Popularity,
-.Sugar {
-  margin-bottom: 8px;
-}
-
-.Servings p,
-.Description p,
-.Popularity p,
-.Sugar p,
-.CalorieCount h4 {
-  margin: 0;
-}
-
 
 .ClearFormDiv{
   align-items: center;
@@ -60,7 +45,11 @@
   background-color: #8f8f8f !important
 }
 
-
+.DataContainer{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
 .RecipeImage {
   display: block;
   margin: 0 auto 20px;
@@ -70,6 +59,82 @@
   height: auto;            
   object-fit: cover;     
   border-radius: 10px;
+}
+
+.AmountParent>p,
+.CaloryParent>p,
+.SugarParent>p,
+.ProteinParent>p,
+.HealthParent>p
+{
+  font-weight: bold;
+}
+.AmountParent,
+.CaloryParent,
+.SugarParent,
+.ProteinParent,
+.HealthParent
+{
+   flex-direction: column;
+ display: flex;
+  width: 100%;
+   padding: 4px;
+  margin: 4px;
+    align-items: center;
+}
+
+.AmountDiv,
+.PopularityDiv,
+.CaloriesDiv,
+.SugarAmountDiv,
+.ProteinAmountDiv,
+.HealthLevelDiv
+{
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid #bebfbf;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+}
+.ServingsIcon,
+.SugarIcon,
+.CaloriesIcon,
+.ProteinIcon,
+.HealthIcon
+{
+  margin-top: 8px;
+  width: 30px;
+  height: 30px;
+}
+
+.CaloriesInnerDiv,
+.SugarAmountInnerDiv,
+.AmountInnerDiv,
+.HealthLevelInnerDiv,
+.ProteinInnerDiv{
+  display: flex;
+  align-items: center;
+}
+
+.CaloriesInnerDiv,
+.SugarAmountInnerDiv,
+.AmountInnerDiv,
+.HealthLevelInnerDiv,
+.ProteinInnerDiv >*{
+font-size: 12px;
+}
+.CaloriesInnerDiv>p:first-child,
+.SugarAmountInnerDiv>p:first-child,
+.AmountInnerDiv>p:last-child,
+.HealthLevelInnerDiv>p:first-child,
+.ProteinInnerDiv>p:first-child{
+  font-weight: bold;
+  font-size: 16px;
+  padding-right: 4px;
 }
 
 .IngredientsList {
@@ -83,7 +148,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 4px 0;
-  border-bottom: 1px solid #ccc;  /* divider under each row */
+  border-bottom: 1px solid #ccc;  
   align-items: center;
 }
 
@@ -113,7 +178,6 @@
   color: #d21c1c;
 }
 
-/* INSTRUCTIONS RTL STUFF – same as before */
 .instructions-list.rtl {
   direction: rtl;
   text-align: right;
