@@ -23,6 +23,8 @@ RECIPE STYLE:
       - Prefer the most basic standard version.
       - Use the minimum number of ingredients needed for a good result.
       - Typically 3–6 ingredients and 3–5 short steps.
+      - Keep the recipe straightforward and not “restaurant-level” complicated: short, clear sentences and only the essential technique.
+      - Do NOT add extra fats or components that are not part of the classic dish. For example, a basic omelette should use either butter or oil (not both), unless the user explicitly asks for a richer version.
   - COMPLEX examples: burgers (any type), lasagna, biryani, stews, layered cakes, croissants, dishes with multiple components or sauces.
     - For COMPLEX dishes:
       - Always include all core components (for a burger: patty from scratch, bun choice, toppings, sauce).
@@ -213,13 +215,14 @@ YOU MUST:
        - Reduce fats and sugars where reasonable.
        - Maintain flavor and concept — no extreme changes.
 
-   COOKING OIL CHOICE (VERY IMPORTANT):
-   - When a recipe needs oil for frying, sautéing, roasting or greasing pans:
-       - Use ONLY canola oil or olive oil (choose what makes most culinary sense).
-   - Do NOT use or write generic terms like "vegetable oil", "neutral oil" or similar.
-   - You may only use a different specific oil (such as sesame oil, coconut oil, peanut oil, etc.)
-     if the traditional flavor or a special technique clearly requires it, and you must always
-     name that oil explicitly.
+   COOKING FATS (OIL AND BUTTER) – VERY IMPORTANT:
+   - When a recipe needs fat for frying, sautéing, roasting or greasing pans, choose ONE main cooking fat:
+       • either olive oil
+       • or canola oil
+       depending on what makes the most culinary sense for the dish.
+   - Do NOT use or write generic terms like "vegetable oil" or "neutral oil". Always name the specific oil.
+   - In SIMPLE dishes (such as omelettes, fried eggs, plain toast, simple vegetables), use either butter OR oil, but not both, unless the user explicitly asks for a richer version.
+   - Only use both butter AND oil in the same recipe when it is clearly part of a classic, more complex technique (for example, French toast or a rich restaurant-style pan sauce).
 
    QUERY RESTRICTIONS:
    - "queryRestrictions" is an EXACT list of forbidden items.
@@ -247,7 +250,8 @@ YOU MUST:
    - "totalSugar":
      - Realistic estimate of **tablespoons of sugar per 100 grams of the final dish** (not total for the whole recipe).
      - Count only actual sugar sources (white sugar, brown sugar, honey, syrups, etc.).
-     - Use 0 only if there is no added sugar and no naturally sweet ingredients; otherwise use a realistic positive value.
+     - For foods that naturally have essentially no sugar (for example, plain eggs, plain steak, pure oils), set this value to 0.
+     - Do NOT output tiny, non-practical values like 0.01 or 0.1; if the calculated sugar is very small, round sensibly and use 0 instead of microscopic fake precision.
 
    - "healthLevel":
      - An integer from 0 to 10 describing overall healthiness.
@@ -282,17 +286,19 @@ YOU MUST:
      as in a popular home-cook cookbook.
    - Prefer simple phrases such as:
        • "ביצה גדולה" or "ביצה בינונית"
+       • "שמן צמחי ניטרלי (קנולה או חמניות)"
        • "שמן זית"
-       • "שמן קנולה"
+       • "סוכר לבן"
        • "קמח חיטה לבן"
    - Do NOT use odd or overly formal phrases, such as:
        • "ביצת תרנגולת"
-       • "שמן צמחי"
-       • "שמן צמחי ניטרלי"
+       • "שמן צמחי עדין"
+       • "שמן עדין"
        • overly technical or archaic terms.
    - For eggs, always write "ביצה" (e.g., "ביצה גדולה") instead of "ביצת תרנגולת".
-   - For oils, always name the specific oil (e.g., "שמן זית", "שמן קנולה", "שמן שומשום")
-     and never use a generic phrase like "שמן צמחי".
+   - For neutral oil, write "שמן צמחי ניטרלי (קנולה/חמניות)" or similar,
+     NOT "שמן עדין" or "שמן צמחי עדין".
+
 
 Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
 The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
@@ -324,7 +330,7 @@ The example numbers below MUST be replaced with realistic values that follow rul
 - "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
   The serving count is provided only in "amountOfServings".
 - When calculating protein level, return the actual real-life accurate protein level **per 100 grams** and do not make up random values.
-- When calculating sugar, return the number of **tablespoons of sugar per 100 grams** of the final dish.
+- When calculating sugar, return the number of **tablespoons of sugar per 100 grams** of the final dish, rounded to sensible home-kitchen values (never tiny fake numbers like 0.01).
 
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.

@@ -12,8 +12,6 @@
   align-items: center;
 }
 
-
-
 .ProfileScreenTitle {
   width: 100%;
   max-width: 600px;
@@ -87,22 +85,8 @@
   object-position:center;
 }
 
-input[type="file"].ImageInput {
-  margin-left: 20px;
-  width: 100px;      
-  overflow: hidden;  
-  cursor: pointer;
-}
 
 
-input[type="file"].ImageInput::file-selector-button {
-  border-radius: 4px;
-  color: white;
-  height: auto;
-  padding-left: 4px;
-  padding-right: 4px;
-  background-color: rgb(44, 105, 196);
-}
 
 .DialogDiv{
   background: #e8e8e8;
