@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 6px 20px;
+  padding: 2px 20px;
   box-sizing: border-box;
   border: 1px solid rgb(135, 188, 232);
   margin: 8px;
@@ -91,7 +91,7 @@
 .AboutScreenLink.active,
 .HomeScreenLink.active,
 .LoginScreenLink.active {
-  color: #215898;
+  color: #0f7394;
   font-weight: bold;
   font-size: 14px;
 }
@@ -102,7 +102,7 @@
 
 @media (max-width: 600px) {
   .Header {
-    padding: 6px 12px;
+    padding: 2px 12px;
     flex-wrap: wrap;
   }
 
@@ -117,37 +117,10 @@
   .LoginScreenLink {
     font-size: 12px;
   }
-
-  .GeneralNavigation a+a {
-    margin-left: 12px;
-    padding-left: 12px;
-
-  }
-
-  .UserNavigation a+a {
-    margin-left: 12px;
-    padding-left: 12px;
-  }
-
-  .CenterNavigation {
-    margin: 0 12px;
-    padding: 0 12px;
-
-  }
-
-  .Header>.CenterNavigation:first-child {
-    margin-left: 0;
-    padding-left: 0;
-    border: none;
-  }
-
   .Header>.CenterNavigation:first-child:last-child {
     margin: 0;
     padding: 0;
     border: none;
   }
 
-  .Header>.CenterNavigation:first-child:last-child a {
-    align-items: flex-start;
-  }
 }

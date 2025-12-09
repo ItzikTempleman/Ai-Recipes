@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 import { notify } from "../../Utils/Notify";
 import { userService } from "../../Services/UserService";
-import HomeOutlined from "@mui/icons-material/HomeOutlined";
 import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import Info from "@mui/icons-material/Info";
 import { useEffect, useState } from "react";
+import { Home } from "@mui/icons-material";
 
 export function Header() {
   const user = useSelector((state: AppState) => state.user);
@@ -46,7 +46,7 @@ export function Header() {
         <div className="GeneralNavigation nav-group">
           <NavLink to="/home-screen" className="HomeScreenLink">
             <div className="Home">
-              <HomeOutlined />
+              <Home />
               <p>Home</p>
             </div>
           </NavLink>
