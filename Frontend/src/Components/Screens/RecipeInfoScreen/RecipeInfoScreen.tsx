@@ -56,63 +56,57 @@ export function RecipeInfoScreen() {
         {recipe.imageUrl && (
           <img className="RecipeInImage" src={recipe.imageUrl} />
         )}
-        <h2>{recipe.title}</h2>
 
+        <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title}</h2>
+        <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.description}</p>
 
+        <div className="DataContainer">
+          <div className="AmountParent">
+            <p>Portions</p>
+            <div className="AmountDiv">
+              <img className="ServingsIcon" src="/servings.png" />
+              <div className="AmountInnerDiv"><p>x</p><p> {recipe.amountOfServings}</p></div>
+            </div>
+          </div>
 
-              <div className="DataContainer">
-      
-        <div className="AmountParent">
-          <p>Portions</p>
-          <div className="AmountDiv">
-            <img className="ServingsIcon" src="/servings.png" />
-            <div className="AmountInnerDiv"><p>x</p><p> {recipe.amountOfServings}</p></div>
+          <div className="CaloryParent">
+            <p>Calories</p>
+            <div className="CaloriesDiv">
+              <img className="CaloriesIcon" src="/calories.png" />
+              <div className="CaloriesInnerDiv"><p>{recipe.calories}</p><p>kcal</p></div>
+            </div>
+          </div>
+
+          <div className="SugarParent">
+            <p>Sugar</p>
+            <div className="SugarAmountDiv">
+              <img className="SugarIcon" src="/sugar.png" />
+              <div className="SugarAmountInnerDiv"><p>{Number(recipe.totalSugar) === 0
+                ? "0" : `${recipe.totalSugar}`} </p> <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"} </p></div>
+            </div>
+          </div>
+
+          <div className="ProteinParent">
+            <p>Protein</p>
+            <div className="ProteinAmountDiv">
+              <img className="ProteinIcon" src="/protein.png" />
+              <div className="ProteinInnerDiv"><p>{recipe.totalProtein}g </p><p> | 100g</p></div>
+            </div>
+          </div>
+
+          <div className="HealthParent">
+            <p>Health</p>
+            <div className="HealthLevelDiv">
+              <img className="HealthIcon" src="/health.png" />
+              <div className="HealthLevelInnerDiv"><p>{recipe.healthLevel}</p><p> / 10</p></div>
+            </div>
           </div>
         </div>
 
-        <div className="CaloryParent">
-          <p>Calories</p>
-          <div className="CaloriesDiv">
-            <img className="CaloriesIcon" src="/calories.png" />
-            <div className="CaloriesInnerDiv"><p>{recipe.calories}</p><p>kcal</p></div>
-          </div>
-        </div>
+ 
+        <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+     <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "מצרכים" : "Ingredients"}</h2>
 
-        <div className="SugarParent">
-          <p>Sugar</p>
-          <div className="SugarAmountDiv">
-            <img className="SugarIcon" src="/sugar.png" />
-            <div className="SugarAmountInnerDiv"><p>{Number(recipe.totalSugar) === 0
-              ? "0" : `${recipe.totalSugar}`} </p> <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"} </p></div>
-          </div>
-        </div>
-
-        <div className="ProteinParent">
-          <p>Protein</p>
-          <div className="ProteinAmountDiv">
-            <img className="ProteinIcon" src="/protein.png" />
-            <div className="ProteinInnerDiv"><p>{recipe.totalProtein}g </p><p> | 100g</p></div>
-          </div>
-        </div>
-
-        <div className="HealthParent">
-          <p>Health</p>
-          <div className="HealthLevelDiv">
-            <img className="HealthIcon" src="/health.png" />
-            <div className="HealthLevelInnerDiv"><p>{recipe.healthLevel}</p><p> / 10</p></div>
-          </div>
-        </div>
-      </div>
-
-         <div className="DescriptionInInfoScreen">
-        <p > {recipe.description}</p>
-      </div>
-
-        <div
-          className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
-          dir={isRTL ? "rtl" : "ltr"}
-        >
-          <h3>Ingredients</h3>
           {ingredients.map((line, index) => (
             <div key={index} className="IngredientRow">
               <span className="IngredientName">{line.ingredient}</span>
@@ -122,7 +116,7 @@ export function RecipeInfoScreen() {
         </div>
 
         <div className="InstructionsList">
-          <h3>Instructions</h3>
+  <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "הוראות הכנה" : "Instructions"}</h2>
           <ol
             className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
             dir={isRTL ? "rtl" : "ltr"}

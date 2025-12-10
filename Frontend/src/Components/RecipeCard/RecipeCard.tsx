@@ -31,11 +31,9 @@ export function RecipeCard({ recipe }: RecipeProps) {
             dispatch(resetGenerated());
           }}
         >Clear</Button></div>
-      <h2>{recipe.title}</h2>
 
-      <div className="DescriptionInInfoScreen">
-        <p>{recipe.description}</p>
-      </div>
+    <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title}</h2>
+    <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.description}</p>
 
       {imgSrc && (
         <img className="RecipeImage"
@@ -92,7 +90,8 @@ export function RecipeCard({ recipe }: RecipeProps) {
         className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
         dir={isRTL ? "rtl" : "ltr"}
       >
-        <h3>Ingredients</h3>
+
+          <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "מצרכים" : "Ingredients"}</h2>
         {ingredients.map((line, index) => (
           <div key={index} className="IngredientRow">
             <span className="IngredientName">{line.ingredient}</span>
@@ -102,7 +101,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
       </div>
 
       <div className="InstructionsList">
-        <h3>Instructions</h3>
+             <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "הוראות הכנה" : "Instructions"}</h2>
         <ol
           className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
           dir={isRTL ? "rtl" : "ltr"}

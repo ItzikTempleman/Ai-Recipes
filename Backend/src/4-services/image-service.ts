@@ -9,7 +9,7 @@ export  async function generateImage(recipe: InputModel): Promise<GPTImage> {
 
   const promptParts: string[] = [
     `High-resolution, super realistic food photo of: ${recipe.query}`,
-    "Show only the finished plated dish, no text or logos."
+    "Show only the finished plated dish, no text or logos. no extra food in the plate. respect dietary restrictions and enforce them firmly"
   ];
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
@@ -103,3 +103,20 @@ export  async function generateImage(recipe: InputModel): Promise<GPTImage> {
 
   throw lastErr;
   }
+
+
+  function parseDietFromFilter(f: string | undefined): DietaryRestrictions {
+  if (!f) return DietaryRestrictions.DEFAULT;
+  const norm = f.trim().toLowerCase();
+
+  if (["kosher", "כשר"].includes(norm)) {
+    return DietaryRestrictions.KOSHER;
+  }
+  if (["vegan", "טבעוני"].includes(norm)) {
+    return DietaryRestrictions.VEGAN;
+  }
+  if (["halal", "חלאל"].includes(norm)) {
+    return DietaryRestrictions.HALAL;
+  }
+  return DietaryRestrictions.DEFAULT;
+}

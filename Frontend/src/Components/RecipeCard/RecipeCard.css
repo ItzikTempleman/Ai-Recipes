@@ -22,12 +22,34 @@
   margin-top: 16px;
 }
 
-.RecipeCard > h2,
+
 .InstructionsList h2 {
   margin-top: 8px;
   margin-bottom: 8px;
   text-align: center;
 }
+
+.InstructionsTitle.ltr,
+.IngredientsTitle.ltr,
+.Description.ltr,
+.RecipeTitle.ltr {
+  text-align: left !important;
+ 
+}
+.InstructionsTitle.rtl,
+.IngredientsTitle.rtl,
+.Description.rtl,
+.RecipeTitle.rtl {
+  text-align: right !important;  
+}
+
+.InstructionsTitle.rtl,
+.InstructionsTitle.ltr,
+.IngredientsTitle.rtl,
+.IngredientsTitle.ltr{
+  color: #0f7394
+}
+
 .IngredientsList,
 .InstructionsList {
   width: 100%;
@@ -99,6 +121,7 @@
   align-items: center;
   border-radius: 8px;
   display: flex;
+  background: linear-gradient(30deg,#ecebeb ,#dbdbdb ,white);
 }
 .ServingsIcon,
 .SugarIcon,
@@ -127,6 +150,8 @@
 .ProteinInnerDiv >*{
 font-size: 12px;
 }
+
+
 .CaloriesInnerDiv>p:first-child,
 .SugarAmountInnerDiv>p:first-child,
 .AmountInnerDiv>p:last-child,
