@@ -4,7 +4,7 @@
   margin: 0;
   padding: 24px 16px 40px;   
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow-y: auto;   
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -164,6 +164,9 @@ font-weight: bold;
     flex-direction: row;
     font-size: 0.95rem;
   }
-
+.IngredientName {
+font-size: 14px !important;
+font-weight:normal;
+}
 
 }

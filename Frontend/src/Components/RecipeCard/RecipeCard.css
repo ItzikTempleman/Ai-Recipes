@@ -8,8 +8,16 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;   
+  text-align: left;    
 }
 
+.instructions-list.ltr {
+  direction: ltr;
+  text-align: left;
+  padding-left: 1.5rem;
+  padding-right: 0;
+  list-style-position: inside;
+}
 
 .InstructionsTitle.ltr,
 .IngredientsTitle.ltr,
@@ -203,6 +211,10 @@ font-size: 12px;
   border-top: 1px solid #ccc;
   margin: 8px 0;
 }
+
+
+
+
 @media (max-width: 600px) {
   .RecipeCard {
     padding: 16px;
@@ -217,13 +229,5 @@ font-size: 12px;
   .IngredientRow {
     flex-direction: row;
     font-size: 0.95rem;
-  }
-
-  .MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
-    margin-top: 20px;
-  }
-
-  .MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
-    margin-top: 10px;
   }
 }
