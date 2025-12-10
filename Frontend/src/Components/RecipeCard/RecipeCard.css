@@ -2,32 +2,14 @@
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 24px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px;
+  border-radius: 2px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: stretch;   
-  
 }
 
-.MainContainer:has(.LoadingWithImage, .LoadingWithoutImage) ~ div .RecipeCard {
-  margin-top: 32px;
-}
-
-.MainContainer:not(:has(.LoadingWithImage, .LoadingWithoutImage)) ~ div .RecipeCard {
-  margin-top: 16px;
-}
-
-
-.InstructionsList h2 {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  text-align: center;
-}
 
 .InstructionsTitle.ltr,
 .IngredientsTitle.ltr,

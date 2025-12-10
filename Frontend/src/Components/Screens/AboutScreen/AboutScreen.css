@@ -34,19 +34,16 @@
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 28px 28px 24px;
+  padding: 18px;
   box-sizing: border-box;
-  background: #ffffff;
   border-radius: 16px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06),0 2px 4px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
-  gap: 16px;
   text-align: left;
-  color: #333333;
   position: relative;
   overflow: hidden;
+  border-radius: 2px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .AboutCard::before {
@@ -55,18 +52,6 @@
   inset: 0;
   height: 6px;
   background: linear-gradient(90deg, #a5d0de,#75a5b5, #0f7394);
-}
-
-.AboutCard > * {
-  position: relative;
-  z-index: 1;
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(to right, #a7cdda, #f0f0f0);
-  margin: 4px 0 8px;
 }
 
 .TopContent {
@@ -120,9 +105,10 @@ min-height: calc(100vh - 60px);
   }
 
   .AboutCard {
-    padding: 20px 18px 18px;
+    padding: 18px;
     max-width: 100%;
-    border-radius: 14px;
+      border-radius: 2px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   }
 
   .TopContent {
