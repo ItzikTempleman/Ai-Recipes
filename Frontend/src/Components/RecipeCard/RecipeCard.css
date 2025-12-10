@@ -153,9 +153,6 @@ font-size: 12px;
   padding-right: 4px;
 }
 
-.SugarAmountInnerDiv>p:last-child{
-font-size: 10px !important;
-}
 
 .IngredientsList {
   margin-top: 20px;
@@ -235,4 +232,9 @@ font-size: 10px !important;
     flex-direction: row;
     font-size: 0.95rem;
   }
+
+  .SugarAmountInnerDiv>p:last-child{
+font-size: 10px !important;
+}
+
 }
