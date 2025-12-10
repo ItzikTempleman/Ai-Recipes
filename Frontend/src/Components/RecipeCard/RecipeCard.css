@@ -7,8 +7,30 @@
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  align-items: stretch;   
-  text-align: left;    
+  align-items: stretch;
+  text-align: left;
+}
+
+.DataContainer {
+  display: flex;
+  width: 100%;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.AmountParent,
+.CaloryParent,
+.SugarParent,
+.ProteinParent,
+.HealthParent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 2px;
+  margin: 2px;
+  width: auto;
 }
 
 .instructions-list.ltr {
@@ -24,19 +46,20 @@
 .Description.ltr,
 .RecipeTitle.ltr {
   text-align: left !important;
- 
+
 }
+
 .InstructionsTitle.rtl,
 .IngredientsTitle.rtl,
 .Description.rtl,
 .RecipeTitle.rtl {
-  text-align: right !important;  
+  text-align: right !important;
 }
 
 .InstructionsTitle.rtl,
 .InstructionsTitle.ltr,
 .IngredientsTitle.rtl,
-.IngredientsTitle.ltr{
+.IngredientsTitle.ltr {
   color: #0f7394
 }
 
@@ -45,32 +68,27 @@
   width: 100%;
 }
 
-.ClearFormDiv{
+.ClearFormDiv {
   align-items: center;
   display: flex;
   width: 100%;
   justify-content: flex-end;
 }
 
-.ClearFormBtn{
+.ClearFormBtn {
   height: 30px !important;
   background-color: #8f8f8f !important
 }
 
-.DataContainer{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
 .RecipeImage {
   display: block;
   margin: 0 auto 20px;
-  width: 100%;             
-  max-width: 480px;         
-  aspect-ratio: 4 / 3;      
-  height: auto;            
-  object-fit: cover;    
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); 
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
 }
 
@@ -78,22 +96,8 @@
 .CaloryParent>p,
 .SugarParent>p,
 .ProteinParent>p,
-.HealthParent>p
-{
+.HealthParent>p {
   font-weight: bold;
-}
-.AmountParent,
-.CaloryParent,
-.SugarParent,
-.ProteinParent,
-.HealthParent
-{
-   flex-direction: column;
- display: flex;
-  width: 100%;
-   padding: 4px;
-  margin: 4px;
-    align-items: center;
 }
 
 .AmountDiv,
@@ -101,8 +105,7 @@
 .CaloriesDiv,
 .SugarAmountDiv,
 .ProteinAmountDiv,
-.HealthLevelDiv
-{
+.HealthLevelDiv {
   width: 100%;
   border-radius: 8px;
   display: flex;
@@ -111,15 +114,15 @@
   align-items: center;
   border-radius: 8px;
   display: flex;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  background: linear-gradient(30deg,white ,#e2e2e2 ,white);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(30deg, white, #e2e2e2, white);
 }
+
 .ServingsIcon,
 .SugarIcon,
 .CaloriesIcon,
 .ProteinIcon,
-.HealthIcon
-{
+.HealthIcon {
   margin-top: 8px;
   width: 30px;
   height: 30px;
@@ -129,7 +132,7 @@
 .SugarAmountInnerDiv,
 .AmountInnerDiv,
 .HealthLevelInnerDiv,
-.ProteinInnerDiv{
+.ProteinInnerDiv {
   display: flex;
   align-items: center;
 }
@@ -138,8 +141,8 @@
 .SugarAmountInnerDiv,
 .AmountInnerDiv,
 .HealthLevelInnerDiv,
-.ProteinInnerDiv >*{
-font-size: 12px;
+.ProteinInnerDiv>* {
+  font-size: 12px;
 }
 
 
@@ -147,25 +150,25 @@ font-size: 12px;
 .SugarAmountInnerDiv>p:first-child,
 .AmountInnerDiv>p:last-child,
 .HealthLevelInnerDiv>p:first-child,
-.ProteinInnerDiv>p:first-child{
+.ProteinInnerDiv>p:first-child {
   font-weight: bold;
   font-size: 16px;
   padding-right: 4px;
 }
-
 
 .IngredientsList {
   margin-top: 20px;
   padding-top: 16px;
   border-top: 1px solid #ccc;
 }
+
 .IngredientRow {
   display: flex;
   width: 100%;
   justify-content: space-between;
   gap: 12px;
   padding: 4px 0;
-  border-bottom: 1px solid #ccc;  
+  border-bottom: 1px solid #ccc;
   align-items: center;
 }
 
@@ -214,9 +217,6 @@ font-size: 12px;
   margin: 8px 0;
 }
 
-
-
-
 @media (max-width: 600px) {
   .RecipeCard {
     padding: 16px;
@@ -233,8 +233,9 @@ font-size: 12px;
     font-size: 0.95rem;
   }
 
-  .SugarAmountInnerDiv>p:last-child{
-font-size: 10px !important;
-}
+  .SugarAmountInnerDiv>p:last-child,
+  .ProteinInnerDiv>p:last-child {
+    font-size: 10px !important;
+  }
 
 }
