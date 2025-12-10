@@ -1,9 +1,9 @@
 .RecipeListItem {
-  width: 300px; 
+  width: 300px;
   margin-left: 20px;
   margin-top: 12px;
-  height: 230px;
-   padding: 32px 16px 8px; 
+  height: 240px;
+  padding: 32px 16px 8px;
   box-sizing: border-box;
   background: #ffffff;
   border-radius: 8px;
@@ -38,12 +38,11 @@
   right: 8px;
 }
 
-
 .CardTitleContainer {
   margin-top: auto;
   display: flex;
-  flex-direction: column; 
-  align-items: center;  
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 16px;
 }
 
@@ -54,8 +53,14 @@
 }
 
 .MoreInfoBtn {
-  margin-top: 6px; 
-  align-self: center;      
+  margin-top: 6px;
+  align-self: center;
   background-color: #0f7394 !important;
 }
 
+@media (max-width: 600px) {
+  .RecipeListItem {
+   justify-content: center !important;
+   margin: 12px auto !important; 
+  }
+}
