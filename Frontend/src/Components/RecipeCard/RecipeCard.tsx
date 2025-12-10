@@ -63,8 +63,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
           <p>Sugar</p>
           <div className="SugarAmountDiv">
             <img className="SugarIcon" src="/sugar.png" />
-            <div className="SugarAmountInnerDiv"><p>{Number(recipe.totalSugar) === 0
-              ? "0" : `${recipe.totalSugar}`} </p> <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"} </p></div>
+            <div className="SugarAmountInnerDiv"><p>{Number(recipe.totalSugar) === 0? "None" : `${recipe.totalSugar}`} </p> <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"} </p></div>
           </div>
         </div>
 

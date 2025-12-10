@@ -69,8 +69,9 @@
   max-width: 480px;         
   aspect-ratio: 4 / 3;      
   height: auto;            
-  object-fit: cover;     
-  border-radius: 10px;
+  object-fit: cover;    
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); 
+  border-radius: 4px;
 }
 
 .AmountParent>p,
@@ -104,14 +105,14 @@
 {
   width: 100%;
   border-radius: 8px;
-  border: 2px solid #bebfbf;
   display: flex;
   align-items: center;
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
   display: flex;
-  background: linear-gradient(30deg,#ecebeb ,#dbdbdb ,white);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(30deg,white ,#e2e2e2 ,white);
 }
 .ServingsIcon,
 .SugarIcon,
@@ -150,6 +151,10 @@ font-size: 12px;
   font-weight: bold;
   font-size: 16px;
   padding-right: 4px;
+}
+
+.SugarAmountInnerDiv>p:last-child{
+font-size: 11px !important;
 }
 
 .IngredientsList {
