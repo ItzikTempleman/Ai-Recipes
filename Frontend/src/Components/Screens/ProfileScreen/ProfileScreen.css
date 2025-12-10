@@ -91,28 +91,4 @@
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
-  .ProfileScreen {
-    padding: 16px 8px 24px;
-  }
 
-  .ProfileScreenTitle {
-    max-width: 100%;
-    font-size: 18px;
-  }
-
-  .ProfileSection {
-    padding: 16px;
-    max-width: 100%;
-     box-sizing: border-box;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background: #dedede;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: left;
-  font-size: 15px;
-  }
-}
