@@ -57,7 +57,8 @@ export function RecipeInfoScreen() {
           <img className="RecipeInImage" src={recipe.imageUrl} />
         )}
 
-        <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title}</h2>
+   
+    <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title} {!isRTL ? "for": "עבור"} {recipe.amountOfServings}  {!isRTL ? "servings": "מנות"}</h2>
         <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.description}</p>
 
         <div className="DataContainer">
