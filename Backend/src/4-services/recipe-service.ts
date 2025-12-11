@@ -1,4 +1,4 @@
-import { FullRecipeModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages } from "../3-models/recipe-model";
+import { FullRecipeModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages, DifficultyLevel } from "../3-models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -70,6 +70,10 @@ class RecipeService {
     const glutenRestrictions = recipe.glutenRestrictions;       // enum GlutenRestrictions
     const dietaryRestrictions = recipe.dietaryRestrictions;     // enum DietaryRestrictions
     const caloryRestrictions = recipe.caloryRestrictions;       // enum CaloryRestrictions
+    const prepTime = recipe.prepTime?? 0;
+    const difficultyEnum = recipe.difficultyLevel ?? DifficultyLevel.MID_LEVEL;
+    const difficultyLevel = DifficultyLevel[difficultyEnum]; 
+    const countryOfOrigin = recipe.countryOfOrigin?? "";
     const queryRestrictionsJson = JSON.stringify(
       recipe.queryRestrictions ?? []
     );
@@ -92,8 +96,11 @@ class RecipeService {
         dietaryRestrictions,
         caloryRestrictions,
         queryRestrictions,
+        prepTime,
+        difficultyLevel,
+        countryOfOrigin,
         imageName,
-        userId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        userId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `;
     const values = [
       title,
@@ -113,6 +120,9 @@ class RecipeService {
       dietaryRestrictions,
       caloryRestrictions,
       queryRestrictionsJson,
+      prepTime,
+      difficultyLevel,
+      countryOfOrigin,
       imageName,
       userId
     ];

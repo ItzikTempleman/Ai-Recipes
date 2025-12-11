@@ -1,5 +1,5 @@
 import { appConfig } from "./app-config";
-import { DbRecipeRow, FullRecipeModel, GeneratedRecipeData } from "../3-models/recipe-model";
+import { DbRecipeRow, DifficultyLevel, FullRecipeModel, GeneratedRecipeData } from "../3-models/recipe-model";
 import { CaloryRestrictions, DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction } from "../3-models/filters";
 
 const parseAmounts = (s?: string | null): (string | null)[] => {
@@ -33,6 +33,10 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
     .map(s => s.trim())
     .filter(Boolean);
 
+      const difficultyEnum =
+    typeof row.difficultyLevel === "string"
+      ? DifficultyLevel[row.difficultyLevel as keyof typeof DifficultyLevel]
+      : (row.difficultyLevel as unknown as DifficultyLevel);
 
   const data: GeneratedRecipeData = {
     title: row.title,
@@ -45,13 +49,15 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
     totalProtein: row.totalProtein ?? 0,
     healthLevel: row.healthLevel ?? 0,
     calories: row.calories,
-
     sugarRestriction: row.sugarRestriction ?? SugarRestriction.DEFAULT,
     lactoseRestrictions: row.lactoseRestrictions ?? LactoseRestrictions.DEFAULT,
     glutenRestrictions: row.glutenRestrictions ?? GlutenRestrictions.DEFAULT,
     dietaryRestrictions: row.dietaryRestrictions ?? DietaryRestrictions.DEFAULT,
     caloryRestrictions: row.caloryRestrictions ?? CaloryRestrictions.DEFAULT,
-    queryRestrictions: row.queryRestrictions ?? []
+    queryRestrictions: row.queryRestrictions ?? [],
+    prepTime: row.prepTime ?? 0,
+   difficultyLevel: difficultyEnum,
+    countryOfOrigin: row.countryOfOrigin ?? ""
   };
 
   return new FullRecipeModel({
@@ -71,6 +77,9 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
     dietaryRestrictions: row.dietaryRestrictions ?? DietaryRestrictions.DEFAULT,
     caloryRestrictions: row.caloryRestrictions ?? CaloryRestrictions.DEFAULT,
     queryRestrictions: row.queryRestrictions ?? [],
+    prepTime: row.prepTime ?? 0,
+    difficultyLevel:difficultyEnum,
+    countryOfOrigin: row.countryOfOrigin ?? "",
     imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : "",
     imageName: row.imageName ?? undefined,
     userId: row.userId ?? undefined

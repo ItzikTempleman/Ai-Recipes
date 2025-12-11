@@ -5,12 +5,6 @@ import { appConfig } from "../2-utils/app-config";
 import OpenAI from "openai";
 import { CaloryRestrictions, DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, QueryRestrictions, SugarRestriction } from "./filters";
 
-
-export type IngredientLine = {
-    ingredient: string;
-    amount: string | null;
-};
-
 export type GeneratedRecipeData = {
     title: string;
     amountOfServings: number;
@@ -28,13 +22,24 @@ export type GeneratedRecipeData = {
     dietaryRestrictions: DietaryRestrictions;
     caloryRestrictions: CaloryRestrictions;
     queryRestrictions: QueryRestrictions;
+    prepTime: number;
+    difficultyLevel: DifficultyLevel;
+    countryOfOrigin: String;
 };
 
-
+export enum DifficultyLevel {
+    EASY, MID_LEVEL, PRO
+}
 export type Query = {
     systemCommandDescription: string;
     userCommandDescription: string;
 };
+
+export type IngredientLine = {
+    ingredient: string;
+    amount: string | null;
+};
+
 
 export type GPTImage = {
     fileName: string,
@@ -79,9 +84,11 @@ export type DbRecipeRow = {
     dietaryRestrictions: DietaryRestrictions;
     caloryRestrictions: CaloryRestrictions;
     queryRestrictions: QueryRestrictions;
+    prepTime: number;
+    difficultyLevel: string;
+    countryOfOrigin: String;
     imageName: string | null;
     userId: number | null;
-
 };
 
 export class FullRecipeModel {
@@ -101,6 +108,9 @@ export class FullRecipeModel {
     public dietaryRestrictions!: DietaryRestrictions;
     public caloryRestrictions!: CaloryRestrictions;
     public queryRestrictions!: QueryRestrictions;
+    public prepTime!: number;
+    public difficultyLevel!: DifficultyLevel;
+    public countryOfOrigin!: string;
     public image?: UploadedFile;
     public imageUrl?: string;
     public imageName: string | null | undefined;
@@ -108,27 +118,29 @@ export class FullRecipeModel {
 
     constructor(recipe: any) {
         if (!recipe) throw new ValidationError("Missing recipe data");
-    this.id = recipe.id;
-    this.title = recipe.title;
-    this.amountOfServings = recipe.amountOfServings;
-    this.description = recipe.description;
-    this.popularity = recipe.popularity;
-    this.data = recipe.data;
-    this.totalSugar = recipe.totalSugar;
-    this.totalProtein = recipe.totalProtein;
-    this.healthLevel = recipe.healthLevel;
-    this.calories = recipe.calories;
-    this.sugarRestriction = recipe.sugarRestriction;
-    this.lactoseRestrictions = recipe.lactoseRestrictions;
-    this.glutenRestrictions = recipe.glutenRestrictions;
-    this.dietaryRestrictions = recipe.dietaryRestrictions;
-    this.caloryRestrictions = recipe.caloryRestrictions;
-    this.queryRestrictions = recipe.queryRestrictions;
-    this.image = recipe.image;
-    this.imageUrl = recipe.imageUrl;
-    this.imageName = recipe.imageName;
-    this.userId = recipe.userId;
-
+        this.id = recipe.id;
+        this.title = recipe.title;
+        this.amountOfServings = recipe.amountOfServings;
+        this.description = recipe.description;
+        this.popularity = recipe.popularity;
+        this.data = recipe.data;
+        this.totalSugar = recipe.totalSugar;
+        this.totalProtein = recipe.totalProtein;
+        this.healthLevel = recipe.healthLevel;
+        this.calories = recipe.calories;
+        this.sugarRestriction = recipe.sugarRestriction;
+        this.lactoseRestrictions = recipe.lactoseRestrictions;
+        this.glutenRestrictions = recipe.glutenRestrictions;
+        this.dietaryRestrictions = recipe.dietaryRestrictions;
+        this.caloryRestrictions = recipe.caloryRestrictions;
+        this.queryRestrictions = recipe.queryRestrictions;
+        this.prepTime = recipe.prepTime;
+        this.difficultyLevel = recipe.difficultyLevel;
+        this.countryOfOrigin = recipe.countryOfOrigin;
+        this.image = recipe.image;
+        this.imageUrl = recipe.imageUrl;
+        this.imageName = recipe.imageName;
+        this.userId = recipe.userId;
     }
 
     private static validationSchema = Joi.object(

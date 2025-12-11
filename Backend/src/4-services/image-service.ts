@@ -10,7 +10,7 @@ export async function generateImage(recipe: InputModel): Promise<GPTImage> {
   const lowerQuery = recipe.query.toLowerCase();
   const extraBanned: string[] = [];
   const promptParts: string[] = [
-    `High resolution, realistic food photo of ${recipe.query}`,
+    `High resolution, super-realistic food photo of ${recipe.query}`,
     "Show only the finished  dish, no text or logos. no extra food. respect dietary restrictions and enforce them strictly"
   ];
 

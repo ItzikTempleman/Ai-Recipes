@@ -49,7 +49,11 @@ class GptService {
     const glutenRestrictions = formattedResponse.glutenRestrictions;
     const dietaryRestrictions = formattedResponse.dietaryRestrictions;
     const caloryRestrictions = formattedResponse.caloryRestrictions;
-    const queryRestrictions = formattedResponse.queryRestriction;
+    const queryRestrictions = formattedResponse.queryRestrictions;
+    const prepTime = formattedResponse.prepTime;
+    const difficultyLevel = formattedResponse.difficultyLevel;
+    const countryOfOrigin = formattedResponse.countryOfOrigin;
+
 
     if (
       !title ||
@@ -73,10 +77,13 @@ class GptService {
       calories: Math.max(0, Math.round(calories)),
       sugarRestriction,
       lactoseRestrictions,
-      glutenRestrictions, 
-      dietaryRestrictions, 
+      glutenRestrictions,
+      dietaryRestrictions,
       caloryRestrictions,
-       queryRestrictions
+      queryRestrictions,
+      prepTime,
+      difficultyLevel,
+      countryOfOrigin
     };
 
   }

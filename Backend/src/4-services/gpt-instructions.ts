@@ -6,15 +6,23 @@ export function getInstructions(): string {
 
 LANGUAGE & DIRECTION:
 
-- Detect the language of the user's query and respond entirely in that language.
-- If the query is in Hebrew, respond fully in Hebrew.
-- If the query is in English, respond fully in English.
-- If the query is in any other language, respond fully in that language too.
+- First, detect the script used in the user's query.
+- If the query contains any Hebrew letters (א–ת), respond fully in Hebrew.
+- If the query contains any Arabic letters (ء–ي), respond fully in Arabic.
+- If the query clearly uses some other non-Latin script (e.g. Cyrillic, Greek, Chinese),
+  respond fully in that language.
+- IMPORTANT: If the query is written ONLY with Latin letters (A–Z, a–z),
+  you MUST respond in ENGLISH, even if the word is borrowed from another language
+  or slightly misspelled (e.g. "piza", "shnitzel", "bourekas").
+- Do NOT guess Hebrew (or any other language) when the query is in Latin letters only.
+
 - Use the natural writing direction of the language:
-  - For RTL languages (e.g., Hebrew, Arabic), write ingredients and instructions in RTL. Make sure to have all wording in RTL result start from left of the section and towards the right and not to have it by accident not consistent. 
+  - For RTL languages (e.g., Hebrew, Arabic), write ingredients and instructions in RTL.
   - For LTR languages (e.g., English, French), write in LTR.
-- JSON KEYS must stay in English, but all TEXT VALUES (title, description, ingredients, instructions) must be in the user's language.
+- JSON KEYS must stay in English, but all TEXT VALUES (title, description,
+  ingredients, instructions) must be in the chosen language.
 - Do NOT mix languages or scripts inside a single word.
+
 
 RECIPE STYLE:
 - Use your real-world culinary knowledge to decide if this dish is SIMPLE or COMPLEX.
@@ -398,6 +406,44 @@ YOU MUST:
    - For neutral oil, write "שמן צמחי ניטרלי (קנולה/חמניות)" or similar,
      NOT "שמן עדין" or "שמן צמחי עדין".
 
+5. **Timing, difficulty, and origin (VERY IMPORTANT):**
+
+   - "prepTime":
+     - An integer representing the approximate **active** preparation + cooking time
+       in minutes for a typical home cook.
+     - Count ONLY hands-on time: chopping, mixing, shaping, cooking, baking, frying, etc.
+     - Do NOT include long passive waiting times such as dough rising, chilling,
+       marinating or resting when the cook is not actively working.
+     - Compute "prepTime" by adding up the approximate times you explicitly mention
+       in the instructions. Do NOT invent extra hidden minutes.
+     - Use these ranges (hard limits):
+       • SIMPLE (EASY, difficultyLevel 0): 5–20 minutes
+       • MID_LEVEL (difficultyLevel 1): 20–45 minutes
+       • PRO (difficultyLevel 2): 45–180 minutes
+     - If your calculated time is outside these ranges, adjust the steps or
+       estimates so that the final "prepTime" fits inside the range.
+     - Classic dishes like basic pizza margherita should normally be MID_LEVEL
+       with "prepTime" around 20–40 minutes of active work.
+       -Example:  pizza prep time is 20-25 minutes.
+
+   - "difficultyLevel":
+     - An integer difficulty code using this exact enum:
+       • 0 = EASY
+       • 1 = MID_LEVEL
+       • 2 = PRO
+     - Choose based on the real complexity of the recipe:
+       • EASY (0): very simple technique, few ingredients, 3–6 short steps.
+       • MID_LEVEL (1): more steps, simple doughs, basic baking, or pan-frying.
+       • PRO (2): advanced techniques, multiple components, or very long recipes.
+
+   - "countryOfOrigin":
+     - A single country name describing where this dish is most commonly
+       considered to originate from.
+     - Use the country name in English and capitalize it, e.g. "Italy", "Japan",
+       "Mexico", "Israel".
+     - For very global or unclear dishes, choose the country most strongly
+       associated with the classic version, or use "Unknown" if there is
+       no reasonable answer.
 
 Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
 The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
@@ -423,8 +469,16 @@ The example numbers below MUST be replaced with realistic values that follow rul
   "glutenRestrictions": ${glutenRestrictions},
   "dietaryRestrictions": ${dietaryRestrictions},
   "caloryRestrictions": ${caloryRestrictions},
-  "queryRestrictions": ${JSON.stringify(queryRestrictions)}
+  "queryRestrictions": ${JSON.stringify(queryRestrictions)},
+    "prepTime": 30,
+  "difficultyLevel": 1,
+  "countryOfOrigin": "Italy"
+  - "prepTime" must be an integer (minutes), not text.
+- "difficultyLevel" must be one of: 0 (EASY), 1 (MID_LEVEL), 2 (PRO).
+- "countryOfOrigin" must be a single country name as a string (e.g. "Italy").
+
 }
+
 
 - "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
   The serving count is provided only in "amountOfServings".
