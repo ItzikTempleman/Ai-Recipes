@@ -411,21 +411,16 @@ YOU MUST:
    - "prepTime":
      - An integer representing the approximate **active** preparation + cooking time
        in minutes for a typical home cook.
-     - Count ONLY hands-on time: chopping, mixing, shaping, cooking, baking, frying, etc.
-     - Do NOT include long passive waiting times such as dough rising, chilling,
+     -Do NOT Count ONLY hands-on time: chopping, mixing, shaping, cooking, baking, frying, etc.
+     -  Include long passive waiting times such as dough rising, chilling, long cooking 
        marinating or resting when the cook is not actively working.
      - Compute "prepTime" by adding up the approximate times you explicitly mention
        in the instructions. Do NOT invent extra hidden minutes.
-     - Use these ranges (hard limits):
-       • SIMPLE (EASY, difficultyLevel 0): 5–20 minutes
-       • MID_LEVEL (difficultyLevel 1): 20–45 minutes
-       • PRO (difficultyLevel 2): 45–180 minutes
      - If your calculated time is outside these ranges, adjust the steps or
        estimates so that the final "prepTime" fits inside the range.
-     - Classic dishes like basic pizza margherita should normally be MID_LEVEL
-       with "prepTime" around 20–40 minutes of active work.
-       -Example:  pizza prep time is 20-25 minutes.
-
+     - Classic dishes like basic pizza margherita should normally be
+       with "prepTime" around 20–25 minutes of active work.  important!
+    
    - "difficultyLevel":
      - An integer difficulty code using this exact enum:
        • 0 = EASY

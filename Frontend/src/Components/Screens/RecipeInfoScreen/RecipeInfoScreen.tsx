@@ -57,9 +57,22 @@ export function RecipeInfoScreen() {
           <img className="RecipeInImage" src={recipe.imageUrl} />
         )}
 
-   
-    <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title} {!isRTL ? "for": "עבור"} {recipe.amountOfServings}  {!isRTL ? "servings": "מנות"}</h2>
+
+        <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title} {!isRTL ? "for" : "עבור"} {recipe.amountOfServings}  {!isRTL ? "servings" : "מנות"}</h2>
         <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.description}</p>
+
+        <div className="ExtraDataContainer">
+          <div>
+            <p>Total preparation time: ~ {recipe.prepTime} minutes </p>
+          </div>
+          <div>
+            <p>Origin: {recipe.countryOfOrigin}</p>
+          </div>
+          <div>
+            <p>Difficulty level: {recipe.difficultyLevel}</p>
+          </div>
+        </div>
+
 
         <div className="DataContainer">
           <div className="AmountParent">
@@ -82,7 +95,7 @@ export function RecipeInfoScreen() {
             <p>Sugar</p>
             <div className="SugarAmountDiv">
               <img className="SugarIcon" src="/sugar.png" />
-        <div className="SugarAmountInnerDiv"><p>{Number(recipe.totalSugar) === 0? "None" : `${recipe.totalSugar}`} </p> <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"} </p></div>
+              <div className="SugarAmountInnerDiv"><p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`} </p> <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"} </p></div>
             </div>
           </div>
 
@@ -103,9 +116,9 @@ export function RecipeInfoScreen() {
           </div>
         </div>
 
- 
+
         <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-     <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "מצרכים" : "Ingredients"}</h2>
+          <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "מצרכים" : "Ingredients"}</h2>
 
           {ingredients.map((line, index) => (
             <div key={index} className="IngredientRow">
@@ -116,7 +129,7 @@ export function RecipeInfoScreen() {
         </div>
 
         <div className="InstructionsList">
-  <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "הוראות הכנה" : "Instructions"}</h2>
+          <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{isRTL ? "הוראות הכנה" : "Instructions"}</h2>
           <ol
             className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
             dir={isRTL ? "rtl" : "ltr"}
