@@ -115,7 +115,6 @@
   border-radius: 8px;
   display: flex;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  background: linear-gradient(30deg, white, #e2e2e2, white);
 }
 
 .ServingsIcon,

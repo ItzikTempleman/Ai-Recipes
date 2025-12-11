@@ -5,13 +5,12 @@
   padding: 2px 20px;
   box-sizing: border-box;
   margin: 8px;
-  border-radius: 8px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+
 }
 
 .Header p {
   margin: 1px 0 0;
-  line-height: 1.1;
+
 }
 
 .HeaderImagePreview {
@@ -107,7 +106,7 @@
 
   .Header p {
     margin: 1px 0 0;
-    line-height: 1.1;
+  
   }
 
   .GenerateScreenLink,
@@ -119,7 +118,7 @@
   .Header>.CenterNavigation:first-child:last-child {
     margin: 0;
     padding: 0;
-    border: none;
+
   }
 
 }

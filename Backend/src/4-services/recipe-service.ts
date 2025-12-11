@@ -8,27 +8,41 @@ import { fileSaver } from "uploaded-file-saver";
 import { OkPacketParams } from "mysql2";
 import { dal } from "../2-utils/dal";
 import { mapDbRowToFullRecipe } from "../2-utils/map-recipe";
-import { ResourceNotFound } from "../3-models/client-errors";
+import { DangerousRequestError, ResourceNotFound, ValidationError } from "../3-models/client-errors";
 import { InputModel } from "../3-models/InputModel";
+import { isLethalQuery } from "../2-utils/banned-filter";
 
 class RecipeService {
 
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
+
     input.validate();
+
+    if (isLethalQuery(input.query)) {
+      throw new DangerousRequestError("Recipe forbidden ☠️");
+    }
+
     const recipeQuery = responseInstructions.getQuery(input);
     const data = await gptService.getInstructions(recipeQuery, isWithImage);
+    const popularity = data.popularity ?? 0;
+    const desc = (data.description ?? "").toLowerCase();
+
+    if (popularity === 0 || desc.startsWith("fictional dish")) {
+      throw new ValidationError("Non existing dish");
+    }
+
     return { ...data, amountOfServings: input.quantity };
   }
 
 
   public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
     const sql = "select * from recipe where userId = ?";
-    const values=[userId];
-    const rows = await dal.execute(sql,values) as DbRecipeRow[];
+    const values = [userId];
+    const rows = await dal.execute(sql, values) as DbRecipeRow[];
     return rows.map(mapDbRowToFullRecipe);
   }
 
-  public async getSingleRecipe(id: number,userId: number): Promise<FullRecipeModel> {
+  public async getSingleRecipe(id: number, userId: number): Promise<FullRecipeModel> {
     const sql = "select * from recipe where id=? and userId=?";
     const values = [id, userId];
     const rows = await dal.execute(sql, values) as DbRecipeRow[];
@@ -37,7 +51,7 @@ class RecipeService {
     return mapDbRowToFullRecipe(row);
   };
 
-  public async saveRecipe(recipe: FullRecipeModel,  userId: number): Promise<FullRecipeModel> {
+  public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
     const title = recipe.title.slice(0, 100);
@@ -58,7 +72,7 @@ class RecipeService {
     const caloryRestrictions = recipe.caloryRestrictions;       // enum CaloryRestrictions
     const queryRestrictionsJson = JSON.stringify(
       recipe.queryRestrictions ?? []
-    ); 
+    );
 
     const sql = `insert into recipe(
         title,
@@ -110,16 +124,16 @@ class RecipeService {
     return recipe;
   }
 
-public async getImageFilePath(fileName: string): Promise<string> {
-  const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
-  const imagePath = path.join(imagesDir, fileName);
-  try {
-    await fs.access(imagePath);
-    return imagePath;
-  } catch {
-    throw new Error("Image not found");
+  public async getImageFilePath(fileName: string): Promise<string> {
+    const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
+    const imagePath = path.join(imagesDir, fileName);
+    try {
+      await fs.access(imagePath);
+      return imagePath;
+    } catch {
+      throw new Error("Image not found");
+    }
   }
-}
 
   public async deleteRecipe(id: number): Promise<void> {
     const image = "select imageName from recipe where id = ?";

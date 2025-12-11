@@ -5,11 +5,13 @@ import path from "path";
 import { appConfig } from "../2-utils/app-config";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions } from "../3-models/filters";
 
-export  async function generateImage(recipe: InputModel): Promise<GPTImage> {
+export async function generateImage(recipe: InputModel): Promise<GPTImage> {
 
+  const lowerQuery = recipe.query.toLowerCase();
+  const extraBanned: string[] = [];
   const promptParts: string[] = [
-    `High-resolution, super realistic food photo of: ${recipe.query}`,
-    "Show only the finished plated dish, no text or logos. no extra food in the plate. respect dietary restrictions and enforce them firmly"
+    `High resolution, realistic food photo of ${recipe.query}`,
+    "Show only the finished  dish, no text or logos. no extra food. respect dietary restrictions and enforce them strictly"
   ];
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
@@ -20,14 +22,60 @@ export  async function generateImage(recipe: InputModel): Promise<GPTImage> {
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.KOSHER) {
     promptParts.push(
-      "The dish must be kosher style: no pork, bacon, rabbit, snakes, insects, ham, seafood or shellfish.",
+      "The dish must be strictly kosher style: no pork, bacon, ham, pepperoni, salami, sausages, shellfish, or other non-kosher meats.",
       "Do not mix meat and dairy together anywhere in the image."
+    );
+
+    promptParts.push(
+      "If the dish looks like a burger or contains visible meat, absolutely do not show any cheese, melted cheese, cheese slices, butter, cream, or other dairy on or near the meat.",
+      "Use only non-dairy toppings such as lettuce, tomato, onion, pickles, sauces that do not look like cheese, etc."
+    );
+
+    promptParts.push(
+      "If the dish looks like a pizza, do not show any pepperoni, bacon, ham, salami, sausages, or seafood toppings.",
+      "If the pizza clearly contains meat toppings, the cheese must be completely absent. Either show a vegetarian cheese pizza, or a meat pizza with NO cheese at all."
     );
 
     promptParts.push(
       "If the dish contains meat (for example a hamburger), do not show any cheese, butter, cream, or other dairy on or near the meat.",
       "Use only non-dairy toppings such as vegetables and sauces that do not look like cheese."
     );
+
+    extraBanned.push(
+      "pepperoni",
+      "bacon",
+      "ham",
+      "salami",
+      "sausage",
+      "shrimp",
+      "lobster",
+      "crab"
+    );
+
+    if (lowerQuery.includes("burger")) {
+      extraBanned.push(
+        "cheddar cheese",
+        "cheese slice",
+        "melted cheese",
+        "cheeseburger"
+      );
+    }
+
+    if (lowerQuery.includes("pizza")) {
+      extraBanned.push(
+        "pepperoni pizza",
+        "pepperoni slices"
+      );
+    }
+
+    if (extraBanned.length) {
+      promptParts.push(
+        `Do not show any of the following ingredients anywhere in the image: ${extraBanned.join(
+          ", "
+        )}.`
+      );
+    }
+
   }
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.HALAL) {
@@ -102,10 +150,10 @@ export  async function generateImage(recipe: InputModel): Promise<GPTImage> {
   }
 
   throw lastErr;
-  }
+}
 
 
-  function parseDietFromFilter(f: string | undefined): DietaryRestrictions {
+function parseDietFromFilter(f: string | undefined): DietaryRestrictions {
   if (!f) return DietaryRestrictions.DEFAULT;
   const norm = f.trim().toLowerCase();
 

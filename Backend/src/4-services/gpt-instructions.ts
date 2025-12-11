@@ -115,6 +115,36 @@ YOU MUST:
 
 2. **Make the RECIPE follow ALL restrictions exactly and intelligently:**
 
+3. **Popularity & EXISTENCE (VERY IMPORTANT):**
+   - "popularity" must be an integer from 0 to 10.
+   - 10 = extremely popular worldwide, 5 = moderately common, 1 = very niche.
+   - Use 0 ONLY if there is no real-world information OR the dish is clearly
+     fictional or non-existing.
+
+   - A dish is clearly fictional / non-existing if ANY of the following are true:
+       • It uses impossible or contradictory ingredients, such as:
+           - "blue steak", "green carrot", "pink celery", "purple cucumber"
+           - "dry water", "solid steam", "frozen boiling water"
+           - "liquid bread", "gas pasta" or similar physically impossible states.
+       • It describes food based on fantasy / unreal creatures or objects:
+           - cartoon characters, dragons, unicorns, Pokémon, superheroes, etc.
+           - body parts or creatures that do not exist in the real world.
+       • It is built around non-food items or chemicals as the main ingredient:
+           - detergents, bleach, cleaning products, gasoline, motor oil,
+             glue, paint, cosmetics, or similar.
+       • It combines properties that cannot logically coexist in a real dish,
+         like "cold burning ice cream that does not melt" or "raw cooked salad".
+
+   - IF the requested dish is clearly fictional or non-existing:
+       • set "popularity" = 0
+       • start "description" with the exact words "fictional dish" in the
+         same language as the rest of the description.
+       • Do NOT invent a realistic recipe for it.
+       • Do NOT output ingredients or instructions.
+       • Instead, give a very short explanation (in the description) that this
+         is a fictional or impossible dish and that no real recipe exists.
+
+
    GENERAL RULES FOR ALL RESTRICTIONS:
    - Always preserve the original dish concept and core flavor unless:
        (a) the user explicitly requests a different flavor, or
@@ -209,6 +239,20 @@ YOU MUST:
        - No alcohol.
        - Use halal-compliant meats if meat is used.
 
+          KOSHER-SPECIFIC PREPARATION (VERY IMPORTANT):
+
+   - When the user selects a kosher option, add simple, practical notes
+     about checking for insects:
+     - For recipes using flour, either:
+       - write "קמח מנופה" as the ingredient, OR
+       - add a clear step at the beginning, e.g.
+         "לנפות את הקמח היטב כדי לוודא שאין חרקים".
+     - For ingredients that are known to be insect-prone (such as certain leafy
+       greens, fresh herbs, etc.), add a short preparation step like:
+       "לשטוף היטב ולבדוק שאין חרקים".
+   - Keep these notes short and practical, consistent with the rest of the instructions,
+     and in the same language as the recipe (Hebrew in this app).
+     
    CALORY RESTRICTIONS:
    - If CaloryRestrictions = 1:
        - Prefer lighter cooking methods (baking, steaming, grilling).
@@ -231,6 +275,34 @@ YOU MUST:
    - Replace forbidden items with the closest safe equivalent that preserves
      the original flavor and role in the dish.
 
+        WATER NAMING (IMPORTANT):
+   - In the ingredient list, write just "מים" / "water" without temperature,
+     e.g. "1 כוס מים".
+   - Do NOT write "מים חמימים", "מים פושרים", "מים קרים" etc. in the ingredient
+     name unless the recipe absolutely depends on it.
+   - If temperature is important:
+     - Keep the ingredient as plain "מים".
+     - Mention the temperature only in the instructions, e.g. 
+       "להוסיף את המים הפושרים" / "add lukewarm water".
+   - Exception: when adding **boiling water** is clearly used to shorten cooking time
+     (for example, soaking noodles or bulgur), you may say "מים רותחים" in the step.
+     Even then, the ingredient can stay "מים" with the quantity, and the step
+     describes that they are boiling.
+
+
+        FLOUR NAMING:
+   - For regular white wheat flour, write simply "קמח" (in Hebrew) / "flour" (in English).
+     Do NOT write "קמח לבן לכל מטרה", "all-purpose flour", etc.
+   - Only specify the type of flour if it is non-standard or important:
+     - Whole-wheat flour, spelt flour, almond flour, oat flour, gluten-free flour, etc.
+   - Example:
+     - Regular dough: "3 כוסות קמח".
+     - Special dough: "2 כוסות קמח מלא", "1 כוס קמח שקדים".
+
+
+     WEIRD NAMING GLITCHES:
+     Do not generate names like "quick tomato sauce" - there's no such thing.
+
 3. **Popularity (VERY IMPORTANT):**
    - "popularity" must be an integer from 0 to 10.
    - 10 = extremely popular worldwide, 5 = moderately common, 1 = very niche.
@@ -247,16 +319,43 @@ YOU MUST:
      - Real-life accurate grams of protein **per 100 grams of the final dish** (not for the whole recipe).
      - Use realistic values based on typical nutrition data for the ingredients; do NOT just invent random numbers.
 
-   - "totalSugar":
-     - Realistic estimate of **tablespoons of sugar per 100 grams of the final dish** (not total for the whole recipe).
-     - Count only actual sugar sources (white sugar, brown sugar, honey, syrups, etc.).
-     - For foods that naturally have essentially no sugar (for example, plain eggs, plain steak, pure oils), set this value to 0.
-     - Do NOT output tiny, non-practical values like 0.01 or 0.1; if the calculated sugar is very small, round sensibly and use 0 instead of microscopic fake precision.
+    - "totalSugar":
+     - An integer from 0 to 10 describing how sugary / refined-carb-heavy the dish is **per 100 grams**.
+     - 0 = essentially no sugars or refined starches (plain steak, plain eggs, pure oil).
+     - 10 = extremely sugary or refined (frosting, candy, very sweet desserts).
+     - Count both added sugars (white sugar, brown sugar, honey, syrups, etc.)
+       AND refined starches like white flour that behave like sugar in the body.
+     - For bread, pita, pizza, enriched doughs, pastries, etc., this value must NOT be 0.
+     - Use realistic relative values:
+       - Plain white pita bread or pizza dough should usually be around 3–6.
+       - Very sweet cakes, cookies or desserts should be higher than plain breads.
 
    - "healthLevel":
      - An integer from 0 to 10 describing overall healthiness.
      - 0 = extremely unhealthy, 10 = extremely healthy.
      - Consider fat, sugar, fiber, overall balance and portion size.
+
+     MEASUREMENT RULES (VERY IMPORTANT):
+
+   - Prefer everyday **home-cook** units:
+     - cups, tablespoons, teaspoons, pieces (eggs, cloves), slices, etc.
+     - Avoid giving most ingredients only in grams unless really needed.
+   - For **rice and all other cutlets (lentils,chickpeas,beans etc) ** (uncooked), ALWAYS measure in cups, NOT grams.
+     - Example: "1 cup uncooked white rice", "1½ cups basmati rice".
+   - You may optionally add grams in parentheses if you want, but cups MUST be present for uncooked cutlets:
+     - Example: "1 cup (about 200 g) uncooked white rice".
+   - For typical liquids: use ml or cups.
+   - For small quantities (spices, baking powder, yeast, salt, sugar): use teaspoons and tablespoons.
+
+   FRACTIONS:
+
+   - Do NOT write decimals like "0.5 cup" or "0.25 teaspoon" for home measures.
+   - Instead, use familiar cooking fractions:
+     - 0.5 → ½
+     - 0.25 → ¼
+     - 0.75 → ¾
+     - 0.33 or 0.3 → ⅓ (for things like "⅓ cup")
+   - Only use decimals for nutrition values (like calories or healthLevel), NEVER in ingredient "amount".
 
         INGREDIENT FORMAT:
    - "ingredient": a descriptive name ONLY (no quantity),

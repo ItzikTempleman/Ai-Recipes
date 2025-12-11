@@ -4,6 +4,7 @@ import { RecipeModel } from "../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
+import { formatAmount } from "../../Utils/Utils";
 type RecipeProps = {
   recipe: RecipeModel
 };
@@ -94,7 +95,7 @@ export function RecipeCard({ recipe }: RecipeProps) {
         {ingredients.map((line, index) => (
           <div key={index} className="IngredientRow">
             <span className="IngredientName">{line.ingredient}</span>
-            <span className="IngredientAmount">{line.amount ?? ""}</span>
+            <span className="IngredientAmount">{formatAmount(line.amount) ?? ""}</span>
           </div>
         ))}
       </div>

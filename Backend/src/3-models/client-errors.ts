@@ -35,4 +35,10 @@
     };
 }
 
+    export class DangerousRequestError extends ClientErrors {
+    public constructor(message:string) {
+        super(StatusCode.Forbidden, message);
+    };
+}
+
 

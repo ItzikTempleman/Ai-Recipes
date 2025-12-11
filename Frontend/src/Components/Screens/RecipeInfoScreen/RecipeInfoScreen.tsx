@@ -1,6 +1,6 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-import { useTitle } from "../../../Utils/Utils";
+import { formatAmount, useTitle } from "../../../Utils/Utils";
 import "./RecipeInfoScreen.css";
 import { useEffect, useState } from "react";
 import { recipeService } from "../../../Services/RecipeService";
@@ -109,7 +109,7 @@ export function RecipeInfoScreen() {
           {ingredients.map((line, index) => (
             <div key={index} className="IngredientRow">
               <span className="IngredientName">{line.ingredient}</span>
-              <span className="IngredientAmount">{line.amount ?? ""}</span>
+              <span className="IngredientAmount">{formatAmount(line.amount) ?? ""}</span>
             </div>
           ))}
         </div>

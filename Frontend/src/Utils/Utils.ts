@@ -38,3 +38,21 @@ export function isAgeOk(chosenDate:Date):boolean{
   const selectedAge = getAge(chosenDate);
   return selectedAge>12;
 }
+
+
+const decimalToFractionMap: Record<string, string> = {
+  "0.5": "½",
+  "0.25": "¼",
+  "0.75": "¾",
+  "0.33": "⅓",
+  "0.3": "⅓",
+};
+
+export function formatAmount(raw: string | null | undefined): string {
+  if (!raw) return "";
+
+  return raw.replace(
+    /\b0\.\d+\b/g,
+    (match) => decimalToFractionMap[match] ?? match
+  );
+}

@@ -44,5 +44,10 @@ export class InputModel {
     public validate(): void {
         const result = InputModel.validationSchema.validate(this);
         if (result.error) throw new ValidationError(result.error.message);
+
+              if (!this.query || this.query.trim().length === 0) {
+              throw new ValidationError("Please enter a dish or recipe idea.");
+            }
+        
     }
 };
