@@ -73,12 +73,12 @@ export    function getDifficultyLevel(level?: DifficultyLevel): Level {
         }
       case DifficultyLevel.MID_LEVEL:
         return {
-          label: "Mid level",
+          label: "Mid-level",
           icon: "/mid-level.png"
         }
       case DifficultyLevel.PRO:
         return {
-          label: "Pro",
+          label: "Hard",
           icon: "/hard.png"
         }
       default:

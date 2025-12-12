@@ -38,7 +38,7 @@ const difficulty = getDifficultyLevel(recipe.difficultyLevel);
           }}
         >Clear</Button></div>
 
-      <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title} {!isRTL ? "for" : "עבור"} {recipe.amountOfServings}  {!isRTL ? "servings" : "מנות"}</h2>
+      <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title}</h2>
       <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.description}</p>
 
       {imgSrc && (
@@ -62,7 +62,7 @@ const difficulty = getDifficultyLevel(recipe.difficultyLevel);
 
         <div className="DifficultyDiv">
           <img className="ExtraDataImg" src={difficulty.icon} />
-          <p>{difficulty.label} difficulty</p>
+          <p>{difficulty.label}</p>
         </div>
       </div>
 

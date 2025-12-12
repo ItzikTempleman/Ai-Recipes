@@ -78,9 +78,9 @@ font-weight: bold;
 }
 
 .IngredientsList {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #ccc;
+  margin-top: 50px;
+ 
+
 }
 
 .IngredientRow {
@@ -89,12 +89,12 @@ font-weight: bold;
   justify-content: space-between;
   gap: 12px;
   padding: 4px 0;
-    border-bottom: 1px solid #ccc; 
   align-items: center;       
 }
 
 .IngredientsList.rtl .IngredientRow {
   flex-direction: row-reverse;  
+  
 }
 .IngredientRow:last-child {
   border-bottom: none;
@@ -102,6 +102,7 @@ font-weight: bold;
 .IngredientsList.rtl .IngredientName {
   order: 2;         
   text-align: right;
+
 }
 
 .IngredientsList.rtl .IngredientAmount {
@@ -135,11 +136,7 @@ font-weight: bold;
   list-style-position: inside;
 }
 
-.divider {
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin: 8px 0;
-}
+
 .IngredientsDiv{
   display: flex;
   flex-direction: column;

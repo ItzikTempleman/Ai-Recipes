@@ -7,8 +7,8 @@ class GptService {
 
     // pick correct model for this request
     const modelToUse = isWithImage
-      ? appConfig.modelNumber              // "gpt-5"
-      : appConfig.freeNoImageModelNumber;  // "gpt-4o-mini"
+      ? appConfig.modelNumber              // "gpt-512"
+      : appConfig.freeNoImageModelNumber;  // "gpt-image-1"
 
     // pick correct key for this request
     const keyToUse = isWithImage
@@ -33,7 +33,6 @@ class GptService {
 
     const content: string = response.data.choices[0].message.content;
     const formattedResponse = JSON.parse(content);
-
     const title = formattedResponse?.title?.trim();
     const amountOfServings = formattedResponse?.amountOfServings;
     const description = formattedResponse?.description;
@@ -53,8 +52,6 @@ class GptService {
     const prepTime = formattedResponse.prepTime;
     const difficultyLevel = formattedResponse.difficultyLevel;
     const countryOfOrigin = formattedResponse.countryOfOrigin;
-
-
     if (
       !title ||
       !Array.isArray(ingredients) ||
@@ -63,7 +60,6 @@ class GptService {
     ) {
       throw new Error("Invalid recipe JSON");
     }
-
     return {
       title,
       amountOfServings,
@@ -90,9 +86,3 @@ class GptService {
 }
 
 export const gptService = new GptService();
-
-
-
-
-
-

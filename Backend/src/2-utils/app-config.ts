@@ -18,8 +18,8 @@ class AppConfig {
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";
   public readonly apiKey = process.env.API_KEY;
   public readonly freeNoImageApiKey = process.env.NO_IMAGE_API_KEY;
-  public readonly modelNumber = "gpt-5.1";
-  public readonly freeNoImageModelNumber = "gpt-4o-mini";
+  public readonly modelNumber = "gpt-5.2";
+  public readonly freeNoImageModelNumber = "gpt-image-1";
 
   public readonly baseImageUrl = this.normalizeBaseImageUrl();
 public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
