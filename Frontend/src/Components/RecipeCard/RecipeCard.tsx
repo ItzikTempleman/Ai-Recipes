@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
+import { getCountryFlag } from "../../Utils/CountryFlag";
 type RecipeProps = {
   recipe: RecipeModel
 };
@@ -55,13 +56,13 @@ const difficulty = getDifficultyLevel(recipe.difficultyLevel);
         </div>
 
         <div className="CountryNameDiv">
-          <img className="ExtraDataImg"/>
+       <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
           <p>{recipe.countryOfOrigin}</p>
         </div>
 
         <div className="DifficultyDiv">
           <img className="ExtraDataImg" src={difficulty.icon} />
-          <p>{difficulty.label}</p>
+          <p>{difficulty.label} difficulty</p>
         </div>
       </div>
 

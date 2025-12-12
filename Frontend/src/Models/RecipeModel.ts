@@ -31,7 +31,7 @@ export type RecipeModel = {
     userId?: number;
     prepTime?: number;
     difficultyLevel?: DifficultyLevel;
-    countryOfOrigin?: String;
+    countryOfOrigin?: string;
 };
 
 

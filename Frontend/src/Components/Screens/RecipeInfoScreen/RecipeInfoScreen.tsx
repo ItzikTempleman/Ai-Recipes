@@ -8,6 +8,7 @@ import { notify } from "../../../Utils/Notify";
 import { RecipeModel } from "../../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { getCountryFlag } from "../../../Utils/CountryFlag";
 
 
 
@@ -71,15 +72,16 @@ export function RecipeInfoScreen() {
         </div>
 
         <div className="CountryNameDiv">
-          <img className="ExtraDataImg"/>
+       <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
           <p>{recipe.countryOfOrigin}</p>
         </div>
 
         <div className="DifficultyDiv">
           <img className="ExtraDataImg" src={difficulty.icon} />
-          <p>{difficulty.label}</p>
+          <p>{difficulty.label} difficulty</p>
         </div>
       </div>
+
 
         <div className="DataContainer">
           <div className="AmountParent">
