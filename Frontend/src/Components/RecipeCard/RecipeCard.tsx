@@ -4,14 +4,16 @@ import { RecipeModel } from "../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
-import { formatAmount } from "../../Utils/Utils";
+import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 type RecipeProps = {
   recipe: RecipeModel
 };
 
+
 export function RecipeCard({ recipe }: RecipeProps) {
 
   const [imgSrc, setImgSrc] = useState<string>("");
+
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,6 +22,8 @@ export function RecipeCard({ recipe }: RecipeProps) {
   }, [recipe.imageUrl]
   )
 
+
+const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
   const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
@@ -42,15 +46,22 @@ export function RecipeCard({ recipe }: RecipeProps) {
           onError={() => setImgSrc("")}
         />
       )}
+
+      
       <div className="ExtraDataContainer">
-        <div>
-          <p>Total preparation time: ~ {recipe.prepTime} minutes </p>
+        <div className="PrepTimeDiv">
+          <img className="ExtraDataImg" src={"/clock.png"} />
+          <p>{recipe.prepTime} m </p>
         </div>
-        <div>
-          <p>Origin: {recipe.countryOfOrigin}</p>
+
+        <div className="CountryNameDiv">
+          <img className="ExtraDataImg"/>
+          <p>{recipe.countryOfOrigin}</p>
         </div>
-        <div>
-          <p>Difficulty level: {recipe.difficultyLevel}</p>
+
+        <div className="DifficultyDiv">
+          <img className="ExtraDataImg" src={difficulty.icon} />
+          <p>{difficulty.label}</p>
         </div>
       </div>
 

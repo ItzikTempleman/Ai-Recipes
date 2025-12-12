@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { DifficultyLevel } from "../Models/RecipeModel";
 
 export function useTitle(title: string): void {
     useEffect(() => {
@@ -56,3 +57,34 @@ export function formatAmount(raw: string | null | undefined): string {
     (match) => decimalToFractionMap[match] ?? match
   );
 }
+
+export type Level = {
+  label: string,
+  icon: string
+}
+
+
+export    function getDifficultyLevel(level?: DifficultyLevel): Level {
+    switch (level) {
+      case DifficultyLevel.EASY:
+        return {
+          label: "Easy",
+          icon: "/easy.png"
+        }
+      case DifficultyLevel.MID_LEVEL:
+        return {
+          label: "Mid level",
+          icon: "/mid-level.png"
+        }
+      case DifficultyLevel.PRO:
+        return {
+          label: "Pro",
+          icon: "/hard.png"
+        }
+      default:
+        return {
+          label: "Easy",
+          icon: "/easy.png",
+        };
+    }
+  }

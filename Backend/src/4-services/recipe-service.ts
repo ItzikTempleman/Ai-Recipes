@@ -24,6 +24,8 @@ class RecipeService {
 
     const recipeQuery = responseInstructions.getQuery(input);
     const data = await gptService.getInstructions(recipeQuery, isWithImage);
+    let safePrepTime = Number(data.prepTime ?? 0);
+    if (!Number.isFinite(safePrepTime) || safePrepTime < 0) safePrepTime = 0;
     const popularity = data.popularity ?? 0;
     const desc = (data.description ?? "").toLowerCase();
 
@@ -33,7 +35,6 @@ class RecipeService {
 
     return { ...data, amountOfServings: input.quantity };
   }
-
 
   public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
     const sql = "select * from recipe where userId = ?";
@@ -70,10 +71,10 @@ class RecipeService {
     const glutenRestrictions = recipe.glutenRestrictions;       // enum GlutenRestrictions
     const dietaryRestrictions = recipe.dietaryRestrictions;     // enum DietaryRestrictions
     const caloryRestrictions = recipe.caloryRestrictions;       // enum CaloryRestrictions
-    const prepTime = recipe.prepTime?? 0;
+    const prepTime = recipe.prepTime ?? 0;
     const difficultyEnum = recipe.difficultyLevel ?? DifficultyLevel.MID_LEVEL;
-    const difficultyLevel = DifficultyLevel[difficultyEnum]; 
-    const countryOfOrigin = recipe.countryOfOrigin?? "";
+    const difficultyLevel = DifficultyLevel[difficultyEnum];
+    const countryOfOrigin = recipe.countryOfOrigin ?? "";
     const queryRestrictionsJson = JSON.stringify(
       recipe.queryRestrictions ?? []
     );

@@ -1,6 +1,6 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-import { formatAmount, useTitle } from "../../../Utils/Utils";
+import { formatAmount, getDifficultyLevel, useTitle } from "../../../Utils/Utils";
 import "./RecipeInfoScreen.css";
 import { useEffect, useState } from "react";
 import { recipeService } from "../../../Services/RecipeService";
@@ -33,11 +33,13 @@ export function RecipeInfoScreen() {
         )
     }, [recipeId, navigate]
   )
+  
   function returnToList() {
     navigate("/home-screen");
   }
 
   if (!recipe) return null;
+  const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
   const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
@@ -61,18 +63,23 @@ export function RecipeInfoScreen() {
         <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.title} {!isRTL ? "for" : "עבור"} {recipe.amountOfServings}  {!isRTL ? "servings" : "מנות"}</h2>
         <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>{recipe.description}</p>
 
-        <div className="ExtraDataContainer">
-          <div>
-            <p>Total preparation time: ~ {recipe.prepTime} minutes </p>
-          </div>
-          <div>
-            <p>Origin: {recipe.countryOfOrigin}</p>
-          </div>
-          <div>
-            <p>Difficulty level: {recipe.difficultyLevel}</p>
-          </div>
+      
+      <div className="ExtraDataContainer">
+        <div className="PrepTimeDiv">
+          <img className="ExtraDataImg" src={"/clock.png"} />
+          <p>{recipe.prepTime} m </p>
         </div>
 
+        <div className="CountryNameDiv">
+          <img className="ExtraDataImg"/>
+          <p>{recipe.countryOfOrigin}</p>
+        </div>
+
+        <div className="DifficultyDiv">
+          <img className="ExtraDataImg" src={difficulty.icon} />
+          <p>{difficulty.label}</p>
+        </div>
+      </div>
 
         <div className="DataContainer">
           <div className="AmountParent">
