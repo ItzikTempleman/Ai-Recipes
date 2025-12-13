@@ -17,8 +17,6 @@ import { DietaryFilter } from "../../Filters/DietaryFilter";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 
-
-
 type RecipeStateType = {
   recipes: RecipeState
 };
@@ -90,7 +88,7 @@ export function GenerateScreen() {
                 onClick={() => {
                   reset({
                     query: "",
-                    excludedIngredients: ["", "", ""],
+                    excludedIngredients: ["", "", ""]
                   });
                   setQuantity(1);
                   setHasImage(true);

@@ -1,72 +1,99 @@
  .MuiDrawer-paper {
-  width: 350px;
-}
+   width: 250px;
+ }
 
-.DrawerMainContainer {
-  height: 100%;
-  width: 100%;          
-  display: flex;
-  flex-direction: column;
-}
-.DrawerMainContainer>*{
-    font-family: Arial, Helvetica, sans-serif;
+ .DrawerMainContainer {
+   height: 100%;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+ }
+
+ .DrawerMainContainer>* {
+   font-family: Arial, Helvetica, sans-serif;
    color: #232323;
-}
+ }
 
-.DrawerContent {
-  width: 100%;          
-  flex-direction: column;
-  height: 100%;
-  padding: 14px;
-  gap: 14px;
-  align-items: stretch;  
-}
+ .DrawerContent {
+   display: flex;
+   width: 100%;
+   flex-direction: column;
+   height: 100%;
+   align-items: stretch;
+ }
 
-.DrawerCloseButton {
-margin: 16px 16px 0 auto;
-  cursor: pointer;
-  font-size: 18px;
-}
+ .DrawerContent>div {
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+ }
 
-.ProfileImage {
-    width: 140px;
-    height: 140px;
-    border-radius: 180px;
-    object-fit: cover;
-}
+ .DrawerCloseButton {
+   margin: 24px 24px 0 auto;
+   cursor: pointer;
+   font-size: 18px;
+ }
 
-.DrawerNavLink{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
+ .DrawerLogoutLink {
+   margin-top: auto;
+ }
 
-.DrawerNavLink{
-  font-size: 18px;
-  text-decoration: none;
-  color: #232323;
+ .ProfileImage {
+   width: 200px;
+   height: 200px;
+   border-radius: 180px;
+   object-fit: cover;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+ }
 
-}
+ .DrawerNavLink {
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+   font-size: 14px;
+   text-decoration: none;
+   color: #232323;
+   
+ }
 
-.ProfileRow,
-.AboutRow,
-.SettingsRow,
-.LogoutRow,
-.LoginRow
-{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: start;
-    border-bottom: 0.5px solid;
-    padding: 8px;
-    align-items: center;
-    gap: 16px;
-}
+ .UserName {
+   margin: 20px 0 0 40px;
+ }
 
-.LogoutRow>* {
-    color: #d32f2f !important;
-}
-.LogoutRow{
-     border-bottom: none !important;
-}
+
+ .ProfileRow,
+ .AboutRow,
+ .SettingsRow,
+ .LogoutRow,
+ .LoginRow {
+   display: flex;
+   padding: 6px;
+   gap: 6px;
+   flex-direction: row;
+   width: 100%;
+   justify-content: start;
+   border: 0.4px solid rgb(190, 190, 190);
+   align-items: center;
+   height: 30px;
+   margin: 3px;
+ border-radius: 2px;
+ }
+
+ .LoginRow>*,
+ .LogoutRow>* {
+   color: white !important;
+ }
+
+ .LoginRow{
+  margin-top: 50px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0,4)!important;
+   border: none !important;
+   background-color: #215d9a;
+ }
+ .LogoutRow {
+   box-shadow: 0 2px 8px rgba(0, 0, 0,4)!important;
+   border: none !important;
+   background-color: #ff0000;
+ }

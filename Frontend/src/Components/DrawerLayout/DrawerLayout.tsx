@@ -11,17 +11,31 @@ import { useSelector } from "react-redux";
 import type { AppState } from "../../Redux/Store"; // adjust path
 import { userService } from "../../Services/UserService";
 import "./DrawerLayout.css";
+import { useState } from "react";
 
 type DrawerState = {
     open: boolean;
     setOpen: (open: boolean) => void;
 };
 
+enum Langauge {
+    ENGLISH, HEBREW
+}
+
+
+export type SettingSelection = {
+    selectedLanguage: Langauge,
+    isDarkMode: boolean
+}
+
+
 export function DrawerLayout(
     { open, setOpen }: DrawerState
 ) {
     const user = useSelector((state: AppState) => state.user);
     const isLoggedIn = !!(user && localStorage.getItem("token"));
+
+    const [initialSettingSelection, setSettingSelection] = useState();
 
     return (
         <div className="DrawerLayout">
@@ -36,10 +50,11 @@ export function DrawerLayout(
                 <aside className="DrawerMainContainer">
                     <div className="DrawerCloseButton" onClick={() => setOpen(false)}>❌</div>
                     <div className="DrawerContent">
+                        
                         {isLoggedIn ? (
                             <div>
-                                <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"}/>
-                                <p >{isLoggedIn ? user.firstName : "Guest"}</p>
+                                <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />
+                                <h3 className="UserName">{isLoggedIn ? user.firstName : "Guest"}</h3>
                                 <NavLink to="/profile-screen" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="ProfileRow">
                                         <Person />
@@ -52,15 +67,25 @@ export function DrawerLayout(
                                         <p>About</p>
                                     </div>
                                 </NavLink>
-                                <NavLink to="/settings" className="DrawerNavLink" onClick={() => setOpen(false)}>
+                                <div className="DrawerNavLink" onClick={() => { }}>
                                     <div className="SettingsRow">
                                         <Settings />
                                         <p>Settings</p>
+                                        <select
+                                            className="SettingsOptions"
+                                            value={"Language"}
+                                            onChange={(e) => { }}>
+                                            {
+
+                                                <option ></option>
+
+                                            }
+                                        </select>
                                     </div>
-                                </NavLink>
-                                <NavLink
+                                </div>
+                                  <NavLink
                                     to="/login-screen"
-                                    className="DrawerNavLink"
+                                    className="DrawerNavLink DrawerLogoutLink"
                                     onClick={() => {
                                         userService.logout();
                                         setOpen(false);

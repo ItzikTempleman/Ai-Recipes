@@ -9,7 +9,7 @@ import { ProfileScreen } from "../../Screens/ProfileScreen/ProfileScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { GenerateScreen } from "../../Screens/GenerateScreen/GenerateScreen";
-import { Settings } from "@mui/icons-material";
+
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
@@ -26,7 +26,7 @@ export function Routing() {
                 <Route path="/login-screen" element={ <LoginScreen />} />
                 <Route path="/registration-screen" element={ <RegistrationScreen />} />
                 <Route path="/profile-screen" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home-screen" replace />} />
-                <Route path="/settings" element={ <Settings /> }/>
+        
             </Routes>
         </div>
     );
