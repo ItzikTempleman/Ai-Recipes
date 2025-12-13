@@ -20,20 +20,21 @@ class VerificationMiddleware {
     }
 
 
-    public verifyOptional(request: Request, response: Response, next: NextFunction){
-        try{
-      const header = request.header("authorization");
-      if (!header) return next();
+public verifyOptional(request: Request, response: Response, next: NextFunction) {
+  try {
+    const header = request.header("authorization");
+    if (!header) return next();
 
-      const token = header.replace("Bearer ", "").trim();
-      if (!token) return next();
+    const token = header.replace("Bearer ", "").trim();
+    if (!token) return next();
 
-      const payload = jwt.verify(token, appConfig.jwtSecretKey);
-      (request as any).user = payload; 
-      next();
-        }catch{
-           next();  
-        }
-    }
+    const payload = jwt.verify(token, appConfig.jwtSecretKey) as { user: UserModel };
+    (request as any).user = payload.user;
+
+    next();
+  } catch {
+    next();
+  }
+}
 }
 export const verificationMiddleware = new VerificationMiddleware();
