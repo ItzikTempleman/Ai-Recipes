@@ -66,11 +66,11 @@ class RecipeService {
     const healthLevel = recipe.healthLevel;
     const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
-    const sugarRestriction = recipe.sugarRestriction;           // enum SugarRestriction
-    const lactoseRestrictions = recipe.lactoseRestrictions;     // enum LactoseRestrictions
-    const glutenRestrictions = recipe.glutenRestrictions;       // enum GlutenRestrictions
-    const dietaryRestrictions = recipe.dietaryRestrictions;     // enum DietaryRestrictions
-    const caloryRestrictions = recipe.caloryRestrictions;       // enum CaloryRestrictions
+    const sugarRestriction = recipe.sugarRestriction;          
+    const lactoseRestrictions = recipe.lactoseRestrictions;   
+    const glutenRestrictions = recipe.glutenRestrictions;      
+    const dietaryRestrictions = recipe.dietaryRestrictions;     
+    const caloryRestrictions = recipe.caloryRestrictions;      
     const prepTime = recipe.prepTime ?? 0;
     const difficultyEnum = recipe.difficultyLevel ?? DifficultyLevel.MID_LEVEL;
     const difficultyLevel = DifficultyLevel[difficultyEnum];

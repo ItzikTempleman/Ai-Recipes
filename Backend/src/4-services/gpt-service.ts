@@ -5,15 +5,8 @@ import { GeneratedRecipeData, Query } from "../3-models/recipe-model";
 class GptService {
   public async getInstructions(query: Query, isWithImage: boolean): Promise<GeneratedRecipeData> {
 
-    // pick correct model for this request
-    const modelToUse = isWithImage
-      ? appConfig.modelNumber              // "gpt-512"
-      : appConfig.freeNoImageModelNumber;  // "gpt-image-1"
-
-    // pick correct key for this request
-    const keyToUse = isWithImage
-      ? appConfig.apiKey                   // full / image-capable key
-      : appConfig.freeNoImageApiKey;       // cheaper "no image" key
+const modelToUse = appConfig.modelNumber;
+const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
 
     const body = {
       model: modelToUse,
