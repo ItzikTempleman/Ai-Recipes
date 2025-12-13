@@ -18,5 +18,22 @@ class VerificationMiddleware {
              response.status(StatusCode.Unauthorized).send("Unauthorized");
         }
     }
+
+
+    public verifyOptional(request: Request, response: Response, next: NextFunction){
+        try{
+      const header = request.header("authorization");
+      if (!header) return next();
+
+      const token = header.replace("Bearer ", "").trim();
+      if (!token) return next();
+
+      const payload = jwt.verify(token, appConfig.jwtSecretKey);
+      (request as any).user = payload; 
+      next();
+        }catch{
+           next();  
+        }
+    }
 }
 export const verificationMiddleware = new VerificationMiddleware();

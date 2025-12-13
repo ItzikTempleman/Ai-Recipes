@@ -9,6 +9,7 @@ import { ProfileScreen } from "../../Screens/ProfileScreen/ProfileScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { GenerateScreen } from "../../Screens/GenerateScreen/GenerateScreen";
+import { Settings } from "@mui/icons-material";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
@@ -16,15 +17,16 @@ export function Routing() {
     return (
         <div>
             <Routes>
-                <Route path="/" element={<Navigate to={isLoggedIn ? "/home-screen" : "/login-screen"} replace />} />
+                <Route path="/" element={<HomeScreen/>} />
                 <Route path="*" element={<Page404 />} />
-                <Route path="/generate-screen" element={isLoggedIn ? <GenerateScreen /> : <Navigate to="/login-screen" replace />} />
+                <Route path="/generate-screen" element={ <GenerateScreen /> } />
                 <Route path="/about-screen" element={<AboutScreen />} />
-                <Route path="/home-screen" element={isLoggedIn ? <HomeScreen /> : <Navigate to="/login-screen" replace />} />
-                <Route path="/recipe/:id" element={isLoggedIn ? <RecipeInfoScreen /> : < Navigate to="/login-screen" replace />} />
-                <Route path="/login-screen" element={isLoggedIn ? <Navigate to="/home-screen" replace /> : <LoginScreen />} />
-                <Route path="/registration-screen" element={isLoggedIn ? <Navigate to="/home-screen" replace /> : <RegistrationScreen />} />
-                <Route path="/profile-screen" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/login-screen" replace />} />
+                <Route path="/home-screen" element={<HomeScreen /> } />
+                <Route path="/recipe/:id" element={isLoggedIn ? <RecipeInfoScreen /> : < Navigate to="/home-screen" replace />} />
+                <Route path="/login-screen" element={ <LoginScreen />} />
+                <Route path="/registration-screen" element={ <RegistrationScreen />} />
+                <Route path="/profile-screen" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home-screen" replace />} />
+                <Route path="/settings" element={ <Settings /> }/>
             </Routes>
         </div>
     );

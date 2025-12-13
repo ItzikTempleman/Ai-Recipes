@@ -19,14 +19,18 @@ const list = Array.isArray(items) ? items : [];
 
   return (
     <div className="HomeScreen">
+      {user&&(
       <p className="HomeScreenTitle">{user.firstName.trim()}'s recipes</p>
+      )}
       <div className="RecipeList">
-        {list.length === 0 ? (
+{user&&(
+        list.length === 0 ? (
           <div>No recipes</div>
         ) : (
           list.map((recipe) => (
             <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
           ))
+        )
         )}
       </div>
     </div>

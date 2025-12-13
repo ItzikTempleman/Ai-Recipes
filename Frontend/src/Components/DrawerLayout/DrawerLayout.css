@@ -1,0 +1,72 @@
+ .MuiDrawer-paper {
+  width: 350px;
+}
+
+.DrawerMainContainer {
+  height: 100%;
+  width: 100%;          
+  display: flex;
+  flex-direction: column;
+}
+.DrawerMainContainer>*{
+    font-family: Arial, Helvetica, sans-serif;
+   color: #232323;
+}
+
+.DrawerContent {
+  width: 100%;          
+  flex-direction: column;
+  height: 100%;
+  padding: 14px;
+  gap: 14px;
+  align-items: stretch;  
+}
+
+.DrawerCloseButton {
+margin: 16px 16px 0 auto;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.ProfileImage {
+    width: 140px;
+    height: 140px;
+    border-radius: 180px;
+    object-fit: cover;
+}
+
+.DrawerNavLink{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.DrawerNavLink{
+  font-size: 18px;
+  text-decoration: none;
+  color: #232323;
+
+}
+
+.ProfileRow,
+.AboutRow,
+.SettingsRow,
+.LogoutRow,
+.LoginRow
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: start;
+    border-bottom: 0.5px solid;
+    padding: 8px;
+    align-items: center;
+    gap: 16px;
+}
+
+.LogoutRow>* {
+    color: #d32f2f !important;
+}
+.LogoutRow{
+     border-bottom: none !important;
+}

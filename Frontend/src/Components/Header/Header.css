@@ -1,7 +1,7 @@
 .Header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 2px 20px;
   box-sizing: border-box;
   margin: 8px;
@@ -10,27 +10,11 @@
 
 .Header p {
   margin: 1px 0 0;
-
 }
 
-.HeaderImagePreview {
-  border-radius: 180px;
-  width: 45px;
-  height: 45px;
-  object-fit: cover;
-  object-position: center;
-}
-
-
-.GeneralNavigation,
-.CenterNavigation,
-.UserNavigation {
+.GeneralNavigation {
   display: flex;
   align-items: center;
-}
-
-.UserNavigation {
-  margin-left: auto;
 }
 
 .GeneralNavigation a+a {
@@ -38,38 +22,8 @@
   padding-left: 12px;
 }
 
-.UserNavigation a+a {
-  margin-left: 12px;
-  padding-left: 12px;
-}
-
-.CenterNavigation {
-  margin: 0 12px;
-  padding: 0 12px;
-
-}
-
-.Header>.CenterNavigation:first-child {
-  margin-left: 0;
-  padding-left: 0;
-  border-left: none;
-}
-
-.Header>.CenterNavigation:first-child:last-child {
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-
-.Header>.CenterNavigation:first-child:last-child a {
-  align-items: flex-start;
-}
-
-.LogoutLink,
 .GenerateScreenLink,
-.AboutScreenLink,
-.HomeScreenLink,
-.LoginScreenLink {
+.HomeScreenLink{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,19 +34,18 @@
 }
 
 .GenerateScreenLink.active,
-.AboutScreenLink.active,
-.HomeScreenLink.active,
-.LoginScreenLink.active {
+.HomeScreenLink.active {
   color: #0f7394;
   font-weight: bold;
   font-size: 14px;
 }
 
-.LogoutLink {
-  color: #ff0000 !important;
+.Menu {
+  margin-left: auto;
 }
 
 @media (max-width: 600px) {
+
   .Header {
     padding: 2px 12px;
     flex-wrap: wrap;
@@ -100,19 +53,11 @@
 
   .Header p {
     margin: 1px 0 0;
-  
   }
 
   .GenerateScreenLink,
-  .AboutScreenLink,
-  .HomeScreenLink,
-  .LoginScreenLink {
+  .HomeScreenLink {
     font-size: 12px;
   }
-  .Header>.CenterNavigation:first-child:last-child {
-    margin: 0;
-    padding: 0;
-
-  }
-
 }
+
