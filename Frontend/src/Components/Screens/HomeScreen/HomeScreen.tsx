@@ -22,6 +22,7 @@ const list = Array.isArray(items) ? items : [];
       {user&&(
       <p className="HomeScreenTitle">{user.firstName.trim()}'s recipes</p>
       )}
+
       <div className="RecipeList">
 {user&&(
         list.length === 0 ? (
@@ -32,6 +33,10 @@ const list = Array.isArray(items) ? items : [];
           ))
         )
         )}
+
+              {!user&&(
+      <p className="HomeScreenTitle">Guest account, <br/> to save or like recipes you must log in</p>
+      )}
       </div>
     </div>
   );

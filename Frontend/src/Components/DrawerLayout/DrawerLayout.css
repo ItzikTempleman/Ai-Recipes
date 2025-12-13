@@ -1,5 +1,5 @@
  .MuiDrawer-paper {
-   width: 250px;
+   width: 360px;
  }
 
  .DrawerMainContainer {
@@ -65,7 +65,8 @@
 
  .ProfileRow,
  .AboutRow,
- .SettingsRow,
+ .LanguageRow,
+ .DarkModeRow,
  .LogoutRow,
  .LoginRow {
    display: flex;
@@ -80,6 +81,7 @@
    margin: 3px;
  border-radius: 2px;
  }
+
 
  .LoginRow>*,
  .LogoutRow>* {
@@ -97,3 +99,26 @@
    border: none !important;
    background-color: #ff0000;
  }
+
+.RowLeft {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+
+.RowRight {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+}
+
+.RadioOption {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}

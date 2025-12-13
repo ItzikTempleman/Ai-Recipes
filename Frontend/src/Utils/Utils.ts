@@ -1,22 +1,23 @@
 import { useEffect } from "react";
 import { DifficultyLevel } from "../Models/RecipeModel";
+import { LANGUAGE } from "../Components/DrawerLayout/DrawerLayout";
 
 export function useTitle(title: string): void {
-    useEffect(() => {
-        document.title = "Itzik ai recipes Recipes | " + title
-    }, [])
+  useEffect(() => {
+    document.title = "Itzik ai recipes Recipes | " + title
+  }, [])
 }
 
-export function showDate(birthDateStr:string):string{
-    if (!birthDateStr) return "";
-     const [datePart] = birthDateStr.split("T");
-     const [year, month, day] = datePart.split("-"); 
-return `${day}/${month}/${year}`
+export function showDate(birthDateStr: string): string {
+  if (!birthDateStr) return "";
+  const [datePart] = birthDateStr.split("T");
+  const [year, month, day] = datePart.split("-");
+  return `${day}/${month}/${year}`
 }
 
 
 export function getAge(
-    birthDate: string | Date | null | undefined): number {
+  birthDate: string | Date | null | undefined): number {
   if (!birthDate) return NaN;
 
   const d =
@@ -35,9 +36,9 @@ export function getAge(
   return age;
 }
 
-export function isAgeOk(chosenDate:Date):boolean{
+export function isAgeOk(chosenDate: Date): boolean {
   const selectedAge = getAge(chosenDate);
-  return selectedAge>12;
+  return selectedAge > 12;
 }
 
 
@@ -64,27 +65,36 @@ export type Level = {
 }
 
 
-export    function getDifficultyLevel(level?: DifficultyLevel): Level {
-    switch (level) {
-      case DifficultyLevel.EASY:
-        return {
-          label: "Easy",
-          icon: "/easy.png"
-        }
-      case DifficultyLevel.MID_LEVEL:
-        return {
-          label: "Mid-level",
-          icon: "/mid-level.png"
-        }
-      case DifficultyLevel.PRO:
-        return {
-          label: "Hard",
-          icon: "/hard.png"
-        }
-      default:
-        return {
-          label: "Easy",
-          icon: "/easy.png",
-        };
-    }
+export function getDifficultyLevel(level?: DifficultyLevel): Level {
+  switch (level) {
+    case DifficultyLevel.EASY:
+      return {
+        label: "Easy",
+        icon: "/easy.png"
+      }
+    case DifficultyLevel.MID_LEVEL:
+      return {
+        label: "Mid-level",
+        icon: "/mid-level.png"
+      }
+    case DifficultyLevel.PRO:
+      return {
+        label: "Hard",
+        icon: "/hard.png"
+      }
+    default:
+      return {
+        label: "Easy",
+        icon: "/easy.png",
+      };
   }
+}
+
+
+export function changeLanguage(lang: LANGUAGE): LANGUAGE {
+  return lang
+}
+
+export function toggleDarkMode(isDarkMode: boolean): boolean {
+  return isDarkMode
+}
