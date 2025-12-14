@@ -190,7 +190,9 @@ export function GenerateScreen() {
       {
         recipe && (
           <div className="CenterRow">
-            <RecipeCard recipe={recipe} />
+            <RecipeCard recipe={recipe} filters={{
+              sugarLevel,hasLactose,hasGluten,dietType,
+            }} />
           </div>
         )
       }

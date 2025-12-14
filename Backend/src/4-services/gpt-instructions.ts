@@ -91,6 +91,20 @@ You will receive the following RESTRICTION FLAGS (numeric enums):
 - DietaryRestrictions: 0 = DEFAULT, 1 = VEGAN, 2 = KOSHER, 3 = HALAL
 - CaloryRestrictions: 0 = DEFAULT, 1 = LOW
 
+
+The "title" must be a CLEANED and IMPROVED dish name.
+
+TITLE RULES (VERY IMPORTANT):
+- Do NOT copy the user query verbatim if it contains:
+  - brand/restaurant names (e.g. "Pizza Hut") → use "Pizza Hut–style pizza"
+  - spelling mistakes / bad punctuation → fix them (e.g. Hebrew quotes ״ ׳, extra commas, etc.)
+- Normalize Hebrew punctuation:
+  - replace ״ with ״ correctly if needed, and ׳ for apostrophes (e.g. ארנצ׳יני גבינות)
+- The title must be a natural dish name someone would save in a cookbook.
+- If the query is short or ambiguous, expand slightly (e.g. add “style”, or specify the dish type),
+  but keep it concise (max ~8 words).
+
+  
 THESE VALUES ARE ALREADY DECIDED FOR THIS REQUEST:
 
 - sugarRestriction = ${sugarRestriction}

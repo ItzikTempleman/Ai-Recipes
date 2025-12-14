@@ -8,18 +8,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} 
+.InfoScreenContainer {
+  width: 100%;
+  max-width: 800px;              
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  text-align: left;
+} 
 
-.DescriptionInInfoScreen{
-display: flex; 
-  text-align: center;    
-}
-
-  .DescriptionInInfoScreen >p{
-font-size: 18px;
-font-weight: bold;
-
-  }
 .BackBtnContainer {
   width: 100%;
   max-width: 800px;
@@ -33,138 +35,3 @@ font-weight: bold;
   padding: 6px 12px !important;
 }
 
-.BackBtn:hover {
-  background-color: #0f7394 !important; 
-}
-
-.BackBtn.MuiButton-root {
-  background-color: #0f7394 !important;
-}
-
-.BackBtn.MuiButton-root:hover {
-  background-color: #0f7394 !important;
-}
-
-.InfoScreenContainer {
-  width: 100%;
-  max-width: 800px;              
-  margin: 0 auto;
-  padding: 24px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  text-align: left;
-}
-
-.RecipeInImage {
-  display: block;
-  margin: 0 auto 20px;
-  width: 100%;              
-  max-width: 600px;           
-  max-height: 450px;                
-  object-fit: cover;  
-  border-radius: 4px;            
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 2);
-}
-
-.InfoScreenContainer h2,
-.InfoScreenContainer h3,
-.InfoScreenContainer h4 {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.IngredientsList {
-  margin-top: 50px;
- 
-
-}
-
-.IngredientRow {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 4px 0;
-  align-items: center;       
-}
-
-.IngredientsList.rtl .IngredientRow {
-  flex-direction: row-reverse;  
-  
-}
-.IngredientRow:last-child {
-  border-bottom: none;
-}
-.IngredientsList.rtl .IngredientName {
-  order: 2;         
-  text-align: right;
-
-}
-
-.IngredientsList.rtl .IngredientAmount {
-  order: 1;         
-  text-align: left;
-}
-.IngredientName {
-  font-weight: bold;
-}
-
-.IngredientAmount {
-  color: #d21c1c;
-}
-
-.InstructionsList {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.instructions-list.rtl {
-  direction: rtl;        
-  text-align: right;
-  padding-right: 1.5rem;
-  padding-left: 0;
-}
-
-.instructions-list.rtl li {
-  direction: rtl;
-  text-align: right;
-  list-style-position: inside;
-}
-
-
-.IngredientsDiv{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-@media (max-width: 600px) {
-  .RecipeInfoScreen {
-    padding: 16px 8px 24px;
-  }
-
-  .InfoScreenContainer {
-    padding: 16px;
-    max-width: 100%;  
-  }
-
-  .RecipeInImage {
-    max-width: 100%;
-    max-height: 260px;
-    margin-bottom: 16px;
-  }
-
-  .IngredientRow {
-    flex-direction: row;
-    font-size: 0.95rem;
-  }
-.IngredientName {
-font-size: 14px !important;
-font-weight:normal;
-}
-
-}

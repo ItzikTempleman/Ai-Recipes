@@ -10,7 +10,6 @@
   align-items: center;
 }
 
-
 .GenerateContainer {
   width: 640px;
   margin-top: 20px;
@@ -56,15 +55,15 @@
   font-size: clamp(1.3rem, 2.2vw, 2em);
   letter-spacing: 0.02em;
   color: #174b7a; 
-  position: relative; /* keep this */
+  position: relative;
 }
 
 .GenerateTitle::after {
   content: "";
   position: absolute;
   bottom: -12px;
-  left: 50%;                 /* <- add this */
-  transform: translateX(-50%);/* center horizontally */
+  left: 50%;             
+  transform: translateX(-50%);
   width: 400px;
   height: 3px;
   border-radius: 180px;
