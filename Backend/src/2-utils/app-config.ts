@@ -43,12 +43,10 @@ public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
   private normalizeBaseImageUrl(): string {
     const raw = process.env.BASE_IMAGE_URL;
 
-    // If a full URL was provided, just normalize the trailing slash.
     if (raw && /^https?:\/\//i.test(raw)) {
       return raw.endsWith("/") ? raw : raw + "/";
     }
 
-    // Default per environment
     const host = this.isProduction
       ? (process.env.PUBLIC_HOST || "localhost")
       : "localhost";
