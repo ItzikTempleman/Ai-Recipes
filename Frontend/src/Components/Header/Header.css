@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2px 20px;
+  padding: 0 20px;
   box-sizing: border-box;
-  margin: 8px;
-
+border-bottom: 0.5px solid grey;
+  background-color: white;
 }
 
 .Header p {
@@ -42,12 +42,17 @@
 
 .Menu {
   margin-left: auto;
+ 
+}
+
+.Menu svg {
+  color: #0f7394;
 }
 
 @media (max-width: 600px) {
 
   .Header {
-    padding: 2px 12px;
+    padding: 0 12px;
     flex-wrap: wrap;
   }
 

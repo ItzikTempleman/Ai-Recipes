@@ -32,11 +32,7 @@ export function RecipeListItem({ recipe }: RecipeProps) {
                 <DeleteIcon />
             </IconButton>
             <img className="CardImage" src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"} />
-
-               
                    <span className="CountryFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
-                  
-                
             <div className="CardTitleContainer">
                 <h3 className="CardTitle">{recipe.title}</h3>
                 <div>

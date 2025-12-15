@@ -7,6 +7,7 @@
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
+background: linear-gradient(135deg, #c5e0e8,#c5e0e8,#a1c1ca, #0d87b0 ,#086f91 );
 }
 
 .MainLayout > * {

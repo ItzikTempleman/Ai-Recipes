@@ -27,7 +27,7 @@ export function Header() {
       </div>
 
       <div className="Menu">
-        <DrawerLayout
+        <DrawerLayout 
           open={drawerOpen}
           setOpen={setDrawerOpen}
         />

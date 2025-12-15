@@ -1,6 +1,7 @@
 .RecipeCard {
   width: 100%;
   max-width: 640px;
+    background-color: white;
   margin: 0 auto;
   padding: 18px;
   border-radius: 2px;

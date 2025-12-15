@@ -1,20 +1,50 @@
 import "./RecipeData.css";
-import { RecipeModel } from "../../Models/RecipeModel";
+import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
 import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 import { getCountryFlag } from "../../Utils/CountryFlag";
+import { Filters } from "../RecipeCard/RecipeCard";
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
-  onImageError?: () => void; 
+  filters?: Filters;
 };
-
-export function RecipeData({ recipe, imageSrc}: RecipeProps) {
+export function RecipeData({ recipe, imageSrc, filters}: RecipeProps) {
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
   const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
 
+  const sugarText: Record<number, string> = {
+  [SugarRestriction.DEFAULT]: "Regular sugar",
+  [SugarRestriction.LOW]: "Low sugar",
+  [SugarRestriction.NONE]: "Sugar free",
+};
+
+const lactoseText: Record<number, string> = {
+  [LactoseRestrictions.DEFAULT]: "Regular milk",
+  [LactoseRestrictions.NONE]: "Lactose free",
+};
+
+const glutenText: Record<number, string> = {
+  [GlutenRestrictions.DEFAULT]: "Regular gluten",
+  [GlutenRestrictions.NONE]: "Gluten free",
+};
+
+const dietText: Record<number, string> = {
+  [DietaryRestrictions.DEFAULT]: "No diet restriction",
+  [DietaryRestrictions.VEGAN]: "Vegan",
+  [DietaryRestrictions.KOSHER]: "Kosher",
+  [DietaryRestrictions.HALAL]: "Halal",
+};
+
+const filterBadges = !filters ? [] : [
+  filters.sugarLevel !== SugarRestriction.DEFAULT ? sugarText[filters.sugarLevel] : null,
+  filters.hasLactose !== LactoseRestrictions.DEFAULT ? lactoseText[filters.hasLactose] : null,
+  filters.hasGluten !== GlutenRestrictions.DEFAULT ? glutenText[filters.hasGluten] : null,
+  filters.dietType !== DietaryRestrictions.DEFAULT ? dietText[filters.dietType] : null,
+].filter(Boolean) as string[];
   return (
     <div className="RecipeData">
       <h2
@@ -41,31 +71,17 @@ export function RecipeData({ recipe, imageSrc}: RecipeProps) {
     }}
   />
 )}
-
-      <div className="ExtraDataContainer">
-        <div className="PrepTimeDiv">
-          <img className="ExtraDataImg" src={"/clock.png"} alt="prep time" />
-          <p>{recipe.prepTime} m </p>
-        </div>
-
-        <div className="CountryNameDiv">
-          <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
-          <p>{recipe.countryOfOrigin}</p>
-        </div>
-
-        <div className="DifficultyDiv">
-          <img className="ExtraDataImg" src={difficulty.icon} alt="difficulty" />
-          <p>{difficulty.label}</p>
-        </div>
-      </div>
-
+{filterBadges.length > 0 && (
+  <div className="FiltersRow">
+    {filterBadges.join(" · ")}
+  </div>
+)}
       <div className="DataContainer">
         <div className="AmountParent">
           <p>Portions</p>
           <div className="AmountDiv">
-            <img className="ServingsIcon" src="/servings.png" alt="servings" />
             <div className="AmountInnerDiv">
-              <p>x</p>
+              <RestaurantIcon fontSize="small"/><p>x</p>
               <p> {recipe.amountOfServings}</p>
             </div>
           </div>
@@ -74,7 +90,7 @@ export function RecipeData({ recipe, imageSrc}: RecipeProps) {
         <div className="CaloryParent">
           <p>Calories</p>
           <div className="CaloriesDiv">
-            <img className="CaloriesIcon" src="/calories.png" alt="calories" />
+            <img className="CaloriesIcon" src="/calories.png"/>
             <div className="CaloriesInnerDiv">
               <p>{recipe.calories}</p>
               <p>kcal</p>
@@ -116,6 +132,22 @@ export function RecipeData({ recipe, imageSrc}: RecipeProps) {
         </div>
       </div>
 
+      <div className="ExtraDataContainer">
+        <div className="PrepTimeDiv">
+          <img className="ExtraDataImg" src={"/clock.png"} alt="prep time" />
+          <p>{recipe.prepTime} m </p>
+        </div>
+
+        <div className="CountryNameDiv">
+          <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
+          <p>{recipe.countryOfOrigin}</p>
+        </div>
+
+        <div className="DifficultyDiv">
+          <img className="ExtraDataImg" src={difficulty.icon} alt="difficulty" />
+          <p>{difficulty.label}</p>
+        </div>
+      </div>
       <div
         className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
         dir={isRTL ? "rtl" : "ltr"}

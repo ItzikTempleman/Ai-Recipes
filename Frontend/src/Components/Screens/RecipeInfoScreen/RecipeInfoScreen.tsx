@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../../Utils/Utils";
 import "./RecipeInfoScreen.css";
 import { useEffect, useState } from "react";
@@ -8,14 +8,18 @@ import { RecipeModel } from "../../../Models/RecipeModel";
 import { Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { RecipeData } from "../../RecipeData/RecipeData";
+import { Filters } from "../../RecipeCard/RecipeCard";
 
-export function RecipeInfoScreen() {
+
+type Props = { filters?: Filters };
+export function RecipeInfoScreen({ filters }: Props) {
+
   useTitle("Info");
   const params = useParams();
   const recipeId = Number(params.id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
-
+  
   useEffect(
     () => {
       if (!recipeId) {
@@ -50,7 +54,7 @@ export function RecipeInfoScreen() {
 
       <div className="InfoScreenContainer">
        
-<RecipeData recipe={recipe} imageSrc={(recipe.imageUrl ?? "").trim()} />
+<RecipeData recipe={recipe} imageSrc={(recipe.imageUrl ?? "").trim()} filters={filters} />
 </div>
   
     </div >

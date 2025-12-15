@@ -6,24 +6,20 @@ import { resetGenerated } from "../../Redux/RecipeSlice";
 import { RecipeData } from "../RecipeData/RecipeData";
 import "./RecipeCard.css";
 
-
-type Filters={
-  sugarLevel:SugarRestriction;
-  hasLactose:LactoseRestrictions,
-  hasGluten:GlutenRestrictions,
-  dietType:DietaryRestrictions
+export type Filters = {
+  sugarLevel: SugarRestriction;
+  hasLactose: LactoseRestrictions,
+  hasGluten: GlutenRestrictions,
+  dietType: DietaryRestrictions
 }
 
 type RecipeProps = {
   recipe: RecipeModel,
-  filters:Filters
+  filters: Filters
 };
 
-export function RecipeCard({ recipe ,filters}: RecipeProps) {
-
+export function RecipeCard({ recipe, filters }: RecipeProps) {
   const [imgSrc, setImgSrc] = useState<string>("");
-
-
   const dispatch = useDispatch();
   useEffect(() => {
     const url = (recipe.imageUrl ?? "").trim();
@@ -41,13 +37,11 @@ export function RecipeCard({ recipe ,filters}: RecipeProps) {
           }}
         >Clear</Button></div>
 
-
-<RecipeData
-  recipe={recipe}
-  imageSrc={imgSrc}
-  onImageError={() => setImgSrc("")}
-/>
-
+      <RecipeData
+        filters={filters}
+        recipe={recipe}
+        imageSrc={imgSrc}
+      />
     </div>
   );
 }
