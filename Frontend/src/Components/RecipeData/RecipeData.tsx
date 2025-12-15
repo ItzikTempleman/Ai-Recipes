@@ -76,17 +76,7 @@ const filterBadges = !filters ? [] : [
     {filterBadges.join(" · ")}
   </div>
 )}
-      <div className="DataContainer">
-        <div className="AmountParent">
-          <p>Portions</p>
-          <div className="AmountDiv">
-            <div className="AmountInnerDiv">
-              <RestaurantIcon fontSize="small"/><p>x</p>
-              <p> {recipe.amountOfServings}</p>
-            </div>
-          </div>
-        </div>
-
+      <div className="RecipeExtraDataContainer">
         <div className="CaloryParent">
           <p>Calories</p>
           <div className="CaloriesDiv">
@@ -132,30 +122,35 @@ const filterBadges = !filters ? [] : [
         </div>
       </div>
 
-      <div className="ExtraDataContainer">
-        <div className="PrepTimeDiv">
+      <div className="RecipeExtraDataContainer">
+
+          <div className="AmountParent">
+              <RestaurantIcon fontSize="small"/>
+              <p>x {recipe.amountOfServings}</p>
+          </div>
+     
+        <div className="PrepTimeParent">
           <img className="ExtraDataImg" src={"/clock.png"} alt="prep time" />
           <p>{recipe.prepTime} m </p>
         </div>
 
-        <div className="CountryNameDiv">
+        <div className="CountryNameParent">
           <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
           <p>{recipe.countryOfOrigin}</p>
         </div>
 
-        <div className="DifficultyDiv">
+        <div className="DifficultyParent">
           <img className="ExtraDataImg" src={difficulty.icon} alt="difficulty" />
           <p>{difficulty.label}</p>
         </div>
       </div>
+
       <div
         className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
-        dir={isRTL ? "rtl" : "ltr"}
-      >
+        dir={isRTL ? "rtl" : "ltr"}>
         <h2
           className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`}
-          dir={isRTL ? "rtl" : "ltr"}
-        >
+          dir={isRTL ? "rtl" : "ltr"}>
           {isRTL ? "מצרכים" : "Ingredients"}
         </h2>
 
@@ -174,15 +169,13 @@ const filterBadges = !filters ? [] : [
         >
           {isRTL ? "הוראות הכנה" : "Instructions"}
         </h2>
-
         <ol
           className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
-          dir={isRTL ? "rtl" : "ltr"}
-        >
+          dir={isRTL ? "rtl" : "ltr"}>
           {instructions.map((step, index) => (
             <li key={index}>
               {step}
-              <hr className="divider" />
+              <hr className="divider"/>
             </li>
           ))}
         </ol>

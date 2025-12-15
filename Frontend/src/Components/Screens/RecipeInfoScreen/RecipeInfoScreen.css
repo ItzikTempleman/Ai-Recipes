@@ -24,14 +24,13 @@
 
 .BackBtnContainer {
   width: 100%;
-  max-width: 800px;
   margin: 0 auto 16px;
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  color: white;
 }
 
-.BackBtn {
-  background-color: #0f7394 !important;
-  padding: 6px 12px !important;
+.BackBtnContainer:hover {
+  cursor: pointer;
 }
-

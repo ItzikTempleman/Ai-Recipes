@@ -4,10 +4,10 @@
   flex-direction: column;
   align-items: stretch;
   text-align: left;
-    background-color: white;
+  background-color: white;
 }
 
-.DataContainer {
+.RecipeExtraDataContainer {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
@@ -16,7 +16,7 @@
 
 .RecipeImage {
   display: block;
-  margin: 0 auto 20px;
+  margin: 0 auto 1px;
   width: 100%;
   max-width: 580px;
   height: auto;
@@ -25,48 +25,10 @@
   border-radius: 4px;
 }
 
-.ExtraDataContainer {
-  display: flex;
-  width: 70%;
-  margin: 20px auto 0;
-  flex-direction: row;
-  height: 70px;
-}
-
-.PrepTimeDiv,
-.CountryNameDiv,
-.DifficultyDiv {
-  display: flex;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 8px;
-  margin: 4px;
-  height: 100%;
-  align-content: center;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
-  width: 100%;
-}
-
-.PrepTimeDiv>p,
-.CountryNameDiv>p,
-.DifficultyDiv>p {
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.ExtraDataImg {
-  width: 20px;
-  height: 20px;
-}
-
-.ExtraDataFlag {
-  font-size: 1.2rem;
-}
-
 .AmountParent,
+.PrepTimeParent,
+.CountryNameParent,
+.DifficultyParent,
 .CaloryParent,
 .SugarParent,
 .ProteinParent,
@@ -74,22 +36,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
+  justify-content: center;
   flex: 1 1 0;
   margin: 4px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
+  padding: 4px;
 }
 
-.AmountParent>p,
-.CaloryParent>p,
-.SugarParent>p,
-.ProteinParent>p,
-.HealthParent>p {
-  font-weight: bold;
-}
-
-.AmountDiv,
-.PopularityDiv,
 .CaloriesDiv,
 .SugarAmountDiv,
 .ProteinAmountDiv,
@@ -105,14 +60,12 @@
 .CaloriesIcon,
 .ProteinIcon,
 .HealthIcon {
-  margin-top: 8px;
   width: 30px;
   height: 30px;
 }
 
 .CaloriesInnerDiv,
 .SugarAmountInnerDiv,
-.AmountInnerDiv,
 .HealthLevelInnerDiv,
 .ProteinInnerDiv,.ProteinInnerDiv>*  {
   display: flex;
@@ -120,21 +73,22 @@
   font-size: 12px;
 }
 
-.AmountInnerDiv{
-display: flex;
-  align-items: center; 
-  gap: 4px; 
-}
-
-
 .CaloriesInnerDiv>p:first-child,
 .SugarAmountInnerDiv>p:first-child,
-.AmountInnerDiv>p:last-child,
 .HealthLevelInnerDiv>p:first-child,
 .ProteinInnerDiv>p:first-child {
   font-weight: bold;
   font-size: 16px;
   padding-right: 4px;
+}
+
+.ExtraDataImg {
+  width: 20px;
+  height: 20px;
+}
+
+.ExtraDataFlag {
+  font-size: 1.2rem;
 }
 
 .IngredientsList,
@@ -234,7 +188,6 @@ display: flex;
 
   .RecipeImage {
     max-width: 100%;
-  
   }
 
   .IngredientRow {
