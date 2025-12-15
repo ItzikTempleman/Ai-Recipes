@@ -11,7 +11,7 @@ import type { AppState } from "../../Redux/Store";
 import { userService } from "../../Services/UserService";
 import "./DrawerLayout.css";
 import { useState } from "react";
-import i18n from "../../Utils/118n";
+import i18n from "../../Utils/i18n";
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from "react-i18next";
 

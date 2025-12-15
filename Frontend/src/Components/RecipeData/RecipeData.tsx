@@ -10,6 +10,8 @@ import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 import { getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -18,11 +20,12 @@ type RecipeProps = {
 };
 
 export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
+
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
   const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
-
+const { t } = useTranslation();
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];
 
@@ -111,18 +114,18 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
 
       <div className="RecipeExtraDataContainer">
         <div className="CaloryParent">
-          <p>Calories</p>
+          <p>{t("recipeUi.calories")}</p>
           <div className="CaloriesDiv">
             <img className="CaloriesIcon" src="/calories.png" />
             <div className="CaloriesInnerDiv">
               <p>{recipe.calories}</p>
-              <p>kcal</p>
+              <p>{t("recipeUi.kcal")}</p>
             </div>
           </div>
         </div>
 
         <div className="SugarParent">
-          <p>Sugar</p>
+          <p>{t("recipeUi.sugar")}</p>
           <div className="SugarAmountDiv">
             <img className="SugarIcon" src="/sugar.png" alt="sugar" />
             <div className="SugarAmountInnerDiv">
@@ -133,7 +136,7 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
         </div>
 
         <div className="ProteinParent">
-          <p>Protein</p>
+          <p>{t("recipeUi.protein")}</p>
           <div className="ProteinAmountDiv">
             <img className="ProteinIcon" src="/protein.png" alt="protein" />
             <div className="ProteinInnerDiv">
@@ -144,7 +147,7 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
         </div>
 
         <div className="HealthParent">
-          <p>Health</p>
+        <p>{t("recipeUi.health")}</p>
           <div className="HealthLevelDiv">
             <img className="HealthIcon" src="/health.png" alt="health" />
             <div className="HealthLevelInnerDiv">
@@ -162,7 +165,7 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
         </div>
 
         <div className="PrepTimeParent">
-          <img className="ExtraDataImg" src={"/clock.png"} alt="prep time" />
+          <img className="ExtraDataImg" src={"/clock.png"}/>
           <p>{recipe.prepTime} m </p>
         </div>
 
@@ -172,8 +175,8 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
         </div>
 
         <div className="DifficultyParent">
-          <img className="ExtraDataImg" src={difficulty.icon} alt="difficulty" />
-          <p>{difficulty.label}</p>
+          <img className="ExtraDataImg" src={difficulty.icon}/>
+          <p>{t(difficulty.labelKey)}</p>
         </div>
       </div>
 

@@ -136,6 +136,16 @@ const resources = {
         showRecipe: "Show Recipe",
         back: "Back",
         infoTitle: "Info",
+        calories: "Calories",
+        sugar: "Sugar",
+        protein: "Protein",
+        health: "Health",
+        kcal: "kcal",
+      },
+      difficulty: {
+        easy: "Easy",
+        midLevel: "Mid-level",
+        hard: "Hard",
       },
 
       notify: {
@@ -280,8 +290,17 @@ const resources = {
         showRecipe: "הצג מתכון",
         back: "חזרה",
         infoTitle: "מידע",
+        calories: "קלוריות",
+        sugar: "סוכר",
+        protein: "חלבון",
+        health: "בריאות",
+        kcal: 'קק"ל',
       },
-
+      difficulty: {
+        easy: "קל",
+        midLevel: "בינוני",
+        hard: "קשה",
+      },
       notify: {
         genericError: "אירעה שגיאה, נסה שוב.",
       },

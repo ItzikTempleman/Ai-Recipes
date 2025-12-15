@@ -59,7 +59,7 @@ export function formatAmount(raw: string | null | undefined): string {
 }
 
 export type Level = {
-  label: string,
+  labelKey: string,
   icon: string
 }
 
@@ -67,24 +67,12 @@ export type Level = {
 export function getDifficultyLevel(level?: DifficultyLevel): Level {
   switch (level) {
     case DifficultyLevel.EASY:
-      return {
-        label: "Easy",
-        icon: "/easy.png"
-      }
+      return { labelKey: "difficulty.easy", icon: "/easy.png" };
     case DifficultyLevel.MID_LEVEL:
-      return {
-        label: "Mid-level",
-        icon: "/mid-level.png"
-      }
+      return { labelKey: "difficulty.midLevel", icon: "/mid-level.png" };
     case DifficultyLevel.PRO:
-      return {
-        label: "Hard",
-        icon: "/hard.png"
-      }
+      return { labelKey: "difficulty.hard", icon: "/hard.png" };
     default:
-      return {
-        label: "Easy",
-        icon: "/easy.png",
-      };
+      return { labelKey: "difficulty.easy", icon: "/easy.png" };
   }
 }

@@ -6,7 +6,7 @@ import {Provider} from "react-redux";
 import {store} from "./Redux/Store.ts";
 import {ThemeProvider} from "@mui/material";
 import {muiTheme} from "./Theme/Theme.ts";
-import "./Utils/118n";
+import "./Utils/i18n.ts";
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
