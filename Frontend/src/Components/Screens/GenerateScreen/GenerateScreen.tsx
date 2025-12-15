@@ -16,6 +16,7 @@ import { GlutenFilter } from "../../Filters/GlutenFilter";
 import { DietaryFilter } from "../../Filters/DietaryFilter";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { useTranslation } from "react-i18next";
 
 
 type RecipeStateType = {
@@ -23,6 +24,7 @@ type RecipeStateType = {
 };
 
 export function GenerateScreen() {
+      const { t } = useTranslation();
   useTitle("Generate");
   const [filtersResetKey, setFiltersResetKey] = useState(0);
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
@@ -69,7 +71,7 @@ export function GenerateScreen() {
       <div>
         <h2 className="GenerateTitle">
           <RestaurantMenuIcon className="TitleIcon" />
-          <span>So, what are we eating today?</span>
+          <span>{t("generate.title")}</span>
         </h2>
       </div>
 
@@ -81,12 +83,12 @@ export function GenerateScreen() {
               variant="outlined"
               size="small"
               fullWidth
-              label="Generate recipe"
-              placeholder="Generate recipe"
+              label={t("generate.labelGenerate")}
+              placeholder={t("generate.placeholderGenerate")}
               {...register("query",
                 {
                   required:
-                    "title is required"
+                    `${t("generate.requiredTitle")}`
                 })}
               disabled={loading} />
             {loading ? (
@@ -100,7 +102,7 @@ export function GenerateScreen() {
                   type="submit"
                   aria-label="search"
                   disabled={loading}>
-                  Go <AutoAwesome className="BtnIcon" />
+                  {t("generate.go")} <AutoAwesome className="BtnIcon" />
                 </Button>
               )}
           </div>
@@ -110,8 +112,8 @@ export function GenerateScreen() {
           {
             loading && (
               hasImage ?
-                <h3 className="LoadingWithImage">Preparing your recipe, Loading image…</h3> :
-                <h3 className="LoadingWithoutImage">Preparing your recipe…</h3>
+                <h3 className="LoadingWithImage">{t("generate.loadingWithImage")}</h3> :
+                <h3 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h3>
             )
           }
           <div className="FiltersColumn">
@@ -165,7 +167,7 @@ export function GenerateScreen() {
                 <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Exclude ingredient"
+                  placeholder={t("generate.excludeIngredient")}
                   {...register("excludedIngredients.0")}
                 />
               </div>
@@ -174,7 +176,7 @@ export function GenerateScreen() {
                 <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Exclude ingredient"
+                    placeholder={t("generate.excludeIngredient")}
                   {...register("excludedIngredients.1")}
                 />
               </div>
@@ -183,7 +185,7 @@ export function GenerateScreen() {
                 <TextField className="ExcludeTF"
                   variant="outlined"
                   size="small"
-                  placeholder="Exclude ingredient"
+                  placeholder={t("generate.excludeIngredient")}
                   {...register("excludedIngredients.2")}
                 />
               </div>

@@ -8,12 +8,13 @@ import { User } from "../../../Models/UserModel";
 import { notify } from "../../../Utils/Notify";
 import { userService } from "../../../Services/UserService";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
   useTitle("Profile");
   if (!user) return null;
-
+    const { t } = useTranslation();
   const rawBirthDate = user.birthDate ?? "";
   const birthDateStr = showDate(rawBirthDate);
   const isoDate = rawBirthDate.split("T")[0];
@@ -77,7 +78,7 @@ export function ProfileScreen() {
 
   return (
     <div className="ProfileScreen">
-      <p className="ProfileScreenTitle">Profile</p>
+      <p className="ProfileScreenTitle">{t("profile.title")}</p>
       <div className="ProfileSection">
         <div className="EditProfileDiv">
           <Button
@@ -85,7 +86,7 @@ export function ProfileScreen() {
             variant="contained"
             onClick={handleClickOpen}
           >
-            Edit
+            {t("profile.edit")}
           </Button>
         </div>
 
@@ -99,40 +100,40 @@ export function ProfileScreen() {
               <TextField
                 variant="outlined"
                 size="small"
-                label="Update first name"
+                label={t("profile.updateFirstName")}
                 fullWidth
                 inputProps={{ minLength: 2, maxLength: 30 }}
-                placeholder="Update first name"
+                placeholder={t("profile.updateFirstName")}
                 {...register("firstName")}
               />
 
               <TextField
                 variant="outlined"
                 size="small"
-                label="Update last name"
+                label={t("profile.updateLastName")}
                 fullWidth
                 inputProps={{ minLength: 2, maxLength: 30 }}
-                placeholder="Update last name"
+                placeholder={t("profile.updateLastName")}
                 {...register("familyName")}
               />
 
               <TextField
                 variant="outlined"
                 size="small"
-                label="Update email"
+                label={t("profile.updateEmail")}
                 fullWidth
                 inputProps={{ minLength: 2, maxLength: 30 }}
-                placeholder="Update email"
+                placeholder={t("profile.updateEmail")}
                 {...register("email")}
               />
 
               <TextField
                 variant="outlined"
                 size="small"
-                label="Update phone number"
+                label={t("profile.updatePhone")}
                 fullWidth
                 inputProps={{ minLength: 2, maxLength: 30 }}
-                placeholder="Update phone number"
+                placeholder={t("profile.updatePhone")}
                 {...register("phoneNumber")}
               />
 
@@ -142,7 +143,7 @@ export function ProfileScreen() {
                 fullWidth
                 className="UpdateBtn"
               >
-                Update profile
+               {t("profile.updateProfile")}
               </Button>
             </form>
           </div>
@@ -151,7 +152,6 @@ export function ProfileScreen() {
         <img
           className="ImagePreview"
           src={imagePreview || fallbackAvatar}
-          alt="Profile"
         />
 
         <TextField 
@@ -180,7 +180,7 @@ export function ProfileScreen() {
 
             try {
               await userService.updateUserInfo(user.id!, formData);
-              notify.success("Profile image updated");
+              notify.success(`${t("profile.imageUpdated")}`);
               setSelectedFile(null);
             } catch (err) {
               notify.error(err);
@@ -194,9 +194,9 @@ export function ProfileScreen() {
           {age}, {gender}
         </p>
         <div className="divider" />
-        <p>Email: {user.email}</p>
-        <p>phone number: {user.phoneNumber}</p>
-        <p>birth date: {birthDateStr}</p>
+        <p>{t("profile.emailPrefix")} {user.email}</p>
+        <p>{t("profile.phonePrefix")} {user.phoneNumber}</p>
+        <p>{t("profile.birthDatePrefix")} {birthDateStr}</p>
       </div>
     </div>
   );

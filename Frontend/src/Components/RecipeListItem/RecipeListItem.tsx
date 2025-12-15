@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { recipeService } from "../../Services/RecipeService";
 import { getCountryFlag } from "../../Utils/CountryFlag";
+import { useTranslation } from "react-i18next";
 
 type RecipeProps = {
     recipe: RecipeModel;
@@ -14,7 +15,7 @@ type RecipeProps = {
 
 export function RecipeListItem({ recipe }: RecipeProps) {
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
     async function moveToInfo(): Promise<void> {
         navigate("/recipe/" + recipe.id);
     }
@@ -39,7 +40,7 @@ export function RecipeListItem({ recipe }: RecipeProps) {
                     <Button className="MoreInfoBtn"
                         onClick={moveToInfo}
                         variant="contained">
-                        Show Recipe
+                      {t("recipeUi.showRecipe")}
                         <ArrowForwardIosIcon />
                     </Button>
                 </div>

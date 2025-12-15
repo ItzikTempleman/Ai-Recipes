@@ -15,16 +15,12 @@ const resources = {
         selectLanguage: "Select language",
         english: "English",
         hebrew: "Hebrew",
-        darkMode: "Dark mode",
-        on: "On",
-        off: "Off",
         logout: "Logout",
         helloGuest: "Hello Guest",
         login: "Log in",
       },
 
       homeScreen: {
-        titleMyRecipes: "{{name}}'s recipes",
         noRecipes: "No recipes",
         guestNotice: "Guest account,\n to save or like recipes you must log in",
       },
@@ -85,9 +81,7 @@ const resources = {
           passwordLabel: "Enter password",
           passwordPlaceholder: "Password",
           submit: "Log in",
-          registerLink: "Register",
-          hidePassword: "Hide password",
-          showPassword: "Show password",
+          registerLink: "Register"
         },
 
         registration: {
@@ -154,7 +148,7 @@ const resources = {
     translation: {
       nav: {
         home: "בית",
-        generate: "צור",
+        generate: "צור מתכון חדש",
       },
 
       drawer: {
@@ -163,9 +157,6 @@ const resources = {
         selectLanguage: "בחר שפה",
         english: "אנגלית",
         hebrew: "עברית",
-        darkMode: "מצב כהה",
-        on: "פעיל",
-        off: "כבוי",
         logout: "התנתק",
         helloGuest: "שלום אורח",
         login: "התחבר",
@@ -183,7 +174,6 @@ const resources = {
       },
 
       page404: {
-        title: "הדף לא נמצא",
         message: "הדף שחיפשת לא קיים",
         return: "חזרה",
       },
@@ -193,7 +183,7 @@ const resources = {
         labelGenerate: "צור מתכון",
         placeholderGenerate: "צור מתכון",
         requiredTitle: "נדרשת כותרת",
-        go: "יאללה",
+        go: "צור מתכון",
         excludeIngredient: "הסר רכיב",
         loadingWithImage: "מכין את המתכון… טוען תמונה…",
         loadingNoImage: "מכין את המתכון…",

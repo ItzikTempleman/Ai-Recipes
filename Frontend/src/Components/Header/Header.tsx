@@ -4,10 +4,11 @@ import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import { useState } from "react";
 import { Home } from "@mui/icons-material";
 import { DrawerLayout } from "../DrawerLayout/DrawerLayout";
+import { useTranslation } from "react-i18next";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+    const { t } = useTranslation();
   return (
     <div className="Header">
 
@@ -15,13 +16,13 @@ export function Header() {
         <NavLink to="/home" className="HomeScreenLink">
           <div className="Home">
             <Home />
-            <p>Home</p>
+            <p>{t("nav.home")}</p>
           </div>
         </NavLink>
         <NavLink to="/generate" className="GenerateScreenLink">
           <div className="Generate">
             <LibraryAdd />
-            <p>Generate</p>
+            <p>{t("nav.generate")}</p>
           </div>
         </NavLink>
       </div>

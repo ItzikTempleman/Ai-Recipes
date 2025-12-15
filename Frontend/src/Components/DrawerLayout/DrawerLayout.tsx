@@ -13,15 +13,21 @@ import "./DrawerLayout.css";
 import { useState } from "react";
 import i18n from "../../Utils/118n";
 import LanguageIcon from '@mui/icons-material/Language';
+import { useTranslation } from "react-i18next";
+
 type DrawerState = {
     open: boolean;
     setOpen: (open: boolean) => void;
 };
 
+
+
 export type Language = "en" | "he";
 
 
 export function DrawerLayout({ open, setOpen }: DrawerState) {
+    const { t } = useTranslation();
+    
     const user = useSelector((state: AppState) => state.user);
 
     const isLoggedIn = !!(user && localStorage.getItem("token"));
@@ -63,30 +69,30 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                                 <NavLink to="/profile" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="ProfileRow">
                                         <Person />
-                                        <h4>Profile</h4>
+                                        <h4>{t("drawer.profile")}</h4>
                                     </div>
                                 </NavLink>
                                 <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="AboutRow">
                                         <Info />
-                                        <h4>About</h4>
+                                        <h4>{t("drawer.about")}</h4>
                                     </div>
                                 </NavLink>
                                 <div className="LanguageRow">
                                     <div className="SelectLanguage">
                                         <LanguageIcon/>
-                                    <h4>Select language</h4>
+                                 <h4>{t("drawer.selectLanguage")}</h4>
                                     </div>
                          
                                     <div>
-                                    <label>English</label>
+                                   <label>{t("drawer.english")}</label>
                                     <input
                                         type="radio"
                                         checked={language === "en"}
                                         onChange={() => handleLanguageSelect("en")}
                                     />
                                      <div></div>
-                                      <label>Hebrew</label>
+                                  <label>{t("drawer.hebrew")}</label>
                                     <input
                                         type="radio"
                                         checked={language === "he"}
@@ -104,24 +110,24 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                                     }}>
                                     <div className="LogoutRow">
                                         <LogoutIcon />
-                                        <p>Logout</p>
+                                        <p>{t("drawer.logout")}</p>
                                     </div>
                                 </NavLink>
                             </div>
                         ) : (
                             <div>
-                                <h3 className="UserName">Hello Guest</h3>
+                                <h3 className="UserName">{t("drawer.helloGuest")}</h3>
                                 <NavLink className="DrawerNavLink" to="/login" onClick={() => setOpen(false)}>
 
                                     <div className="LoginRow">
                                         <LoginIcon />
-                                        <p>Log in</p>
+                                        <p>{t("drawer.login")}</p>
                                     </div>
                                 </NavLink>
                                 <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="AboutRow">
                                         <Info />
-                                        <p>About</p>
+                                        <p>{t("drawer.about")}</p>
                                     </div>
                                 </NavLink>
                             </div>

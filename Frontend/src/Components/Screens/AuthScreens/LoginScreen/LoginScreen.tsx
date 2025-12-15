@@ -9,10 +9,11 @@ import { notify } from "../../../../Utils/Notify";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 export function LoginScreen() {
   useTitle("Login");
-
+    const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })
@@ -32,10 +33,10 @@ export function LoginScreen() {
   return (
     <div className="LoginScreen">
       <form className="LoginForm" onSubmit={handleSubmit(send)}>
-        <h2 className="LoginScreenTitle">Log in</h2>
+        <h2 className="LoginScreenTitle">{t("auth.login.title")}</h2>
 
         <TextField className="InputTextField"
-          autoComplete="email" label="Enter Email" placeholder="Email" fullWidth
+          autoComplete="email" label={t("auth.login.emailLabel")} placeholder={t("auth.login.emailPlaceholder")} fullWidth
           InputProps={
             {
               endAdornment: (
@@ -59,8 +60,8 @@ export function LoginScreen() {
 
         <TextField className="InputTextField"
           autoComplete="password"
-          label="Enter password"
-          placeholder="Password"
+          label={t("auth.login.passwordLabel")}
+          placeholder={t("auth.login.passwordPlaceholder")}
           fullWidth
           type={
             showPassword ? "text" : "password"
@@ -95,13 +96,13 @@ export function LoginScreen() {
         <Button type="submit"
           className="LoginButton"
           variant="contained">
-          Log in
+          {t("auth.login.submit")}
         </Button>
 
  
   
           <NavLink to="/registration" className="RegisterLink">
-            <h2>Register</h2>
+            <h2> {t("auth.login.registerLink")}</h2>
           </NavLink>
    
       </form>

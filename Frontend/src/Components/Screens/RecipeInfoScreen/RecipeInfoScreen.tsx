@@ -8,11 +8,12 @@ import { RecipeModel } from "../../../Models/RecipeModel";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { RecipeData } from "../../RecipeData/RecipeData";
 import { Filters } from "../../RecipeCard/RecipeCard";
+import { useTranslation } from "react-i18next";
 
 
 type Props = { filters?: Filters };
 export function RecipeInfoScreen({ filters }: Props) {
-
+    const { t } = useTranslation();
   useTitle("Info");
   const params = useParams();
   const recipeId = Number(params.id);
