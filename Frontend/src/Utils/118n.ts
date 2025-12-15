@@ -1,0 +1,314 @@
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+const resources = {
+  en: {
+    translation: {
+      nav: {
+        home: "Home",
+        generate: "Generate",
+      },
+
+      drawer: {
+        profile: "Profile",
+        about: "About",
+        selectLanguage: "Select language",
+        english: "English",
+        hebrew: "Hebrew",
+        darkMode: "Dark mode",
+        on: "On",
+        off: "Off",
+        logout: "Logout",
+        helloGuest: "Hello Guest",
+        login: "Log in",
+      },
+
+      homeScreen: {
+        titleMyRecipes: "{{name}}'s recipes",
+        noRecipes: "No recipes",
+        guestNotice: "Guest account,\n to save or like recipes you must log in",
+      },
+
+      about: {
+        title: "About this site",
+        footer: "© 2025 All rights reserved ® Itzik's AI recipe generator",
+      },
+
+      page404: {
+        title: "Page not found",
+        message: "The page you are looking for does'nt exist",
+        return: "Return",
+      },
+
+      generate: {
+        title: "So, what are we eating today?",
+        labelGenerate: "Generate recipe",
+        placeholderGenerate: "Generate recipe",
+        requiredTitle: "title is required",
+        go: "Go",
+        excludeIngredient: "Exclude ingredient",
+        loadingWithImage: "Preparing your recipe… Loading image…",
+        loadingNoImage: "Preparing your recipe…",
+      },
+
+      filters: {
+        image: {
+          withImage: "With image",
+          noImage: "No image",
+        },
+        sugar: {
+          regular: "Regular sugar",
+          low: "Low sugar",
+          none: "Sugar free",
+        },
+        lactose: {
+          regular: "Regular milk",
+          none: "Lactose free",
+        },
+        gluten: {
+          regular: "Regular gluten",
+          none: "Gluten free",
+        },
+        diet: {
+          none: "No diet restriction",
+          vegan: "Vegan",
+          kosher: "Kosher",
+          halal: "Halal",
+        },
+      },
+
+      auth: {
+        login: {
+          title: "Log in",
+          emailLabel: "Enter Email",
+          emailPlaceholder: "Email",
+          passwordLabel: "Enter password",
+          passwordPlaceholder: "Password",
+          submit: "Log in",
+          registerLink: "Register",
+          hidePassword: "Hide password",
+          showPassword: "Show password",
+        },
+
+        registration: {
+          title: "Registration",
+          back: "Back",
+          firstNameLabel: "First name",
+          firstNamePlaceholder: "first name",
+          lastNameLabel: "Last name",
+          lastNamePlaceholder: "last name",
+          emailLabel: "Enter email",
+          emailPlaceholder: "Email",
+          passwordLabel: "Enter password",
+          passwordPlaceholder: "Password",
+          birthDateLabel: "Birth date",
+          phoneLabel: "Enter phone number",
+          phonePlaceholder: "Phone number",
+          male: "Male",
+          female: "Female",
+          other: "Other",
+          submit: "Register",
+          firstNameRequired: "First name is required",
+          lastNameRequired: "Last name is required",
+          min3Chars: "Minimum 3 characters required",
+          emailRequired: "Email is required",
+          emailInvalid: "Enter a valid email",
+          passwordRequired: "Password is required",
+          passwordMin8: "At least 8 characters",
+          birthDateRequired: "Birth date is required",
+          birthDateFuture: "Birth date cannot be in the future",
+          minAge12: "User must be at least 12 to register",
+          phoneRequired: "Phone number is required",
+        },
+      },
+
+      profile: {
+        title: "Profile",
+        edit: "Edit",
+        updateFirstName: "Update first name",
+        updateLastName: "Update last name",
+        updateEmail: "Update email",
+        updatePhone: "Update phone number",
+        updateProfile: "Update profile",
+        emailPrefix: "Email:",
+        phonePrefix: "phone number:",
+        birthDatePrefix: "birth date:",
+        userUpdated: "User has been updated",
+        imageUpdated: "Profile image updated",
+      },
+
+      recipeUi: {
+        clear: "Clear",
+        showRecipe: "Show Recipe",
+        back: "Back",
+        infoTitle: "Info",
+      },
+
+      notify: {
+        genericError: "Some error, please try again.",
+      },
+    },
+  },
+
+  he: {
+    translation: {
+      nav: {
+        home: "בית",
+        generate: "צור",
+      },
+
+      drawer: {
+        profile: "פרופיל",
+        about: "אודות",
+        selectLanguage: "בחר שפה",
+        english: "אנגלית",
+        hebrew: "עברית",
+        darkMode: "מצב כהה",
+        on: "פעיל",
+        off: "כבוי",
+        logout: "התנתק",
+        helloGuest: "שלום אורח",
+        login: "התחבר",
+      },
+
+      homeScreen: {
+        titleMyRecipes: "המתכונים של {{name}}",
+        noRecipes: "אין מתכונים",
+        guestNotice: "חשבון אורח,\n כדי לשמור או לעשות לייק למתכונים צריך להתחבר",
+      },
+
+      about: {
+        title: "אודות האתר",
+        footer: "© 2025 כל הזכויות שמורות ® מחולל המתכונים של איציק",
+      },
+
+      page404: {
+        title: "הדף לא נמצא",
+        message: "הדף שחיפשת לא קיים",
+        return: "חזרה",
+      },
+
+      generate: {
+        title: "אז מה אוכלים היום?",
+        labelGenerate: "צור מתכון",
+        placeholderGenerate: "צור מתכון",
+        requiredTitle: "נדרשת כותרת",
+        go: "יאללה",
+        excludeIngredient: "הסר רכיב",
+        loadingWithImage: "מכין את המתכון… טוען תמונה…",
+        loadingNoImage: "מכין את המתכון…",
+      },
+
+      filters: {
+        image: {
+          withImage: "עם תמונה",
+          noImage: "בלי תמונה",
+        },
+        sugar: {
+          regular: "סוכר רגיל",
+          low: "דל סוכר",
+          none: "ללא סוכר",
+        },
+        lactose: {
+          regular: "חלב רגיל",
+          none: "ללא לקטוז",
+        },
+        gluten: {
+          regular: "גלוטן רגיל",
+          none: "ללא גלוטן",
+        },
+        diet: {
+          none: "ללא הגבלה",
+          vegan: "טבעוני",
+          kosher: "כשר",
+          halal: "חלאל",
+        },
+      },
+
+      auth: {
+        login: {
+          title: "התחברות",
+          emailLabel: "הכנס אימייל",
+          emailPlaceholder: "אימייל",
+          passwordLabel: "הכנס סיסמה",
+          passwordPlaceholder: "סיסמה",
+          submit: "התחבר",
+          registerLink: "הרשמה",
+          hidePassword: "הסתר סיסמה",
+          showPassword: "הצג סיסמה",
+        },
+
+        registration: {
+          title: "הרשמה",
+          back: "חזרה",
+          firstNameLabel: "שם פרטי",
+          firstNamePlaceholder: "שם פרטי",
+          lastNameLabel: "שם משפחה",
+          lastNamePlaceholder: "שם משפחה",
+          emailLabel: "הכנס אימייל",
+          emailPlaceholder: "אימייל",
+          passwordLabel: "הכנס סיסמה",
+          passwordPlaceholder: "סיסמה",
+          birthDateLabel: "תאריך לידה",
+          phoneLabel: "הכנס מספר טלפון",
+          phonePlaceholder: "מספר טלפון",
+          male: "זכר",
+          female: "נקבה",
+          other: "אחר",
+          submit: "הרשם",
+          firstNameRequired: "נדרש שם פרטי",
+          lastNameRequired: "נדרש שם משפחה",
+          min3Chars: "נדרשים לפחות 3 תווים",
+          emailRequired: "נדרש אימייל",
+          emailInvalid: "הכנס אימייל תקין",
+          passwordRequired: "נדרשת סיסמה",
+          passwordMin8: "לפחות 8 תווים",
+          birthDateRequired: "נדרש תאריך לידה",
+          birthDateFuture: "תאריך הלידה לא יכול להיות בעתיד",
+          minAge12: "המשתמש חייב להיות לפחות בן 12 כדי להירשם",
+          phoneRequired: "נדרש מספר טלפון",
+        },
+      },
+
+      profile: {
+        title: "פרופיל",
+        edit: "עריכה",
+        updateFirstName: "עדכן שם פרטי",
+        updateLastName: "עדכן שם משפחה",
+        updateEmail: "עדכן אימייל",
+        updatePhone: "עדכן מספר טלפון",
+        updateProfile: "עדכן פרופיל",
+        emailPrefix: "אימייל:",
+        phonePrefix: "מספר טלפון:",
+        birthDatePrefix: "תאריך לידה:",
+        userUpdated: "המשתמש עודכן",
+        imageUpdated: "תמונת הפרופיל עודכנה",
+      },
+
+      recipeUi: {
+        clear: "נקה",
+        showRecipe: "הצג מתכון",
+        back: "חזרה",
+        infoTitle: "מידע",
+      },
+
+      notify: {
+        genericError: "אירעה שגיאה, נסה שוב.",
+      },
+    },
+  },
+};
+
+
+const stored = localStorage.getItem("selectedLanguage");
+const lng = stored === "he" || stored === "en" ? stored : "en";
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng,
+  fallbackLng: "en",
+  interpolation: { escapeValue: false },
+});
+
+
+export default i18n;

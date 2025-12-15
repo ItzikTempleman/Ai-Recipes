@@ -41,7 +41,6 @@ export function ProfileScreen() {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Keep preview in sync with Redux user (after updateUserInfo returns new token)
   useEffect(() => {
     if (user?.imageUrl) {
       setImagePreview(user.imageUrl);

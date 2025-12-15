@@ -11,61 +11,44 @@ import type { AppState } from "../../Redux/Store";
 import { userService } from "../../Services/UserService";
 import "./DrawerLayout.css";
 import { useState } from "react";
-import { changeLanguage, toggleDarkMode } from "../../Utils/Utils";
-import { Language, SettingsBrightness } from "@mui/icons-material";
-
+import i18n from "../../Utils/118n";
+import LanguageIcon from '@mui/icons-material/Language';
 type DrawerState = {
     open: boolean;
     setOpen: (open: boolean) => void;
 };
 
-export enum LANGUAGE {
-    ENGLISH = "ENGLISH",
-    HEBREW = "HEBREW",
-}
+export type Language = "en" | "he";
 
-export type SettingSelection = {
-    selectedLanguage: LANGUAGE;
-    isDarkMode: boolean;
-};
 
 export function DrawerLayout({ open, setOpen }: DrawerState) {
     const user = useSelector((state: AppState) => state.user);
+
     const isLoggedIn = !!(user && localStorage.getItem("token"));
 
-    const [settingSelection, setSettingSelection] = useState<SettingSelection>(() => {
-        const storedLanguage = (localStorage.getItem("selectedLanguage") as LANGUAGE | null) ?? LANGUAGE.ENGLISH;
-        const storedDarkMode = localStorage.getItem("isDarkMode");
-        return {
-            selectedLanguage: storedLanguage,
-            isDarkMode: storedDarkMode ? storedDarkMode === "true" : false,
-        };
-    });
+    const [language, setLanguage] = useState<Language>(
+        () => {
+            const storedLanguage = localStorage.getItem("selectedLanguage");
+            return storedLanguage === "he" || storedLanguage === "en" ? storedLanguage : "en";
+        }
+    );
 
-    function handleLanguageSelect(language: LANGUAGE) {
-        setSettingSelection((previousSelection) => ({ ...previousSelection, selectedLanguage: language }));
-        localStorage.setItem("selectedLanguage", language);
-        changeLanguage(language);
-    }
-
-    function handleDarkModeSelect(isDarkMode: boolean) {
-        setSettingSelection((previousSelection) => ({ ...previousSelection, isDarkMode }));
-        localStorage.setItem("isDarkMode", String(isDarkMode));
-        toggleDarkMode(isDarkMode);
+    function handleLanguageSelect(lang: Language) {
+        setLanguage(lang);
+        localStorage.setItem("selectedLanguage", lang);
+        i18n.changeLanguage(lang);
     }
 
     return (
-        <div className="DrawerLayout">
+        <div>
             <IconButton onClick={() => setOpen(true)}>
                 <MenuIcon fontSize="large" />
             </IconButton>
-
             <Drawer
                 open={open}
                 onClose={() => setOpen(false)}
                 anchor="right"
-                ModalProps={{ keepMounted: true }}
-            >
+                ModalProps={{ keepMounted: true }}>
                 <aside className="DrawerMainContainer">
                     <div className="DrawerCloseButton" onClick={() => setOpen(false)}>
                         ❌
@@ -75,65 +58,45 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                         {isLoggedIn ? (
                             <div>
                                 <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />
-                                <h3 className="UserName">{user.firstName}</h3>
-                                <NavLink to="/profile-screen" className="DrawerNavLink" onClick={() => setOpen(false)}>
+                                <h2 className="UserName">{user.firstName} {user.familyName} </h2>
+                                <div className="Divider"></div>
+                                <NavLink to="/profile" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="ProfileRow">
                                         <Person />
-                                        <p>Profile</p>
+                                        <h4>Profile</h4>
                                     </div>
                                 </NavLink>
-                                <NavLink to="/about-screen" className="DrawerNavLink" onClick={() => setOpen(false)}>
+                                <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="AboutRow">
                                         <Info />
-                                        <p>About</p>
+                                        <h4>About</h4>
                                     </div>
                                 </NavLink>
                                 <div className="LanguageRow">
-                                    <div className="RowLeft">
-                                        <Language />
-                                        <p>Select language</p>
+                                    <div className="SelectLanguage">
+                                        <LanguageIcon/>
+                                    <h4>Select language</h4>
                                     </div>
-                                    <div className="RowRight">
-                                        <label className="RadioOption">
-                                            <input
-                                                type="radio"
-                                                checked={settingSelection.selectedLanguage === LANGUAGE.ENGLISH}
-                                                onChange={() => handleLanguageSelect(LANGUAGE.ENGLISH)}/>
-                                            <span>English</span>
-                                        </label>
-                                        <label className="RadioOption">
-                                            <input
-                                                type="radio"
-                                                checked={settingSelection.selectedLanguage === LANGUAGE.HEBREW}
-                                                onChange={() => handleLanguageSelect(LANGUAGE.HEBREW)}/>
-                                            <span>Hebrew</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="DarkModeRow">
-                                    <div className="RowLeft">
-                                        <SettingsBrightness />
-                                        <p>Dark mode</p>
-                                    </div>
-                                    <div className="RowRight">
-                                        <label className="RadioOption">
-                                            <input
-                                                type="radio"
-                                                checked={settingSelection.isDarkMode === true}
-                                                onChange={() => handleDarkModeSelect(true)}/>
-                                            <span>On</span>
-                                        </label>
-                                        <label className="RadioOption">
-                                            <input
-                                                type="radio"
-                                                checked={settingSelection.isDarkMode === false}
-                                                onChange={() => handleDarkModeSelect(false)}/>
-                                            <span>Off</span>
-                                        </label>
+                         
+                                    <div>
+                                    <label>English</label>
+                                    <input
+                                        type="radio"
+                                        checked={language === "en"}
+                                        onChange={() => handleLanguageSelect("en")}
+                                    />
+                                     <div></div>
+                                      <label>Hebrew</label>
+                                    <input
+                                        type="radio"
+                                        checked={language === "he"}
+                                        onChange={() => handleLanguageSelect("he")}
+                                    />
                                     </div>
                                 </div>
+
                                 <NavLink
-                                    to="/home-screen"
+                                    to="/home"
                                     className="DrawerNavLink DrawerLogoutLink"
                                     onClick={() => {
                                         userService.logout();
@@ -147,15 +110,15 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                             </div>
                         ) : (
                             <div>
-                                   <h3 className="UserName">Hello Guest</h3>
-                                <NavLink className="DrawerNavLink" to="/login-screen" onClick={() => setOpen(false)}>
+                                <h3 className="UserName">Hello Guest</h3>
+                                <NavLink className="DrawerNavLink" to="/login" onClick={() => setOpen(false)}>
 
                                     <div className="LoginRow">
                                         <LoginIcon />
                                         <p>Log in</p>
                                     </div>
                                 </NavLink>
-                                <NavLink to="/about-screen" className="DrawerNavLink" onClick={() => setOpen(false)}>
+                                <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="AboutRow">
                                         <Info />
                                         <p>About</p>
@@ -167,5 +130,5 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                 </aside>
             </Drawer>
         </div>
-    );
+    )
 }

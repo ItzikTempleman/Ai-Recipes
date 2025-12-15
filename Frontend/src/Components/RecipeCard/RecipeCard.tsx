@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
-import { Button } from "@mui/material";
+
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { RecipeData } from "../RecipeData/RecipeData";
@@ -29,13 +29,10 @@ export function RecipeCard({ recipe, filters }: RecipeProps) {
 
   return (
     <div className="RecipeCard">
-      <div className="ClearFormDiv">
-        <Button className="ClearFormBtn"
-          variant="contained"
+      <div className="ClearFormDiv"
           onClick={() => {
             dispatch(resetGenerated());
-          }}
-        >Clear</Button></div>
+          }}>❌</div>
 
       <RecipeData
         filters={filters}

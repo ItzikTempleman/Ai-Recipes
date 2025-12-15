@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { DifficultyLevel } from "../Models/RecipeModel";
-import { LANGUAGE } from "../Components/DrawerLayout/DrawerLayout";
 
 export function useTitle(title: string): void {
   useEffect(() => {
@@ -88,13 +87,4 @@ export function getDifficultyLevel(level?: DifficultyLevel): Level {
         icon: "/easy.png",
       };
   }
-}
-
-
-export function changeLanguage(lang: LANGUAGE): LANGUAGE {
-  return lang
-}
-
-export function toggleDarkMode(isDarkMode: boolean): boolean {
-  return isDarkMode
 }

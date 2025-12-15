@@ -11,8 +11,13 @@ export async function generateImage(recipe: InputModel): Promise<GPTImage> {
   const extraBanned: string[] = [];
   const promptParts: string[] = [
     `High resolution, super-realistic food photo of ${recipe.query}`,
-    "Show only the finished  dish, no text or logos. no extra food. respect dietary restrictions and enforce them strictly"
-  ];
+    `Show only the finished  dish, no text or logos. no extra food. respect dietary restrictions and enforce them strictly.
+     Rules:
+- Only show ingredients that appear in the recipe
+- Do NOT add herbs, garnish, or colors not listed
+- No parsley, cilantro, basil, or green garnish unless explicitly listed
+- Realistic home-cooked style, not styled food photography`
+  ]
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
     promptParts.push(

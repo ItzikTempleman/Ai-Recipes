@@ -19,13 +19,13 @@ export function Routing() {
             <Routes>
                 <Route path="/" element={<HomeScreen/>} />
                 <Route path="*" element={<Page404 />} />
-                <Route path="/generate-screen" element={ <GenerateScreen /> } />
-                <Route path="/about-screen" element={<AboutScreen />} />
-                <Route path="/home-screen" element={<HomeScreen /> } />
-                <Route path="/recipe/:id" element={isLoggedIn ? <RecipeInfoScreen /> : < Navigate to="/home-screen" replace />} />
-                <Route path="/login-screen" element={ <LoginScreen />} />
-                <Route path="/registration-screen" element={ <RegistrationScreen />} />
-                <Route path="/profile-screen" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home-screen" replace />} />
+                <Route path="/generate" element={ <GenerateScreen /> } />
+                <Route path="/about" element={<AboutScreen />} />
+                <Route path="/home" element={<HomeScreen /> } />
+                <Route path="/recipe/:id" element={isLoggedIn ? <RecipeInfoScreen /> : < Navigate to="/home" replace />} />
+                <Route path="/login" element={ <LoginScreen />} />
+                <Route path="/registration" element={ <RegistrationScreen />} />
+                <Route path="/profile" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home" replace />} />
         
             </Routes>
         </div>

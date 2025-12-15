@@ -1,86 +1,119 @@
 import "./RecipeData.css";
-import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
+import {
+  DietaryRestrictions,
+  GlutenRestrictions,
+  LactoseRestrictions,
+  RecipeModel,
+  SugarRestriction,
+} from "../../Models/RecipeModel";
 import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 import { getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
-import RestaurantIcon from '@mui/icons-material/Restaurant';
+import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
   filters?: Filters;
 };
-export function RecipeData({ recipe, imageSrc, filters}: RecipeProps) {
+
+export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
   const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
 
+  const normalizedIngredients = (() => {
+    const out: typeof ingredients = [];
+
+    for (const line of ingredients) {
+      const ingredientText = String((line as any)?.ingredient ?? "").trim();
+      const rawAmount = (line as any)?.amount;
+      const amountText =
+        rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+
+      if (!ingredientText) continue;
+      if (!amountText && out.length > 0) {
+        (out[out.length - 1] as any).ingredient = `${String(
+          (out[out.length - 1] as any).ingredient
+        ).trim()}, ${ingredientText}`;
+        continue;
+      }
+
+      out.push(line);
+    }
+
+    return out;
+  })();
+
   const sugarText: Record<number, string> = {
-  [SugarRestriction.DEFAULT]: "Regular sugar",
-  [SugarRestriction.LOW]: "Low sugar",
-  [SugarRestriction.NONE]: "Sugar free",
-};
+    [SugarRestriction.DEFAULT]: "Regular sugar",
+    [SugarRestriction.LOW]: "Low sugar",
+    [SugarRestriction.NONE]: "Sugar free",
+  };
 
-const lactoseText: Record<number, string> = {
-  [LactoseRestrictions.DEFAULT]: "Regular milk",
-  [LactoseRestrictions.NONE]: "Lactose free",
-};
+  const lactoseText: Record<number, string> = {
+    [LactoseRestrictions.DEFAULT]: "Regular milk",
+    [LactoseRestrictions.NONE]: "Lactose free",
+  };
 
-const glutenText: Record<number, string> = {
-  [GlutenRestrictions.DEFAULT]: "Regular gluten",
-  [GlutenRestrictions.NONE]: "Gluten free",
-};
+  const glutenText: Record<number, string> = {
+    [GlutenRestrictions.DEFAULT]: "Regular gluten",
+    [GlutenRestrictions.NONE]: "Gluten free",
+  };
 
-const dietText: Record<number, string> = {
-  [DietaryRestrictions.DEFAULT]: "No diet restriction",
-  [DietaryRestrictions.VEGAN]: "Vegan",
-  [DietaryRestrictions.KOSHER]: "Kosher",
-  [DietaryRestrictions.HALAL]: "Halal",
-};
+  const dietText: Record<number, string> = {
+    [DietaryRestrictions.DEFAULT]: "No diet restriction",
+    [DietaryRestrictions.VEGAN]: "Vegan",
+    [DietaryRestrictions.KOSHER]: "Kosher",
+    [DietaryRestrictions.HALAL]: "Halal",
+  };
 
-const filterBadges = !filters ? [] : [
-  filters.sugarLevel !== SugarRestriction.DEFAULT ? sugarText[filters.sugarLevel] : null,
-  filters.hasLactose !== LactoseRestrictions.DEFAULT ? lactoseText[filters.hasLactose] : null,
-  filters.hasGluten !== GlutenRestrictions.DEFAULT ? glutenText[filters.hasGluten] : null,
-  filters.dietType !== DietaryRestrictions.DEFAULT ? dietText[filters.dietType] : null,
-].filter(Boolean) as string[];
+  const filterBadges = !filters
+    ? []
+    : ([
+        filters.sugarLevel !== SugarRestriction.DEFAULT
+          ? sugarText[filters.sugarLevel]
+          : null,
+        filters.hasLactose !== LactoseRestrictions.DEFAULT
+          ? lactoseText[filters.hasLactose]
+          : null,
+        filters.hasGluten !== GlutenRestrictions.DEFAULT
+          ? glutenText[filters.hasGluten]
+          : null,
+        filters.dietType !== DietaryRestrictions.DEFAULT
+          ? dietText[filters.dietType]
+          : null,
+      ].filter(Boolean) as string[]);
+
   return (
     <div className="RecipeData">
-      <h2
-        className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`}
-        dir={isRTL ? "rtl" : "ltr"}
-      >
+      <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
         {recipe.title}
       </h2>
 
-      <p
-        className={`Description ${isRTL ? "rtl" : "ltr"}`}
-        dir={isRTL ? "rtl" : "ltr"}
-      >
+      <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
         {recipe.description}
       </p>
 
-{imageSrc && (
-  <img
-    className="RecipeImage"
-    src={imageSrc}
-    alt={recipe.title}
-    onError={(e) => {
-      (e.currentTarget as HTMLImageElement).src = "";
-    }}
-  />
-)}
-{filterBadges.length > 0 && (
-  <div className="FiltersRow">
-    {filterBadges.join(" · ")}
-  </div>
-)}
+      {imageSrc && (
+        <img
+          className="RecipeImage"
+          src={imageSrc}
+          alt={recipe.title}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = "";
+          }}
+        />
+      )}
+
+      {filterBadges.length > 0 && <div className="FiltersRow">{filterBadges.join(" · ")}</div>}
+
       <div className="RecipeExtraDataContainer">
         <div className="CaloryParent">
           <p>Calories</p>
           <div className="CaloriesDiv">
-            <img className="CaloriesIcon" src="/calories.png"/>
+            <img className="CaloriesIcon" src="/calories.png" />
             <div className="CaloriesInnerDiv">
               <p>{recipe.calories}</p>
               <p>kcal</p>
@@ -123,12 +156,11 @@ const filterBadges = !filters ? [] : [
       </div>
 
       <div className="RecipeExtraDataContainer">
+        <div className="AmountParent">
+          <RestaurantIcon fontSize="small" />
+          <p>x {recipe.amountOfServings}</p>
+        </div>
 
-          <div className="AmountParent">
-              <RestaurantIcon fontSize="small"/>
-              <p>x {recipe.amountOfServings}</p>
-          </div>
-     
         <div className="PrepTimeParent">
           <img className="ExtraDataImg" src={"/clock.png"} alt="prep time" />
           <p>{recipe.prepTime} m </p>
@@ -145,40 +177,38 @@ const filterBadges = !filters ? [] : [
         </div>
       </div>
 
-      <div
-        className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`}
-        dir={isRTL ? "rtl" : "ltr"}>
-        <h2
-          className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`}
-          dir={isRTL ? "rtl" : "ltr"}>
+      <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+        <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
           {isRTL ? "מצרכים" : "Ingredients"}
         </h2>
 
-        {ingredients.map((line, index) => (
+        {normalizedIngredients.map((line, index) => (
           <div key={index} className="IngredientRow">
-            <span className="IngredientName">{line.ingredient}</span>
-            <span className="IngredientAmount">{formatAmount(line.amount) ?? ""}</span>
+            <span className="IngredientName">{(line as any).ingredient}</span>
+            <span className="IngredientAmount">{formatAmount((line as any).amount) ?? ""}</span>
           </div>
         ))}
       </div>
 
       <div className="InstructionsList">
-        <h2
-          className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`}
-          dir={isRTL ? "rtl" : "ltr"}
-        >
+        <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
           {isRTL ? "הוראות הכנה" : "Instructions"}
         </h2>
-        <ol
-          className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
-          dir={isRTL ? "rtl" : "ltr"}>
-          {instructions.map((step, index) => (
-            <li key={index}>
-              {step}
-              <hr className="divider"/>
-            </li>
-          ))}
-        </ol>
+
+<ol
+  className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
+  dir={isRTL ? "rtl" : "ltr"}
+>
+  {instructions
+    .map((s) => String(s ?? "").trim())
+    .filter((s) => s.length > 0)
+    .map((step, index, arr) => (
+      <li key={index}>
+        {step}
+        {index !== arr.length - 1 && <hr className="divider" />}
+      </li>
+    ))}
+</ol>
       </div>
     </div>
   );

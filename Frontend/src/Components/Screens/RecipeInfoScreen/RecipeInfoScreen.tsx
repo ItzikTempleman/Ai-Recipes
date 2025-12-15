@@ -22,7 +22,7 @@ export function RecipeInfoScreen({ filters }: Props) {
   useEffect(
     () => {
       if (!recipeId) {
-        navigate("/home-screen");
+        navigate("/home");
         return;
       };
       recipeService.getSingleRecipe(recipeId)
@@ -36,7 +36,7 @@ export function RecipeInfoScreen({ filters }: Props) {
   )
 
   function returnToList() {
-    navigate("/home-screen");
+    navigate("/home");
   }
 
   if (!recipe) return null;

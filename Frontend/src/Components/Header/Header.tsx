@@ -12,13 +12,13 @@ export function Header() {
     <div className="Header">
 
       <div className="GeneralNavigation">
-        <NavLink to="/home-screen" className="HomeScreenLink">
+        <NavLink to="/home" className="HomeScreenLink">
           <div className="Home">
             <Home />
             <p>Home</p>
           </div>
         </NavLink>
-        <NavLink to="/generate-screen" className="GenerateScreenLink">
+        <NavLink to="/generate" className="GenerateScreenLink">
           <div className="Generate">
             <LibraryAdd />
             <p>Generate</p>

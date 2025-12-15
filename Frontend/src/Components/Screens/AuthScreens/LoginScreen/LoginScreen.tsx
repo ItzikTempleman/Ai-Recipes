@@ -22,7 +22,7 @@ export function LoginScreen() {
   async function send(credentials: Credentials) {
     try {
       await userService.loginOrRegister({ login: credentials })
-      navigate("/generate-screen");
+      navigate("/generate");
       reset()
     } catch (err) {
       notify.error(err)
@@ -100,7 +100,7 @@ export function LoginScreen() {
 
  
   
-          <NavLink to="/registration-screen" className="RegisterLink">
+          <NavLink to="/registration" className="RegisterLink">
             <h2>Register</h2>
           </NavLink>
    
