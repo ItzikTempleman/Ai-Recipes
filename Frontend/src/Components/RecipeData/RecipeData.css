@@ -77,7 +77,6 @@
 .SugarAmountInnerDiv>p:first-child,
 .HealthLevelInnerDiv>p:first-child,
 .ProteinInnerDiv>p:first-child {
-  font-weight: bold;
   font-size: 16px;
   padding-right: 4px;
 }

@@ -300,18 +300,19 @@ const resources = {
         protein: "חלבון",
         health: "בריאות",
         kcal: 'קק"ל',
-        units: {
-          gramShort: "ג",
-          tbspShort: "כפות",
-          per100g: "| 100ג",
-          minuteShort: "דק׳",
-        },
       },
       difficulty: {
         easy: "קל",
         midLevel: "בינוני",
         hard: "קשה",
       },
+      units: {
+        gramShort: "ג",
+        tbspShort: "כפות",
+        per100g: "| 100ג",
+        minuteShort: "דק׳",
+      },
+
       notify: {
         genericError: "אירעה שגיאה, נסה שוב.",
       },
