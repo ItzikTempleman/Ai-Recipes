@@ -130,7 +130,7 @@ const { t } = useTranslation();
             <img className="SugarIcon" src="/sugar.png" alt="sugar" />
             <div className="SugarAmountInnerDiv">
               <p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`}</p>
-              <p>{Number(recipe.totalSugar) === 0 ? " " : "tbs | 100g"}</p>
+              <p>{Number(recipe.totalSugar) === 0 ? " " : `${t("recipeUi.units.tbspShort")} ${t("recipeUi.units.per100g")}`}</p>
             </div>
           </div>
         </div>
@@ -141,7 +141,7 @@ const { t } = useTranslation();
             <img className="ProteinIcon" src="/protein.png" alt="protein" />
             <div className="ProteinInnerDiv">
               <p>{recipe.totalProtein}g </p>
-              <p> | 100g</p>
+              <p>{t("recipeUi.units.per100g")}</p>
             </div>
           </div>
         </div>
@@ -166,7 +166,7 @@ const { t } = useTranslation();
 
         <div className="PrepTimeParent">
           <img className="ExtraDataImg" src={"/clock.png"}/>
-          <p>{recipe.prepTime} m </p>
+          <p>{recipe.prepTime} {t("recipeUi.units.minuteShort")} </p>
         </div>
 
         <div className="CountryNameParent">

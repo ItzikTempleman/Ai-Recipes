@@ -147,7 +147,12 @@ const resources = {
         midLevel: "Mid-level",
         hard: "Hard",
       },
-
+      units: {
+        gramShort: "g",
+        tbspShort: "tbs",
+        per100g: "| 100g",
+        minuteShort: "m",
+      },
       notify: {
         genericError: "Some error, please try again.",
       },
@@ -295,6 +300,12 @@ const resources = {
         protein: "חלבון",
         health: "בריאות",
         kcal: 'קק"ל',
+        units: {
+          gramShort: "ג",
+          tbspShort: "כפות",
+          per100g: "| 100ג",
+          minuteShort: "דק׳",
+        },
       },
       difficulty: {
         easy: "קל",
