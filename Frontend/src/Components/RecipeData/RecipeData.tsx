@@ -10,7 +10,7 @@ import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 import { getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
-import { t } from "i18next";
+
 import { useTranslation } from "react-i18next";
 
 type RecipeProps = {
