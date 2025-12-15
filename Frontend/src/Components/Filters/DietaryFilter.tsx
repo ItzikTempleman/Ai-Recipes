@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DietaryRestrictions } from "../../Models/RecipeModel";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type DietTypeProp = {
     onDietSelect: (dietType: DietaryRestrictions) => void
@@ -13,7 +14,7 @@ export function DietaryFilter(
     { onDietSelect }: DietTypeProp
 ) {
     const [dietMode, setDietMode] = useState<DietMode>("Regular")
-
+ const { t } = useTranslation();
     function toDietRestriction(mode: DietMode): DietaryRestrictions {
         switch (mode) {
             case "Vegan": return DietaryRestrictions.VEGAN;
@@ -33,10 +34,10 @@ export function DietaryFilter(
     return (
         <div>
             <ToggleButtonGroup value={dietMode} exclusive onChange={handleDietTypeSelection}>
-                <ToggleButton value="Regular">No diet restriction</ToggleButton>
-                <ToggleButton value="Vegan">Vegan</ToggleButton>
-                <ToggleButton value="Kosher" >Kosher</ToggleButton>
-                 <ToggleButton value="Halal">Halal</ToggleButton>
+                <ToggleButton value="Regular">{t("filters.diet.none")}</ToggleButton>
+                <ToggleButton value="Vegan">{t("filters.diet.vegan")}</ToggleButton>
+                <ToggleButton value="Kosher" >{t("filters.diet.kosher")}</ToggleButton>
+                 <ToggleButton value="Halal">{t("filters.diet.halal")}</ToggleButton>
             </ToggleButtonGroup>
         </div>
     );

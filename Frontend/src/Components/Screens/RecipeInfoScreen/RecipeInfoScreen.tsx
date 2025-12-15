@@ -11,6 +11,7 @@ import { Filters } from "../../RecipeCard/RecipeCard";
 import { useTranslation } from "react-i18next";
 
 
+
 type Props = { filters?: Filters };
 export function RecipeInfoScreen({ filters }: Props) {
     const { t } = useTranslation();
@@ -47,7 +48,7 @@ export function RecipeInfoScreen({ filters }: Props) {
 
       <div className="BackBtnContainer" onClick={returnToList}>
           <ArrowBackIosIcon />
-          Back
+          {t("recipeUi.back")}
       </div>
 
       <div className="InfoScreenContainer">

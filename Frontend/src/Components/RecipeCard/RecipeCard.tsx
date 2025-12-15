@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { RecipeData } from "../RecipeData/RecipeData";
 import "./RecipeCard.css";
-import { useTranslation } from "react-i18next";
 
 export type Filters = {
   sugarLevel: SugarRestriction;
@@ -20,7 +19,7 @@ type RecipeProps = {
 };
 
 export function RecipeCard({ recipe, filters }: RecipeProps) {
-      const { t } = useTranslation();
+
   const [imgSrc, setImgSrc] = useState<string>("");
   const dispatch = useDispatch();
   useEffect(() => {

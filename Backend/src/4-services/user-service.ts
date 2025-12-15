@@ -10,7 +10,6 @@ import { randomUUID } from "crypto";
 import { UploadedFile } from "express-fileupload";
 import fs from "fs/promises";
 
-
 class UserService {
     public async register(user: UserModel): Promise<string> {
         user.validate();

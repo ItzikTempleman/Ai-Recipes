@@ -20,10 +20,7 @@ type DrawerState = {
     setOpen: (open: boolean) => void;
 };
 
-
-
 export type Language = "en" | "he";
-
 
 export function DrawerLayout({ open, setOpen }: DrawerState) {
     const { t } = useTranslation();
@@ -72,6 +69,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                                         <h4>{t("drawer.profile")}</h4>
                                     </div>
                                 </NavLink>
+                              
                                 <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
                                     <div className="AboutRow">
                                         <Info />

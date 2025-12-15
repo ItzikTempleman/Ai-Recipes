@@ -18,8 +18,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from "react-i18next";
 
+
 export function RegistrationScreen() {
-      const { t } = useTranslation();
+       const { t } = useTranslation();
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({
@@ -48,12 +49,12 @@ export function RegistrationScreen() {
       <form className="RegistrationForm" onSubmit={handleSubmit(send)}>
         <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
           <ArrowBackIosIcon />
-          Back
+          {t("auth.registration.back")}
         </Button>
-        <h2 className="RegistrationScreenTitle">Registration</h2>
+        <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
         <TextField  className="InputTextField"
-          label="First name"
-          placeholder="first name"
+          label= {t("auth.registration.firstNameLabel")}
+          placeholder={t("auth.registration.firstNamePlaceholder")}
           {...register("firstName", {
             required: "First name is required",
             minLength: { value: 3, message: "Minimum 3 characters required" }
@@ -70,8 +71,8 @@ export function RegistrationScreen() {
             }}
         />
         <TextField  className="InputTextField"
-          label="Last name"
-          placeholder="last name"
+        label= {t("auth.registration.lastNameLabel")}
+          placeholder={t("auth.registration.lastNamePlaceholder")}
           {...register("familyName", {
             required: "Last name is required",
             minLength: { value: 3, message: "Minimum 3 characters required" }
@@ -89,8 +90,8 @@ export function RegistrationScreen() {
         />
         <TextField  className="InputTextField"
           autoComplete="email"
-          label="Enter email"
-          placeholder="Email"
+         label= {t("auth.registration.emailLabel")}
+          placeholder={t("auth.registration.emailPlaceholder")}
           fullWidth
           {...register("email", {
             required: "Email is required",
@@ -112,8 +113,8 @@ export function RegistrationScreen() {
         />
         <TextField  className="InputTextField"
           autoComplete="current-password"
-          label="Enter password"
-          placeholder="Password"
+       label= {t("auth.registration.passwordLabel")}
+          placeholder={t("auth.registration.passwordPlaceholder")}
           fullWidth
           type={showPassword ? "text" : "password"}
           {...register("password", {
@@ -140,24 +141,24 @@ export function RegistrationScreen() {
   fullWidth
   type="date"
   {...register("birthDate", {
-    required: "Birth date is required",
+    required: `${t("auth.registration.birthDateRequired")}`,
     validate: (value) => {
       const today = new Date();
       const chosen = new Date(value);
       const isAgeValid = isAgeOk(chosen)
-      if (chosen > today) return "Birth date cannot be in the future";
-      if(!isAgeValid) return "User must be at least 12 to register";
+      if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
+      if(!isAgeValid) return `${t("auth.registration.minAge12")}`;
       return true;
     }
   })}
-  label="Birth date"              
+  label={t("auth.registration.birthDateLabel")}            
   InputLabelProps={{ shrink: true }} 
   error={!!errors.birthDate}
   helperText={errors.birthDate?.message}
 />
         <TextField  className="InputTextField"
-          label="Enter phone number"
-          placeholder="Phone number"
+          label={t("auth.registration.phoneLabel")}  
+          placeholder={t("auth.registration.phonePlaceholder")}  
           fullWidth
           type="tel"
           variant="outlined"
@@ -187,17 +188,17 @@ export function RegistrationScreen() {
                 <FormControlLabel
                   value={Gender.MALE}
                   control={<Radio />}
-                  label="Male"
+                  label={t("auth.registration.male")}  
                 />
                 <FormControlLabel
                   value={Gender.FEMALE}
                   control={<Radio />}
-                  label="Female"
+                label={t("auth.registration.female")}  
                 />
                 <FormControlLabel
                   value={Gender.OTHER}
                   control={<Radio />}
-                  label="Other"
+                 label={t("auth.registration.other")}  
                 />
               </RadioGroup>
             )}
@@ -207,7 +208,7 @@ export function RegistrationScreen() {
           type="submit"
           className="RegistrationBtn"
           variant="contained">
-          Register
+          {t("auth.registration.submit")}  
         </Button>
       </form>
     </div>
