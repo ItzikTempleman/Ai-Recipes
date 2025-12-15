@@ -69,48 +69,6 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                                         <h4>{t("drawer.profile")}</h4>
                                     </div>
                                 </NavLink>
-                              
-                                <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
-                                    <div className="AboutRow">
-                                        <Info />
-                                        <h4>{t("drawer.about")}</h4>
-                                    </div>
-                                </NavLink>
-                                <div className="LanguageRow">
-                                    <div className="SelectLanguage">
-                                        <LanguageIcon/>
-                                 <h4>{t("drawer.selectLanguage")}</h4>
-                                    </div>
-                         
-                                    <div>
-                                   <label>{t("drawer.english")}</label>
-                                    <input
-                                        type="radio"
-                                        checked={language === "en"}
-                                        onChange={() => handleLanguageSelect("en")}
-                                    />
-                                     <div></div>
-                                  <label>{t("drawer.hebrew")}</label>
-                                    <input
-                                        type="radio"
-                                        checked={language === "he"}
-                                        onChange={() => handleLanguageSelect("he")}
-                                    />
-                                    </div>
-                                </div>
-
-                                <NavLink
-                                    to="/home"
-                                    className="DrawerNavLink DrawerLogoutLink"
-                                    onClick={() => {
-                                        userService.logout();
-                                        setOpen(false);
-                                    }}>
-                                    <div className="LogoutRow">
-                                        <LogoutIcon />
-                                        <p>{t("drawer.logout")}</p>
-                                    </div>
-                                </NavLink>
                             </div>
                         ) : (
                             <div>
@@ -122,14 +80,53 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                                         <p>{t("drawer.login")}</p>
                                     </div>
                                 </NavLink>
-                                <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
-                                    <div className="AboutRow">
-                                        <Info />
-                                        <p>{t("drawer.about")}</p>
-                                    </div>
-                                </NavLink>
                             </div>
                         )}
+
+                        <NavLink to="/about" className="DrawerNavLink" onClick={() => setOpen(false)}>
+                            <div className="AboutRow">
+                                <Info />
+                                <h4>{t("drawer.about")}</h4>
+                            </div>
+                        </NavLink>
+
+                        <div className="LanguageRow">
+                            <div className="SelectLanguage">
+                                <LanguageIcon/>
+                                <h4>{t("drawer.selectLanguage")}</h4>
+                            </div>
+
+                            <div>
+                                <label>{t("drawer.english")}</label>
+                                <input
+                                    type="radio"
+                                    checked={language === "en"}
+                                    onChange={() => handleLanguageSelect("en")}
+                                />
+                                <div></div>
+                                <label>{t("drawer.hebrew")}</label>
+                                <input
+                                    type="radio"
+                                    checked={language === "he"}
+                                    onChange={() => handleLanguageSelect("he")}
+                                />
+                            </div>
+                        </div>
+
+                        {isLoggedIn ? (
+                            <NavLink
+                                to="/home"
+                                className="DrawerNavLink DrawerLogoutLink"
+                                onClick={() => {
+                                    userService.logout();
+                                    setOpen(false);
+                                }}>
+                                <div className="LogoutRow">
+                                    <LogoutIcon />
+                                    <p>{t("drawer.logout")}</p>
+                                </div>
+                            </NavLink>
+                        ) : null}
                     </div>
                 </aside>
             </Drawer>
