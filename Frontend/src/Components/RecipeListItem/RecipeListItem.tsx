@@ -10,7 +10,6 @@ import { getCountryFlag } from "../../Utils/CountryFlag";
 import { useTranslation } from "react-i18next";
 import GradeIcon from '@mui/icons-material/Grade';
 import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 
@@ -18,13 +17,20 @@ type RecipeProps = {
     recipe: RecipeModel;
 }
 
-
 export function RecipeListItem({ recipe }: RecipeProps) {
-  const like = useSelector((state: AppState) => state.likes);
-    const [isLiked, setIsLikes]=useState(false);
 
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    const user = useSelector((state: AppState) => state.user);
+    const likes = useSelector((state: AppState) => state.likes);
+
+const userId = user?.id;
+
+const isLiked = !!likes.find(
+  (like) => like.userId === userId && like.recipeId === recipe.id
+);
+
     async function moveToInfo(): Promise<void> {
         navigate("/recipe/" + recipe.id);
     }
@@ -33,9 +39,11 @@ export function RecipeListItem({ recipe }: RecipeProps) {
         await recipeService.deleteRecipe(id)
     }
 
-    async function handleLikeState(){
-setIsLikes(!isLiked)
-
+    async function handleLikeState(): Promise<void> {
+        if (!user) return;
+        if (isLiked) {
+            await recipeService.unLikeRecipe(recipe.id);
+        } else await recipeService.likeRecipe(recipe.id);
     }
 
     return (
@@ -51,12 +59,11 @@ setIsLikes(!isLiked)
             <div className="CardTitleContainer">
                 <h3 className="CardTitle">{recipe.title}</h3>
                 <div className="BottomSection">
-                    <IconButton onClick={handleLikeState}>
-                 {
-                    isLiked?  <GradeOutlinedIcon />: <GradeIcon />
-                 }
-                       
-                    </IconButton>
+        {user && (
+            <IconButton onClick={handleLikeState}>
+              {isLiked ? <GradeIcon /> : <GradeOutlinedIcon />}
+            </IconButton>
+          )}
                     <Button className="MoreInfoBtn"
                         onClick={moveToInfo}
                         variant="contained">

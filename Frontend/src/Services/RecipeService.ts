@@ -77,8 +77,10 @@ class RecipeService {
 
   public async likeRecipe(recipeId: number): Promise<void> {
         try {
-            await axios.post(appConfig.likeUrl + recipeId, this.getAuth());
-             store.dispatch(like());
+            await axios.post(appConfig.likeUrl + recipeId,{}, this.getAuth());
+            const userId = store.getState().user?.id;
+             if (!userId) return;
+             store.dispatch(like({ userId, recipeId }));
         } catch (err: any) {
             throw new Error(err?.response?.data ?? err.message ?? "Like failed");
         }
@@ -87,7 +89,10 @@ class RecipeService {
   public async unLikeRecipe(recipeId: number): Promise<void> {
         try {
             await axios.delete(appConfig.likeUrl + recipeId, this.getAuth());
-            store.dispatch(unlike());
+               const userId = store.getState().user?.id;
+    if (!userId) return;
+    
+            store.dispatch(unlike({ userId, recipeId }));
         } catch (err: any) {
             throw new Error(err?.response?.data ?? err.message ?? "Unlike failed");
         }

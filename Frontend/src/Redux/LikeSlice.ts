@@ -7,8 +7,12 @@ export const likesSlice = createSlice(
         name: "likes",
         initialState: initialLikes,
         reducers: {
-            like(currentLikeState: LikeModel[], action: PayloadAction<LikeModel>) {
-                return [...currentLikeState, action.payload];
+            like(current, action: PayloadAction<LikeModel>) {
+                const exists = current.find(
+                    l => l.userId === action.payload.userId && l.recipeId === action.payload.recipeId
+                );
+                if (exists) return current;
+                return [...current, action.payload];
             },
             unlike(currentLikeState: LikeModel[], action: PayloadAction<LikeModel>) {
                 return currentLikeState.filter(like =>
