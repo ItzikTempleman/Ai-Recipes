@@ -17,8 +17,6 @@ class RecipeController {
     this.router.get("/api/recipe/:id", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
     this.router.delete("/api/recipe/:id", verificationMiddleware.verifyLoggedIn, this.deleteRecipe)
-
-    this.router.get("/api/recipes/liked/:id", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
     this.router.post("/api/recipes/liked/:id", verificationMiddleware.verifyLoggedIn, this.likeRecipe);
     this.router.delete("/api/recipes/liked/:id", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
   };
@@ -152,17 +150,7 @@ class RecipeController {
     response.sendStatus(StatusCode.NoContent);
   }
 
-  private async getRecipesTotalLikeCount(request: Request, response: Response) {
-    const recipeId = Number(request.params.id);
-    if (Number.isNaN(recipeId) || recipeId <= 0) {
-      response
-        .status(StatusCode.BadRequest)
-        .send("Route param recipe id must be a positive number");
-      return;
-    }
-    const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
-    response.json(likedCount);
-  }
+
 
   private async likeRecipe(request: Request, response: Response) {
     const userId = (request as any).user.id;

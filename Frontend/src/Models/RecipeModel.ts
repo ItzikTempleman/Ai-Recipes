@@ -8,6 +8,10 @@ export type InputModel = {
     excludedIngredients: string[];
 }
 
+export type LikeModel = {
+    userId: number;
+    recipeId: number;
+}
 
 export type RecipeModel = {
     id?: number;
@@ -33,7 +37,6 @@ export type RecipeModel = {
     difficultyLevel?: DifficultyLevel;
     countryOfOrigin?: string;
 };
-
 
 export enum DifficultyLevel {
     EASY, MID_LEVEL, PRO

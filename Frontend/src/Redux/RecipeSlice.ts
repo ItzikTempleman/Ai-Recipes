@@ -18,9 +18,6 @@ function resetGeneratedReducer(state: RecipeState) {
   state.loading = false;
 }
 
-
-
-
 function setIsLoadingReducer(currentState: RecipeState, action: PayloadAction<boolean>) {
   currentState.loading = action.payload;
   if (action.payload) currentState.error = undefined;
@@ -54,7 +51,6 @@ const recipeSlice = createSlice({
   initialState,
   reducers: {
     resetGenerated: resetGeneratedReducer,
-   
     setIsLoading: setIsLoadingReducer,
     setError: setErrorReducer,
     getAllRecipes: getAllRecipesReducer,

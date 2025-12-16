@@ -23,9 +23,9 @@ class RecipeService {
     quantity: number = 1,
     sugarLevel: SugarRestriction,
     hasLactose: LactoseRestrictions,
-    hasGluten:GlutenRestrictions,
-    dietaryRestrictions:DietaryRestrictions,
-    excludedIngredients:string[]
+    hasGluten: GlutenRestrictions,
+    dietaryRestrictions: DietaryRestrictions,
+    excludedIngredients: string[]
   ): Promise<RecipeModel> {
     try {
       store.dispatch(setIsLoading(true));
@@ -34,9 +34,9 @@ class RecipeService {
         query: title.query,
         sugarRestriction: sugarLevel,
         lactoseRestrictions: hasLactose,
-        glutenRestrictions:hasGluten,
-        dietaryRestrictions:dietaryRestrictions,
-        queryRestrictions:excludedIngredients
+        glutenRestrictions: hasGluten,
+        dietaryRestrictions: dietaryRestrictions,
+        queryRestrictions: excludedIngredients
       };
 
 
@@ -73,7 +73,22 @@ class RecipeService {
     await axios.delete(appConfig.getSingleRecipeUrl + recipeId, this.getAuth());
     store.dispatch(deleteRecipe(recipeId));
   };
-}
 
+  public async likeRecipe(recipeId: number): Promise<void> {
+        try {
+            await axios.post(appConfig.likeUrl + recipeId, this.getAuth());
+        } catch (err: any) {
+            throw new Error(err?.response?.data ?? err.message ?? "Like failed");
+        }
+  }
+
+  public async unLikeRecipe(recipeId: number): Promise<void> {
+        try {
+            await axios.delete(appConfig.likeUrl + recipeId, this.getAuth());
+        } catch (err: any) {
+            throw new Error(err?.response?.data ?? err.message ?? "Unlike failed");
+        }
+  }
+}
 
 export const recipeService = new RecipeService();

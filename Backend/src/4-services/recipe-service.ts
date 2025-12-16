@@ -166,19 +166,6 @@ class RecipeService {
     }
   }
 
-  // public async getLikedRecipes(): Promise<FullRecipeModel[]> {
-  //   const sql = "select distinct recipe.* from recipe join likes l on recipe.id = l.recipeId";
-  //   const recipes = await dal.execute(sql) as DbRecipeRow[];
-  //   return recipes.map(mapDbRowToFullRecipe);
-  // }
-
-  public async getRecipesTotalLikeCount(recipeId: number): Promise<number> {
-    const sql = "select count(*) as l from likes where recipeId=?";
-    const values = [recipeId];
-    const totalRecipes = await dal.execute(sql, values) as { l: number }[];
-    return totalRecipes.length > 0 ? totalRecipes[0].l : 0;
-  }
-
   private async isLikedRecipe(userId: number, recipeId: number): Promise<boolean> {
     const sql = "select userId, recipeId from likes where userId=? and recipeId=? limit 1";
     const values = [userId, recipeId];
