@@ -1,19 +1,13 @@
 .RecipeListItem {
   width: 300px;
-  margin-left: 20px;
-  margin-top: 12px;
-  height: 220px;
-  padding: 32px 16px 8px;
-  box-sizing: border-box;
-   background-color: white;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  height: auto;
+  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 2);
   display: flex;
   flex-direction: column;
-  gap: 20px;
   position: relative;
-  overflow: visible;
 }
 
 .RecipeListItem:hover {
@@ -39,32 +33,17 @@
 }
 
 .CountryFlag{
-    font-size: 3rem;
+    font-size: 5rem;
 }
-.CardTitleContainer {
-  margin-top: auto;
+
+.BottomSection{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.CardTitle {
-  color: #4d4d4d;
-  margin: 0 0 6px 0;
-  font-size: 16px;
-  text-align: center;
-}
-
-.MoreInfoBtn {
-  margin-top: 6px;
-  align-self: center;
-  background-color: #0f7394 !important;
 }
 
 @media (max-width: 600px) {
   .RecipeListItem {
    justify-content: center !important;
-   margin: 12px auto !important; 
+   margin: 8px auto !important; 
   }
 }

@@ -10,6 +10,7 @@ import {
   setCurrent,
   deleteRecipe
 } from "../Redux/RecipeSlice";
+import { like, unlike } from "../Redux/LikeSlice";
 
 class RecipeService {
 
@@ -77,6 +78,7 @@ class RecipeService {
   public async likeRecipe(recipeId: number): Promise<void> {
         try {
             await axios.post(appConfig.likeUrl + recipeId, this.getAuth());
+             store.dispatch(like());
         } catch (err: any) {
             throw new Error(err?.response?.data ?? err.message ?? "Like failed");
         }
@@ -85,6 +87,7 @@ class RecipeService {
   public async unLikeRecipe(recipeId: number): Promise<void> {
         try {
             await axios.delete(appConfig.likeUrl + recipeId, this.getAuth());
+            store.dispatch(unlike());
         } catch (err: any) {
             throw new Error(err?.response?.data ?? err.message ?? "Unlike failed");
         }

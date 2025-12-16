@@ -11,8 +11,6 @@
 
 .HomeScreenTitle {
   width: 100%;
-  color: white;
-  font-size: 20px;
   margin: 0 0 16px;
   text-align: left;
 }
@@ -20,7 +18,7 @@
 
 .RecipeList {
   width: 100%;
- margin: 0;    
+ margin: 20px;    
   display: flex;
   flex-wrap: wrap;
   gap: 30px;

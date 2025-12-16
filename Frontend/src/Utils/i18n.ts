@@ -8,7 +8,6 @@ const resources = {
         home: "Home",
         generate: "Generate",
       },
-
       drawer: {
         profile: "Profile",
         about: "About",
@@ -19,23 +18,20 @@ const resources = {
         helloGuest: "Hello Guest",
         login: "Log in",
       },
-
       homeScreen: {
-        noRecipes: "No recipes",
-        guestNotice: "Guest account,\n to save or like recipes you must log in",
+        recentlyViewed:"Recently viewed",
+        noRecipes: "Blank history",
+        guestNotice: "To view your history or like a recipe you must connect",
       },
-
       about: {
         title: "About this site",
         footer: "© 2025 All rights reserved ® Itzik's AI recipe generator",
       },
-
       page404: {
         title: "Page not found",
         message: "The page you are looking for does'nt exist",
         return: "Return",
       },
-
       generate: {
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
@@ -46,7 +42,6 @@ const resources = {
         loadingWithImage: "Preparing your recipe… Loading image…",
         loadingNoImage: "Preparing your recipe…",
       },
-
       filters: {
         image: {
           withImage: "With image",
@@ -72,7 +67,6 @@ const resources = {
           halal: "Halal",
         },
       },
-
       auth: {
         login: {
           title: "Log in",
@@ -115,7 +109,6 @@ const resources = {
           phoneRequired: "Phone number is required",
         },
       },
-
       profile: {
         title: "Profile",
         edit: "Edit",
@@ -130,7 +123,6 @@ const resources = {
         userUpdated: "User has been updated",
         imageUpdated: "Profile image updated",
       },
-
       recipeUi: {
         clear: "Clear",
         showRecipe: "Show Recipe",
@@ -178,9 +170,9 @@ const resources = {
       },
 
       homeScreen: {
-        titleMyRecipes: "המתכונים של {{name}}",
-        noRecipes: "אין מתכונים",
-        guestNotice: "חשבון אורח,\n כדי לשמור או לעשות לייק למתכונים צריך להתחבר",
+       recentlyViewed:"נצפו לאחרונה",
+        noRecipes: "אין היסטוריה",
+        guestNotice: "על מנת לצפות בהיסטוריה או לסמן/ לשמור מתכון עליך להתחבר",
       },
 
       about: {
