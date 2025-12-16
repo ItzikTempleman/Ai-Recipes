@@ -158,7 +158,7 @@ const { t } = useTranslation();
         </div>
       </div>
 
-      <div className="RecipeExtraDataContainer">
+      <div className="RecipeBottomExtraDataContainer">
         <div className="AmountParent">
           <RestaurantIcon fontSize="small" />
           <p>x {recipe.amountOfServings}</p>
