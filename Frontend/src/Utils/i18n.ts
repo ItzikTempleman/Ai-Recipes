@@ -172,7 +172,7 @@ const resources = {
       homeScreen: {
        recentlyViewed:"נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
-        guestNotice: "על מנת לצפות בהיסטוריה או לסמן/ לשמור מתכון עליך להתחבר",
+        guestNotice: "על מנת לצפות בהיסטוריה או לסמן/ לשמור מתכון, עליך להתחבר",
       },
 
       about: {
