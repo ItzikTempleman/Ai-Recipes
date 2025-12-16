@@ -15,9 +15,8 @@ import { isLethalQuery } from "../2-utils/banned-filter";
 class RecipeService {
 
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
-
     input.validate();
-
+    
     if (isLethalQuery(input.query)) {
       throw new DangerousRequestError("Recipe forbidden ☠️");
     }
@@ -66,11 +65,11 @@ class RecipeService {
     const healthLevel = recipe.healthLevel;
     const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
     const calories = recipe.calories;
-    const sugarRestriction = recipe.sugarRestriction;          
-    const lactoseRestrictions = recipe.lactoseRestrictions;   
-    const glutenRestrictions = recipe.glutenRestrictions;      
-    const dietaryRestrictions = recipe.dietaryRestrictions;     
-    const caloryRestrictions = recipe.caloryRestrictions;      
+    const sugarRestriction = recipe.sugarRestriction;
+    const lactoseRestrictions = recipe.lactoseRestrictions;
+    const glutenRestrictions = recipe.glutenRestrictions;
+    const dietaryRestrictions = recipe.dietaryRestrictions;
+    const caloryRestrictions = recipe.caloryRestrictions;
     const prepTime = recipe.prepTime ?? 0;
     const difficultyEnum = recipe.difficultyLevel ?? DifficultyLevel.MID_LEVEL;
     const difficultyLevel = DifficultyLevel[difficultyEnum];
@@ -165,6 +164,42 @@ class RecipeService {
         throw new Error("Could not delete image");
       }
     }
+  }
+
+  // public async getLikedRecipes(): Promise<FullRecipeModel[]> {
+  //   const sql = "select distinct recipe.* from recipe join likes l on recipe.id = l.recipeId";
+  //   const recipes = await dal.execute(sql) as DbRecipeRow[];
+  //   return recipes.map(mapDbRowToFullRecipe);
+  // }
+
+  public async getRecipesTotalLikeCount(recipeId: number): Promise<number> {
+    const sql = "select count(*) as l from likes where recipeId=?";
+    const values = [recipeId];
+    const totalRecipes = await dal.execute(sql, values) as { l: number }[];
+    return totalRecipes.length > 0 ? totalRecipes[0].l : 0;
+  }
+
+  private async isLikedRecipe(userId: number, recipeId: number): Promise<boolean> {
+    const sql = "select userId, recipeId from likes where userId=? and recipeId=? limit 1";
+    const values = [userId, recipeId];
+    type likes = { userId: number, recipeId: number };
+    const match = await dal.execute(sql, values) as likes[];
+    return match.length === 1
+  }
+
+  public async likeRecipe(userId: number, recipeId: number): Promise<boolean> {
+    if (await this.isLikedRecipe(userId, recipeId)) return false;
+    const sql = "insert into likes(userId, recipeId) values (?,?)";
+    const values = [userId, recipeId];
+    const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    return info.affectedRows === 1;
+  }
+
+  public async unlikeRecipe(userId: number, recipeId: number): Promise<boolean> {
+    const sql = "delete from likes where userId=? and recipeId=? limit 1";
+    const values = [userId, recipeId];
+    const result: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    return result.affectedRows === 1;
   }
 }
 
