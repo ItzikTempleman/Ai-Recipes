@@ -18,9 +18,15 @@ export const likesSlice = createSlice(
                 return currentLikeState.filter(like =>
                     !(like.userId === action.payload.userId && like.recipeId === action.payload.recipeId)
                 );
-            }
+            },
+            setLikes(_state, action: PayloadAction<LikeModel[]>) {
+                return action.payload;
+            },
+            clearLikes() {
+                return [];
+            },
         }
     }
 )
-export const { like, unlike } = likesSlice.actions;
+export const { like, unlike, setLikes, clearLikes} = likesSlice.actions;
 export const likesReducer = likesSlice.reducer;

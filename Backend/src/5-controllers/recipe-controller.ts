@@ -14,11 +14,13 @@ class RecipeController {
     this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyOptional, this.generateFreeNoImageRecipe);
     this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeWithImage);
     this.router.get("/api/recipes/all", verificationMiddleware.verifyLoggedIn, this.getRecipes);
-    this.router.get("/api/recipe/:id", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
+    this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
     this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-    this.router.delete("/api/recipe/:id", verificationMiddleware.verifyLoggedIn, this.deleteRecipe)
-    this.router.post("/api/recipes/liked/:id", verificationMiddleware.verifyLoggedIn, this.likeRecipe);
-    this.router.delete("/api/recipes/liked/:id", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
+    this.router.delete("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.deleteRecipe)
+    this.router.post("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.likeRecipe);
+    this.router.delete("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
+    this.router.get("/api/recipes/liked/count", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
+    this.router.get("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.isRecipeLikedByUser);
   };
 
   private async getRecipes(request: Request, response: Response) {
@@ -29,8 +31,8 @@ class RecipeController {
 
   private async getSingleRecipe(request: Request, response: Response) {
     const user = (request as any).user as UserModel;
-    const id = Number(request.params.id)
-    const recipes = await recipeService.getSingleRecipe(id, user.id);
+    const recipeId = Number(request.params.recipeId)
+    const recipes = await recipeService.getSingleRecipe(recipeId, user.id);
     response.json(recipes);
   }
 
@@ -145,16 +147,40 @@ class RecipeController {
   }
 
   private async deleteRecipe(request: Request, response: Response) {
-    const id = Number(request.params.id);
-    await recipeService.deleteRecipe(id);
+    const recipeId = Number(request.params.recipeId);
+    await recipeService.deleteRecipe(recipeId);
     response.sendStatus(StatusCode.NoContent);
   }
 
+  private async getRecipesTotalLikeCount(request: Request, response: Response) {
+    const recipeId = Number(request.params.recipeId);
+    if (Number.isNaN(recipeId) || recipeId <= 0) {
+      response
+        .status(StatusCode.BadRequest)
+        .send("Route param recipe id must be a positive number");
+      return;
+    }
+    const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
+    response.json(likedCount);
+  }
+
+  public async isRecipeLikedByUser(request: Request, response: Response) {
+    const userId = (request as any).user.id;
+    const recipeId = Number(request.params.recipeId);
+    if (Number.isNaN(recipeId) || recipeId <= 0) {
+      response
+        .status(StatusCode.BadRequest)
+        .send("Route param recipe id must be a positive number");
+      return;
+    }
+    const isRecipeLiked = await recipeService.isRecipeLikedByUser(userId, recipeId);
+    response.status(StatusCode.OK).json(isRecipeLiked);
+  }
 
 
   private async likeRecipe(request: Request, response: Response) {
     const userId = (request as any).user.id;
-    const recipeId = Number(request.params.id);
+    const recipeId = Number(request.params.recipeId);
     if (Number.isNaN(recipeId) || recipeId <= 0) {
       response
         .status(StatusCode.BadRequest)
@@ -167,7 +193,7 @@ class RecipeController {
 
   private async unlikeRecipe(request: Request, response: Response) {
     const userId = (request as any).user.id;
-    const recipeId = Number(request.params.id);
+    const recipeId = Number(request.params.recipeId);
     if (Number.isNaN(recipeId) || recipeId <= 0) {
       response
         .status(StatusCode.BadRequest)

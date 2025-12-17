@@ -25,11 +25,11 @@ export function RecipeListItem({ recipe }: RecipeProps) {
     const user = useSelector((state: AppState) => state.user);
     const likes = useSelector((state: AppState) => state.likes);
 
-const userId = user?.id;
+    const userId = user?.id;
 
-const isLiked = !!likes.find(
-  (like) => like.userId === userId && like.recipeId === recipe.id
-);
+    const isLiked = !!likes.find(
+        (like) => like.userId === userId && like.recipeId === recipe.id
+    );
 
     async function moveToInfo(): Promise<void> {
         navigate("/recipe/" + recipe.id);
@@ -48,30 +48,30 @@ const isLiked = !!likes.find(
 
     return (
         <div className="RecipeListItem">
-            <IconButton className="DeleteIcon"
-                onClick={() => {
-                    deleteRecipe(recipe.id)
-                }}>
-                <DeleteIcon />
-            </IconButton>
+
             <img className="CardImage" src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"} />
-            <span className="CountryFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
-            <div className="CardTitleContainer">
-                <h3 className="CardTitle">{recipe.title}</h3>
-                <div className="BottomSection">
-        {user && (
-            <IconButton onClick={handleLikeState}>
-              {isLiked ? <GradeIcon /> : <GradeOutlinedIcon />}
-            </IconButton>
-          )}
-                    <Button className="MoreInfoBtn"
-                        onClick={moveToInfo}
-                        variant="contained">
-                        {t("recipeUi.showRecipe")}
-                        <ArrowForwardIosIcon />
-                    </Button>
-                </div>
+            <h3 className="RecipeName">{recipe.title}</h3>
+            <div className="TopRightActions">
+                {user && (
+                    <IconButton className="LikeBtn" onClick={handleLikeState}>
+                        {isLiked ? <GradeIcon  /> : <GradeOutlinedIcon />}
+                    </IconButton>
+                )}
+                <IconButton className="DeleteBtn"
+                    onClick={() => {
+                        deleteRecipe(recipe.id)
+                    }}>
+                    <DeleteIcon />
+                </IconButton>
             </div>
+
+            <Button className="MoreInfoBtn"
+                onClick={moveToInfo}
+                fullWidth
+                variant="contained">
+                {t("recipeUi.showRecipe")}
+                <ArrowForwardIosIcon />
+            </Button>
         </div>
     );
 }

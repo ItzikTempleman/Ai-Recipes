@@ -14,7 +14,8 @@ export function HomeScreen() {
 
   useEffect(() => {
     recipeService.getAllRecipes();
-  }, []);
+    recipeService.loadMyLikes();
+  }, [user?.id]);
 
   const list = Array.isArray(items) ? items : [];
 

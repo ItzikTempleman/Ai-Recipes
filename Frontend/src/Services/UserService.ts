@@ -4,6 +4,7 @@ import { store } from "../Redux/Store";
 import { userSlice } from "../Redux/UserSlice";
 import axios from "axios";
 import { appConfig } from "../Utils/AppConfig";
+import { likesSlice } from "../Redux/LikeSlice";
 
 export type DecodedToken = {
     user: User;
@@ -71,6 +72,7 @@ class UserService {
             clearTimeout(this.logoutTimer);
             this.logoutTimer = null;
         }
+        store.dispatch(likesSlice.actions.clearLikes());
         store.dispatch(userSlice.actions.logout());
         localStorage.removeItem("token");
     }
