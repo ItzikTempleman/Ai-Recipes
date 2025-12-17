@@ -178,12 +178,18 @@ class RecipeService {
     return recipes.map(mapDbRowToFullRecipe);
   }
 
-  public async getRecipesTotalLikeCount(recipeId: number): Promise<number> {
-    const sql = "select count(*) as l from likes where recipeId=?";
-    const values = [recipeId];
-    const totalRecipes = await dal.execute(sql, values) as { l: number }[];
-    return totalRecipes.length > 0 ? totalRecipes[0].l : 0;
-  }
+  // public async getRecipesTotalLikeCount(recipeId: number): Promise<number> {
+  //   const sql = "select count(*) as l from likes where recipeId=?";
+  //   const values = [recipeId];
+  //   const totalRecipes = await dal.execute(sql, values) as { l: number }[];
+  //   return totalRecipes.length > 0 ? totalRecipes[0].l : 0;
+  // }
+
+  public async getLikedRecipeIdsByUser(userId: number): Promise<number[]> {
+  const sql = "select recipeId from likes where userId=?";
+  const rows = await dal.execute(sql, [userId]) as { recipeId: number }[];
+  return rows.map(r => r.recipeId);
+}
 
   private async isLikedRecipe(userId: number, recipeId: number): Promise<boolean> {
     const sql = "select userId, recipeId from likes where userId=? and recipeId=? limit 1";

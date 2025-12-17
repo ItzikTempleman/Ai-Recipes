@@ -19,8 +19,9 @@ class RecipeController {
     this.router.delete("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.deleteRecipe)
     this.router.post("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.likeRecipe);
     this.router.delete("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
-    this.router.get("/api/recipes/liked/count", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
+    //this.router.get("/api/recipes/liked/count/:recipeId", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
     this.router.get("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.isRecipeLikedByUser);
+    this.router.get("/api/recipes/liked", verificationMiddleware.verifyLoggedIn, this.getMyLikedRecipeIds);
   };
 
   private async getRecipes(request: Request, response: Response) {
@@ -152,17 +153,23 @@ class RecipeController {
     response.sendStatus(StatusCode.NoContent);
   }
 
-  private async getRecipesTotalLikeCount(request: Request, response: Response) {
-    const recipeId = Number(request.params.recipeId);
-    if (Number.isNaN(recipeId) || recipeId <= 0) {
-      response
-        .status(StatusCode.BadRequest)
-        .send("Route param recipe id must be a positive number");
-      return;
-    }
-    const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
-    response.json(likedCount);
-  }
+  // private async getRecipesTotalLikeCount(request: Request, response: Response) {
+  //   const recipeId = Number(request.params.recipeId);
+  //   if (Number.isNaN(recipeId) || recipeId <= 0) {
+  //     response
+  //       .status(StatusCode.BadRequest)
+  //       .send("Route param recipe id must be a positive number");
+  //     return;
+  //   }
+  //   const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
+  //   response.json(likedCount);
+  // }
+
+  private async getMyLikedRecipeIds(request: Request, response: Response) {
+  const userId = (request as any).user.id;
+  const recipeIds = await recipeService.getLikedRecipeIdsByUser(userId);
+  response.status(StatusCode.OK).json(recipeIds);
+}
 
   public async isRecipeLikedByUser(request: Request, response: Response) {
     const userId = (request as any).user.id;
