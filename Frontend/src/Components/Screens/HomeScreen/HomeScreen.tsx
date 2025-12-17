@@ -23,13 +23,14 @@ export function HomeScreen() {
     <div className="HomeScreen">
 
       {user ? (
+        
         list.length === 0 ? (
-          <h1 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h1>
+        <div className="HomeScreenTitleContainer"><h2 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h2></div>
         ) : (
-          <h1 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h1>
+           <div className="HomeScreenTitleContainer"><h2 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h2></div>
         )
       ) : (
-        <h1 className="HomeScreenTitle">{t("homeScreen.guestNotice")}</h1>
+        <div className="HomeScreenTitleContainer"> <h2 className="HomeScreenTitle">{t("homeScreen.guestNotice")}</h2></div>
       )
       }
 

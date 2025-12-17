@@ -3,9 +3,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  box-sizing: border-box;
-border-bottom: 0.5px solid grey;
-  background-color: white;
+
+
+  background-color: rgb(217, 217, 217);;
 }
 
 .Header p {
@@ -35,7 +35,7 @@ border-bottom: 0.5px solid grey;
 
 .GenerateScreenLink.active,
 .HomeScreenLink.active {
-  color: #0f7394;
+  color: #0b80ce;
   font-weight: bold;
   font-size: 14px;
 }
@@ -46,7 +46,7 @@ border-bottom: 0.5px solid grey;
 }
 
 .Menu svg {
-  color: #0f7394;
+  color: #0b80ce;
 }
 
 @media (max-width: 600px) {

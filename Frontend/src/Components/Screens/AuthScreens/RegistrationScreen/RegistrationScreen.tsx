@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 
 
 export function RegistrationScreen() {
-       const { t } = useTranslation();
+  const { t } = useTranslation();
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({
@@ -52,46 +52,44 @@ export function RegistrationScreen() {
           {t("auth.registration.back")}
         </Button>
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
-        <TextField  className="InputTextField"
-          label= {t("auth.registration.firstNameLabel")}
-          placeholder={t("auth.registration.firstNamePlaceholder")}
-          {...register("firstName", {
-            required: "First name is required",
-            minLength: { value: 3, message: "Minimum 3 characters required" }
-          })}
-          error={!!errors.firstName}
-          helperText={errors.firstName?.message}
-          InputProps={
-            {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <PersonIcon />
-                </InputAdornment>
-              )
-            }}
-        />
-        <TextField  className="InputTextField"
-        label= {t("auth.registration.lastNameLabel")}
-          size="small"
-          placeholder={t("auth.registration.lastNamePlaceholder")}
-          {...register("familyName", {
-            required: "Last name is required",
-            minLength: { value: 3, message: "Minimum 3 characters required" }
-          })}
-          error={!!errors.familyName}
-          helperText={errors.familyName?.message}
-          InputProps={
-            {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <PersonIcon />
-                </InputAdornment>
-              )
-            }}
-        />
-        <TextField  className="InputTextField"
+        <div className="NameRow">
+
+          <TextField
+            className="InputTextField NameTF"
+            label={t("auth.registration.firstNameLabel")}
+            placeholder={t("auth.registration.firstNamePlaceholder")}
+            {...register("firstName", {
+              required: "First name is required",
+              minLength: { value: 3, message: "Minimum 3 characters required" },
+            })}
+            error={!!errors.firstName}
+            helperText={errors.firstName?.message}
+          />
+
+          <TextField
+            className="InputTextField NameTF"
+            label={t("auth.registration.lastNameLabel")}
+            placeholder={t("auth.registration.lastNamePlaceholder")}
+            {...register("familyName", {
+              required: "Last name is required",
+              minLength: { value: 3, message: "Minimum 3 characters required" },
+            })}
+            error={!!errors.familyName}
+            helperText={errors.familyName?.message}
+            InputProps={
+              {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <PersonIcon />
+                  </InputAdornment>
+                )
+              }}
+          />
+        </div>
+
+        <TextField className="InputTextField"
           autoComplete="email"
-         label= {t("auth.registration.emailLabel")}
+          label={t("auth.registration.emailLabel")}
           placeholder={t("auth.registration.emailPlaceholder")}
           fullWidth
           {...register("email", {
@@ -112,9 +110,9 @@ export function RegistrationScreen() {
           error={!!errors.email}
           helperText={errors.email?.message}
         />
-        <TextField  className="InputTextField"
+        <TextField className="InputTextField"
           autoComplete="current-password"
-       label= {t("auth.registration.passwordLabel")}
+          label={t("auth.registration.passwordLabel")}
           placeholder={t("auth.registration.passwordPlaceholder")}
           fullWidth
           type={showPassword ? "text" : "password"}
@@ -138,28 +136,28 @@ export function RegistrationScreen() {
             )
           }}
         />
-<TextField  className="InputTextField"
-  fullWidth
-  type="date"
-  {...register("birthDate", {
-    required: `${t("auth.registration.birthDateRequired")}`,
-    validate: (value) => {
-      const today = new Date();
-      const chosen = new Date(value);
-      const isAgeValid = isAgeOk(chosen)
-      if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
-      if(!isAgeValid) return `${t("auth.registration.minAge12")}`;
-      return true;
-    }
-  })}
-  label={t("auth.registration.birthDateLabel")}            
-  InputLabelProps={{ shrink: true }} 
-  error={!!errors.birthDate}
-  helperText={errors.birthDate?.message}
-/>
-        <TextField  className="InputTextField"
-          label={t("auth.registration.phoneLabel")}  
-          placeholder={t("auth.registration.phonePlaceholder")}  
+        <TextField className="InputTextField"
+          fullWidth
+          type="date"
+          {...register("birthDate", {
+            required: `${t("auth.registration.birthDateRequired")}`,
+            validate: (value) => {
+              const today = new Date();
+              const chosen = new Date(value);
+              const isAgeValid = isAgeOk(chosen)
+              if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
+              if (!isAgeValid) return `${t("auth.registration.minAge12")}`;
+              return true;
+            }
+          })}
+          label={t("auth.registration.birthDateLabel")}
+          InputLabelProps={{ shrink: true }}
+          error={!!errors.birthDate}
+          helperText={errors.birthDate?.message}
+        />
+        <TextField className="InputTextField"
+          label={t("auth.registration.phoneLabel")}
+          placeholder={t("auth.registration.phonePlaceholder")}
           fullWidth
           type="tel"
           variant="outlined"
@@ -180,7 +178,7 @@ export function RegistrationScreen() {
           error={!!errors.phoneNumber}
           helperText={errors.phoneNumber?.message}
         />
-        <FormControl  className="FromController">
+        <FormControl className="FromController">
           <Controller
             name="gender"
             control={control}
@@ -189,17 +187,17 @@ export function RegistrationScreen() {
                 <FormControlLabel
                   value={Gender.MALE}
                   control={<Radio />}
-                  label={t("auth.registration.male")}  
+                  label={t("auth.registration.male")}
                 />
                 <FormControlLabel
                   value={Gender.FEMALE}
                   control={<Radio />}
-                label={t("auth.registration.female")}  
+                  label={t("auth.registration.female")}
                 />
                 <FormControlLabel
                   value={Gender.OTHER}
                   control={<Radio />}
-                 label={t("auth.registration.other")}  
+                  label={t("auth.registration.other")}
                 />
               </RadioGroup>
             )}
@@ -209,7 +207,7 @@ export function RegistrationScreen() {
           type="submit"
           className="RegistrationBtn"
           variant="contained">
-          {t("auth.registration.submit")}  
+          {t("auth.registration.submit")}
         </Button>
       </form>
     </div>

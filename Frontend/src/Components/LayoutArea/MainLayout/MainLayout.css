@@ -1,14 +1,29 @@
+
 .MainLayout {
   min-height: 100vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: white;
+  background: rgb(217, 217, 217);
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
-background: linear-gradient(135deg,#086f91, #c5e0e8,#c5e0e8,#a1c1ca, #0d87b0 ,#086f91 );
+  z-index: 0; 
+  position: relative;  
+  background-size: cover; 
 }
+
+.MainLayout::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;     
+  background-image: url("/recipe-icon.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.75;  
+}
+
 
 .MainLayout > * {
   font-family: Arial, Helvetica, sans-serif;
@@ -17,10 +32,11 @@ background: linear-gradient(135deg,#086f91, #c5e0e8,#c5e0e8,#a1c1ca, #0d87b0 ,#0
 header {
   grid-row: 1;
   grid-column: 1;
-  z-index: 10;           
+  z-index: 1;           
 }
 
 main {
+  z-index: 1;  
   grid-row: 2;
   grid-column: 1;
   overflow-y: auto;

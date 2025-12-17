@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 18px;
+padding: 6px;
   box-sizing: border-box;
   overflow-x: hidden;
   display: flex;
@@ -13,14 +13,13 @@
 
 .GenerateContainer {
   width: min(640px, calc(100% - 20px)); 
-  margin-top: 20px;
   padding: 18px;
-  border-radius: 2px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  border-radius:18px;
+  box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
   background-color: white;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+
 }
 
 .small-loading .MuiCircularProgress-root {
@@ -126,10 +125,8 @@
 }
 
 .Loading{
-  margin-top: 12px;
-  padding: 8px;
   text-align: center;
-  font-size: 0.95rem;
+
 }
 
 .CenterRow {

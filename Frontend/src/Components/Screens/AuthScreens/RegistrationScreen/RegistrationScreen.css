@@ -28,6 +28,20 @@
   font-size: 20px;
 }
 
+.NameRow{
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;               
+}
+
+
+.NameTF{
+  flex: 1;                /* each consumes 50% */
+  min-width: 0;           /* critical so they can shrink on mobile */
+}
+
 .RegistrationBtn{
     background: #215898 !important;
   padding: 6px;

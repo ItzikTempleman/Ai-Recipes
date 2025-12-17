@@ -74,14 +74,15 @@ export function GenerateScreen() {
 
   return (
     <div className="GenerateScreen">
-      <div>
+
+
+      <div className="GenerateContainer">
+              <div>
         <h2 className="GenerateTitle">
           <RestaurantMenuIcon className="TitleIcon" />
           <span>{t("generate.title")}</span>
         </h2>
       </div>
-
-      <div className="GenerateContainer">
         <form onSubmit={handleSubmit(send)}>
           <div className="InputData">
             <TextField
@@ -114,15 +115,15 @@ export function GenerateScreen() {
           }
           {
             loading && (
-             <h3 className="Loading">
+             <h2 className="Loading">
   {hasImage ? t("generate.loadingWithImage") : t("generate.loadingNoImage")}
-</h3>
+</h2>
 
             )
           }
           <div className="FiltersColumn">
             <div className="Servings">
-              <h4>{t("generate.quantitySelector")}</h4>
+              <p>{t("generate.quantitySelector")}</p>
               <select className="QuantitySelector"
                 value={initialQuantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}>
