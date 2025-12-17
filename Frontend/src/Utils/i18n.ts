@@ -35,12 +35,12 @@ const resources = {
       generate: {
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
-        placeholderGenerate: "Generate recipe",
+        quantitySelector:"How many servings?",
         requiredTitle: "title is required",
         go: "Go",
-        excludeIngredient: "Exclude ingredient",
-        loadingWithImage: "Preparing your recipe… Loading image…",
-        loadingNoImage: "Preparing your recipe…",
+        excludeIngredient: "Exclude ingredients",
+        loadingWithImage: "Generating an image…",
+        loadingNoImage: "Generating a recipe…",
       },
       filters: {
         image: {
@@ -187,13 +187,13 @@ const resources = {
 
       generate: {
         title: "אז מה אוכלים היום?",
+        quantitySelector:"עבור כמה סועדים?",
         labelGenerate: "צור מתכון",
-        placeholderGenerate: "צור מתכון",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
-        excludeIngredient: "הסר רכיב",
-        loadingWithImage: "מכין את המתכון… טוען תמונה…",
-        loadingNoImage: "מכין את המתכון…",
+        excludeIngredient: "הסר רכיבים",
+        loadingWithImage: "מייצר תמונה...",
+        loadingNoImage: "מייצר מתכון",
       },
 
       filters: {

@@ -15,7 +15,6 @@ import { LactoseFilter } from "../../Filters/LactoseFilter";
 import { GlutenFilter } from "../../Filters/GlutenFilter";
 import { DietaryFilter } from "../../Filters/DietaryFilter";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
-import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { useTranslation } from "react-i18next";
 
 
@@ -24,7 +23,7 @@ type RecipeStateType = {
 };
 
 export function GenerateScreen() {
-      const { t } = useTranslation();
+  const { t } = useTranslation();
   useTitle("Generate");
   const [filtersResetKey, setFiltersResetKey] = useState(0);
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
@@ -36,7 +35,7 @@ export function GenerateScreen() {
     {
       defaultValues: {
         query: "",
-        excludedIngredients: ["", "", ""]
+        excludedIngredients: [""]
       },
     }
   );
@@ -49,7 +48,14 @@ export function GenerateScreen() {
     try {
       if (loading) return;
 
-      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, recipeTitle.excludedIngredients);
+      const raw = recipeTitle.excludedIngredients?.[0] ?? "";
+      const excludedList = raw
+        .split(/[\n,]+/g)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+
+      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, excludedList);
       setQuantity(1);
       setHasImage(true);
       setSugarLevel(SugarRestriction.DEFAULT);
@@ -59,7 +65,7 @@ export function GenerateScreen() {
       setFiltersResetKey(k => k + 1);
       reset({
         query: "",
-        excludedIngredients: ["", "", ""],
+        excludedIngredients: [""]
       });
     } catch (err: unknown) {
       notify.error(err);
@@ -80,11 +86,8 @@ export function GenerateScreen() {
           <div className="InputData">
             <TextField
               className="SearchTF"
-              variant="outlined"
               size="small"
-              fullWidth
               label={t("generate.labelGenerate")}
-              placeholder={t("generate.placeholderGenerate")}
               {...register("query",
                 {
                   required:
@@ -95,35 +98,32 @@ export function GenerateScreen() {
               <IconButton className="RoundedBtn small-loading" edge="end" disabled>
                 <Box><CircularProgress /></Box>
               </IconButton>
-            ): (
-                <Button
-                  variant="contained"
-                  className="RectangularBtn"
-                  type="submit"
-                  aria-label="search"
-                  disabled={loading}>
-                  {t("generate.go")} <AutoAwesome className="BtnIcon" />
-                </Button>
-              )}
+            ) : (
+              <Button
+                variant="contained"
+                className="RectangularBtn"
+                type="submit"
+                aria-label="search"
+                disabled={loading}>
+                {t("generate.go")} <AutoAwesome className="BtnIcon" />
+              </Button>
+            )}
           </div>
           {
             error && <div className="ErrorText">{error}</div>
           }
           {
             loading && (
-              hasImage ?
-                <h3 className="LoadingWithImage">{t("generate.loadingWithImage")}</h3> :
-                <h3 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h3>
+             <h3 className="Loading">
+  {hasImage ? t("generate.loadingWithImage") : t("generate.loadingNoImage")}
+</h3>
+
             )
           }
           <div className="FiltersColumn">
             <div className="Servings">
-              <div className="GenerateAmountDiv">
-                <RestaurantIcon fontSize="medium" />
-                <p>x</p>
-              </div>
-              <select
-                className="QuantitySelector"
+              <h4>{t("generate.quantitySelector")}</h4>
+              <select className="QuantitySelector"
                 value={initialQuantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}>
                 {
@@ -133,62 +133,41 @@ export function GenerateScreen() {
                 }
               </select>
             </div>
-
+            <div className="ExcludedSection">
+              <div>
+                <TextField className="ExcludeTF"
+                  label={t("generate.excludeIngredient")}
+                  size="small"
+                  {...register("excludedIngredients.0")}
+                />
+              </div>
+            </div>
             <div className="ImageSwitchRow">
               <ImageSwitch onChange={setHasImage} />
             </div>
             <div>
               <SugarFilter
-              key={`sugar-${filtersResetKey}`}
-              onSugarLevelSelect={(sl) => {
-                
-                setSugarLevel(sl)
-              }} />
+                key={`sugar-${filtersResetKey}`}
+                onSugarLevelSelect={(sl) => {
+                  setSugarLevel(sl)
+                }} />
             </div>
             <div>
               <LactoseFilter
-              key={`lac-${filtersResetKey}`}
-              onChange={setHasLactose} />
+                key={`lac-${filtersResetKey}`}
+                onChange={setHasLactose} />
             </div>
             <div>
-              <GlutenFilter 
-              key={`glu-${filtersResetKey}`}
-              onChange={setHasGluten} />
+              <GlutenFilter
+                key={`glu-${filtersResetKey}`}
+                onChange={setHasGluten} />
             </div>
             <div>
-              <DietaryFilter 
-              key={`diet-${filtersResetKey}`}
-              onDietSelect={(d) => {
-                setDietType(d)
-              }} />
-            </div>
-            <div className="ExcludedSection">
-              <div>
-                <TextField className="ExcludeTF"
-                  variant="outlined"
-                  size="small"
-                  placeholder={t("generate.excludeIngredient")}
-                  {...register("excludedIngredients.0")}
-                />
-              </div>
-
-              <div >
-                <TextField className="ExcludeTF"
-                  variant="outlined"
-                  size="small"
-                    placeholder={t("generate.excludeIngredient")}
-                  {...register("excludedIngredients.1")}
-                />
-              </div>
-
-              <div>
-                <TextField className="ExcludeTF"
-                  variant="outlined"
-                  size="small"
-                  placeholder={t("generate.excludeIngredient")}
-                  {...register("excludedIngredients.2")}
-                />
-              </div>
+              <DietaryFilter
+                key={`diet-${filtersResetKey}`}
+                onDietSelect={(d) => {
+                  setDietType(d)
+                }} />
             </div>
           </div>
         </form>

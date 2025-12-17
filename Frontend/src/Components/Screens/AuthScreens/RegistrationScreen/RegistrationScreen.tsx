@@ -72,6 +72,7 @@ export function RegistrationScreen() {
         />
         <TextField  className="InputTextField"
         label= {t("auth.registration.lastNameLabel")}
+          size="small"
           placeholder={t("auth.registration.lastNamePlaceholder")}
           {...register("familyName", {
             required: "Last name is required",
