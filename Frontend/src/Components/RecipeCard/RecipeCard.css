@@ -1,20 +1,39 @@
 .RecipeCard {
-  width: 100%;
+  width: min(640px, calc(100% - 20px));
   max-width: 640px;
-    background-color: white;
+  max-width: none;
+  background-color: white;
   margin: 0 auto;
-  padding: 4px;
-  border-radius: 12px;
-   box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  text-align: left;margin-top: 520px;
-} 
-.ClearFormDiv {
-  align-items: center;
-  display: flex;
-  width: 100%;
-   cursor: pointer;
+  text-align: left;
+  margin-top: min(480px, 70vw);
+  position: relative;
 }
 
+.ClearFormDiv {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+
+
+
+@media (max-width: 600px) {
+  .RecipeCard {
+    margin-top: clamp(2px, 2vh, 2px);
+    padding: 16px;
+    width: min(640px, calc(100% - 16px));
+  }
+}
