@@ -2,7 +2,6 @@
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
-padding: 6px;
   box-sizing: border-box;
   overflow-x: hidden;
   display: flex;
@@ -12,9 +11,11 @@ padding: 6px;
 }
 
 .GenerateContainer {
-  width: min(640px, calc(100% - 20px)); 
+  position: absolute;
+  top: 38px;
+  width: min(640px, calc(100% - 20px));
   padding: 18px;
-  border-radius:18px;
+  border-radius: 18px;
   box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
   background-color: white;
   display: flex;
@@ -32,15 +33,16 @@ padding: 6px;
   min-width: 0;
 }
 
-.ClearPromptIcon:hover{
-    cursor: pointer;
-}
-.ClearPromptIcon:active{
-  transform: scale(1.2) translateY(1px);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+.ClearPromptIcon:hover {
+  cursor: pointer;
 }
 
-.Servings{
+.ClearPromptIcon:active {
+  transform: scale(1.2) translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.Servings {
   align-items: center;
   margin: 4px;
   gap: 4px;
@@ -48,10 +50,12 @@ padding: 6px;
   display: flex;
 
 }
-.GenerateAmountDiv{
+
+.GenerateAmountDiv {
   display: flex;
   align-items: center;
 }
+
 .GenerateTitle {
   margin: 10px 0 20px;
   display: flex;
@@ -60,7 +64,7 @@ padding: 6px;
   gap: 10px;
   font-size: clamp(1.3rem, 2.2vw, 2em);
   letter-spacing: 0.02em;
-  color: #074276; 
+  color: #074276;
   position: relative;
 }
 
@@ -68,12 +72,12 @@ padding: 6px;
   content: "";
   position: absolute;
   bottom: -12px;
-  left: 50%;             
+  left: 50%;
   transform: translateX(-50%);
   width: 400px;
   height: 3px;
   border-radius: 180px;
-  background: linear-gradient(90deg,white, #03517a);
+  background: linear-gradient(90deg, white, #03517a);
   opacity: 0.7;
 }
 
@@ -83,7 +87,7 @@ padding: 6px;
   border-radius: 180px;
   background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.6);
-  color: #ff9500; 
+  color: #ff9500;
 }
 
 
@@ -98,23 +102,22 @@ padding: 6px;
   margin-top: 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;   
-  gap: 8px;               
+  align-items: center;
+  gap: 8px;
 }
 
 
-  
+
 .QuantitySelector {
   width: 44px;
   height: 30px;
   border-radius: 4px;
   border: 1px solid rgb(208, 208, 208);
 }
-  
+
 
 .ExcludeTF .MuiOutlinedInput-root {
-
-  width: 360px;      
+  width: 220px;
 
 }
 
@@ -124,14 +127,16 @@ padding: 6px;
   font-size: 0.9rem;
 }
 
-.Loading{
+.Loading {
   text-align: center;
 
 }
 
 .CenterRow {
   width: 100%;
-  margin-top: 24px;
+  margin: 8px;
+  padding: 0 12px;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
 }
@@ -152,19 +157,27 @@ padding: 6px;
   color: #f0b43a;
 }
 
-.ExcludedSection{
-display: flex;
-flex-direction: column;
-padding: 4px;
-align-items: center;
-gap: 4px;
+.ExcludedSection {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 1100px) {
+  .GenerateContainer {
+    top: 64px;
+    width: 90%;
+  }
 }
 
 @media (max-width: 600px) {
   .GenerateContainer {
-  padding: 8px;
-  width: calc(100% - 16px);
+    margin: 20px;
+    padding: 16px;
+    position: static;
+    transform: none;
+    width: 90%;
   }
-
-  
 }

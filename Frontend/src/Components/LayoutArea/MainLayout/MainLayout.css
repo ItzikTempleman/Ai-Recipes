@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: rgb(217, 217, 217);
+ background-color: white;
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;

@@ -11,7 +11,7 @@
 }
 .HomeScreenTitleContainer{
   box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
-  background-color: rgba(190, 186, 186, 0.657);
+  background-color: white;
   padding-right: 8px;
   padding-left: 8px;
   border-radius: 12px;
@@ -27,9 +27,6 @@
     justify-content: flex-start;  
 }
 
-.RecipeListItem {
-  margin: 0;
-}
 
 @media (max-width: 600px) {
   .HomeScreen {

@@ -35,7 +35,7 @@ const resources = {
       generate: {
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
-        quantitySelector:"How many servings?",
+        quantitySelector:"How many servings",
         requiredTitle: "title is required",
         go: "Go",
         excludeIngredient: "Exclude ingredients",
@@ -187,7 +187,7 @@ const resources = {
 
       generate: {
         title: "אז מה אוכלים היום?",
-        quantitySelector:"עבור כמה סועדים?",
+        quantitySelector:"עבור כמה סועדים",
         labelGenerate: "צור מתכון",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
