@@ -33,7 +33,7 @@
 
 .GenerateScreenLink.active,
 .HomeScreenLink.active {
-  color: #0b80ce;
+  color: #22618b;
   font-weight: bold;
   font-size: 14px;
 }
@@ -44,7 +44,7 @@
 }
 
 .Menu svg {
-  color: #0b80ce;
+  color: #22618b;
 }
 
 @media (max-width: 600px) {

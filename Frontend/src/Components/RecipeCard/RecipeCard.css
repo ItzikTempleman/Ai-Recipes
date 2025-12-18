@@ -1,30 +1,26 @@
 .RecipeCard {
-  width: min(640px, calc(100% - 20px));
-  max-width: 640px;
-  max-width: none;
-  background-color: white;
+  width: 100%;
+  max-width: 710px;
   margin: 0 auto;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
+  padding: 18px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  text-align: left;
-  margin-top: min(480px, 70vw);
-  position: relative;
+position: relative;
+   box-sizing: border-box;
+     overflow-x: hidden;
+     align-items: center;
 }
 
 .ClearFormDiv {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top:16px;
+  right:16px;
   width: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 2;
 }
 
 
@@ -32,8 +28,6 @@
 
 @media (max-width: 600px) {
   .RecipeCard {
-    margin-top: clamp(2px, 2vh, 2px);
-    padding: 16px;
-    width: min(640px, calc(100% - 16px));
+    padding: 4px;
   }
 }

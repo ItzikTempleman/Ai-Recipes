@@ -66,7 +66,6 @@ export function RecipeListItem({ recipe }: RecipeProps) {
 
             <Button className="MoreInfoBtn"
                 onClick={moveToInfo}
-                fullWidth
                 variant="contained">
                 {t("recipeUi.showRecipe")}
                 <ArrowForwardIosIcon />

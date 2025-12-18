@@ -1,23 +1,21 @@
 .GenerateScreen {
   width: 100%;
   min-height: 100vh;
-  margin: 0 auto;
-  box-sizing: border-box;
-  overflow-x: hidden;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+   box-sizing: border-box;
+     overflow-x: hidden;
+     align-items: center;
 }
 
 .GenerateContainer {
-  position: absolute;
-  top: 38px;
-  width: min(640px, calc(100% - 20px));
+  width: 100%;
+  max-width: 640px;
   padding: 18px;
   border-radius: 18px;
   box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
-  background-color: white;
   display: flex;
   flex-direction: column;
 
@@ -134,11 +132,13 @@
 
 .CenterRow {
   width: 100%;
-  margin: 8px;
-  padding: 0 12px;
-  box-sizing: border-box;
   display: flex;
+    padding-left: 0 !important;
+  padding-right: 0 !important;
   justify-content: center;
+  box-sizing: border-box;
+  margin: 8px 0;
+  padding: 0 12px;
 }
 
 .NewScreenTitle {
@@ -165,19 +165,10 @@
   gap: 4px;
 }
 
-@media (max-width: 1100px) {
-  .GenerateContainer {
-    top: 64px;
-    width: 90%;
-  }
-}
+
 
 @media (max-width: 600px) {
   .GenerateContainer {
-    margin: 20px;
-    padding: 16px;
-    position: static;
-    transform: none;
-    width: 90%;
+    padding: 8px;
   }
 }

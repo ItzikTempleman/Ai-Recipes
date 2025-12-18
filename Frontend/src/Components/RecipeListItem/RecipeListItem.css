@@ -50,7 +50,7 @@
   padding: 6px !important;
 }
 .DeleteBtn svg{
-  color: #0b80ce
+  color: #515151
 }
 
 
@@ -58,7 +58,7 @@
   margin: 120px 0 10px;
 }
 .MoreInfoBtn{
-  background-color: #0b80ce !important;
+  background-color: #f49128 !important;
 }
 @media (max-width: 600px) {
   .RecipeListItem {
