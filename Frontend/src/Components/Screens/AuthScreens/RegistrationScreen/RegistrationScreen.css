@@ -48,7 +48,9 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   flex: 1;             
   min-width: 0;          
 }
-
+html[dir="rtl"] .NameRow {
+  flex-direction: row-reverse;
+}
 .RegistrationBtn{
     background: #215898 !important;
   padding: 6px;
