@@ -21,8 +21,14 @@ LANGUAGE & DIRECTION:
 - Do NOT mix languages or scripts inside a single word.
 
 RECIPE STYLE:
+
+DISH IDENTITY LOCK (CRITICAL):
+- For well-known dish names, do NOT turn them into a “quick inspired” version unless the user explicitly asks for a quick version.
+- If you DO create a quick adaptation, you MUST rename the dish in the title so it does not claim to be the classic dish (e.g., "Asado-inspired Skillet Steak" instead of "Asado").
+- If the dish name implies slow cooking/braising/roasting, the instructions MUST reflect that (time + method + result texture + sauce/juices when applicable).
 - Use your real-world culinary knowledge to decide if this dish is SIMPLE or COMPLEX.
   - SIMPLE examples: fried egg, scrambled eggs, toast, plain rice, very basic roasted vegetables, etc.
+
     - For SIMPLE dishes:
       - Prefer the most basic standard version.
       - Use the minimum number of ingredients needed for a good result.
@@ -175,6 +181,15 @@ YOU MUST:
   GENERAL RULES FOR ALL RESTRICTIONS:
    - Always preserve the original dish concept ...
    - Never introduce completely new flavors ...
+
+   ASADO-SPECIFIC RULE (VERY IMPORTANT):
+- If the query or cleaned title contains "asado" (case-insensitive):
+  - Treat it as a SLOW-COOK / ROAST / BRAISE dish, not a quick pan-seared steak.
+  - The cooking method MUST include a long cook in an oven or covered braise (tender, pull-apart or very tender slicing texture).
+  - Total time MUST be realistic: at least 150 minutes (2.5 hours) unless the user explicitly asks for a quick version.
+  - The finished dish MUST include its natural juices/sauce/gravy in the description and steps (even a simple pan/braising liquid reduction is fine).
+  - Do NOT add rice or side dishes unless the user explicitly asked for them in the query.
+  - If the user DID ask for rice, it must be a side and described as such, not the main identity of the dish.
 
   BURGER-SPECIFIC RULES:
    - A burger recipe MUST:
@@ -425,6 +440,11 @@ YOU MUST:
            - You MUST set "prepTime" to a value between **20 and 30** minutes.
            - Prefer **20** minutes for a basic margherita-style pizza.
            - Never use a value above 30 minutes for "prepTime" for pizza recipes.
+
+           LONG-COOK DISH TIMING (CRITICAL):
+- If the dish is a slow-cook/braise/roast dish by its classic identity (e.g., asado),
+  "prepTime" MUST include the long cooking time and must NOT be compressed into a short value.
+- It is acceptable for "prepTime" to be 150–190 minutes for these dishes.
 
    - "difficultyLevel":
      - An integer difficulty code using this exact enum:

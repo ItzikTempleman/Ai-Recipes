@@ -102,7 +102,21 @@ class RecipeController {
     } as InputModel);
 
     const data = await recipeService.generateInstructions(inputModel, true);
-    const { fileName, url } = await generateImage(inputModel);
+
+    const { fileName, url } = await generateImage({
+  query: inputModel.query,
+  quantity,
+  sugarRestriction: inputModel.sugarRestriction,
+  lactoseRestrictions: inputModel.lactoseRestrictions,
+  glutenRestrictions: inputModel.glutenRestrictions,
+  dietaryRestrictions: inputModel.dietaryRestrictions,
+  caloryRestrictions: inputModel.caloryRestrictions,
+  queryRestrictions: inputModel.queryRestrictions,
+  title: data.title,
+  description: data.description,
+  ingredients: data.ingredients,
+  instructions: data.instructions
+});
 
     const fullRecipe = new FullRecipeModel({
       title: data.title,
