@@ -42,6 +42,15 @@
   padding: 6px;
 }
 
+html[dir="rtl"] .InputTextField .MuiInputBase-input {
+  text-align: right;
+}
+
+html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+}
+
 @media (max-width: 600px) {
 
   .LoginForm {

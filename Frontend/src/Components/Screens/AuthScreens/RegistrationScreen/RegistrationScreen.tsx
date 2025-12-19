@@ -10,7 +10,6 @@ import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -18,8 +17,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from "react-i18next";
 
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export function RegistrationScreen() {
+
+    const isRTL = document.documentElement.dir === "rtl";
+  const ArrowIcon = isRTL ? ArrowForwardIosIcon : ArrowBackIosNewIcon;
   const { t } = useTranslation();
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +52,7 @@ export function RegistrationScreen() {
     <div className="RegistrationScreen">
       <form className="RegistrationForm" onSubmit={handleSubmit(send)}>
         <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
-          <ArrowBackIosIcon />
+          <ArrowIcon />
           {t("auth.registration.back")}
         </Button>
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
@@ -76,14 +80,23 @@ export function RegistrationScreen() {
             })}
             error={!!errors.familyName}
             helperText={errors.familyName?.message}
-            InputProps={
-              {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <PersonIcon />
-                  </InputAdornment>
-                )
-              }}
+InputProps={{
+  ...(isRTL
+    ? {
+        startAdornment: (
+          <InputAdornment position="start">
+            <PersonIcon />
+          </InputAdornment>
+        ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <PersonIcon />
+          </InputAdornment>
+        ),
+      }),
+}}
           />
         </div>
 
@@ -99,14 +112,23 @@ export function RegistrationScreen() {
               message: "Enter a valid email"
             }
           })}
-          InputProps={
-            {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <EmailIcon />
-                </InputAdornment>
-              )
-            }}
+InputProps={{
+  ...(isRTL
+    ? {
+        startAdornment: (
+          <InputAdornment position="start">
+            <EmailIcon />
+          </InputAdornment>
+        ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <EmailIcon />
+          </InputAdornment>
+        ),
+      }),
+}}
           error={!!errors.email}
           helperText={errors.email?.message}
         />
@@ -122,19 +144,37 @@ export function RegistrationScreen() {
           })}
           error={!!errors.password}
           helperText={errors.password?.message}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  edge="end"
-                  tabIndex={-1}
-                  onClick={() => setShowPassword((password) => !password)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}>
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            )
-          }}
+InputProps={{
+  ...(isRTL
+    ? {
+        startAdornment: (
+          <InputAdornment position="start">
+            <IconButton
+              edge="start"
+              tabIndex={-1}
+              onClick={() => setShowPassword((p) => !p)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton
+              edge="end"
+              tabIndex={-1}
+              onClick={() => setShowPassword((p) => !p)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }),
+}}
         />
         <TextField className="InputTextField"
           fullWidth
@@ -161,13 +201,23 @@ export function RegistrationScreen() {
           fullWidth
           type="tel"
           variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <PhoneAndroidIcon />
-              </InputAdornment>
-            ),
-          }}
+InputProps={{
+  ...(isRTL
+    ? {
+        startAdornment: (
+          <InputAdornment position="start">
+            <PhoneAndroidIcon />
+          </InputAdornment>
+        ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <PhoneAndroidIcon />
+          </InputAdornment>
+        ),
+      }),
+}}
           inputProps={{
             inputMode: "tel",
             pattern: "[0-9]*",

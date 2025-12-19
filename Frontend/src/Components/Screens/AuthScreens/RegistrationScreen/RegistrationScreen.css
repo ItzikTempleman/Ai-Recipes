@@ -36,10 +36,17 @@
   gap: 4px;               
 }
 
+html[dir="rtl"] .InputTextField .MuiInputBase-input {
+  text-align: right;
+}
 
+html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+}
 .NameTF{
-  flex: 1;                /* each consumes 50% */
-  min-width: 0;           /* critical so they can shrink on mobile */
+  flex: 1;             
+  min-width: 0;          
 }
 
 .RegistrationBtn{

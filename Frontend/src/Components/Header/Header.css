@@ -47,8 +47,34 @@
   color: #22618b;
 }
 
-@media (max-width: 600px) {
+html[dir="rtl"] .Header {
+  direction: rtl;
+}
 
+/* NAV goes to the RIGHT edge */
+html[dir="rtl"] .GeneralNavigation {
+  margin-left: auto;   /* <- this is the key in RTL */
+  margin-right: 0;
+  gap: 12px;
+}
+
+/* kill LTR spacing rule */
+html[dir="rtl"] .GeneralNavigation a + a {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* MENU goes to the LEFT edge */
+html[dir="rtl"] .Menu {
+  margin-right: auto;  /* <- pushes it to the left */
+  margin-left: 0;
+}
+html[dir="rtl"] .GeneralNavigation { flex-direction: row; }
+
+@media (max-width: 600px) {
+  html[dir="rtl"] .Header {
+    flex-wrap: nowrap;
+  }
   .Header {
     padding: 0 12px;
     flex-wrap: wrap;

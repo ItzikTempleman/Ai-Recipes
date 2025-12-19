@@ -93,6 +93,34 @@
   font-size: 1.2rem;
 }
 
+.FiltersRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+html[dir="rtl"] .FiltersRow {
+  justify-content: flex-end;
+}
+
+.FilterBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  background: rgba(34, 97, 139, 0.12);  
+  border: 1px solid rgba(34, 97, 139, 0.25);
+  color: #22618b;
+  user-select: none;
+  white-space: nowrap;
+}
+
 .IngredientsList,
 .InstructionsList {
   width: 100%;
@@ -140,6 +168,12 @@
 .IngredientAmount {
   color: #d21c1c;
   text-align: right;
+}
+
+.instructions-list{
+  margin: 0;
+  padding: 0;                 
+  list-style-position: inside;
 }
 
 .instructions-list.ltr {

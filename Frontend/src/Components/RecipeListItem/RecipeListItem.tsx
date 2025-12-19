@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./RecipeListItem.css";
 import { RecipeModel } from "../../Models/RecipeModel";
 import { Button } from "@mui/material";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { recipeService } from "../../Services/RecipeService";
@@ -11,13 +11,16 @@ import GradeIcon from '@mui/icons-material/Grade';
 import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 type RecipeProps = {
     recipe: RecipeModel;
 }
 
 export function RecipeListItem({ recipe }: RecipeProps) {
-
+  const isRTL = document.documentElement.dir === "rtl";
+  const ArrowIcon = isRTL ? ArrowBackIosNewIcon : ArrowForwardIosIcon;
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -68,7 +71,7 @@ export function RecipeListItem({ recipe }: RecipeProps) {
                 onClick={moveToInfo}
                 variant="contained">
                 {t("recipeUi.showRecipe")}
-                <ArrowForwardIosIcon />
+                <ArrowIcon />
             </Button>
         </div>
     );

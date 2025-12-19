@@ -1,10 +1,10 @@
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from "@mui/icons-material/Logout";
+
 import Info from "@mui/icons-material/Info";
 import Person from "@mui/icons-material/Person";
-import LoginIcon from "@mui/icons-material/Login";
+
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../Redux/Store";
@@ -14,7 +14,8 @@ import { useState } from "react";
 import i18n from "../../Utils/i18n";
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from "react-i18next";
-
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 type DrawerState = {
     open: boolean;
     setOpen: (open: boolean) => void;
@@ -24,7 +25,14 @@ export type Language = "en" | "he";
 
 export function DrawerLayout({ open, setOpen }: DrawerState) {
     const { t } = useTranslation();
-    
+  const isRTL = document.documentElement.dir === "rtl";
+  const flipSx = { transform: isRTL ? "scaleX(-1)" : "none" };
+
+
+    const LoginIc = isRTL ? LogoutIcon : LoginIcon;
+  const LogoutIc = isRTL ? LoginIcon : LogoutIcon;
+
+
     const user = useSelector((state: AppState) => state.user);
 
     const isLoggedIn = !!(user && localStorage.getItem("token"));
@@ -57,7 +65,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                         ❌
                     </div>
 
-                    <div className="DrawerContent">
+                    <div className={`DrawerContent ${isLoggedIn ? "" : "DrawerLoggedOut"}`}>
                         {isLoggedIn ? (
                             <div>
                                 <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />
@@ -74,9 +82,8 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                             <div>
                                 <h3 className="UserName">{t("drawer.helloGuest")}</h3>
                                 <NavLink className="DrawerNavLink" to="/login" onClick={() => setOpen(false)}>
-
                                     <div className="LoginRow">
-                                        <LoginIcon />
+                                          <LoginIc sx={flipSx} />
                                         <p>{t("drawer.login")}</p>
                                     </div>
                                 </NavLink>
@@ -92,7 +99,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
 
                         <div className="LanguageRow">
                             <div className="SelectLanguage">
-                                <LanguageIcon/>
+                                <LanguageIcon />
                                 <h4>{t("drawer.selectLanguage")}</h4>
                             </div>
 
@@ -122,7 +129,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                                     setOpen(false);
                                 }}>
                                 <div className="LogoutRow">
-                                    <LogoutIcon />
+                                    <LogoutIc sx={flipSx} />
                                     <p>{t("drawer.logout")}</p>
                                 </div>
                             </NavLink>

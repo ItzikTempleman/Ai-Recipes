@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 export function LoginScreen() {
   useTitle("Login");
     const { t } = useTranslation();
+
+    const isRTL = document.documentElement.dir === "rtl";
   const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })
@@ -37,14 +39,23 @@ export function LoginScreen() {
 
         <TextField className="InputTextField"
           autoComplete="email" label={t("auth.login.emailLabel")} placeholder={t("auth.login.emailPlaceholder")} fullWidth
-          InputProps={
-            {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <EmailIcon />
-                </InputAdornment>
-              )
-            }}
+InputProps={{
+  ...(isRTL
+    ? {
+        startAdornment: (
+          <InputAdornment position="start">
+            <EmailIcon />
+          </InputAdornment>
+        ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <EmailIcon />
+          </InputAdornment>
+        ),
+      }),
+}}
           {
           ...register("email", {
             required: "Email is required", pattern: {
@@ -78,18 +89,37 @@ export function LoginScreen() {
           } helperText={
             errors.password?.message
           }
-          InputProps={
-            {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" tabIndex={-1} onClick={() => setShowPassword((show) => !show)}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >  {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }
-          }
+InputProps={{
+  ...(isRTL
+    ? {
+        startAdornment: (
+          <InputAdornment position="start">
+            <IconButton
+              edge="start"
+              tabIndex={-1}
+              onClick={() => setShowPassword((show) => !show)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton
+              edge="end"
+              tabIndex={-1}
+              onClick={() => setShowPassword((show) => !show)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }),
+}}
         >
         </TextField>
 

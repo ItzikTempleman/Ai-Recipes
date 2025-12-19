@@ -24,7 +24,7 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
-  const isRTL = /[\u0590-\u05FF]/.test(instructions.join(" "));
+const isRTL = document.documentElement.dir === "rtl";
 const { t } = useTranslation();
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];
@@ -49,28 +49,28 @@ const { t } = useTranslation();
     return out;
   })();
 
-  const sugarText: Record<number, string> = {
-    [SugarRestriction.DEFAULT]: "Regular sugar",
-    [SugarRestriction.LOW]: "Low sugar",
-    [SugarRestriction.NONE]: "Sugar free",
-  };
 
-  const lactoseText: Record<number, string> = {
-    [LactoseRestrictions.DEFAULT]: "Regular milk",
-    [LactoseRestrictions.NONE]: "Lactose free",
-  };
+const sugarText: Record<number, string> = {
+  [SugarRestriction.DEFAULT]: t("filters.sugar.regular"),
+  [SugarRestriction.LOW]: t("filters.sugar.low"),
+  [SugarRestriction.NONE]: t("filters.sugar.none"),
+};
+const lactoseText: Record<number, string> = {
+  [LactoseRestrictions.DEFAULT]: t("filters.lactose.regular"),
+  [LactoseRestrictions.NONE]: t("filters.lactose.none"),
+};
 
-  const glutenText: Record<number, string> = {
-    [GlutenRestrictions.DEFAULT]: "Regular gluten",
-    [GlutenRestrictions.NONE]: "Gluten free",
-  };
+const glutenText: Record<number, string> = {
+  [GlutenRestrictions.DEFAULT]: t("filters.gluten.regular"),
+  [GlutenRestrictions.NONE]: t("filters.gluten.none"),
+};
 
-  const dietText: Record<number, string> = {
-    [DietaryRestrictions.DEFAULT]: "No diet restriction",
-    [DietaryRestrictions.VEGAN]: "Vegan",
-    [DietaryRestrictions.KOSHER]: "Kosher",
-    [DietaryRestrictions.HALAL]: "Halal",
-  };
+const dietText: Record<number, string> = {
+  [DietaryRestrictions.DEFAULT]: t("filters.diet.none"),
+  [DietaryRestrictions.VEGAN]: t("filters.diet.vegan"),
+  [DietaryRestrictions.KOSHER]: t("filters.diet.kosher"),
+  [DietaryRestrictions.HALAL]: t("filters.diet.halal"),
+};
 
   const filterBadges = !filters
     ? []
@@ -110,7 +110,15 @@ const { t } = useTranslation();
         />
       )}
 
-      {filterBadges.length > 0 && <div className="FiltersRow">{filterBadges.join(" · ")}</div>}
+{filterBadges.length > 0 && (
+  <div className="FiltersRow" dir={isRTL ? "rtl" : "ltr"}>
+    {filterBadges.map((label) => (
+      <span key={label} className="FilterBadge">
+        {label}
+      </span>
+    ))}
+  </div>
+)}
 
       <div className="RecipeExtraDataContainer">
         <div className="CaloryParent">

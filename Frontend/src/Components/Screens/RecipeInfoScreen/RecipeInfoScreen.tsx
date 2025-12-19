@@ -5,15 +5,21 @@ import { useEffect, useState } from "react";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
 import { RecipeModel } from "../../../Models/RecipeModel";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 import { RecipeData } from "../../RecipeData/RecipeData";
 import { Filters } from "../../RecipeCard/RecipeCard";
 import { useTranslation } from "react-i18next";
 
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 
 type Props = { filters?: Filters };
 export function RecipeInfoScreen({ filters }: Props) {
+
+  const isRTL = document.documentElement.dir === "rtl";
+  const ArrowIcon = isRTL ? ArrowForwardIosIcon : ArrowBackIosNewIcon;
+
     const { t } = useTranslation();
   useTitle("Info");
   const params = useParams();
@@ -47,7 +53,7 @@ export function RecipeInfoScreen({ filters }: Props) {
     <div className="RecipeInfoScreen">
 
       <div className="BackBtnContainer" onClick={returnToList}>
-          <ArrowBackIosIcon />
+          <ArrowIcon />
           {t("recipeUi.back")}
       </div>
 
