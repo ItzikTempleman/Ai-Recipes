@@ -5,12 +5,14 @@
   padding: 18px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-position: relative;
-   box-sizing: border-box;
-     overflow-x: hidden;
-     align-items: center;
+
+  align-items: stretch;  
+  position: relative;
+  box-sizing: border-box;
+
+  overflow-x: visible;   
 }
+
 
 .ClearFormDiv {
   position: absolute;

@@ -132,8 +132,17 @@ setAppliedFilters(used);
           }
           {
             loading && (
-             <h2 className="Loading">
-  {hasImage ? t("generate.loadingWithImage") : t("generate.loadingNoImage")}
+<h2 className="Loading">
+  {hasImage ? (
+    <div className="HasImage">
+      <span className="HasImage__title">{t("generate.loadingWithImage")}</span>
+      <span className="HasImage__sub">{t("generate.loadingWithImageLowerMessage")}</span>
+    </div>
+  ) : (
+    <div>
+      {t("generate.loadingNoImage")}
+    </div>
+  )}
 </h2>
 
             )

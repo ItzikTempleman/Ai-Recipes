@@ -26,6 +26,28 @@
   border-radius: 4px;
 }
 
+.RecipeStepsGrid,
+.IngredientsList,
+.InstructionsList {
+  width: 100%;
+}
+
+.IngredientRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.IngredientAmount {
+  flex: 0 0 auto;    
+  white-space: nowrap; 
+}
+
+.IngredientName {
+  flex: 1 1 auto;     
+  min-width: 0;
+}
+
 .AmountParent,
 .PrepTimeParent,
 .CountryNameParent,
@@ -130,29 +152,6 @@ html[dir="rtl"] .FiltersRow {
   display: block;
 }
 
-@media (min-width: 900px) {
-  .RecipeStepsGrid {
-    display: flex;
-    flex-direction: row; 
-    align-items: flex-start;
-    width: 100%;
-    gap: 40px;
-  }
-
-  .RecipeStepsGrid.rtl {
-    flex-direction: row-reverse; 
-  }
-
-  .RecipeStepsGrid > .IngredientsList,
-  .RecipeStepsGrid > .InstructionsList {
-    width: 50%;
-  }
-
- 
-  .RecipeStepsGrid > .IngredientsList {
-    margin-top: 0;
-  }
-}
 
 .IngredientsList,
 .InstructionsList {
@@ -221,10 +220,6 @@ html[dir="rtl"] .FiltersRow {
   text-align: right;
   padding-left: 0;
 }
-.RecipeStepsWide {
-  width: 100%;
-}
-
 
 .instructions-list.rtl li {
   direction: rtl;
@@ -252,20 +247,45 @@ html[dir="rtl"] .FiltersRow {
 .IngredientsTitle.ltr {
   color: #0f7394;
 }
-
 @media (min-width: 900px) {
-
-    .RecipeStepsWide {
+  
+  .RecipeStepsWide {
     margin-top: 60px;
-    width: 96vw;
+    width: calc(100vw - 4vw); 
     max-width: 1600px;
-    margin-left: calc(50% - 48vw);
-    margin-right: 0;
-    transform: none;
+    box-sizing: border-box;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: calc(-50vw + 2vw);
+    margin-right: calc(-50vw + 2vw);
+  
+  }
+
+  html[dir="rtl"] .RecipeStepsWide {
+    transform: translateX(-2vw); 
   }
 
   .RecipeStepsGrid {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    gap: 40px;
     position: relative; 
+  }
+
+  .RecipeStepsGrid.rtl {
+    flex-direction: row-reverse;
+  }
+
+  .RecipeStepsGrid > .IngredientsList,
+  .RecipeStepsGrid > .InstructionsList {
+    width: 50%;
+  }
+
+  .RecipeStepsGrid > .IngredientsList {
+    margin-top: 0;
   }
 
   .RecipeStepsGrid::before {

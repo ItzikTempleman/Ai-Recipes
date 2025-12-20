@@ -62,6 +62,22 @@
   align-items: center;
 }
 
+.HasImage {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  gap: 0.25rem;           
+}
+
+.HasImage__title {
+  font-weight: bold;   
+}
+
+.HasImage__sub {
+  font-weight: normal;
+  font-size: 16px;
+  color: #03517a;
+}
 .GenerateTitle {
   margin: 10px 0 20px;
   display: flex;

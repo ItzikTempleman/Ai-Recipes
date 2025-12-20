@@ -41,6 +41,7 @@ guestNoticeLine2: "Log in to save or view history"
         go: "Go",
         excludeIngredient: "Exclude ingredients",
         loadingWithImage: "Generating an image…",
+        loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe…",
       },
       filters: {
@@ -195,6 +196,7 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
         go: "צור מתכון",
         excludeIngredient: "הסר רכיבים שאני לא רוצה",
         loadingWithImage: "...מייצר תמונה",
+        loadingWithImageLowerMessage: "זה יקח דקה",
         loadingNoImage: "...מייצר מתכון",
       },
 
