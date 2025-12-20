@@ -110,16 +110,20 @@ html[dir="rtl"] .FiltersRow {
 .FilterBadge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
+  justify-content: center;
+  padding: 4px 16px;     
+  min-height: 32px;      
+  border-radius: 8px;
+  font-size: 18px;     
+font-weight: bold;
   line-height: 1;
-  background: rgba(34, 97, 139, 0.12);  
-  border: 1px solid rgba(34, 97, 139, 0.25);
-  color: #22618b;
+background: rgb(240, 235, 220);
+  border: 2px solid #f0b43a;
+  color: #f0b43a;
   user-select: none;
   white-space: nowrap;
 }
+
 
 .IngredientsList,
 .InstructionsList {

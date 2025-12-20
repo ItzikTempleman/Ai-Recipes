@@ -194,8 +194,8 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
         excludeIngredient: "הסר רכיבים",
-        loadingWithImage: "מייצר תמונה",
-        loadingNoImage: "מייצר מתכון",
+        loadingWithImage: "...מייצר תמונה",
+        loadingNoImage: "...מייצר מתכון",
       },
 
       filters: {

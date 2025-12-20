@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
-
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import { useTranslation } from "react-i18next";
@@ -19,14 +17,11 @@ import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
 
-
 type RecipeStateType = {
   recipes: RecipeState
 };
 
 export function GenerateScreen() {
-
-
   useTitle("Generate");
   const [filtersResetKey, setFiltersResetKey] = useState(0);
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
@@ -42,6 +37,13 @@ export function GenerateScreen() {
       },
     }
   );
+  const [appliedFilters, setAppliedFilters] = useState({
+  sugarLevel: SugarRestriction.DEFAULT,
+  hasLactose: LactoseRestrictions.DEFAULT,
+  hasGluten: GlutenRestrictions.DEFAULT,
+  dietType: DietaryRestrictions.DEFAULT,
+});
+
 const { t, i18n } = useTranslation();
 
 const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
@@ -67,8 +69,12 @@ const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
         .map(s => s.trim())
         .filter(Boolean);
 
+const used = { sugarLevel, hasLactose, hasGluten, dietType };
+setAppliedFilters(used);
 
       await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, excludedList);
+     
+     
       setQuantity(1);
       setHasImage(true);
       setSugarLevel(SugarRestriction.DEFAULT);
@@ -187,9 +193,7 @@ const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
       {
         recipe && (
           <div className="CenterRow">
-            <RecipeCard recipe={recipe} filters={{
-              sugarLevel, hasLactose, hasGluten, dietType,
-            }} />
+            <RecipeCard recipe={recipe} filters={appliedFilters} />
           </div>
         )
       }

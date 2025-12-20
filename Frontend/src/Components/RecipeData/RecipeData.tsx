@@ -1,18 +1,12 @@
 import "./RecipeData.css";
-import {
-  DietaryRestrictions,
-  GlutenRestrictions,
-  LactoseRestrictions,
-  RecipeModel,
-  SugarRestriction,
-} from "../../Models/RecipeModel";
 import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 import { getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
-
+import { FilterBadges } from "../Filters/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import { RecipeModel } from "../../Models/RecipeModel";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -60,45 +54,6 @@ useEffect(() => {
   })();
 
 
-const sugarText: Record<number, string> = {
-  [SugarRestriction.DEFAULT]: t("filters.sugar.regular"),
-  [SugarRestriction.LOW]: t("filters.sugar.low"),
-  [SugarRestriction.NONE]: t("filters.sugar.none"),
-};
-const lactoseText: Record<number, string> = {
-  [LactoseRestrictions.DEFAULT]: t("filters.lactose.regular"),
-  [LactoseRestrictions.NONE]: t("filters.lactose.none"),
-};
-
-const glutenText: Record<number, string> = {
-  [GlutenRestrictions.DEFAULT]: t("filters.gluten.regular"),
-  [GlutenRestrictions.NONE]: t("filters.gluten.none"),
-};
-
-const dietText: Record<number, string> = {
-  [DietaryRestrictions.DEFAULT]: t("filters.diet.none"),
-  [DietaryRestrictions.VEGAN]: t("filters.diet.vegan"),
-  [DietaryRestrictions.KOSHER]: t("filters.diet.kosher"),
-  [DietaryRestrictions.HALAL]: t("filters.diet.halal"),
-};
-
-  const filterBadges = !filters
-    ? []
-    : ([
-        filters.sugarLevel !== SugarRestriction.DEFAULT
-          ? sugarText[filters.sugarLevel]
-          : null,
-        filters.hasLactose !== LactoseRestrictions.DEFAULT
-          ? lactoseText[filters.hasLactose]
-          : null,
-        filters.hasGluten !== GlutenRestrictions.DEFAULT
-          ? glutenText[filters.hasGluten]
-          : null,
-        filters.dietType !== DietaryRestrictions.DEFAULT
-          ? dietText[filters.dietType]
-          : null,
-      ].filter(Boolean) as string[]);
-
   return (
     <div className="RecipeData">
       <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
@@ -120,15 +75,7 @@ const dietText: Record<number, string> = {
         />
       )}
 
-{filterBadges.length > 0 && (
-  <div className="FiltersRow" dir={isRTL ? "rtl" : "ltr"}>
-    {filterBadges.map((label) => (
-      <span key={label} className="FilterBadge">
-        {label}
-      </span>
-    ))}
-  </div>
-)}
+<FilterBadges filters={filters} isRTL={isRTL} />
 
       <div className="RecipeExtraDataContainer">
         <div className="CaloryParent">
