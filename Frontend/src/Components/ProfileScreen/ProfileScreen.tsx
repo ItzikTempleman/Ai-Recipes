@@ -1,14 +1,17 @@
 import { useSelector } from "react-redux";
-import { getAge, showDate, useTitle } from "../../../Utils/Utils";
+
 import "./ProfileScreen.css";
-import { AppState } from "../../../Redux/Store";
+
 import { Button, Dialog, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { User } from "../../../Models/UserModel";
-import { notify } from "../../../Utils/Notify";
-import { userService } from "../../../Services/UserService";
+
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { AppState } from "../../Redux/Store";
+import { getAge, showDate, useTitle } from "../../Utils/Utils";
+import { User } from "../../Models/UserModel";
+import { userService } from "../../Services/UserService";
+import { notify } from "../../Utils/Notify";
 
 export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);

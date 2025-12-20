@@ -1,17 +1,30 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
 import LibraryAdd from "@mui/icons-material/LibraryAdd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Home } from "@mui/icons-material";
 import { DrawerLayout } from "../DrawerLayout/DrawerLayout";
 import { useTranslation } from "react-i18next";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-    const { t } = useTranslation();
-  return (
-    <div className="Header">
+  const { t, i18n } = useTranslation();
 
+  const rtlFromI18n = () =>
+    (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
+
+  const [isRTL, setIsRTL] = useState(rtlFromI18n);
+
+  useEffect(() => {
+    const onLangChange = () => setIsRTL(rtlFromI18n());
+    i18n.on("languageChanged", onLangChange);
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  }, [i18n]);
+
+  return (
+    <div className={`Header ${isRTL ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
         <NavLink to="/home" className="HomeScreenLink">
           <div className="Home">
@@ -19,6 +32,7 @@ export function Header() {
             <p>{t("nav.home")}</p>
           </div>
         </NavLink>
+
         <NavLink to="/generate" className="GenerateScreenLink">
           <div className="Generate">
             <LibraryAdd />
@@ -28,10 +42,7 @@ export function Header() {
       </div>
 
       <div className="Menu">
-        <DrawerLayout 
-          open={drawerOpen}
-          setOpen={setDrawerOpen}
-        />
+        <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
       </div>
     </div>
   );

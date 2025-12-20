@@ -24,7 +24,8 @@ export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
-const isRTL = document.documentElement.dir === "rtl";
+const { i18n } = useTranslation();
+const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
 const { t } = useTranslation();
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];

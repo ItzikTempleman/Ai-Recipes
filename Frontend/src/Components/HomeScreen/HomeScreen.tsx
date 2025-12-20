@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { RecipeListItem } from "../../RecipeListItem/RecipeListItem";
-import { recipeService } from "../../../Services/RecipeService";
-import { AppState } from "../../../Redux/Store";
+
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { useTitle } from "../../../Utils/Utils";
+
 import "./HomeScreen.css";
+import { useTitle } from "../../Utils/Utils";
+import { AppState } from "../../Redux/Store";
+import { recipeService } from "../../Services/RecipeService";
+import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 export function HomeScreen() {
   useTitle("Home");
   const { items } = useSelector((state: AppState) => state.recipes);

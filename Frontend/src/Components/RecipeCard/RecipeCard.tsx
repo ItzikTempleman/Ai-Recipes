@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { RecipeData } from "../RecipeData/RecipeData";
 import "./RecipeCard.css";
+import { useTranslation } from "react-i18next";
 
 export type Filters = {
   sugarLevel: SugarRestriction;
@@ -19,7 +20,8 @@ type RecipeProps = {
 };
 
 export function RecipeCard({ recipe, filters }: RecipeProps) {
-
+const { i18n } = useTranslation();
+const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
   const [imgSrc, setImgSrc] = useState<string>("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,7 +32,7 @@ export function RecipeCard({ recipe, filters }: RecipeProps) {
 
   return (
     <div className="RecipeCard">
-      <div className="ClearFormDiv"
+      <div className={`<ClearFormDiv> ${isRTL ? "rtl" : ""}`}
           onClick={() => {
             dispatch(resetGenerated());
           }}>❌</div>

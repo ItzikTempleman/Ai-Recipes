@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import "./RecipeListItem.css";
 import { RecipeModel } from "../../Models/RecipeModel";
 import { Button } from "@mui/material";
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { recipeService } from "../../Services/RecipeService";
@@ -19,28 +18,23 @@ type RecipeProps = {
 }
 
 export function RecipeListItem({ recipe }: RecipeProps) {
-  const isRTL = document.documentElement.dir === "rtl";
+const { i18n } = useTranslation();
+const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
   const ArrowIcon = isRTL ? ArrowBackIosNewIcon : ArrowForwardIosIcon;
     const navigate = useNavigate();
     const { t } = useTranslation();
-
     const user = useSelector((state: AppState) => state.user);
     const likes = useSelector((state: AppState) => state.likes);
-
     const userId = user?.id;
-
     const isLiked = !!likes.find(
         (like) => like.userId === userId && like.recipeId === recipe.id
     );
-
     async function moveToInfo(): Promise<void> {
         navigate("/recipe/" + recipe.id);
     }
-
     async function deleteRecipe(id: number) {
         await recipeService.deleteRecipe(id)
     }
-
     async function handleLikeState(): Promise<void> {
         if (!user) return;
         if (isLiked) {
@@ -50,7 +44,6 @@ export function RecipeListItem({ recipe }: RecipeProps) {
 
     return (
         <div className="RecipeListItem">
-
             <img className="CardImage" src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"} />
             <h3 className="RecipeName">{recipe.title}</h3>
             <div className="TopRightActions">
@@ -66,7 +59,6 @@ export function RecipeListItem({ recipe }: RecipeProps) {
                     <DeleteIcon />
                 </IconButton>
             </div>
-
             <Button className="MoreInfoBtn"
                 onClick={moveToInfo}
                 variant="contained">

@@ -24,7 +24,10 @@ position: relative;
 }
 
 
-
+.rtl .ClearFormDiv {
+  right: auto;
+  left: 16px;
+}
 
 @media (max-width: 600px) {
   .RecipeCard {

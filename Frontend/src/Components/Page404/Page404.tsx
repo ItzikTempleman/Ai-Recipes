@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { useTitle } from "../../../Utils/Utils";
+
 import { useSelector } from "react-redux";
-import { AppState } from "../../../Redux/Store";
+
 import "./Page404.css";
 import { useTranslation } from "react-i18next";
+import { AppState } from "../../Redux/Store";
+import { useTitle } from "../../Utils/Utils";
 
 export function Page404() {
     useTitle("Page not found")

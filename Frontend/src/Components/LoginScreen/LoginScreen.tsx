@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { useTitle } from "../../../../Utils/Utils";
+
 import "./LoginScreen.css";
-import { Credentials } from "../../../../Models/UserModel";
+
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import { userService } from "../../../../Services/UserService";
-import { notify } from "../../../../Utils/Notify";
+
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { Credentials } from "../../Models/UserModel";
+import { useTitle } from "../../Utils/Utils";
+import { notify } from "../../Utils/Notify";
+import { userService } from "../../Services/UserService";
 
 export function LoginScreen() {
   useTitle("Login");
     const { t } = useTranslation();
 
-    const isRTL = document.documentElement.dir === "rtl";
+const { i18n } = useTranslation();
+const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
   const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })

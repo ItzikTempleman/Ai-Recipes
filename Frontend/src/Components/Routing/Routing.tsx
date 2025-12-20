@@ -1,15 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Page404 } from "../Page404/Page404";
-import { RecipeInfoScreen } from "../../Screens/RecipeInfoScreen/RecipeInfoScreen";
-import { LoginScreen } from "../../Screens/AuthScreens/LoginScreen/LoginScreen";
-import { RegistrationScreen } from "../../Screens/AuthScreens/RegistrationScreen/RegistrationScreen";
-import { HomeScreen } from "../../Screens/HomeScreen/HomeScreen";
-import { AboutScreen } from "../../Screens/AboutScreen/AboutScreen";
-import { ProfileScreen } from "../../Screens/ProfileScreen/ProfileScreen";
+import { AboutScreen } from "../AboutScreen/AboutScreen";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../Redux/Store";
-import { GenerateScreen } from "../../Screens/GenerateScreen/GenerateScreen";
-
+import { AppState } from "../../Redux/Store";
+import { GenerateScreen } from "../GenerateScreen/GenerateScreen";
+import { HomeScreen } from "../HomeScreen/HomeScreen";
+import { LoginScreen } from "../LoginScreen/LoginScreen";
+import { RecipeInfoScreen } from "../RecipeInfoScreen/RecipeInfoScreen";
+import { RegistrationScreen } from "../RegistrationScreen/RegistrationScreen";
+import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
@@ -26,7 +25,6 @@ export function Routing() {
                 <Route path="/login" element={ <LoginScreen />} />
                 <Route path="/registration" element={ <RegistrationScreen />} />
                 <Route path="/profile" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home" replace />} />
-        
             </Routes>
         </div>
     );

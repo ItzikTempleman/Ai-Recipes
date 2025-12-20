@@ -3,11 +3,17 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
- background-color: white;
+  background-color: white;
+  border-bottom: 0.5px solid grey;
 }
 
 .Header p {
   margin: 1px 0 0;
+}
+
+/* RTL mirroring (driven ONLY by the .rtl class on Header) */
+.Header.rtl {
+  flex-direction: row-reverse;
 }
 
 .GeneralNavigation {
@@ -15,13 +21,27 @@
   align-items: center;
 }
 
-.GeneralNavigation a+a {
+/* In RTL: Home on the absolute right, Generate next to it */
+.Header.rtl .GeneralNavigation {
+  flex-direction: row-reverse;
+}
+
+/* LTR spacing only */
+.Header:not(.rtl) .GeneralNavigation a + a {
   margin-left: 12px;
   padding-left: 12px;
 }
 
+/* RTL spacing only */
+.Header.rtl .GeneralNavigation a + a {
+  margin-left: 0;
+  padding-left: 0;
+  margin-right: 12px;
+  padding-right: 12px;
+}
+
 .GenerateScreenLink,
-.HomeScreenLink{
+.HomeScreenLink {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,46 +58,14 @@
   font-size: 14px;
 }
 
-.Menu {
-  margin-left: auto;
- 
-}
-
 .Menu svg {
   color: #22618b;
 }
 
-html[dir="rtl"] .Header {
-  direction: rtl;
-}
-
-/* NAV goes to the RIGHT edge */
-html[dir="rtl"] .GeneralNavigation {
-  margin-left: auto;   /* <- this is the key in RTL */
-  margin-right: 0;
-  gap: 12px;
-}
-
-/* kill LTR spacing rule */
-html[dir="rtl"] .GeneralNavigation a + a {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-/* MENU goes to the LEFT edge */
-html[dir="rtl"] .Menu {
-  margin-right: auto;  /* <- pushes it to the left */
-  margin-left: 0;
-}
-html[dir="rtl"] .GeneralNavigation { flex-direction: row; }
-
 @media (max-width: 600px) {
-  html[dir="rtl"] .Header {
-    flex-wrap: nowrap;
-  }
   .Header {
     padding: 0 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .Header p {
@@ -89,4 +77,3 @@ html[dir="rtl"] .GeneralNavigation { flex-direction: row; }
     font-size: 12px;
   }
 }
-

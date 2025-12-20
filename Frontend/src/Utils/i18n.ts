@@ -323,14 +323,4 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 });
 
-const setDocumentDirection = (lng: string) => {
-  const dir = lng === "he" ? "rtl" : "ltr";
-  document.documentElement.setAttribute("dir", dir);
-  document.documentElement.setAttribute("lang", lng);
-};
-
-i18n.on("languageChanged", (lng) => {
-  setDocumentDirection(lng);
-});
-
 export default i18n;

@@ -1,54 +1,53 @@
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import Info from "@mui/icons-material/Info";
 import Person from "@mui/icons-material/Person";
-
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../Redux/Store";
 import { userService } from "../../Services/UserService";
 import "./DrawerLayout.css";
-import { useState } from "react";
-import i18n from "../../Utils/i18n";
+import { useEffect, useState } from "react";
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from "react-i18next";
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+
 type DrawerState = {
     open: boolean;
     setOpen: (open: boolean) => void;
 };
 
 export type Language = "en" | "he";
-
 export function DrawerLayout({ open, setOpen }: DrawerState) {
-    const { t } = useTranslation();
-  const isRTL = document.documentElement.dir === "rtl";
+const { t, i18n } = useTranslation();
+
+const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
+
+  useEffect(() => {
+    const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
+    i18n.on("languageChanged", onLangChange);
+    return () => i18n.off("languageChanged", onLangChange);
+  }, [i18n]);
+
   const flipSx = { transform: isRTL ? "scaleX(-1)" : "none" };
-
-
-    const LoginIc = isRTL ? LogoutIcon : LoginIcon;
+  const LoginIc = isRTL ? LogoutIcon : LoginIcon;
   const LogoutIc = isRTL ? LoginIcon : LogoutIcon;
 
-
     const user = useSelector((state: AppState) => state.user);
-
     const isLoggedIn = !!(user && localStorage.getItem("token"));
-
     const [language, setLanguage] = useState<Language>(
         () => {
             const storedLanguage = localStorage.getItem("selectedLanguage");
             return storedLanguage === "he" || storedLanguage === "en" ? storedLanguage : "en";
         }
     );
-
-    function handleLanguageSelect(lang: Language) {
-        setLanguage(lang);
-        localStorage.setItem("selectedLanguage", lang);
-        i18n.changeLanguage(lang);
-    }
+function handleLanguageSelect(lang: Language) {
+  setLanguage(lang);
+  localStorage.setItem("selectedLanguage", lang);
+i18n.changeLanguage(lang);
+}
 
     return (
         <div>
@@ -65,7 +64,8 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                         ❌
                     </div>
 
-                    <div className={`DrawerContent ${isLoggedIn ? "" : "DrawerLoggedOut"}`}>
+                    <div className={`DrawerContent ${isLoggedIn ? "" : "DrawerLoggedOut"} ${isRTL ? "rtl" : ""}`}>
+
                         {isLoggedIn ? (
                             <div>
                                 <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />

@@ -1,8 +1,6 @@
 .MuiDrawer-paper {
   width: 240px;
-  height: 680px !important;
-  margin: 8px;
-  border-radius: 8px;
+  height: 100vh;
 }
 
 .DrawerMainContainer {
@@ -23,12 +21,41 @@
   flex-direction: column;
   height: 100%;
   align-items: stretch;
+  justify-content: flex-start; 
+
+}
+.DrawerContent.rtl {
+  direction: rtl;
+  text-align: right;
 }
 
+
+.DrawerContent.rtl .DrawerNavLink {
+  justify-content: flex-end;
+}
+
+.DrawerContent.rtl .ProfileRow,
+.DrawerContent.rtl .AboutRow,
+.DrawerContent.rtl .SelectLanguage {
+  flex-direction: row-reverse;    /* icon on the right */
+  justify-content: flex-end;      /* whole row sticks to the right */
+  text-align: right;
+}
+
+.DrawerContent > div {
+  display: flex;
+  flex-direction: column;
+  flex: 0;          
+}
+.DrawerContent.rtl .UserName {
+  margin: 20px 40px 0 0;
+}
 .Divider {
   border: 0.5px solid rgb(153, 150, 150);
   margin: 28px;
 }
+
+.DrawerLogoutLink { margin-top: auto; }
 
 .DrawerContent.DrawerLoggedOut {
   height: auto;
@@ -54,12 +81,6 @@
   width: 100%;
   gap: 8px;
   align-items: center;
-}
-
-.DrawerContent>div {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
 }
 
 .LanguageRow {

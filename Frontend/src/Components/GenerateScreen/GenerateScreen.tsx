@@ -3,19 +3,21 @@ import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeState, SugarRestriction } from "../../../Models/RecipeModel";
-import { useTitle } from "../../../Utils/Utils";
-import { recipeService } from "../../../Services/RecipeService";
-import { notify } from "../../../Utils/Notify";
-import { RecipeCard } from "../../RecipeCard/RecipeCard";
+
+
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
-import { ImageSwitch } from "../../Filters/ImageSwitch";
-import { SugarFilter } from "../../Filters/SugarFilter";
-import { LactoseFilter } from "../../Filters/LactoseFilter";
-import { GlutenFilter } from "../../Filters/GlutenFilter";
-import { DietaryFilter } from "../../Filters/DietaryFilter";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import { useTranslation } from "react-i18next";
+import { useTitle } from "../../Utils/Utils";
+import { recipeService } from "../../Services/RecipeService";
+import { notify } from "../../Utils/Notify";
+import { LactoseFilter } from "../Filters/LactoseFilter";
+import { SugarFilter } from "../Filters/SugarFilter";
+import { ImageSwitch } from "../Filters/ImageSwitch";
+import { GlutenFilter } from "../Filters/GlutenFilter";
+import { DietaryFilter } from "../Filters/DietaryFilter";
+import { RecipeCard } from "../RecipeCard/RecipeCard";
+import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
 
 
 type RecipeStateType = {

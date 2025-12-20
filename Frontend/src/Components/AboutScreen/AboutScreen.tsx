@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useTitle } from "../../../Utils/Utils";
+import { useTitle } from "../../Utils/Utils";
 import "./AboutScreen.css";
 
 export function AboutScreen() {
