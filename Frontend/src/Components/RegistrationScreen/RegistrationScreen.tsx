@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import Radio from '@mui/material/Radio';
@@ -12,8 +12,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from "react-i18next";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { isAgeOk, useTitle } from "../../Utils/Utils";
 import { Gender, User } from "../../Models/UserModel";
 import { userService } from "../../Services/UserService";
@@ -34,7 +32,7 @@ const { t, i18n } = useTranslation();
     };
   }, [i18n]);
   
-  const ArrowIcon = isRTL ? ArrowForwardIosIcon : ArrowBackIosNewIcon;
+
 
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
@@ -61,7 +59,7 @@ const { t, i18n } = useTranslation();
     <div className="RegistrationScreen">
       <form className="RegistrationForm" onSubmit={handleSubmit(send)}>
         <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
-          <ArrowIcon />
+          <ArrowBackIosNew />
           {t("auth.registration.back")}
         </Button>
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
