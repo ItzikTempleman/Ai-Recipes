@@ -21,7 +21,8 @@ const resources = {
       homeScreen: {
         recentlyViewed:"Recently viewed",
         noRecipes: "Blank history",
-        guestNotice: "To view your history or like a recipe you must connect",
+    guestNoticeLine1: "Generate recipes freely.",
+guestNoticeLine2: "Log in to save or view history."
       },
       about: {
         title: "About this site",
@@ -172,7 +173,8 @@ const resources = {
       homeScreen: {
        recentlyViewed:"נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
-        guestNotice: "על מנת לצפות בהיסטוריה או לסמן/ לשמור מתכון, עליך להתחבר",
+      guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר.",
+guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה."
       },
 
       about: {

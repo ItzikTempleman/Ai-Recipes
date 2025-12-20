@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./LoginScreen.css";
 
@@ -16,10 +16,21 @@ import { userService } from "../../Services/UserService";
 
 export function LoginScreen() {
   useTitle("Login");
-    const { t } = useTranslation();
+const { t, i18n } = useTranslation();
 
-const { i18n } = useTranslation();
-const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
+
+ const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+ const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+
+  useEffect(() => {
+   const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
+    i18n.on("languageChanged", onLangChange);
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  }, [i18n]);
+
+  
   const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })

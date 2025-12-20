@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
-
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { RecipeData } from "../RecipeData/RecipeData";
@@ -20,8 +19,19 @@ type RecipeProps = {
 };
 
 export function RecipeCard({ recipe, filters }: RecipeProps) {
-const { i18n } = useTranslation();
-const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
+const {i18n } = useTranslation();
+ const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+ const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+
+  useEffect(() => {
+   const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
+    i18n.on("languageChanged", onLangChange);
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  }, [i18n]);
+
+
   const [imgSrc, setImgSrc] = useState<string>("");
   const dispatch = useDispatch();
   useEffect(() => {

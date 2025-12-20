@@ -25,7 +25,8 @@ type RecipeStateType = {
 };
 
 export function GenerateScreen() {
-  const { t } = useTranslation();
+const { t } = useTranslation();
+
   useTitle("Generate");
   const [filtersResetKey, setFiltersResetKey] = useState(0);
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);

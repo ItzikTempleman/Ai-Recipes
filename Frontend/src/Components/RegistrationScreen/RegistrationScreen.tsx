@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./RegistrationScreen.css";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +20,22 @@ import { userService } from "../../Services/UserService";
 import { notify } from "../../Utils/Notify";
 
 export function RegistrationScreen() {
-const { i18n } = useTranslation();
-const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
+const { t, i18n } = useTranslation();
+
+
+ const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+ const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+
+  useEffect(() => {
+   const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
+    i18n.on("languageChanged", onLangChange);
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  }, [i18n]);
+  
   const ArrowIcon = isRTL ? ArrowForwardIosIcon : ArrowBackIosNewIcon;
-  const { t } = useTranslation();
+
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({

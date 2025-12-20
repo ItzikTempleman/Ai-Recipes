@@ -12,6 +12,7 @@ import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -20,13 +21,21 @@ type RecipeProps = {
 };
 
 export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
+const { t, i18n } = useTranslation();
+
+const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+
+useEffect(() => {
+  const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
+  i18n.on("languageChanged", onLangChange);
+  return () => i18n.off("languageChanged", onLangChange);
+}, [i18n]);
 
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
-const { i18n } = useTranslation();
-const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
-const { t } = useTranslation();
+
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];
 

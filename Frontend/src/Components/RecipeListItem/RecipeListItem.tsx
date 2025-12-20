@@ -10,19 +10,18 @@ import GradeIcon from '@mui/icons-material/Grade';
 import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { ArrowForwardIos } from "@mui/icons-material";
+
 
 type RecipeProps = {
     recipe: RecipeModel;
 }
 
 export function RecipeListItem({ recipe }: RecipeProps) {
-const { i18n } = useTranslation();
-const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
-  const ArrowIcon = isRTL ? ArrowBackIosNewIcon : ArrowForwardIosIcon;
+const { t } = useTranslation();
+
     const navigate = useNavigate();
-    const { t } = useTranslation();
+
     const user = useSelector((state: AppState) => state.user);
     const likes = useSelector((state: AppState) => state.likes);
     const userId = user?.id;
@@ -63,7 +62,7 @@ const isRTL = (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
                 onClick={moveToInfo}
                 variant="contained">
                 {t("recipeUi.showRecipe")}
-                <ArrowIcon />
+                <ArrowForwardIos />
             </Button>
         </div>
     );

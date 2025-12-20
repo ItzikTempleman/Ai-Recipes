@@ -10,13 +10,12 @@ export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t, i18n } = useTranslation();
 
-  const rtlFromI18n = () =>
-    (i18n.resolvedLanguage ?? i18n.language ?? "").startsWith("he");
 
-  const [isRTL, setIsRTL] = useState(rtlFromI18n);
+ const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+ const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
 
   useEffect(() => {
-    const onLangChange = () => setIsRTL(rtlFromI18n());
+   const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
     i18n.on("languageChanged", onLangChange);
     return () => {
       i18n.off("languageChanged", onLangChange);
