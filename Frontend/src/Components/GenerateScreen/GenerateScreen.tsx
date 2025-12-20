@@ -1,4 +1,4 @@
-import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
+import { IconButton, TextField, CircularProgress, Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
 import { useEffect, useState } from "react";
