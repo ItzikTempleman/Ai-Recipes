@@ -41,17 +41,15 @@ const {i18n } = useTranslation();
   )
 
   return (
-    <div className="RecipeCard">
-      <div className={`<ClearFormDiv> ${isRTL ? "rtl" : ""}`}
-          onClick={() => {
-            dispatch(resetGenerated());
-          }}>❌</div>
+<div className="RecipeCard">
+  <div
+    className={`ClearFormDiv ${isRTL ? "rtl" : ""}`}
+    onClick={() => dispatch(resetGenerated())}
+  >
+    ❌
+  </div>
 
-      <RecipeData
-        filters={filters}
-        recipe={recipe}
-        imageSrc={imgSrc}
-      />
-    </div>
+  <RecipeData filters={filters} recipe={recipe} imageSrc={imgSrc} />
+</div>
   );
 }

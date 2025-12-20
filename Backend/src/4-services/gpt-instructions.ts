@@ -500,8 +500,13 @@ The example numbers below MUST be replaced with realistic values that follow rul
 - "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
   The serving count is provided only in "amountOfServings".
 - When calculating protein level, return the actual real-life accurate protein level **per 100 grams** and do not make up random values.
-- When calculating sugar, return the number of **tablespoons of sugar per 100 grams** of the final dish, rounded to sensible home-kitchen values (never tiny fake numbers like 0.01).
+- When calculating sugar, return ONLY the amount of ADDED sugar.
+- If sugarRestriction indicates "no sugar":
+  - Do NOT add sugar, honey, syrups, or sweeteners.
+  - Set sugar value to 0 tablespoons.
 
+
+  
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.
 2. Preheat a 25 cm non-stick skillet over medium-high heat (about 190°C).

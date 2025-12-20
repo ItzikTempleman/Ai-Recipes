@@ -14,19 +14,17 @@ position: relative;
 
 .ClearFormDiv {
   position: absolute;
-  top:16px;
-  right:16px;
-  width: auto;
+  top: 16px;
+  right: 16px; 
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
-
-.rtl .ClearFormDiv {
+.ClearFormDiv.rtl {
   right: auto;
-  left: 16px;
+  left: 16px; 
 }
 
 @media (max-width: 600px) {

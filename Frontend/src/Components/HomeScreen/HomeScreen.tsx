@@ -12,7 +12,8 @@ export function HomeScreen() {
   useTitle("Home");
   const { items } = useSelector((state: AppState) => state.recipes);
   const user = useSelector((state: AppState) => state.user);
-  const { t } = useTranslation();
+const { t, i18n } = useTranslation();
+const isRTL = (i18n.language ?? "").startsWith("he");
 
   useEffect(() => {
     recipeService.getAllRecipes();
@@ -24,24 +25,26 @@ export function HomeScreen() {
   return (
     <div className="HomeScreen">
 
-{user ? (
-  list.length === 0 ? (
-    <div className="HomeScreenTitleContainer">
-      <h2 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h2>
-    </div>
+<div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
+  {user ? (
+    list.length === 0 ? (
+      <div className="HomeScreenTitleContainer">
+        <h2 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h2>
+      </div>
+    ) : (
+      <div className="HomeScreenTitleContainer">
+        <h2 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h2>
+      </div>
+    )
   ) : (
     <div className="HomeScreenTitleContainer">
-      <h2 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h2>
+      <div className="GuestNotice">
+        <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
+        <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
+      </div>
     </div>
-  )
-) : (
-  <div className="HomeScreenTitleContainer">
-    <div className="GuestNotice">
-      <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
-      <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
-    </div>
-  </div>
-)}
+  )}
+</div>
 
       <div className="RecipeList">
         {user && list.length > 0

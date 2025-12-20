@@ -173,8 +173,8 @@ guestNoticeLine2: "Log in to save or view history."
       homeScreen: {
        recentlyViewed:"נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
-      guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר.",
-guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה."
+      guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
+guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
 
       about: {
