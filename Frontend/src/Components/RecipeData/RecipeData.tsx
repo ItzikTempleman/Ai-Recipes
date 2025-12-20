@@ -145,39 +145,41 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-        <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-          {isRTL ? "מצרכים" : "Ingredients"}
-        </h2>
 
-        {normalizedIngredients.map((line, index) => (
-          <div key={index} className="IngredientRow">
-            <span className="IngredientName">{(line as any).ingredient}</span>
-            <span className="IngredientAmount">{formatAmount((line as any).amount) ?? ""}</span>
-          </div>
-        ))}
+      <div className="RecipeStepsWide">
+      <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
+        <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+          <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+            {isRTL ? "מצרכים" : "Ingredients"}
+          </h2>
+
+          {normalizedIngredients.map((line, index) => (
+            <div key={index} className="IngredientRow">
+              <span className="IngredientName">{(line as any).ingredient}</span>
+              <span className="IngredientAmount">{formatAmount((line as any).amount) ?? ""}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="InstructionsList">
+          <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+            {isRTL ? "הוראות הכנה" : "Instructions"}
+          </h2>
+
+          <ol className={`instructions-list ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+            {instructions
+              .map((s) => String(s ?? "").trim())
+              .filter((s) => s.length > 0)
+              .map((step, index, arr) => (
+                <li key={index}>
+                  {step}
+                  {index !== arr.length - 1 && <hr className="divider" />}
+                </li>
+              ))}
+          </ol>
+        </div>
       </div>
-
-      <div className="InstructionsList">
-        <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-          {isRTL ? "הוראות הכנה" : "Instructions"}
-        </h2>
-
-<ol
-  className={`instructions-list ${isRTL ? "rtl" : "ltr"}`}
-  dir={isRTL ? "rtl" : "ltr"}
->
-  {instructions
-    .map((s) => String(s ?? "").trim())
-    .filter((s) => s.length > 0)
-    .map((step, index, arr) => (
-      <li key={index}>
-        {step}
-        {index !== arr.length - 1 && <hr className="divider" />}
-      </li>
-    ))}
-</ol>
-      </div>
+    </div>
     </div>
   );
 }

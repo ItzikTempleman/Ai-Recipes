@@ -83,7 +83,7 @@
   width: 400px;
   height: 3px;
   border-radius: 180px;
-  background: linear-gradient(90deg, white, #03517a);
+  background: #03517a;
   opacity: 0.7;
 }
 

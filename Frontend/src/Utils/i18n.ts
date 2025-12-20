@@ -188,12 +188,12 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
 
       generate: {
-        title: "אז מה אוכלים היום?",
+        title: "?אז מה אוכלים היום",
         quantitySelector:"עבור כמה סועדים",
         labelGenerate: "צור מתכון",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
-        excludeIngredient: "הסר רכיבים",
+        excludeIngredient: "הסר רכיבים שאני לא רוצה",
         loadingWithImage: "...מייצר תמונה",
         loadingNoImage: "...מייצר מתכון",
       },

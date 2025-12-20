@@ -4,18 +4,17 @@
   flex-direction: column;
   align-items: stretch;
   text-align: left;
-
 }
+
 .RecipeExtraDataContainer,
 .RecipeBottomExtraDataContainer {
   display: flex;
   width: 100%;
-  flex-wrap: nowrap;      
-  margin-top: 16px; 
-  height: 120px;         
+  flex-wrap: nowrap;
+  margin-top: 16px;
+  height: 120px;
   align-items: stretch;
 }
-
 
 .RecipeImage {
   display: block;
@@ -36,7 +35,7 @@
 .ProteinParent,
 .HealthParent {
   display: flex;
-   height: 100%;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   align-content: center;
@@ -70,16 +69,17 @@
 .CaloriesInnerDiv,
 .SugarAmountInnerDiv,
 .HealthLevelInnerDiv,
-.ProteinInnerDiv,.ProteinInnerDiv>*  {
+.ProteinInnerDiv,
+.ProteinInnerDiv > * {
   display: flex;
   align-items: center;
   font-size: 12px;
 }
 
-.CaloriesInnerDiv>p:first-child,
-.SugarAmountInnerDiv>p:first-child,
-.HealthLevelInnerDiv>p:first-child,
-.ProteinInnerDiv>p:first-child {
+.CaloriesInnerDiv > p:first-child,
+.SugarAmountInnerDiv > p:first-child,
+.HealthLevelInnerDiv > p:first-child,
+.ProteinInnerDiv > p:first-child {
   font-size: 16px;
   padding-right: 4px;
 }
@@ -111,19 +111,48 @@ html[dir="rtl"] .FiltersRow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 16px;     
-  min-height: 32px;      
+  padding: 4px 16px;
+  min-height: 32px;
   border-radius: 8px;
-  font-size: 18px;     
-font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
   line-height: 1;
-background: rgb(240, 235, 220);
+  background: rgb(240, 235, 220);
   border: 2px solid #f0b43a;
   color: #f0b43a;
   user-select: none;
   white-space: nowrap;
 }
 
+
+.RecipeStepsGrid {
+  width: 100%;
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .RecipeStepsGrid {
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-start;
+    width: 100%;
+    gap: 40px;
+  }
+
+  .RecipeStepsGrid.rtl {
+    flex-direction: row-reverse; 
+  }
+
+  .RecipeStepsGrid > .IngredientsList,
+  .RecipeStepsGrid > .InstructionsList {
+    width: 50%;
+  }
+
+ 
+  .RecipeStepsGrid > .IngredientsList {
+    margin-top: 0;
+  }
+}
 
 .IngredientsList,
 .InstructionsList {
@@ -174,17 +203,32 @@ background: rgb(240, 235, 220);
   text-align: right;
 }
 
-.instructions-list{
+.instructions-list {
   margin: 0;
-  padding: 0;                 
+  padding: 0;
   list-style-position: inside;
 }
 
 .instructions-list.ltr {
   direction: ltr;
   text-align: left;
-
   padding-right: 0;
+  list-style-position: inside;
+}
+
+.instructions-list.rtl {
+  direction: rtl;
+  text-align: right;
+  padding-left: 0;
+}
+.RecipeStepsWide {
+  width: 100%;
+}
+
+
+.instructions-list.rtl li {
+  direction: rtl;
+  text-align: right;
   list-style-position: inside;
 }
 
@@ -206,19 +250,35 @@ background: rgb(240, 235, 220);
 .InstructionsTitle.ltr,
 .IngredientsTitle.rtl,
 .IngredientsTitle.ltr {
-  color: #0f7394
+  color: #0f7394;
 }
 
-.instructions-list.rtl {
-  direction: rtl;
-  text-align: right;
-  padding-left: 0;
-}
+@media (min-width: 900px) {
 
-.instructions-list.rtl li {
-  direction: rtl;
-  text-align: right;
-  list-style-position: inside;
+    .RecipeStepsWide {
+    margin-top: 60px;
+    width: 96vw;
+    max-width: 1600px;
+    margin-left: calc(50% - 48vw);
+    margin-right: 0;
+    transform: none;
+  }
+
+  .RecipeStepsGrid {
+    position: relative; 
+  }
+
+  .RecipeStepsGrid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateX(-0.5px);
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 600px) {
@@ -235,9 +295,8 @@ background: rgb(240, 235, 220);
     font-size: 0.9rem;
   }
 
-  .SugarAmountInnerDiv>p:last-child,
-  .ProteinInnerDiv>p:last-child {
+  .SugarAmountInnerDiv > p:last-child,
+  .ProteinInnerDiv > p:last-child {
     font-size: 10px !important;
   }
-
 }
