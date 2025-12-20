@@ -87,6 +87,7 @@ i18n.changeLanguage(lang);
                                         <p>{t("drawer.login")}</p>
                                     </div>
                                 </NavLink>
+                                     <div className="Divider"></div>
                             </div>
                         )}
 
@@ -96,11 +97,11 @@ i18n.changeLanguage(lang);
                                 <h4>{t("drawer.about")}</h4>
                             </div>
                         </NavLink>
-
+                        <div className="Divider"></div>
                         <div className="LanguageRow">
                             <div className="SelectLanguage">
                                 <LanguageIcon />
-                                <h4>{t("drawer.selectLanguage")}</h4>
+                             
                             </div>
 
                             <div>

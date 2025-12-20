@@ -20,6 +20,14 @@
   flex-direction: column;
 
 }
+.InputData.rtl {
+  flex-direction: row-reverse;
+}
+
+.InputData.rtl .BtnIcon {
+  margin-left: 0;
+  margin-right: 12px;
+}
 
 .small-loading .MuiCircularProgress-root {
   width: 26px !important;
@@ -146,15 +154,22 @@
   text-align: center;
 }
 
-.RectangularBtn {
-  border-radius: 8px;
-  width: auto;
-
+.GenerateBtn {
+  border-radius: 180px;
+  border: 2px solid #f0b43a !important;
+  width: 36px;
+  height: 36px;
+    background-color: #f3ebdc !important;
 }
 
 .BtnIcon {
-  margin-left: 12px;
   color: #f0b43a;
+}
+
+
+.GenerateBtn:hover {
+  cursor: pointer;
+  background-color: #efe4d5 !important;
 }
 
 .ExcludedSection {

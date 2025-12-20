@@ -21,8 +21,8 @@ const resources = {
       homeScreen: {
         recentlyViewed:"Recently viewed",
         noRecipes: "Blank history",
-    guestNoticeLine1: "Generate recipes freely.",
-guestNoticeLine2: "Log in to save or view history."
+    guestNoticeLine1: "Generate recipes freely",
+guestNoticeLine2: "Log in to save or view history"
       },
       about: {
         title: "About this site",
@@ -194,7 +194,7 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
         excludeIngredient: "הסר רכיבים",
-        loadingWithImage: "מייצר תמונה...",
+        loadingWithImage: "מייצר תמונה",
         loadingNoImage: "מייצר מתכון",
       },
 
@@ -302,8 +302,8 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
       units: {
         gramShort: "ג",
-        tbspShort: "כפות",
-        per100g: "| 100ג",
+        tbspShort: "כפיות",
+        per100g: "|ג 100",
         minuteShort: "דק׳",
       },
 

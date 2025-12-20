@@ -1,7 +1,7 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 
@@ -25,7 +25,7 @@ type RecipeStateType = {
 };
 
 export function GenerateScreen() {
-const { t } = useTranslation();
+
 
   useTitle("Generate");
   const [filtersResetKey, setFiltersResetKey] = useState(0);
@@ -42,6 +42,16 @@ const { t } = useTranslation();
       },
     }
   );
+const { t, i18n } = useTranslation();
+
+const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
+
+  useEffect(() => {
+    const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
+    i18n.on("languageChanged", onLangChange);
+    return () => i18n.off("languageChanged", onLangChange);
+  }, [i18n]);
+
 
   const [initialQuantity, setQuantity] = useState(1);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
@@ -87,7 +97,7 @@ const { t } = useTranslation();
         </h2>
       </div>
         <form onSubmit={handleSubmit(send)}>
-          <div className="InputData">
+        <div className={`InputData ${isRTL ? "rtl" : ""}`}>
             <TextField
               className="SearchTF"
               size="small"
@@ -103,14 +113,12 @@ const { t } = useTranslation();
                 <Box><CircularProgress /></Box>
               </IconButton>
             ) : (
-              <Button
-                variant="contained"
-                className="RectangularBtn"
+              <IconButton
+                className="GenerateBtn"
                 type="submit"
-                aria-label="search"
                 disabled={loading}>
-                {t("generate.go")} <AutoAwesome className="BtnIcon" />
-              </Button>
+                <AutoAwesome className="BtnIcon" />
+              </IconButton>
             )}
           </div>
           {

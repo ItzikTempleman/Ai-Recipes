@@ -344,16 +344,27 @@ YOU MUST:
      - Real-life accurate grams of protein **per 100 grams of the final dish** (not for the whole recipe).
      - Use realistic values based on typical nutrition data for the ingredients; do NOT just invent random numbers.
 
-    - "totalSugar":
-     - An integer from 0 to 10 describing how sugary / refined-carb-heavy the dish is **per 100 grams**.
-     - 0 = essentially no sugars or refined starches (plain steak, plain eggs, pure oil).
-     - 10 = extremely sugary or refined (frosting, candy, very sweet desserts).
-     - Count both added sugars (white sugar, brown sugar, honey, syrups, etc.)
-       AND refined starches like white flour that behave like sugar in the body.
-     - For bread, pita, pizza, enriched doughs, pastries, etc., this value must NOT be 0.
-     - Use realistic relative values:
-       - Plain white pita bread or pizza dough should usually be around 3–6.
-       - Very sweet cakes, cookies or desserts should be higher than plain breads.
+- "totalSugar":
+  - The TOTAL amount of **ADDED SUGAR** in the entire recipe, measured in **TABLESPOONS**.
+  - Count ALL added sugar used anywhere in the recipe, including:
+      • doughs (e.g. pizza dough)
+      • sauces
+      • marinades
+      • fillings
+  - Added sugar includes:
+      • white sugar, brown sugar
+      • honey, syrups, molasses
+      • coconut sugar and similar sugars
+  - Do NOT count naturally occurring sugars in ingredients
+    (e.g. lactose in milk, sugars naturally present in vegetables).
+  - If SugarRestriction = 2 (NONE):
+      • Do NOT include sugar in any ingredient.
+      • Set "totalSugar" = 0.
+  - If a sugar replacement is used:
+      • It must NOT be sugar.
+      • It must be explicitly named as a dietary sweetener
+        (e.g. "סוכרזית", "סטיביה", "ממתיק מלאכותי"),
+      • AND it must NOT increase "totalSugar".
 
    - "healthLevel":
      - An integer from 0 to 10 describing overall healthiness.
@@ -500,11 +511,12 @@ The example numbers below MUST be replaced with realistic values that follow rul
 - "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
   The serving count is provided only in "amountOfServings".
 - When calculating protein level, return the actual real-life accurate protein level **per 100 grams** and do not make up random values.
-- When calculating sugar, return ONLY the amount of ADDED sugar.
-- If sugarRestriction indicates "no sugar":
-  - Do NOT add sugar, honey, syrups, or sweeteners.
-  - Set sugar value to 0 tablespoons.
-
+When calculating sugar:
+ - "totalSugar" is the TOTAL ADDED sugar in the entire recipe, in TABLESPOONS.
+ - If SugarRestriction = 2 (NONE):
+    • Do NOT add sugar in any ingredient.
+    • Set "totalSugar" = 0.
+ - If a dietary sweetener is used (e.g. סוכרזית/סטיביה/ממתיק מלאכותי), it must be named explicitly and must NOT increase "totalSugar".
 
   
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
