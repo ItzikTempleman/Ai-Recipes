@@ -19,10 +19,10 @@ const resources = {
         login: "Log in",
       },
       homeScreen: {
-        recentlyViewed:"Recently viewed",
+        recentlyViewed: "Recently viewed",
         noRecipes: "Blank history",
-    guestNoticeLine1: "Generate recipes freely",
-guestNoticeLine2: "Log in to save or view history"
+        guestNoticeLine1: "Generate recipes freely",
+        guestNoticeLine2: "Log in to save or view history"
       },
       about: {
         title: "About this site",
@@ -36,7 +36,7 @@ guestNoticeLine2: "Log in to save or view history"
       generate: {
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
-        quantitySelector:"How many servings",
+        quantitySelector: "How many servings",
         requiredTitle: "title is required",
         go: "Go",
         excludeIngredient: "Exclude ingredients",
@@ -126,6 +126,7 @@ guestNoticeLine2: "Log in to save or view history"
         imageUpdated: "Profile image updated",
       },
       recipeUi: {
+        loadImage: "Load image",
         clear: "Clear",
         showRecipe: "Show Recipe",
         back: "Back",
@@ -172,10 +173,10 @@ guestNoticeLine2: "Log in to save or view history"
       },
 
       homeScreen: {
-       recentlyViewed:"נצפו לאחרונה",
+        recentlyViewed: "נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
-      guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
-guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
+        guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
+        guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
 
       about: {
@@ -190,7 +191,7 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
 
       generate: {
         title: "?אז מה אוכלים היום",
-        quantitySelector:"עבור כמה סועדים",
+        quantitySelector: "עבור כמה סועדים",
         labelGenerate: "צור מתכון",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
@@ -287,6 +288,7 @@ guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
 
       recipeUi: {
+        loadImage: "טען תמונה",
         clear: "נקה",
         showRecipe: "הצג מתכון",
         back: "חזרה",

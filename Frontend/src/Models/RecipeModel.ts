@@ -32,6 +32,7 @@ export type RecipeModel = {
     queryRestrictions?: QueryRestrictions;
     image?: File;
     imageUrl?: string;
+    imageName?: string | null; 
     userId?: number;
     prepTime?: number;
     difficultyLevel?: DifficultyLevel;

@@ -7,24 +7,43 @@ import { FilterBadges } from "../Filters/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { RecipeModel } from "../../Models/RecipeModel";
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
+import { Button } from "@mui/material";
 
 type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
   filters?: Filters;
+  loadImage: (recipe: RecipeModel) => Promise<RecipeModel>; 
 };
 
-export function RecipeData({ recipe, imageSrc, filters }: RecipeProps) {
-const { t, i18n } = useTranslation();
+export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps) {
+  const { t, i18n } = useTranslation();
 
-const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
-const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+ const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
 
-useEffect(() => {
-  const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
-  i18n.on("languageChanged", onLangChange);
-  return () => i18n.off("languageChanged", onLangChange);
-}, [i18n]);
+ useEffect(() => {
+    setLocalImgSrc(imageSrc);
+  }, [imageSrc]);
+
+    const handleLoadImage = async () => {
+    try {
+      const updated = await loadImage(recipe);
+      const url = (updated.imageUrl ?? "").trim();
+      setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
+  useEffect(() => {
+    const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
+    i18n.on("languageChanged", onLangChange);
+    return () => i18n.off("languageChanged", onLangChange);
+  }, [i18n]);
 
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
   const ingredients = recipe.data?.ingredients ?? [];
@@ -64,18 +83,23 @@ useEffect(() => {
         {recipe.description}
       </p>
 
-      {imageSrc && (
+<>
+      {localImgSrc ? (
         <img
           className="RecipeImage"
-          src={imageSrc}
+          src={localImgSrc}
           alt={recipe.title}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = "";
-          }}
+          onError={(e) => ((e.currentTarget as HTMLImageElement).src = "")}
         />
+      ) : (
+        <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+          <ImageSearchIcon />
+          {t("recipeUi.loadImage")}
+        </Button>
       )}
+    </>
 
-<FilterBadges filters={filters} isRTL={isRTL} />
+      <FilterBadges filters={filters} isRTL={isRTL} />
 
       <div className="RecipeExtraDataContainer">
         <div className="CaloryParent">
@@ -103,18 +127,18 @@ useEffect(() => {
         <div className="ProteinParent">
           <p>{t("recipeUi.protein")}</p>
           <div className="ProteinAmountDiv">
-            <img className="ProteinIcon" src="/protein.png"  />
+            <img className="ProteinIcon" src="/protein.png" />
             <div className="ProteinInnerDiv">
               <p>{recipe.totalProtein} {t("units.per100g")} </p>
-        
+
             </div>
           </div>
         </div>
 
         <div className="HealthParent">
-        <p>{t("recipeUi.health")}</p>
+          <p>{t("recipeUi.health")}</p>
           <div className="HealthLevelDiv">
-            <img className="HealthIcon" src="/health.png"/>
+            <img className="HealthIcon" src="/health.png" />
             <div className="HealthLevelInnerDiv">
               <p>{recipe.healthLevel}</p>
               <p> / 10</p>
@@ -130,7 +154,7 @@ useEffect(() => {
         </div>
 
         <div className="PrepTimeParent">
-          <img className="ExtraDataImg" src={"/clock.png"}/>
+          <img className="ExtraDataImg" src={"/clock.png"} />
           <p>{recipe.prepTime} {t("units.minuteShort")} </p>
         </div>
 
@@ -140,46 +164,46 @@ useEffect(() => {
         </div>
 
         <div className="DifficultyParent">
-          <img className="ExtraDataImg" src={difficulty.icon}/>
+          <img className="ExtraDataImg" src={difficulty.icon} />
           <p>{t(difficulty.labelKey)}</p>
         </div>
       </div>
 
 
       <div className="RecipeStepsWide">
-      <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
-        <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-          <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-            {isRTL ? "מצרכים" : "Ingredients"}
-          </h2>
+        <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
+          <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+            <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+              {isRTL ? "מצרכים" : "Ingredients"}
+            </h2>
 
-          {normalizedIngredients.map((line, index) => (
-            <div key={index} className="IngredientRow">
-              <span className="IngredientName">{(line as any).ingredient}</span>
-              <span className="IngredientAmount">{formatAmount((line as any).amount) ?? ""}</span>
-            </div>
-          ))}
-        </div>
+            {normalizedIngredients.map((line, index) => (
+              <div key={index} className="IngredientRow">
+                <span className="IngredientName">{(line as any).ingredient}</span>
+                <span className="IngredientAmount">{formatAmount((line as any).amount) ?? ""}</span>
+              </div>
+            ))}
+          </div>
 
-        <div className="InstructionsList">
-          <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-            {isRTL ? "הוראות הכנה" : "Instructions"}
-          </h2>
+          <div className="InstructionsList">
+            <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+              {isRTL ? "הוראות הכנה" : "Instructions"}
+            </h2>
 
-          <ol className={`instructions-list ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-            {instructions
-              .map((s) => String(s ?? "").trim())
-              .filter((s) => s.length > 0)
-              .map((step, index, arr) => (
-                <li className="InstructionLi" key={index}>
-                  {step}
-                  {index !== arr.length - 1}
-                </li>
-              ))}
-          </ol>
+            <ol className={`instructions-list ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+              {instructions
+                .map((s) => String(s ?? "").trim())
+                .filter((s) => s.length > 0)
+                .map((step, index, arr) => (
+                  <li className="InstructionLi" key={index}>
+                    {step}
+                    {index !== arr.length - 1}
+                  </li>
+                ))}
+            </ol>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

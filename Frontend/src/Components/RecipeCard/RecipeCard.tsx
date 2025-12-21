@@ -8,17 +8,19 @@ import { useTranslation } from "react-i18next";
 
 export type Filters = {
   sugarLevel: SugarRestriction;
-  hasLactose: LactoseRestrictions,
-  hasGluten: GlutenRestrictions,
-  dietType: DietaryRestrictions
+  hasLactose: LactoseRestrictions;
+  hasGluten: GlutenRestrictions;
+  dietType: DietaryRestrictions;
+  
 }
 
 type RecipeProps = {
-  recipe: RecipeModel,
-  filters: Filters
+  recipe: RecipeModel;
+  filters: Filters;
+loadImage: (recipe: RecipeModel) => Promise<RecipeModel>;
 };
 
-export function RecipeCard({ recipe, filters }: RecipeProps) {
+export function RecipeCard({ recipe, filters ,loadImage}: RecipeProps) {
 const {i18n } = useTranslation();
  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
@@ -49,7 +51,7 @@ const {i18n } = useTranslation();
     ❌
   </div>
 
-  <RecipeData filters={filters} recipe={recipe} imageSrc={imgSrc} />
+  <RecipeData filters={filters} recipe={recipe} imageSrc={imgSrc} loadImage={loadImage} />
 </div>
   );
 }

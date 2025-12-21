@@ -58,6 +58,18 @@ class RecipeService {
     }
   }
 
+  public async generateImageForSavedRecipe(recipeId: number): Promise<RecipeModel> {
+    const url = `${appConfig.getSingleRecipeUrl}${recipeId}/generate-image`;
+    const { data } = await axios.post<RecipeModel>(url, {}, this.getAuth());
+    return data;
+  }
+
+  public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: string; imageName?: string }> {
+    const url = `${appConfig.getSingleRecipeUrl}generate-image-preview`;
+    const { data } = await axios.post(url, recipe, this.getAuth());
+    return data;
+  }
+
   public async getAllRecipes(): Promise<RecipeModel[]> {
     const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
     const list = Array.isArray(data) ? data : [];
@@ -78,36 +90,36 @@ class RecipeService {
 
 
   public async likeRecipe(recipeId: number): Promise<void> {
-        try {
-            await axios.post(appConfig.likeUrl + recipeId,{}, this.getAuth());
-            const userId = store.getState().user?.id;
-             if (!userId) return;
-             store.dispatch(like({ userId, recipeId }));
-        } catch (err: any) {
-            throw new Error(err?.response?.data ?? err.message ?? "Like failed");
-        }
+    try {
+      await axios.post(appConfig.likeUrl + recipeId, {}, this.getAuth());
+      const userId = store.getState().user?.id;
+      if (!userId) return;
+      store.dispatch(like({ userId, recipeId }));
+    } catch (err: any) {
+      throw new Error(err?.response?.data ?? err.message ?? "Like failed");
+    }
   }
 
   public async unLikeRecipe(recipeId: number): Promise<void> {
-        try {
-            await axios.delete(appConfig.likeUrl + recipeId, this.getAuth());
-               const userId = store.getState().user?.id;
-    if (!userId) return;
-    
-            store.dispatch(unlike({ userId, recipeId }));
-        } catch (err: any) {
-            throw new Error(err?.response?.data ?? err.message ?? "Unlike failed");
-        }
+    try {
+      await axios.delete(appConfig.likeUrl + recipeId, this.getAuth());
+      const userId = store.getState().user?.id;
+      if (!userId) return;
+
+      store.dispatch(unlike({ userId, recipeId }));
+    } catch (err: any) {
+      throw new Error(err?.response?.data ?? err.message ?? "Unlike failed");
+    }
   }
-  
+
   public async loadMyLikes(): Promise<void> {
-  const userId = store.getState().user?.id;
-  if (!userId) return;
+    const userId = store.getState().user?.id;
+    if (!userId) return;
 
-  const { data } = await axios.get<number[]>(appConfig.likeUrl, this.getAuth());
+    const { data } = await axios.get<number[]>(appConfig.likeUrl, this.getAuth());
 
-  store.dispatch(setLikes(data.map(recipeId => ({ userId, recipeId }))));
-}
+    store.dispatch(setLikes(data.map(recipeId => ({ userId, recipeId }))));
+  }
 }
 
 export const recipeService = new RecipeService();

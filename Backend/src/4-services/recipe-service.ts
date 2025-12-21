@@ -35,6 +35,13 @@ class RecipeService {
     return { ...data, amountOfServings: input.quantity };
   }
 
+public async setRecipeImageName(recipeId: number, userId: number, imageName: string):Promise<void>{
+  const sql = "update recipe set imageName=? where id=? and userId=?";
+  const values = [imageName, recipeId, userId];
+  const info = await dal.execute(sql, values) as OkPacketParams;
+    if (info.affectedRows === 0) throw new ResourceNotFound(recipeId);
+}
+
   public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
     const sql = "select * from recipe where userId = ?";
     const values = [userId];

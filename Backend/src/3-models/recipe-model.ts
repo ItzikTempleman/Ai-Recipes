@@ -28,7 +28,8 @@ export type GeneratedRecipeData = {
 };
 
 export enum DifficultyLevel {
-    EASY, MID_LEVEL, PRO
+    EASY, MID_LEVEL, PRO,
+    DEFAULT
 }
 export type Query = {
     systemCommandDescription: string;

@@ -15,7 +15,7 @@ import { ImageSwitch } from "../Filters/ImageSwitch";
 import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
-import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
+import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -59,6 +59,22 @@ const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
 
+
+async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
+  if (recipe.id) {
+
+    const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
+    return updated;
+  }
+
+  const preview = await recipeService.generateImagePreview(recipe);
+
+  return {
+    ...recipe,
+    imageUrl: preview.imageUrl,
+    imageName: preview.imageName ?? recipe.imageName ?? null,
+  };
+}
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
@@ -202,7 +218,7 @@ setAppliedFilters(used);
       {
         recipe && (
           <div className="CenterRow">
-            <RecipeCard recipe={recipe} filters={appliedFilters} />
+            <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage}/>
           </div>
         )
       }

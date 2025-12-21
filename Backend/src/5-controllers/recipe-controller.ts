@@ -22,6 +22,8 @@ class RecipeController {
     //this.router.get("/api/recipes/liked/count/:recipeId", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
     this.router.get("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.isRecipeLikedByUser);
     this.router.get("/api/recipes/liked", verificationMiddleware.verifyLoggedIn, this.getMyLikedRecipeIds);
+    this.router.post("/api/recipes/:recipeId/generate-image", verificationMiddleware.verifyLoggedIn, this.generateImageForSavedRecipe);
+    this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
   };
 
   private async getRecipes(request: Request, response: Response) {
@@ -104,19 +106,19 @@ class RecipeController {
     const data = await recipeService.generateInstructions(inputModel, true);
 
     const { fileName, url } = await generateImage({
-  query: inputModel.query,
-  quantity,
-  sugarRestriction: inputModel.sugarRestriction,
-  lactoseRestrictions: inputModel.lactoseRestrictions,
-  glutenRestrictions: inputModel.glutenRestrictions,
-  dietaryRestrictions: inputModel.dietaryRestrictions,
-  caloryRestrictions: inputModel.caloryRestrictions,
-  queryRestrictions: inputModel.queryRestrictions,
-  title: data.title,
-  description: data.description,
-  ingredients: data.ingredients,
-  instructions: data.instructions
-});
+      query: inputModel.query,
+      quantity,
+      sugarRestriction: inputModel.sugarRestriction,
+      lactoseRestrictions: inputModel.lactoseRestrictions,
+      glutenRestrictions: inputModel.glutenRestrictions,
+      dietaryRestrictions: inputModel.dietaryRestrictions,
+      caloryRestrictions: inputModel.caloryRestrictions,
+      queryRestrictions: inputModel.queryRestrictions,
+      title: data.title,
+      description: data.description,
+      ingredients: data.ingredients,
+      instructions: data.instructions
+    });
 
     const fullRecipe = new FullRecipeModel({
       title: data.title,
@@ -151,6 +153,62 @@ class RecipeController {
     response.status(StatusCode.OK).json(fullRecipe);
   }
 
+private async generateImageForSavedRecipe(request: Request, response: Response){
+  const user = (request as any).user as UserModel;
+  const recipeId = Number(request.params.recipeId);
+  const recipe = await recipeService.getSingleRecipe(recipeId, user.id);
+    if (recipe.imageName && recipe.imageName.trim() !== "") {
+    response.json(recipe);
+    return;
+  }
+  const { fileName, url } = await generateImage({
+    query: recipe.title, 
+    quantity: recipe.amountOfServings,
+    sugarRestriction: recipe.sugarRestriction,
+    lactoseRestrictions: recipe.lactoseRestrictions,
+    glutenRestrictions: recipe.glutenRestrictions,
+    dietaryRestrictions: recipe.dietaryRestrictions,
+    caloryRestrictions: recipe.caloryRestrictions,
+    queryRestrictions: recipe.queryRestrictions,
+    title: recipe.title,
+    description: recipe.description,
+    ingredients: recipe.data?.ingredients ?? [],
+    instructions: recipe.data?.instructions ?? []
+  });
+  await recipeService.setRecipeImageName(recipeId, user.id, fileName);
+  const updated = await recipeService.getSingleRecipe(recipeId, user.id);
+  updated.imageUrl = url; 
+  response.status(StatusCode.OK).json(updated);
+}
+
+private async generateImagePreview(request: Request, response: Response){
+  const body = request.body ?? {};
+  const title = String(body.title ?? "").trim();
+  const description = String(body.description ?? "").trim();
+  const amountOfServings = Number(body.amountOfServings ?? 1) || 1;
+  if (!title) {
+    response.status(StatusCode.BadRequest).send("Missing recipe title");
+    return;
+  }
+  const ingredients = body.data?.ingredients ?? body.ingredients ?? [];
+  const instructions = body.data?.instructions ?? body.instructions ?? [];
+  const { fileName, url } = await generateImage({
+    query: title,
+    quantity: amountOfServings,
+    sugarRestriction: body.sugarRestriction,
+    lactoseRestrictions: body.lactoseRestrictions,
+    glutenRestrictions: body.glutenRestrictions,
+    dietaryRestrictions: body.dietaryRestrictions,
+    caloryRestrictions: body.caloryRestrictions,
+    queryRestrictions: body.queryRestrictions ?? [],
+    title,
+    description,
+    ingredients,
+    instructions
+  });
+  response.status(StatusCode.OK).json({ imageName: fileName, imageUrl: url });
+}
+
   private async getImageFile(request: Request, response: Response) {
     try {
       const { fileName } = request.params;
@@ -180,20 +238,14 @@ class RecipeController {
   // }
 
   private async getMyLikedRecipeIds(request: Request, response: Response) {
-  const userId = (request as any).user.id;
-  const recipeIds = await recipeService.getLikedRecipeIdsByUser(userId);
-  response.status(StatusCode.OK).json(recipeIds);
-}
+    const userId = (request as any).user.id;
+    const recipeIds = await recipeService.getLikedRecipeIdsByUser(userId);
+    response.status(StatusCode.OK).json(recipeIds);
+  }
 
   public async isRecipeLikedByUser(request: Request, response: Response) {
     const userId = (request as any).user.id;
     const recipeId = Number(request.params.recipeId);
-    if (Number.isNaN(recipeId) || recipeId <= 0) {
-      response
-        .status(StatusCode.BadRequest)
-        .send("Route param recipe id must be a positive number");
-      return;
-    }
     const isRecipeLiked = await recipeService.isRecipeLikedByUser(userId, recipeId);
     response.status(StatusCode.OK).json(isRecipeLiked);
   }
