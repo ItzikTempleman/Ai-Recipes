@@ -1,34 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 type Props = {
   onChange: (hasImage: boolean) => void;
+  defaultHasImage?: boolean;
 };
 
-type Mode = "Full" | "No Image";
+type Mode = "No Image" | "Full";
 
-export function ImageSwitch(
-  { onChange }: Props) {
-  const [mode, setMode] = useState<Mode>("Full");
- const { t } = useTranslation();
+export function ImageSwitch({ onChange, defaultHasImage = false }: Props) {
+  const { t } = useTranslation();
+
+  const [mode, setMode] = useState<Mode>(defaultHasImage ? "Full" : "No Image");
+
+  useEffect(() => {
+    onChange(defaultHasImage);
+  }, [defaultHasImage, onChange]);
+
   function handleChange(_: React.MouseEvent<HTMLElement>, selected: Mode | null) {
     if (!selected) return;
+
     setMode(selected);
-        const hasImage = selected === "Full";
+
+    const hasImage = selected === "Full";
     onChange(hasImage);
   }
 
   return (
-    <div>
-      <ToggleButtonGroup
-        value={mode}
-        exclusive
-        onChange={handleChange}
-       >
-        <ToggleButton value="Full" >{t("filters.image.withImage")}</ToggleButton>
-        <ToggleButton value="No Image" >{t("filters.image.noImage")}</ToggleButton>
-      </ToggleButtonGroup>
-    </div>
+    <ToggleButtonGroup value={mode} exclusive onChange={handleChange}>
+      <ToggleButton value="No Image">{t("filters.image.noImage")}</ToggleButton>
+      <ToggleButton value="Full">{t("filters.image.withImage")}</ToggleButton>
+    </ToggleButtonGroup>
   );
 }

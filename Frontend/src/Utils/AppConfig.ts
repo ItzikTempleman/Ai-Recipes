@@ -5,6 +5,10 @@ class AppConfig {
   public readonly generateFullRecipeUrl = `${API}/generate-recipe-with-image`;
   public readonly getAllRecipesUrl = `${API}/recipes/all`;
   public readonly getSingleRecipeUrl = `${API}/recipe/`;
+
+  public readonly generateImageForSavedRecipeUrl = `${API}/recipes/`;
+  public readonly generateImagePreviewUrl = `${API}/recipes/generate-image-preview`;
+
   public readonly registerUrl = `${API}/register/`;
   public readonly loginUrl = `${API}/login/`;
   public readonly userUrl = `${API}/users/`;

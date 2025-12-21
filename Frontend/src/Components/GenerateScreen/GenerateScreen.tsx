@@ -25,7 +25,7 @@ export function GenerateScreen() {
   useTitle("Generate");
   const [filtersResetKey, setFiltersResetKey] = useState(0);
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
-  const [hasImage, setHasImage] = useState(true);
+  const [hasImage, setHasImage] = useState(false);
   const [hasLactose, setHasLactose] = useState(LactoseRestrictions.DEFAULT);
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
@@ -61,8 +61,8 @@ const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
 
 
 async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
+ 
   if (recipe.id) {
-
     const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
     return updated;
   }
@@ -92,7 +92,7 @@ setAppliedFilters(used);
      
      
       setQuantity(1);
-      setHasImage(true);
+      setHasImage(false);
       setSugarLevel(SugarRestriction.DEFAULT);
       setHasLactose(LactoseRestrictions.DEFAULT);
       setHasGluten(GlutenRestrictions.DEFAULT);
@@ -186,7 +186,11 @@ setAppliedFilters(used);
               </div>
             </div>
             <div className="ImageSwitchRow">
-              <ImageSwitch onChange={setHasImage} />
+              <ImageSwitch
+  key={`img-${filtersResetKey}`}  
+  onChange={setHasImage}
+  defaultHasImage={false}
+/>
             </div>
             <div>
               <SugarFilter
@@ -218,11 +222,14 @@ setAppliedFilters(used);
       {
         recipe && (
           <div className="CenterRow">
-            <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage}/>
+<RecipeCard
+  recipe={recipe}
+  filters={appliedFilters}
+  loadImage={loadImage}
+/>
           </div>
         )
       }
     </div>
   );
 }
-

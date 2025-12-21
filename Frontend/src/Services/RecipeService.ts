@@ -58,17 +58,16 @@ class RecipeService {
     }
   }
 
-  public async generateImageForSavedRecipe(recipeId: number): Promise<RecipeModel> {
-    const url = `${appConfig.getSingleRecipeUrl}${recipeId}/generate-image`;
-    const { data } = await axios.post<RecipeModel>(url, {}, this.getAuth());
-    return data;
-  }
-
-  public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: string; imageName?: string }> {
-    const url = `${appConfig.getSingleRecipeUrl}generate-image-preview`;
-    const { data } = await axios.post(url, recipe, this.getAuth());
-    return data;
-  }
+public async generateImageForSavedRecipe(recipeId: number): Promise<RecipeModel> {
+  const url = `${appConfig.generateImageForSavedRecipeUrl}${recipeId}/generate-image`;
+  const { data } = await axios.post<RecipeModel>(url, {}, this.getAuth());
+  return data;
+}
+public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: string; imageName?: string }> {
+  const url = appConfig.generateImagePreviewUrl;
+  const { data } = await axios.post(url, recipe, this.getAuth());
+  return data;
+}
 
   public async getAllRecipes(): Promise<RecipeModel[]> {
     const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { RecipeModel } from "../../Models/RecipeModel";
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
-import { Button } from "@mui/material";
+import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -19,7 +19,7 @@ type RecipeProps = {
 
 export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps) {
   const { t, i18n } = useTranslation();
-
+const [isImageLoading, setIsImageLoading] = useState(false);
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
  const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
@@ -30,12 +30,16 @@ export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps
 
 const handleLoadImage = async () => {
   try {
-    if (!loadImage) return;
+    if (!loadImage || isImageLoading) return;
+    setIsImageLoading(true);
+
     const updated = await loadImage(recipe);
     const url = (updated.imageUrl ?? "").trim();
     setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
   } catch (err) {
     console.error(err);
+  } finally {
+    setIsImageLoading(false);
   }
 };
 
@@ -83,19 +87,24 @@ const handleLoadImage = async () => {
         {recipe.description}
       </p>
 
-
-      {localImgSrc ? (
-        <img
-          className="RecipeImage"
-          src={localImgSrc}
-          alt={recipe.title}
-          onError={(e) => ((e.currentTarget as HTMLImageElement).src = "")}
-        />
-      )  : loadImage ? (
-  <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
-    <ImageSearchIcon />
-    {t("recipeUi.loadImage")}
-  </Button>
+{localImgSrc ? (
+  <img
+    className="RecipeImage"
+    src={localImgSrc}
+    alt={recipe.title}
+    onError={(e) => ((e.currentTarget as HTMLImageElement).src = "")}
+  />
+) : loadImage ? (
+  isImageLoading ? (
+    <IconButton className="RoundedBtn small-loading" edge="end" disabled>
+      <Box><CircularProgress /></Box>
+    </IconButton>
+  ) : (
+    <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+      <ImageSearchIcon />
+      {t("recipeUi.loadImage")}
+    </Button>
+  )
 ) : null}
     
 
