@@ -1,13 +1,17 @@
-
 .MainLayout {
   min-height: 100vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
- background-color: white;
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
+  background: linear-gradient(
+  45deg,
+  #95c6f4 0%,
+  #82a5bf 50%,
+  #e3e3e3 100%
+);
 }
 
 

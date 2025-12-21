@@ -171,9 +171,9 @@ useEffect(() => {
               .map((s) => String(s ?? "").trim())
               .filter((s) => s.length > 0)
               .map((step, index, arr) => (
-                <li key={index}>
+                <li className="InstructionLi" key={index}>
                   {step}
-                  {index !== arr.length - 1 && <hr className="divider" />}
+                  {index !== arr.length - 1}
                 </li>
               ))}
           </ol>

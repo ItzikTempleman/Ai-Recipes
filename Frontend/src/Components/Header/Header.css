@@ -41,25 +41,26 @@
 }
 
 .GenerateScreenLink,
-.HomeScreenLink {
+.HomeScreenLink{
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2px 0;
   font-size: 12px;
   text-decoration: none;
-  color: #232323;
+  color: #2b91d6
 }
 
 .GenerateScreenLink.active,
-.HomeScreenLink.active {
-  color: #22618b;
+.HomeScreenLink.active,
+.Menu svg.active 
+{
+  color: #074975;
   font-weight: bold;
   font-size: 14px;
 }
-
-.Menu svg {
-  color: #22618b;
+.Menu svg  {
+ color: #2b91d6
 }
 
 @media (max-width: 600px) {
