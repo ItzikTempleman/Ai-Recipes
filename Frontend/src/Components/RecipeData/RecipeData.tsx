@@ -14,7 +14,7 @@ type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
   filters?: Filters;
-  loadImage: (recipe: RecipeModel) => Promise<RecipeModel>; 
+  loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
 };
 
 export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps) {
@@ -28,16 +28,16 @@ export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps
     setLocalImgSrc(imageSrc);
   }, [imageSrc]);
 
-    const handleLoadImage = async () => {
-    try {
-      const updated = await loadImage(recipe);
-      const url = (updated.imageUrl ?? "").trim();
-      setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+const handleLoadImage = async () => {
+  try {
+    if (!loadImage) return;
+    const updated = await loadImage(recipe);
+    const url = (updated.imageUrl ?? "").trim();
+    setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
@@ -83,7 +83,7 @@ export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps
         {recipe.description}
       </p>
 
-<>
+
       {localImgSrc ? (
         <img
           className="RecipeImage"
@@ -91,13 +91,13 @@ export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps
           alt={recipe.title}
           onError={(e) => ((e.currentTarget as HTMLImageElement).src = "")}
         />
-      ) : (
-        <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
-          <ImageSearchIcon />
-          {t("recipeUi.loadImage")}
-        </Button>
-      )}
-    </>
+      )  : loadImage ? (
+  <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+    <ImageSearchIcon />
+    {t("recipeUi.loadImage")}
+  </Button>
+) : null}
+    
 
       <FilterBadges filters={filters} isRTL={isRTL} />
 

@@ -17,7 +17,7 @@ export type Filters = {
 type RecipeProps = {
   recipe: RecipeModel;
   filters: Filters;
-loadImage: (recipe: RecipeModel) => Promise<RecipeModel>;
+  loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
 };
 
 export function RecipeCard({ recipe, filters ,loadImage}: RecipeProps) {

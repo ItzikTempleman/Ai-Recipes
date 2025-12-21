@@ -9,14 +9,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../Utils/Utils";
 import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
-type Props = { filters?: Filters };
 
-export function RecipeInfoScreen({ filters }: Props) {
+type Props = { 
+   filters?: Filters;
+  loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
+ };
+
+export function RecipeInfoScreen({ filters, loadImage}: Props) {
   const { t, i18n } = useTranslation();
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
 
-  
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
     i18n.on("languageChanged", onLangChange);
@@ -28,7 +31,6 @@ export function RecipeInfoScreen({ filters }: Props) {
   const recipeId = Number(id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
-
 
   useEffect(() => {
     if (!recipeId) {
@@ -45,7 +47,6 @@ export function RecipeInfoScreen({ filters }: Props) {
     navigate("/home");
   }
 
-  
   if (!recipe) return null;
 
   const filtersFromRecipe: Filters = {
@@ -64,6 +65,7 @@ export function RecipeInfoScreen({ filters }: Props) {
 
       <div className="InfoScreenContainer">
         <RecipeData
+        loadImage={loadImage}
           recipe={recipe}
           imageSrc={(recipe.imageUrl ?? "").trim()}
           filters={filters ?? filtersFromRecipe}
