@@ -65,6 +65,13 @@ All recipes MUST produce real, professional, usable cooking instructions:
     “make the patty” / “cook in a pan” / “add salt” / “assemble and serve”.
 Replace these with full professional descriptions.
 
+
+TOOL / VESSEL NAMING (IMPORTANT):
+- Avoid niche culinary terms that home cooks may not use.
+- If you would normally write "ramekin", replace it with a more everyday term:
+  - Use "small oven-safe dish" (English) / "תבנית קטנה חסינת חום" (Hebrew)
+- Do NOT use the word "ramekin" anywhere in the output (title, description, ingredients, instructions).
+
 Style example:
 1. Combine ingredients in a medium bowl and mix until evenly distributed.
 2. Preheat a 25 cm non-stick skillet over medium-high heat (about 190°C).
