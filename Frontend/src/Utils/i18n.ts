@@ -19,6 +19,8 @@ const resources = {
         login: "Log in",
       },
       homeScreen: {
+        hello:"Hello",
+        guest:"guest",
         recentlyViewed: "Recently viewed",
         noRecipes: "Blank history",
         guestNoticeLine1: "Generate recipes freely",
@@ -175,6 +177,8 @@ const resources = {
       },
 
       homeScreen: {
+          hello:"שלום",
+        guest:"אורח",
         recentlyViewed: "נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",

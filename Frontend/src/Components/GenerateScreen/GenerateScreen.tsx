@@ -2,7 +2,7 @@ import { IconButton, TextField, CircularProgress, Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
+import { resetGenerated } from "../../Redux/RecipeSlice";
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -47,7 +48,7 @@ export function GenerateScreen() {
   const { t, i18n } = useTranslation();
 
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
     i18n.on("languageChanged", onLangChange);
@@ -78,7 +79,7 @@ export function GenerateScreen() {
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
-
+      dispatch(resetGenerated())
       const raw = recipeTitle.excludedIngredients?.[0] ?? "";
       const excludedList = raw
         .split(/[\n,]+/g)

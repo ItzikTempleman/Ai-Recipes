@@ -27,18 +27,24 @@ const isRTL = (i18n.language ?? "").startsWith("he");
 
 <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
   {user ? (
+    
     list.length === 0 ? (
+
       <div className="HomeScreenTitleContainer">
+         <div className="UserHello">{t("homeScreen.hello")} {user.firstName} {user.familyName}</div>
         <h2 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h2>
       </div>
     ) : (
+      
       <div className="HomeScreenTitleContainer">
+
         <h2 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h2>
       </div>
     )
   ) : (
     <div className="HomeScreenTitleContainer">
       <div className="GuestNotice">
+        <div className="GuestHello">{t("homeScreen.hello")} {t("homeScreen.guest")}</div>
         <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
         <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
       </div>

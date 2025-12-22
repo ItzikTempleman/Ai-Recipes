@@ -113,7 +113,7 @@ const normalizedIngredients = (() => {
         />
       ) : loadImage ? (
         isImageLoading ? (
-          <IconButton className="RoundedBtn small-loading" edge="end" disabled>
+          <IconButton className="RoundedBtn large-loading" edge="end" disabled>
             <Box>
               <CircularProgress />
             </Box>

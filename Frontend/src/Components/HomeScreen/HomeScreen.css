@@ -16,7 +16,9 @@
   border-radius: 12px;
   margin-left: 24px;
 }
-
+.UserHello, .GuestHello{
+font-size: 26px;
+}
 
 .HomeScreenTitleWrapper {
   width: 100%;
