@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./Header.css";
 import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import { useEffect, useState } from "react";
-import { Home } from "@mui/icons-material";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { DrawerLayout } from "../DrawerLayout/DrawerLayout";
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +27,7 @@ export function Header() {
       <div className="GeneralNavigation">
         <NavLink to="/home" className="HomeScreenLink">
           <div className="Home">
-            <Home />
+            <HomeOutlinedIcon />
             <p>{t("nav.home")}</p>
           </div>
         </NavLink>

@@ -7,8 +7,9 @@ import { FilterBadges } from "../Filters/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { RecipeModel } from "../../Models/RecipeModel";
-import ImageSearchIcon from '@mui/icons-material/ImageSearch';
+import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
+import { notify } from "../../Utils/Notify";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -17,65 +18,81 @@ type RecipeProps = {
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
 };
 
-export function RecipeData({ recipe, imageSrc, filters , loadImage}: RecipeProps) {
+export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps) {
   const { t, i18n } = useTranslation();
-const [isImageLoading, setIsImageLoading] = useState(false);
-  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
-  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
- const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
+  const [isImageLoading, setIsImageLoading] = useState(false);
 
- useEffect(() => {
-    setLocalImgSrc(imageSrc);
+  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
+
+  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+  const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
+
+  const ingredients = recipe.data?.ingredients ?? [];
+  const instructions = recipe.data?.instructions ?? [];
+
+  const recipeIsHebrew =
+    hasHebrew(recipe.title) ||
+    hasHebrew(recipe.description) ||
+    ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
+    instructions.some((x: any) => hasHebrew(x));
+
+  const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
+  const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
+
+  useEffect(() => {
+    const url = (imageSrc ?? "").trim();
+    setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
   }, [imageSrc]);
 
-const handleLoadImage = async () => {
-  try {
-    if (!loadImage || isImageLoading) return;
-    setIsImageLoading(true);
-
-    const updated = await loadImage(recipe);
-    const url = (updated.imageUrl ?? "").trim();
-    setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setIsImageLoading(false);
-  }
-};
+  const handleLoadImage = async () => {
+    try {
+      if (!loadImage || isImageLoading) return;
+      setIsImageLoading(true);
+      const updated = await loadImage(recipe);
+      const url = (updated.imageUrl ?? "").trim();
+      setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
+    } catch (err) {
+      notify.error(err);
+    } finally {
+      setIsImageLoading(false);
+    }
+  };
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
     i18n.on("languageChanged", onLangChange);
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
-
-  const difficulty = getDifficultyLevel(recipe.difficultyLevel);
-  const ingredients = recipe.data?.ingredients ?? [];
-  const instructions = recipe.data?.instructions ?? [];
-
-  const normalizedIngredients = (() => {
-    const out: typeof ingredients = [];
-
-    for (const line of ingredients) {
-      const ingredientText = String((line as any)?.ingredient ?? "").trim();
-      const rawAmount = (line as any)?.amount;
-      const amountText =
-        rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
-
-      if (!ingredientText) continue;
-      if (!amountText && out.length > 0) {
-        (out[out.length - 1] as any).ingredient = `${String(
-          (out[out.length - 1] as any).ingredient
-        ).trim()}, ${ingredientText}`;
-        continue;
-      }
-
-      out.push(line);
+const difficulty = getDifficultyLevel(recipe.difficultyLevel);
+const normalizedIngredients = (() => {
+  const out: typeof ingredients = [];
+  const isModifierLine = (text: string) =>
+    /^(finely|roughly|coarsely|thinly|freshly|cut|sliced|diced|minced|chopped|grated|shredded|cubed|peeled|crushed)\b/i.test(
+      text
+    );
+  for (const line of ingredients) {
+    const ingredientText = String((line as any)?.ingredient ?? "").trim();
+    const rawAmount = (line as any)?.amount;
+    const amountText =
+      rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+    if (!ingredientText) continue;
+    if (out.length > 0 && isModifierLine(ingredientText)) {
+      (out[out.length - 1] as any).ingredient = `${String(
+        (out[out.length - 1] as any).ingredient
+      ).trim()}, ${ingredientText}`;
+      continue;
     }
-
-    return out;
-  })();
-
+    if (!amountText && out.length > 0) {
+      (out[out.length - 1] as any).ingredient = `${String(
+        (out[out.length - 1] as any).ingredient
+      ).trim()}, ${ingredientText}`;
+      continue;
+    }
+    out.push(line);
+  }
+  return out;
+})();
 
   return (
     <div className="RecipeData">
@@ -87,26 +104,27 @@ const handleLoadImage = async () => {
         {recipe.description}
       </p>
 
-{localImgSrc ? (
-  <img
-    className="RecipeImage"
-    src={localImgSrc}
-    alt={recipe.title}
-    onError={(e) => ((e.currentTarget as HTMLImageElement).src = "")}
-  />
-) : loadImage ? (
-  isImageLoading ? (
-    <IconButton className="RoundedBtn small-loading" edge="end" disabled>
-      <Box><CircularProgress /></Box>
-    </IconButton>
-  ) : (
-    <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
-      <ImageSearchIcon />
-      {t("recipeUi.loadImage")}
-    </Button>
-  )
-) : null}
-    
+      {localImgSrc ? (
+        <img
+          className="RecipeImage"
+          src={localImgSrc}
+          alt={recipe.title}
+          onError={() => setLocalImgSrc("")}
+        />
+      ) : loadImage ? (
+        isImageLoading ? (
+          <IconButton className="RoundedBtn small-loading" edge="end" disabled>
+            <Box>
+              <CircularProgress />
+            </Box>
+          </IconButton>
+        ) : (
+          <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+            <ImageSearchIcon />
+            {t("recipeUi.loadImage")}
+          </Button>
+        )
+      ) : null}
 
       <FilterBadges filters={filters} isRTL={isRTL} />
 
@@ -128,7 +146,11 @@ const handleLoadImage = async () => {
             <img className="SugarIcon" src="/sugar.png" />
             <div className="SugarAmountInnerDiv">
               <p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`}</p>
-              <p>{Number(recipe.totalSugar) === 0 ? " " : `${t("units.tbspShort")} ${t("units.per100g")}`}</p>
+              <p>
+                {Number(recipe.totalSugar) === 0
+                  ? " "
+                  : `${t("units.tbspShort")} ${t("units.per100g")}`}
+              </p>
             </div>
           </div>
         </div>
@@ -138,8 +160,9 @@ const handleLoadImage = async () => {
           <div className="ProteinAmountDiv">
             <img className="ProteinIcon" src="/protein.png" />
             <div className="ProteinInnerDiv">
-              <p>{recipe.totalProtein} {t("units.per100g")} </p>
-
+              <p>
+                {recipe.totalProtein} {t("units.per100g")}{" "}
+              </p>
             </div>
           </div>
         </div>
@@ -164,7 +187,9 @@ const handleLoadImage = async () => {
 
         <div className="PrepTimeParent">
           <img className="ExtraDataImg" src={"/clock.png"} />
-          <p>{recipe.prepTime} {t("units.minuteShort")} </p>
+          <p>
+            {recipe.prepTime} {t("units.minuteShort")}{" "}
+          </p>
         </div>
 
         <div className="CountryNameParent">
@@ -178,12 +203,11 @@ const handleLoadImage = async () => {
         </div>
       </div>
 
-
       <div className="RecipeStepsWide">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
-          <div className={`IngredientsList ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-            <h2 className={`IngredientsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-              {isRTL ? "מצרכים" : "Ingredients"}
+          <div className={`IngredientsList ${headingDir}`} dir={headingDir}>
+            <h2 className={`IngredientsTitle ${headingDir}`} dir={headingDir}>
+              {t("recipeUi.ingredients", { lng: headingLng })}
             </h2>
 
             {normalizedIngredients.map((line, index) => (
@@ -194,12 +218,12 @@ const handleLoadImage = async () => {
             ))}
           </div>
 
-          <div className="InstructionsList">
-            <h2 className={`InstructionsTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-              {isRTL ? "הוראות הכנה" : "Instructions"}
+          <div className={`InstructionsList ${headingDir}`} dir={headingDir}>
+            <h2 className={`InstructionsTitle ${headingDir}`} dir={headingDir}>
+              {t("recipeUi.instructions", { lng: headingLng })}
             </h2>
 
-            <ol className={`instructions-list ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+            <ol className={`instructions-list ${headingDir}`} dir={headingDir}>
               {instructions
                 .map((s) => String(s ?? "").trim())
                 .filter((s) => s.length > 0)

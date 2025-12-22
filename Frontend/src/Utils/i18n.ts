@@ -126,6 +126,8 @@ const resources = {
         imageUpdated: "Profile image updated",
       },
       recipeUi: {
+        instructions:"Instructions",
+        ingredients:"Ingredients",
         loadImage: "Load image",
         clear: "Clear",
         showRecipe: "Show Recipe",
@@ -288,6 +290,8 @@ const resources = {
       },
 
       recipeUi: {
+        instructions:"הוראות הכנה",
+        ingredients:"מצרכים",
         loadImage: "טען תמונה",
         clear: "נקה",
         showRecipe: "הצג מתכון",

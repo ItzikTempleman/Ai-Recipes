@@ -10,7 +10,9 @@
      align-items: center;
 
 }
-
+.GenerateScreen--hasData {
+  background-color: white;
+}
 .GenerateContainer {
    background-color: white;
   width: 100%;
@@ -34,6 +36,11 @@
 .small-loading .MuiCircularProgress-root {
   width: 26px !important;
   height: 26px !important;
+}
+
+.large-loading .MuiCircularProgress-root {
+  width: 40px !important;
+  height: 40px !important;
 }
 
 .InputData .SearchTF {

@@ -38,15 +38,15 @@ export function GenerateScreen() {
     }
   );
   const [appliedFilters, setAppliedFilters] = useState({
-  sugarLevel: SugarRestriction.DEFAULT,
-  hasLactose: LactoseRestrictions.DEFAULT,
-  hasGluten: GlutenRestrictions.DEFAULT,
-  dietType: DietaryRestrictions.DEFAULT,
-});
+    sugarLevel: SugarRestriction.DEFAULT,
+    hasLactose: LactoseRestrictions.DEFAULT,
+    hasGluten: GlutenRestrictions.DEFAULT,
+    dietType: DietaryRestrictions.DEFAULT,
+  });
 
-const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
+  const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
@@ -58,23 +58,23 @@ const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
   const [initialQuantity, setQuantity] = useState(1);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
+  const recipeHasData = Boolean(recipe?.title);
 
+  async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
 
-async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
- 
-  if (recipe.id) {
-    const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
-    return updated;
+    if (recipe.id) {
+      const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
+      return updated;
+    }
+
+    const preview = await recipeService.generateImagePreview(recipe);
+
+    return {
+      ...recipe,
+      imageUrl: preview.imageUrl,
+      imageName: preview.imageName ?? recipe.imageName ?? null,
+    };
   }
-
-  const preview = await recipeService.generateImagePreview(recipe);
-
-  return {
-    ...recipe,
-    imageUrl: preview.imageUrl,
-    imageName: preview.imageName ?? recipe.imageName ?? null,
-  };
-}
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
@@ -84,13 +84,9 @@ async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
         .split(/[\n,]+/g)
         .map(s => s.trim())
         .filter(Boolean);
-
-const used = { sugarLevel, hasLactose, hasGluten, dietType };
-setAppliedFilters(used);
-
+      const used = { sugarLevel, hasLactose, hasGluten, dietType };
+      setAppliedFilters(used);
       await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, excludedList);
-     
-     
       setQuantity(1);
       setHasImage(false);
       setSugarLevel(SugarRestriction.DEFAULT);
@@ -108,18 +104,18 @@ setAppliedFilters(used);
   }
 
   return (
-    <div className="GenerateScreen">
+    <div className={`GenerateScreen ${recipeHasData ? "GenerateScreen--hasData" : ""}`}>
 
 
       <div className="GenerateContainer">
-              <div>
-        <h2 className="GenerateTitle">
-          <RestaurantMenuIcon className="TitleIcon" />
-          <span>{t("generate.title")}</span>
-        </h2>
-      </div>
+        <div>
+          <h2 className="GenerateTitle">
+            <RestaurantMenuIcon className="TitleIcon" />
+            <span>{t("generate.title")}</span>
+          </h2>
+        </div>
         <form onSubmit={handleSubmit(send)}>
-        <div className={`InputData ${isRTL ? "rtl" : ""}`}>
+          <div className={`InputData ${isRTL ? "rtl" : ""}`}>
             <TextField
               className="SearchTF"
               size="small"
@@ -131,7 +127,7 @@ setAppliedFilters(used);
                 })}
               disabled={loading} />
             {loading ? (
-              <IconButton className="RoundedBtn small-loading" edge="end" disabled>
+              <IconButton className="RoundedBtn large-loading" edge="end" disabled>
                 <Box><CircularProgress /></Box>
               </IconButton>
             ) : (
@@ -148,19 +144,18 @@ setAppliedFilters(used);
           }
           {
             loading && (
-<h2 className="Loading">
-  {hasImage ? (
-    <div className="HasImage">
-      <span className="HasImage__title">{t("generate.loadingWithImage")}</span>
-      <span className="HasImage__sub">{t("generate.loadingWithImageLowerMessage")}</span>
-    </div>
-  ) : (
-    <div>
-      {t("generate.loadingNoImage")}
-    </div>
-  )}
-</h2>
-
+              <h2 className="Loading">
+                {hasImage ? (
+                  <div className="HasImage">
+                    <span className="HasImage__title">{t("generate.loadingWithImage")}</span>
+                    <span className="HasImage__sub">{t("generate.loadingWithImageLowerMessage")}</span>
+                  </div>
+                ) : (
+                  <div>
+                    {t("generate.loadingNoImage")}
+                  </div>
+                )}
+              </h2>
             )
           }
           <div className="FiltersColumn">
@@ -187,10 +182,10 @@ setAppliedFilters(used);
             </div>
             <div className="ImageSwitchRow">
               <ImageSwitch
-  key={`img-${filtersResetKey}`}  
-  onChange={setHasImage}
-  defaultHasImage={false}
-/>
+                key={`img-${filtersResetKey}`}
+                onChange={setHasImage}
+                defaultHasImage={false}
+              />
             </div>
             <div>
               <SugarFilter
@@ -222,11 +217,11 @@ setAppliedFilters(used);
       {
         recipe && (
           <div className="CenterRow">
-<RecipeCard
-  recipe={recipe}
-  filters={appliedFilters}
-  loadImage={loadImage}
-/>
+            <RecipeCard
+              recipe={recipe}
+              filters={appliedFilters}
+              loadImage={loadImage}
+            />
           </div>
         )
       }

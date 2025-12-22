@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./RecipeListItem.css";
 import { RecipeModel } from "../../Models/RecipeModel";
 import { Button } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import IconButton from '@mui/material/IconButton';
 import { recipeService } from "../../Services/RecipeService";
 import { useTranslation } from "react-i18next";
@@ -55,7 +55,7 @@ const { t } = useTranslation();
                     onClick={() => {
                         deleteRecipe(recipe.id)
                     }}>
-                    <DeleteIcon />
+                    <DeleteOutlineOutlinedIcon />
                 </IconButton>
             </div>
             <Button className="MoreInfoBtn"

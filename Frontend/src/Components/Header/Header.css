@@ -48,19 +48,19 @@
   padding: 2px 0;
   font-size: 12px;
   text-decoration: none;
-  color: #2b91d6
+  color: #074975;
 }
 
 .GenerateScreenLink.active,
 .HomeScreenLink.active,
 .Menu svg.active 
 {
-  color: #074975;
+
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
 }
 .Menu svg  {
- color: #2b91d6
+  color: #074975;
 }
 
 @media (max-width: 600px) {

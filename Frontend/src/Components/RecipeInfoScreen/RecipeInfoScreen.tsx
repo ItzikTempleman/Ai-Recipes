@@ -1,5 +1,11 @@
 import { ArrowBackIosNew } from "@mui/icons-material";
-import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
+import {
+  DietaryRestrictions,
+  GlutenRestrictions,
+  LactoseRestrictions,
+  RecipeModel,
+  SugarRestriction,
+} from "../../Models/RecipeModel";
 import { Filters } from "../RecipeCard/RecipeCard";
 import { RecipeData } from "../RecipeData/RecipeData";
 import { notify } from "../../Utils/Notify";
@@ -10,12 +16,12 @@ import { useTitle } from "../../Utils/Utils";
 import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
 
-type Props = { 
-   filters?: Filters;
+type Props = {
+  filters?: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
- };
+};
 
-export function RecipeInfoScreen({ filters, loadImage}: Props) {
+export function RecipeInfoScreen({ filters, loadImage }: Props) {
   const { t, i18n } = useTranslation();
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
@@ -49,6 +55,11 @@ export function RecipeInfoScreen({ filters, loadImage}: Props) {
 
   if (!recipe) return null;
 
+  const imgSrc = (() => {
+    const url = (recipe.imageUrl ?? "").trim();
+    return url && url !== "null" && url !== "undefined" ? url : "";
+  })();
+
   const filtersFromRecipe: Filters = {
     sugarLevel: recipe.sugarRestriction ?? SugarRestriction.DEFAULT,
     hasLactose: recipe.lactoseRestrictions ?? LactoseRestrictions.DEFAULT,
@@ -65,13 +76,12 @@ export function RecipeInfoScreen({ filters, loadImage}: Props) {
 
       <div className="InfoScreenContainer">
         <RecipeData
-        loadImage={loadImage}
+          loadImage={loadImage}
           recipe={recipe}
-          imageSrc={(recipe.imageUrl ?? "").trim()}
+          imageSrc={imgSrc}
           filters={filters ?? filtersFromRecipe}
         />
       </div>
     </div>
   );
 }
-
