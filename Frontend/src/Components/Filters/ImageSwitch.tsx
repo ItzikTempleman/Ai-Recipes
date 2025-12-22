@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import "./ImageSwitch.css";
+import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
+import ImageIcon from '@mui/icons-material/Image';
 
 type Props = {
   onChange: (hasImage: boolean) => void;
@@ -28,9 +31,13 @@ export function ImageSwitch({ onChange, defaultHasImage = false }: Props) {
   }
 
   return (
-    <ToggleButtonGroup value={mode} exclusive onChange={handleChange}>
+    <div className="ImageSwitchDiv">
+      <HideImageOutlinedIcon className="imageSwitchIcon-NoImage"/>
+    <ToggleButtonGroup value={mode} exclusive onChange={handleChange} className="imageSwitch">
       <ToggleButton value="No Image">{t("filters.image.noImage")}</ToggleButton>
       <ToggleButton value="Full">{t("filters.image.withImage")}</ToggleButton>
     </ToggleButtonGroup>
+    <ImageIcon className="imageSwitchIcon"/>
+    </div>
   );
 }

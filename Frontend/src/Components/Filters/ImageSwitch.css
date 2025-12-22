@@ -1,0 +1,33 @@
+.ImageSwitchDiv{
+display: flex;
+align-items: center; 
+gap: 8px;
+}
+
+.imageSwitchIcon {
+  color: #074975;
+}
+.imageSwitchIcon-NoImage{
+      color: red;
+}
+.imageSwitch .MuiToggleButton-root {
+  border: 1px solid #074975;     
+  color: #074975;
+  padding: 8px ;
+}
+
+.imageSwitch .MuiToggleButton-root.Mui-selected {
+  background-color: #074975;
+  color: #fff;
+  border-color: #074975;
+}
+.imageSwitch .MuiToggleButtonGroup-grouped {
+  font-size: 14px;
+}
+.imageSwitch .MuiToggleButtonGroup-grouped.Mui-selected {
+  font-size: 18px !important;
+}
+
+.imageSwitch .MuiToggleButton-root.Mui-selected:hover {
+  background-color: #074975;
+}

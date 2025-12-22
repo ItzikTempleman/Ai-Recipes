@@ -214,7 +214,9 @@ export function GenerateScreen() {
             </div>
           </div>
         </form>
+        
       </div>
+       
       {
         recipe && (
           <div className="CenterRow">
