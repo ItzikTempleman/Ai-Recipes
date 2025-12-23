@@ -216,7 +216,7 @@ const resources = {
         labelGenerate: "?מה בא לך להכין",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
-        excludeIngredient: "הסר רכיבים שאתה לא רוצה",
+        excludeIngredient: "הסר רכיבים שאת/ה לא רוצה",
         loadingWithImage: "...מייצר תמונה",
         loadingWithImageLowerMessage: "זה יקח דקה",
         loadingNoImage: "...מייצר מתכון",
