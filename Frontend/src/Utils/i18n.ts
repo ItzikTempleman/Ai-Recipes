@@ -43,6 +43,7 @@ const resources = {
         return: "Return",
       },
       generate: {
+        youCanGenerateImageLater:"You can add an image later",
         guest:"Guest",
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
@@ -208,6 +209,7 @@ const resources = {
       },
 
       generate: {
+        youCanGenerateImageLater:"תמיד ניתן להוסיף תמונה אחר כך",
         guest:"אורח",
         title: "?אז מה אוכלים היום",
         quantitySelector: "עבור כמה סועדים",

@@ -52,7 +52,7 @@ export function HomeScreen() {
                ><LibraryAdd/><h4 className="GuestGenerate">{t("homeScreen.generate")}</h4></div>
               
               <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
-              <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
+              <h3 className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</h3>
             </div>
           </div>
         )}

@@ -32,8 +32,6 @@ const { t, i18n } = useTranslation();
     };
   }, [i18n]);
   
-
-
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({

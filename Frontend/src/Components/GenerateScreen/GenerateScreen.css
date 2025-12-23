@@ -161,7 +161,9 @@
   text-align: center;
 
 }
-
+.AddImageLaterNotice{
+  color: #d27403;
+}
 .CenterRow {
   width: 100%;
   display: flex;

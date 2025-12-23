@@ -13,7 +13,7 @@
   padding: 8px;
     font-size: 24px;
   font-weight: bold;
-  color:rgb(8, 63, 114)
+  color:rgb(53, 53, 53)
 }
 .SiteTitleDiv {
   width: 100%;
@@ -99,10 +99,7 @@ cursor: pointer;
 }
 
 .GuestNoticeLine2 {
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.3;
-  opacity: 0.9;
+ color:rgb(8, 63, 114)
 }
 
 .RecipeList {

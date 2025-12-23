@@ -200,6 +200,7 @@ useEffect(() => {
               </div>
             </div>
             <div className="ImageSwitchRow">
+              <h3 className="AddImageLaterNotice">{t("generate.youCanGenerateImageLater")}</h3>
               <ImageSwitch
                 key={`img-${filtersResetKey}`}
                 onChange={setHasImage}
