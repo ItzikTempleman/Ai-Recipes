@@ -65,13 +65,20 @@ const user = useSelector((state: AppState) => state.user);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
   const recipeHasData = Boolean(recipe?.title);
-  const initialRecipeIdRef = useRef(recipe?.id);
+
+
+const didResetOnEnterRef = useRef(false);
 
 useEffect(() => {
-  if (initialRecipeIdRef.current) {
+  if (
+    user &&                    
+    !loading &&                 
+    !didResetOnEnterRef.current  
+  ) {
     dispatch(resetGenerated());
+    didResetOnEnterRef.current = true;
   }
-}, [dispatch]);
+}, [dispatch, user, loading]);
 
   async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
 

@@ -2,76 +2,45 @@
   width: 100%;
   min-height: 100vh;
   margin: 0;
-  padding: 24px 16px 40px;
+  padding: 28px 16px 56px;
   box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
-  align-items: flex-start;  
 
+  color: #0f172a;
 }
-.SiteTitle{
-  padding: 8px;
-    font-size: 24px;
-  font-weight: bold;
-  color:rgb(53, 53, 53)
-}
+
 .SiteTitleDiv {
   width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.10);
 }
+
 .SiteTitleDiv.ltr {
-    
   text-align: left;
-    border-bottom: 1px solid grey ;
 }
 
 .SiteTitleDiv.rtl {
   text-align: right;
- 
-    border-bottom: 1px solid grey ;
 }
 
-.HomeScreenTitleContainer{
-  padding:8px;
- 
-}
-.UserHello, .GuestHello{
-font-size: 20px;
-}
-
-.HomeScreenTitleWrapper.ltr .GuestInstructions {
-  margin-left: 0;
-  margin-right: auto;   /* stick to left in a flex/column context */
-  text-align: left;
-  justify-content: flex-start;
+.SiteTitle {
+  padding: 6px 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
 }
 
-/* RTL */
-.HomeScreenTitleWrapper.rtl .GuestInstructions {
-  margin-left: auto;    /* stick to right */
-  margin-right: 0;
-  text-align: right;
-  justify-content: flex-end;
-}
-
-.GuestGenerate,
-.GuestInstructions{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 24px;
-  gap: 8px;
-  color:rgb(8, 63, 114)!important
-}
-
-.GuestGenerate:hover,
-.GuestInstructions:hover{
-cursor: pointer;
-}
-
+/* wrapper spacing */
 .HomeScreenTitleWrapper {
   width: 100%;
+  max-width: 1080px;
+  margin: 18px auto 0;
 }
-
 
 .HomeScreenTitleWrapper.ltr {
   text-align: left;
@@ -81,43 +50,205 @@ cursor: pointer;
   text-align: right;
 }
 
-.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer {
-  margin-left: 0;
-  margin-right: 24px;
+/* container becomes a modern “hero card” */
+.HomeScreenTitleContainer {
+  padding: 18px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  backdrop-filter: blur(10px);
 }
 
+/* keep your RTL margin behavior but make it cleaner */
+.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* greeting looks like a subtle badge */
+.UserHello,
+.GuestHello {
+  font-size: 26px;
+  font-weight: 700;
+
+  color: rgba(41, 29, 29, 0.92);
+
+  padding: 0;                 /* no pill padding */
+  margin-bottom: 6px;
+
+  background: none;           /* kill button feel */
+  border: none;
+  border-radius: 0;
+
+  display: block;
+}
+
+/* main titles */
+.HomeScreenTitle {
+  margin: 14px 0 0;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+/* guest block */
 .GuestNotice {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
+/* CTA: make it feel like a real button, direction-safe */
+.GuestInstructions {
+  margin-top: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 12px 14px;
+  border-radius: 14px;
+
+  background: linear-gradient(180deg, rgba(8, 63, 114, 0.95), rgba(8, 63, 114, 0.86));
+  color: #ffffff;
+
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  box-shadow:
+    0 10px 18px rgba(8, 63, 114, 0.20),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+
+  user-select: none;
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+}
+
+/* keep your LTR/RTL sticking behavior */
+.HomeScreenTitleWrapper.ltr .GuestInstructions {
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+}
+
+.HomeScreenTitleWrapper.rtl .GuestInstructions {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+}
+
+/* text inside the CTA */
+.GuestGenerate {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: inherit; /* important: inherits white from button */
+}
+
+/* your existing selector groups kept, but modernized */
+.GuestGenerate,
+.GuestInstructions {
+  flex-direction: row;
+}
+
+/* hover/active */
+.GuestInstructions:hover {
+  cursor: pointer;
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow:
+    0 14px 26px rgba(8, 63, 114, 0.24),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+.GuestInstructions:active {
+  transform: translateY(0px);
+  box-shadow:
+    0 10px 18px rgba(8, 63, 114, 0.20),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+/* supporting lines */
 .GuestNoticeLine1 {
-  font-weight: 700;
-  font-size: 1.25rem; 
-  line-height: 1.2;
+  margin-top: 4px;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.25;
+  color: #0f172a;
 }
 
 .GuestNoticeLine2 {
- color:rgb(8, 63, 114)
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(8, 63, 114, 0.92);
 }
 
+/* list: make it align with hero width and look like a grid */
 .RecipeList {
   width: 100%;
- margin: 20px;    
+  max-width: 1080px;
+  margin: 18px auto 0;
+  padding: 0;
+
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-    justify-content: flex-start;  
+  gap: 18px;
+  justify-content: flex-start;
 }
 
-
+/* responsive */
 @media (max-width: 600px) {
   .HomeScreen {
-    max-width: 100%;
-    flex-wrap: nowrap;    
-    flex-direction: column; 
-    align-items: center;   
-    gap: 16px;             
+    padding: 18px 14px 44px;
   }
+
+  .SiteTitle {
+    font-size: 24px;
+  }
+
+  .HomeScreenTitleContainer {
+    padding: 16px 14px;
+    border-radius: 16px;
+  }
+
+  .HomeScreenTitle {
+    font-size: 20px;
+  }
+
+  .GuestInstructions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .RecipeList {
+    gap: 14px;
+  }
+
+  @media (max-width: 600px) {
+
+  .GuestInstructions {
+    width: auto;                /* stop full-width stretch */
+    max-width: 100%;
+    padding: 10px 14px;         /* tighter padding */
+    border-radius: 12px;
+
+    font-size: 16px;
+    box-shadow:
+      0 8px 14px rgba(8, 63, 114, 0.18),
+      0 1px 0 rgba(255, 255, 255, 0.16) inset;
+
+    align-self: flex-start;     /* prevents stretching */
+  }
+
+  .GuestGenerate {
+    font-size: 16px;
+    white-space: nowrap;        /* prevent text wrap */
+  }
+}
+
 }

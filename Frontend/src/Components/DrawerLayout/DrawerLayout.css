@@ -23,6 +23,7 @@
 }
 
 .DrawerContent > div {
+
    width: 100%;
 }
 
@@ -80,7 +81,7 @@
   text-decoration: none;
 }
 
-.LoginRow,
+/* .LoginRow,
 .LogoutRow {
   display: flex;
   width: 100%;
@@ -101,6 +102,71 @@
 .LogoutRow {
   background-color: #cb0e0e;
   color:white;
+} */
+
+ 
+
+ .LoginRow,
+.LogoutRow {
+  margin: 8px 0 ;
+ display: flex;
+  width: 100%;
+  height: 40px !important;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 14px;
+  box-sizing: border-box;
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
 }
 
 
+/* LOGIN = same CTA styling as GuestInstructions */
+.LoginRow {
+  color: #ffffff !important;
+margin-top: 16px !important;
+  background: linear-gradient(180deg, rgba(8, 63, 114, 0.95), rgba(8, 63, 114, 0.86));
+  border: 1px solid rgba(255, 255, 255, 0.20);
+
+  box-shadow:
+    0 10px 18px rgba(8, 63, 114, 0.20),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+/* LOGOUT = keep red colors, but same shape/interaction */
+.LogoutRow {
+  color: #ffffff !important;
+
+  background: linear-gradient(180deg, rgba(203, 14, 14, 0.95), rgba(203, 14, 14, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.20);
+
+  box-shadow:
+    0 10px 18px rgba(203, 14, 14, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+/* hover/active (same feel as GuestInstructions) */
+.LoginRow:hover,
+.LogoutRow:hover {
+  cursor: pointer;
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.LoginRow:hover {
+  box-shadow:
+    0 14px 26px rgba(8, 63, 114, 0.24),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+.LogoutRow:hover {
+  box-shadow:
+    0 14px 26px rgba(203, 14, 14, 0.26),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+.LoginRow:active,
+.LogoutRow:active {
+  transform: translateY(0px);
+  filter: brightness(0.99);
+}

@@ -3,11 +3,22 @@ itzikrecipe.com {
 }
 
 www.itzikrecipe.com {
+
     encode gzip
+
+    # 🔒 Prevent stale index.html from being cached
+    @html {
+        path *.html
+    }
+    header @html {
+        Cache-Control "no-cache"
+    }
+
     @api path /api/*
     handle @api {
         reverse_proxy backend:4000
     }
+
     handle {
         reverse_proxy frontend:5173
     }
