@@ -1,7 +1,7 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
@@ -65,15 +65,13 @@ const user = useSelector((state: AppState) => state.user);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
   const recipeHasData = Boolean(recipe?.title);
-
+  const initialRecipeIdRef = useRef(recipe?.id);
 
 useEffect(() => {
-  if (recipe?.id) {
+  if (initialRecipeIdRef.current) {
     dispatch(resetGenerated());
   }
-}, [dispatch, recipe?.id]);
-
-
+}, [dispatch]);
 
   async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
 
