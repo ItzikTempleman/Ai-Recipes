@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { getRestOfSectionEn, getRestOfSectionHe, getTopSectionEn, getTopSectionHe } from "./AboutSections";
 
 const resources = {
   en: {
@@ -32,6 +33,8 @@ const resources = {
       },
       about: {
         title: "About this site",
+          topSection: getTopSectionEn(),
+        restOfSection: getRestOfSectionEn(),
         footer: "© 2025 All rights reserved ® Itzik's AI recipe generator",
       },
       page404: {
@@ -194,6 +197,8 @@ const resources = {
 
       about: {
       title: "אודות אתר זה",
+         topSection: getTopSectionHe(),
+        restOfSection: getRestOfSectionHe(),
         footer: "© 2025 כל הזכויות שמורות ® מחולל המתכונים של איציק",
       },
 

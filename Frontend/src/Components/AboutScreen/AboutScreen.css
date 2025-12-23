@@ -1,26 +1,30 @@
 .AboutScreen {
   width: 100%;
-   min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   margin: 0;
   padding: 40px 16px 56px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
+/* ---------- Title ---------- */
 .AboutScreenTitle {
   width: 100%;
   max-width: 640px;
   margin: 0 0 20px;
+
   font-size: 24px;
   font-weight: bold;
   color: #0f7394;
   text-transform: uppercase;
+
   display: flex;
   align-items: center;
   gap: 10px;
+
+  text-align: left;
 }
 
 .AboutScreenTitle::after {
@@ -30,21 +34,45 @@
   background: linear-gradient(to right, #efa029, #f6c985);
 }
 
+/* ================= RTL FIX ================= */
+
+/* ⛔ Disable flex in RTL */
+.AboutScreen.rtl .AboutScreenTitle {
+  display: block;          /* 🔥 key fix */
+  text-align: right;
+  direction: rtl;
+}
+
+/* underline becomes full-width block */
+.AboutScreen.rtl .AboutScreenTitle::after {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  background: linear-gradient(to left, #efa029, #f6c985);
+}
+
+
+/* ---------- Card ---------- */
 .AboutCard {
-     background-color: white;
+  background-color: white;
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
   padding: 18px;
   box-sizing: border-box;
-  border-radius: 16px;
+
   display: flex;
   flex-direction: column;
-  text-align: left;
+
   position: relative;
   overflow: hidden;
+
   border-radius: 2px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+
+  /* LTR defaults */
+  direction: ltr;
+  text-align: left;
 }
 
 .AboutCard::before {
@@ -52,7 +80,7 @@
   position: absolute;
   inset: 0;
   height: 6px;
-  background: linear-gradient(90deg, #a5d0de,#75a5b5, #0f7394);
+  background: linear-gradient(90deg, #a5d0de, #75a5b5, #0f7394);
 }
 
 .TopContent {
@@ -61,6 +89,9 @@
   font-weight: 600;
   line-height: 1.6;
   color: #333333;
+
+  direction: inherit;
+  text-align: inherit;
 }
 
 .RestOfContent {
@@ -69,6 +100,9 @@
   font-weight: 400;
   line-height: 1.7;
   color: #555555;
+
+  direction: inherit;
+  text-align: inherit;
 }
 
 .RestOfContent strong,
@@ -76,27 +110,70 @@
   color: #68cced;
 }
 
+/* ---------- Footer ---------- */
 .Copyrights {
   width: 100%;
   max-width: 640px;
-  margin: 24px auto 0;  
+  margin: 24px auto 0;
   padding-top: 12px;
   border-top: 1px solid #858383;
+
   text-align: center;
   font-size: 14px;
   color: #3e3e3e;
-  margin-top: auto;  
+
+  margin-top: auto;
   margin-bottom: 24px;
 }
 
 .Copyrights p {
   margin: 0;
-
 }
 
+/* =========================================================
+   RTL MODE (driven by .rtl class on .AboutScreen)
+   ========================================================= */
+.AboutScreen.rtl {
+  direction: rtl;
+}
+
+/* Card/content alignment */
+.AboutScreen.rtl .AboutCard {
+  direction: rtl;
+  text-align: right;
+}
+
+.AboutScreen.rtl .TopContent,
+.AboutScreen.rtl .RestOfContent {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ✅ Title: push the whole title row to the RIGHT */
+.AboutScreen.rtl .AboutScreenTitle {
+  direction: rtl;
+  text-align: right;
+  justify-content: flex-end;
+}
+
+/* ✅ Put underline BEFORE text in RTL so it expands to the LEFT */
+.AboutScreen.rtl .AboutScreenTitle::after {
+  order: -1;
+  background: linear-gradient(to left, #efa029, #f6c985);
+}
+
+/* Footer: keep centered (change to right if you prefer) */
+.AboutScreen.rtl .Copyrights {
+  direction: rtl;
+  text-align: center;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 @media (max-width: 600px) {
   .AboutScreen {
-min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 60px);
     padding: 24px 12px 32px;
   }
 
@@ -108,8 +185,8 @@ min-height: calc(100vh - 60px);
   .AboutCard {
     padding: 18px;
     max-width: 100%;
-      border-radius: 2px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   }
 
   .TopContent {
@@ -121,9 +198,9 @@ min-height: calc(100vh - 60px);
   }
 
   .Copyrights {
-      margin-bottom: 120px;
+    margin-bottom: 120px;
     max-width: 100%;
-     color: #3e3e3e;
+    color: #3e3e3e;
     padding-top: 10px;
     font-size: 14px;
   }
