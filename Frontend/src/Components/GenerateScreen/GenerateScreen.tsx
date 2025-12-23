@@ -17,6 +17,7 @@ import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
 import { resetGenerated } from "../../Redux/RecipeSlice";
+import { AppState } from "../../Redux/Store";
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -38,6 +39,8 @@ export function GenerateScreen() {
       },
     }
   );
+
+
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
     hasLactose: LactoseRestrictions.DEFAULT,
@@ -49,6 +52,8 @@ export function GenerateScreen() {
 
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
   const dispatch = useDispatch();
+const user = useSelector((state: AppState) => state.user);
+
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
     i18n.on("languageChanged", onLangChange);
@@ -60,6 +65,15 @@ export function GenerateScreen() {
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
   const recipeHasData = Boolean(recipe?.title);
+
+
+useEffect(() => {
+  if (recipe?.id) {
+    dispatch(resetGenerated());
+  }
+}, [dispatch, recipe?.id]);
+
+
 
   async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
 
@@ -103,11 +117,16 @@ export function GenerateScreen() {
       notify.error(err);
     }
   }
-
   return (
     <div className={`GenerateScreen ${recipeHasData ? "GenerateScreen--hasData" : ""}`}>
       <div className="GenerateContainer">
         <div>
+{
+  !user&&(
+ <div className={`GuestBadge ${isRTL ? "GuestBadge--rtl" : ""}`}>
+      <h4>{t("generate.guest")}</h4></div>
+  )
+}
           <h2 className="GenerateTitle">
             <RestaurantMenuIcon className="TitleIcon" />
             <span>{t("generate.title")}</span>

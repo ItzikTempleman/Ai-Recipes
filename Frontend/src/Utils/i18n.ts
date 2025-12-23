@@ -21,6 +21,7 @@ const resources = {
         login: "Log in",
       },
       homeScreen: {
+        generate:"Press here to start",
         siteTitle:"Ai recipe generator",
         hello:"Hello",
         guest:"guest",
@@ -39,6 +40,7 @@ const resources = {
         return: "Return",
       },
       generate: {
+        guest:"Guest",
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
         quantitySelector: "How many servings",
@@ -180,6 +182,7 @@ const resources = {
       },
 
       homeScreen: {
+        generate:"התחל כאן",
              siteTitle:"יוצר מתכונים חכם",
           hello:"שלום",
         guest:"אורח",
@@ -200,6 +203,7 @@ const resources = {
       },
 
       generate: {
+        guest:"אורח",
         title: "?אז מה אוכלים היום",
         quantitySelector: "עבור כמה סועדים",
         labelGenerate: "?מה בא לך להכין",

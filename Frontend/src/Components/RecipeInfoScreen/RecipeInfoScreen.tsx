@@ -55,6 +55,15 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
 
   if (!recipe) return null;
 
+function loadImageHelper(recipe:RecipeModel){
+  if(loadImage) return loadImage(recipe);
+
+  return recipeService.generateImageForSavedRecipe(recipe.id).then((updated) => {
+    setRecipe(updated); 
+      return updated;
+  });
+}
+
   const imgSrc = (() => {
     const url = (recipe.imageUrl ?? "").trim();
     return url && url !== "null" && url !== "undefined" ? url : "";
@@ -76,7 +85,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
 
       <div className="InfoScreenContainer">
         <RecipeData
-          loadImage={loadImage}
+          loadImage={loadImageHelper}
           recipe={recipe}
           imageSrc={imgSrc}
           filters={filters ?? filtersFromRecipe}

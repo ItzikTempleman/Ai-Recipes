@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -8,13 +8,14 @@ import { useTitle } from "../../Utils/Utils";
 import { AppState } from "../../Redux/Store";
 import { recipeService } from "../../Services/RecipeService";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
+import { useNavigate } from "react-router-dom";
 export function HomeScreen() {
   useTitle("Home");
   const { items } = useSelector((state: AppState) => state.recipes);
   const user = useSelector((state: AppState) => state.user);
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
-
+ const navigate = useNavigate();
   useEffect(() => {
     recipeService.getAllRecipes();
     recipeService.loadMyLikes();
@@ -45,6 +46,11 @@ export function HomeScreen() {
           <div className="HomeScreenTitleContainer">
             <div className="GuestNotice">
               <div className="GuestHello">{t("homeScreen.hello")} {t("homeScreen.guest")}</div>
+              
+                <div className="GuestInstructions" 
+               onClick={()=>navigate("/generate")}
+               ><LibraryAdd/><h4 className="GuestGenerate">{t("homeScreen.generate")}</h4></div>
+              
               <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
               <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
             </div>

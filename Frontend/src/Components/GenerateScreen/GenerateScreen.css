@@ -188,7 +188,26 @@ border-radius: 10px !important;
   color: #f0b43a;
 }
 
+.GuestBadge{
+   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  width: 70px;
+  height: 35px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  background-color: #e9ca8c;   
+  justify-content: center;
+}
 
+.GuestBadge--rtl{
+  margin-left: auto;  
+}
+
+.GuestBadge h4{
+  margin: 0;
+  color: rgb(74, 74, 74);
+
+}
 .GenerateBtn:hover {
   cursor: pointer;
   background-color: #efe4d5 !important;

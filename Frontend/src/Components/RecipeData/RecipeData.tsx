@@ -64,35 +64,35 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
     i18n.on("languageChanged", onLangChange);
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
-const difficulty = getDifficultyLevel(recipe.difficultyLevel);
-const normalizedIngredients = (() => {
-  const out: typeof ingredients = [];
-  const isModifierLine = (text: string) =>
-    /^(finely|roughly|coarsely|thinly|freshly|cut|sliced|diced|minced|chopped|grated|shredded|cubed|peeled|crushed)\b/i.test(
-      text
-    );
-  for (const line of ingredients) {
-    const ingredientText = String((line as any)?.ingredient ?? "").trim();
-    const rawAmount = (line as any)?.amount;
-    const amountText =
-      rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
-    if (!ingredientText) continue;
-    if (out.length > 0 && isModifierLine(ingredientText)) {
-      (out[out.length - 1] as any).ingredient = `${String(
-        (out[out.length - 1] as any).ingredient
-      ).trim()}, ${ingredientText}`;
-      continue;
+  const difficulty = getDifficultyLevel(recipe.difficultyLevel);
+  const normalizedIngredients = (() => {
+    const out: typeof ingredients = [];
+    const isModifierLine = (text: string) =>
+      /^(finely|roughly|coarsely|thinly|freshly|cut|sliced|diced|minced|chopped|grated|shredded|cubed|peeled|crushed)\b/i.test(
+        text
+      );
+    for (const line of ingredients) {
+      const ingredientText = String((line as any)?.ingredient ?? "").trim();
+      const rawAmount = (line as any)?.amount;
+      const amountText =
+        rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+      if (!ingredientText) continue;
+      if (out.length > 0 && isModifierLine(ingredientText)) {
+        (out[out.length - 1] as any).ingredient = `${String(
+          (out[out.length - 1] as any).ingredient
+        ).trim()}, ${ingredientText}`;
+        continue;
+      }
+      if (!amountText && out.length > 0) {
+        (out[out.length - 1] as any).ingredient = `${String(
+          (out[out.length - 1] as any).ingredient
+        ).trim()}, ${ingredientText}`;
+        continue;
+      }
+      out.push(line);
     }
-    if (!amountText && out.length > 0) {
-      (out[out.length - 1] as any).ingredient = `${String(
-        (out[out.length - 1] as any).ingredient
-      ).trim()}, ${ingredientText}`;
-      continue;
-    }
-    out.push(line);
-  }
-  return out;
-})();
+    return out;
+  })();
 
   return (
     <div className="RecipeData">
@@ -113,11 +113,17 @@ const normalizedIngredients = (() => {
         />
       ) : loadImage ? (
         isImageLoading ? (
-          <IconButton className="RoundedBtn large-loading" edge="end" disabled>
-            <Box>
-              <CircularProgress />
-            </Box>
-          </IconButton>
+          <>
+            <IconButton className="RoundedBtn large-loading" edge="end" disabled>
+              <Box>
+                <CircularProgress />
+              </Box>
+            </IconButton>
+            <div className="HasImage">
+              <span className="HasImage__title">{t("generate.loadingWithImage")}</span>
+              <span className="HasImage__sub">{t("generate.loadingWithImageLowerMessage")}</span>
+            </div>
+          </>
         ) : (
           <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
             <ImageSearchIcon />
