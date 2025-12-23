@@ -12,8 +12,8 @@ export function HomeScreen() {
   useTitle("Home");
   const { items } = useSelector((state: AppState) => state.recipes);
   const user = useSelector((state: AppState) => state.user);
-const { t, i18n } = useTranslation();
-const isRTL = (i18n.language ?? "").startsWith("he");
+  const { t, i18n } = useTranslation();
+  const isRTL = (i18n.language ?? "").startsWith("he");
 
   useEffect(() => {
     recipeService.getAllRecipes();
@@ -24,39 +24,39 @@ const isRTL = (i18n.language ?? "").startsWith("he");
 
   return (
     <div className="HomeScreen">
+      <div className={`SiteTitleDiv ${isRTL ? "rtl" : "ltr"}`} ><div className="SiteTitle">{t("homeScreen.siteTitle")}</div></div>
+      <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
+        {user ? (
 
-<div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-  {user ? (
-    
-    list.length === 0 ? (
+          list.length === 0 ? (
 
-      <div className="HomeScreenTitleContainer">
-         <div className="UserHello">{t("homeScreen.hello")} {user.firstName} {user.familyName}</div>
-        <h2 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h2>
-      </div>
-    ) : (
-      
-      <div className="HomeScreenTitleContainer">
+            <div className="HomeScreenTitleContainer">
+              <div className="UserHello">{t("homeScreen.hello")} {user.firstName} {user.familyName}</div>
+              <h3 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h3>
+            </div>
+          ) : (
 
-        <h2 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h2>
+            <div className="HomeScreenTitleContainer">
+
+              <h3 className="HomeScreenTitle">{t("homeScreen.recentlyViewed")}</h3>
+            </div>
+          )
+        ) : (
+          <div className="HomeScreenTitleContainer">
+            <div className="GuestNotice">
+              <div className="GuestHello">{t("homeScreen.hello")} {t("homeScreen.guest")}</div>
+              <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
+              <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
+            </div>
+          </div>
+        )}
       </div>
-    )
-  ) : (
-    <div className="HomeScreenTitleContainer">
-      <div className="GuestNotice">
-        <div className="GuestHello">{t("homeScreen.hello")} {t("homeScreen.guest")}</div>
-        <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
-        <div className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</div>
-      </div>
-    </div>
-  )}
-</div>
 
       <div className="RecipeList">
         {user && list.length > 0
           ? list.map((recipe) => (
-              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
-            ))
+            <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
+          ))
           : null}
       </div>
     </div>

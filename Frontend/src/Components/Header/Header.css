@@ -11,7 +11,6 @@
   margin: 1px 0 0;
 }
 
-/* RTL mirroring (driven ONLY by the .rtl class on Header) */
 .Header.rtl {
   flex-direction: row-reverse;
 }
@@ -19,29 +18,48 @@
 .GeneralNavigation {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-/* In RTL: Home on the absolute right, Generate next to it */
 .Header.rtl .GeneralNavigation {
   flex-direction: row-reverse;
 }
 
-/* LTR spacing only */
-.Header:not(.rtl) .GeneralNavigation a + a {
-  margin-left: 12px;
-  padding-left: 12px;
-}
-
-/* RTL spacing only */
+.Header:not(.rtl) .GeneralNavigation a + a,
 .Header.rtl .GeneralNavigation a + a {
   margin-left: 0;
   padding-left: 0;
-  margin-right: 12px;
-  padding-right: 12px;
+  margin-right: 0;
+  padding-right: 0;
 }
 
+.HeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.Header.rtl .HeaderRight {
+  flex-direction: row-reverse;
+}
+
+.LanguageLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #074975;
+  position: relative;
+}
+
+
+.Header.rtl .LanguageSelector {
+  padding-right: 0;
+  padding-left: 14px;
+}
+
+.AboutScreenLink,
 .GenerateScreenLink,
-.HomeScreenLink{
+.HomeScreenLink {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,30 +69,49 @@
   color: #074975;
 }
 
+.AboutScreenLink.active,
 .GenerateScreenLink.active,
-.HomeScreenLink.active,
-.Menu svg.active 
-{
-
+.HomeScreenLink.active {
   font-weight: bold;
   font-size: 16px;
 }
-.Menu svg  {
+
+
+.Menu svg {
   color: #074975;
+}
+
+.SelectLanguage {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 8px;
+  align-items: center;
 }
 
 @media (max-width: 600px) {
   .Header {
     padding: 0 12px;
-    flex-wrap: nowrap;
+    gap: 8px;
   }
 
-  .Header p {
-    margin: 1px 0 0;
+  .GeneralNavigation {
+    gap: 10px;
   }
 
+  .AboutScreenLink,
   .GenerateScreenLink,
   .HomeScreenLink {
+    font-size: 11px;
+  }
+
+  .LanguageSelector {
     font-size: 12px;
+    padding-right: 14px; 
+  }
+
+  .Header.rtl .LanguageSelector {
+    padding-left: 14px;
+    padding-right: 0;
   }
 }

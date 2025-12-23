@@ -14,7 +14,7 @@
   width: 100%;
   max-width: 600px;
   margin: 0 0 16px;
-  color: rgb(63, 63, 63);
+  color: #215d9a;
   font-size: 20px;
   font-weight: 600;
   text-align: left;
@@ -59,7 +59,7 @@
 
 .EditProfileBtn {
   height: 30px !important;
-  background-color: #8f8f8f !important
+  background-color: #215d9a !important
 }
 
 .CloseDialogBtn {

@@ -179,11 +179,9 @@
 }
 
 .GenerateBtn {
-  border-radius: 180px;
-  border: 2px solid #f0b43a !important;
-  width: 36px;
-  height: 36px;
-    background-color: #f3ebdc !important;
+gap:8px;
+background: #074975 !important;
+border-radius: 10px !important;
 }
 
 .BtnIcon {

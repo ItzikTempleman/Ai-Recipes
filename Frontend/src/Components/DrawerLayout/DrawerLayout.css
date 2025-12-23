@@ -8,97 +8,28 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.DrawerMainContainer>* {
   font-family: Arial, Helvetica, sans-serif;
-  color: #232323;
 }
 
 .DrawerContent {
   display: flex;
   width: 100%;
-  flex-direction: column;
   height: 100%;
-  align-items: stretch;
-  justify-content: flex-start; 
-
-}
-.DrawerContent.rtl {
-  direction: rtl;
-  text-align: right;
-}
-
-
-.DrawerContent.rtl .DrawerNavLink {
-  justify-content: flex-end;
-}
-
-.DrawerContent.rtl .ProfileRow,
-.DrawerContent.rtl .AboutRow,
-.DrawerContent.rtl .SelectLanguage {
-  flex-direction: row-reverse;    /* icon on the right */
-  justify-content: flex-end;      /* whole row sticks to the right */
-  text-align: right;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8px;
+  box-sizing: border-box;
 }
 
 .DrawerContent > div {
-  display: flex;
-  flex-direction: column;
-  flex: 0;          
-}
-.DrawerContent.rtl .UserName {
-  margin: 20px 40px 0 0;
-}
-.Divider {
-  border: 0.5px solid rgb(153, 150, 150);
-  margin: 28px;
+   width: 100%;
 }
 
-.DrawerLogoutLink { margin-top: auto; }
-
-.DrawerContent.DrawerLoggedOut {
-  height: auto;
-}
-
-.DrawerContent.DrawerLoggedOut>div {
-  flex: 0;
-}
-
-.DrawerContent.DrawerLoggedOut .LoginRow {
-  margin-top: 16px;
-}
-
-.DrawerContent.DrawerLoggedOut .LanguageRow {
-  margin: 6px;
-  padding: 6px;
-  gap: 6px;
-}
-
-.SelectLanguage {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: 8px;
-  align-items: center;
-}
-
-.LanguageRow {
-  gap: 8px;
-  margin: 8px;
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-}
-
-.DrawerCloseButton {
+.CloseButton {
   margin: 24px 24px 0 auto;
   cursor: pointer;
   font-size: 18px;
-}
-
-.DrawerLogoutLink {
-  margin-top: auto;
 }
 
 .ProfileImage {
@@ -107,63 +38,69 @@
   border-radius: 180px;
   object-fit: cover;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.DrawerNavLink {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  font-size: 14px;
-  text-decoration: none;
-  color: #232323;
+  margin: 0 auto;
 }
 
 .UserName {
-  margin: 20px 0 0 40px;
+  margin: 20px 0 0;
+  text-align: center;
 }
 
-.ProfileRow,
-.AboutRow,
-.LogoutRow,
-.LoginRow {
+.ProfileBtn {
+  width: 100% !important;
+  min-height: 44px !important;
+  height: auto !important;
+  margin: 8px 0 0 !important;
+  border-radius: 2px !important;
+  background-color: rgb(175, 187, 198) !important;
+  color: #232323 !important;
+  padding: 10px 16px !important;
+}
+
+.ProfileRowInBtn {
   display: flex;
-  padding: 6px;
-  gap: 6px;
-  flex-direction: row;
-  width: 100%;
-  justify-content: start;
   align-items: center;
-  height: 30px;
-  margin: 3px;
-  border-radius: 2px;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
 }
 
-.LoginRow>*,
-.LogoutRow>* {
-  color: white !important;
+.ProfileRowInBtn p {
+  margin: 0;
+  font-size: 14px;
+ font-weight: bold;
+}
+
+
+
+.LoginLink,
+.LogoutLink {
+  margin-top: auto;
+  width: 100%;
+  text-decoration: none;
+}
+
+.LoginRow,
+.LogoutRow {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 2px;
+  height: 40px !important;
+  box-sizing: border-box;
+  margin:  0 0 4px 0;  
 }
 
 .LoginRow {
-  margin-top: 50px;
-  margin-left: 8px;
-  margin-right: 8px;
-  border-radius: 8px;
+  color: white !important;
   background-color: #215d9a;
 }
 
 .LogoutRow {
-  border-radius: 8px;
-  margin: 8px;
   background-color: #cb0e0e;
+  color:white;
 }
 
-.RadioOption {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  cursor: pointer;
-  font-size: 12px;
-  white-space: nowrap;
-}
+

@@ -1,4 +1,4 @@
-import { IconButton, TextField, CircularProgress, Box } from "@mui/material";
+import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
 import { useEffect, useState } from "react";
@@ -106,8 +106,6 @@ export function GenerateScreen() {
 
   return (
     <div className={`GenerateScreen ${recipeHasData ? "GenerateScreen--hasData" : ""}`}>
-
-
       <div className="GenerateContainer">
         <div>
           <h2 className="GenerateTitle">
@@ -132,12 +130,13 @@ export function GenerateScreen() {
                 <Box><CircularProgress /></Box>
               </IconButton>
             ) : (
-              <IconButton
+              <Button
                 className="GenerateBtn"
+                variant="contained"
                 type="submit"
                 disabled={loading}>
-                <AutoAwesome className="BtnIcon" />
-              </IconButton>
+                {t("generate.go")}<AutoAwesome className="BtnIcon" />
+              </Button>
             )}
           </div>
           {

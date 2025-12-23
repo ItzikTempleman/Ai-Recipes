@@ -7,11 +7,13 @@ const resources = {
       nav: {
         home: "Home",
         generate: "Generate",
+        about: "About",
+         selectLanguage: "Language",
+      
       },
       drawer: {
         profile: "Profile",
-        about: "About",
-        selectLanguage: "Select language",
+      
         english: "English",
         hebrew: "Hebrew",
         logout: "Logout",
@@ -19,6 +21,7 @@ const resources = {
         login: "Log in",
       },
       homeScreen: {
+        siteTitle:"Ai recipe generator",
         hello:"Hello",
         guest:"guest",
         recentlyViewed: "Recently viewed",
@@ -163,12 +166,12 @@ const resources = {
       nav: {
         home: "בית",
         generate: "צור מתכון חדש",
+        about: "אודות",
+        selectLanguage: "שפה",
       },
 
       drawer: {
         profile: "פרופיל",
-        about: "אודות",
-        selectLanguage: "בחר שפה",
         english: "אנגלית",
         hebrew: "עברית",
         logout: "התנתק",
@@ -177,6 +180,7 @@ const resources = {
       },
 
       homeScreen: {
+             siteTitle:"יוצר מתכונים חכם",
           hello:"שלום",
         guest:"אורח",
         recentlyViewed: "נצפו לאחרונה",
@@ -186,7 +190,7 @@ const resources = {
       },
 
       about: {
-        title: "אודות האתר",
+      title: "אודות אתר זה",
         footer: "© 2025 כל הזכויות שמורות ® מחולל המתכונים של איציק",
       },
 
@@ -198,10 +202,10 @@ const resources = {
       generate: {
         title: "?אז מה אוכלים היום",
         quantitySelector: "עבור כמה סועדים",
-        labelGenerate: "צור מתכון",
+        labelGenerate: "?מה בא לך להכין",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
-        excludeIngredient: "הסר רכיבים שאני לא רוצה",
+        excludeIngredient: "הסר רכיבים שאתה לא רוצה",
         loadingWithImage: "...מייצר תמונה",
         loadingWithImageLowerMessage: "זה יקח דקה",
         loadingNoImage: "...מייצר מתכון",
@@ -320,7 +324,7 @@ const resources = {
       },
 
       notify: {
-        genericError: "אירעה שגיאה, נסה שוב.",
+        genericError: "אירעה שגיאה, נסה שוב",
       },
     },
   },
