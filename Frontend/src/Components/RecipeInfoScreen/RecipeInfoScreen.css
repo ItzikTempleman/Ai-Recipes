@@ -9,7 +9,7 @@
   flex-direction: column;
   align-items: center;
 background-color: white;
-
+  position: relative; 
 } 
 .InfoScreenContainer {
   width: 100%;
@@ -18,6 +18,7 @@ background-color: white;
   padding: 24px;
   box-sizing: border-box;
   text-align: left;
+   position: relative; 
 } 
 
 .BackBtnContainer {
@@ -31,4 +32,121 @@ background-color: white;
 
 .BackBtnContainer:hover {
   cursor: pointer;
+}
+
+.ShareBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+}
+.PdfCapture {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent; /* keep identical to the screen */
+}
+
+/* Export-only: hide stuff that should NOT appear in the PDF */
+.pdf-exporting .BackBtnContainer,
+.pdf-exporting .LoadImageBtn,
+.pdf-exporting .RoundedBtn {
+  display: none !important;
+}
+
+/* Export-only: don’t hide Share, just disable it to avoid flicker */
+.pdf-exporting .ShareBtn button,
+.pdf-exporting .ShareBtn .MuiButton-root {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+}
+
+/* Keep colors/borders more faithful during capture */
+.pdf-exporting * {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Prevent any clipping during capture */
+.pdf-exporting .PdfCapture,
+.pdf-exporting .PdfCapture * {
+  overflow: visible !important;
+}
+
+/* Make thin lines survive rasterization */
+.pdf-exporting .PdfCapture hr {
+  border-top-width: 2px !important;
+}
+
+/* MUI Divider (if used) */
+.pdf-exporting .PdfCapture .MuiDivider-root {
+  border-width: 2px !important;
+  opacity: 1 !important;
+}
+
+/* Borders on “info cards” (if they are MUI Paper/Card) */
+.pdf-exporting .PdfCapture .MuiPaper-root,
+.pdf-exporting .PdfCapture .MuiCard-root {
+  outline: 2px solid rgba(0,0,0,0.18) !important;
+  outline-offset: -2px !important;
+  box-shadow: none !important; /* shadows often look bad in PDF */
+}
+
+/* If your info grid uses flex gap, normalize it (gap often renders weird in canvas) */
+.pdf-exporting .PdfCapture .MoreInfoRow,
+.pdf-exporting .PdfCapture .NutritionRow,
+.pdf-exporting .PdfCapture .InfoGrid {
+  gap: 12px !important;
+  justify-content: center !important;
+}
+
+/* 1) Force the exact font stack used by MUI (roboto-first) */
+.pdf-exporting .PdfCapture,
+.pdf-exporting .PdfCapture * {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: geometricPrecision !important;
+}
+
+/* 2) Normalize base text sizing/line spacing so it matches screen more closely */
+.pdf-exporting .PdfCapture {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+}
+
+/* 3) Tighten huge gaps that canvas capture exaggerates */
+.pdf-exporting .PdfCapture * {
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+}
+
+/* 4) Make borders/dividers visible and consistent */
+.pdf-exporting .PdfCapture table,
+.pdf-exporting .PdfCapture th,
+.pdf-exporting .PdfCapture td {
+  border-collapse: collapse !important;
+}
+
+.pdf-exporting .PdfCapture hr {
+  border: none !important;
+  border-top: 2px solid rgba(0, 0, 0, 0.25) !important;
+  margin: 10px 0 !important;
+}
+
+/* 5) Fix common “too much padding” on card-like blocks */
+.pdf-exporting .PdfCapture .MuiPaper-root,
+.pdf-exporting .PdfCapture .MuiCard-root {
+  padding: 10px !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+/* 6) Fix ingredient/instruction rows getting too spaced out */
+.pdf-exporting .PdfCapture li {
+  margin: 0 0 6px 0 !important;
+  line-height: 1.35 !important;
+}
+
+.pdf-exporting .PdfCapture p {
+  margin: 0 0 8px 0 !important;
 }

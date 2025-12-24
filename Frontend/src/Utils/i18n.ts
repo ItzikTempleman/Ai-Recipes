@@ -9,12 +9,10 @@ const resources = {
         home: "Home",
         generate: "Generate",
         about: "About",
-         selectLanguage: "Language",
-      
+        selectLanguage: "Language"
       },
       drawer: {
         profile: "Profile",
-      
         english: "English",
         hebrew: "Hebrew",
         logout: "Logout",
@@ -33,7 +31,7 @@ const resources = {
       },
       about: {
         title: "About this site",
-          topSection: getTopSectionEn(),
+        topSection: getTopSectionEn(),
         restOfSection: getRestOfSectionEn(),
         footer: "© 2025 All rights reserved ® Itzik's AI recipe generator",
       },
@@ -137,6 +135,7 @@ const resources = {
         imageUpdated: "Profile image updated",
       },
       recipeUi: {
+        share:"Share",
         instructions:"Instructions",
         ingredients:"Ingredients",
         loadImage: "Load image",
@@ -309,6 +308,7 @@ const resources = {
       },
 
       recipeUi: {
+        share:"שיתוף",
         instructions:"הוראות הכנה",
         ingredients:"מצרכים",
         loadImage: "טען תמונה",

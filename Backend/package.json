@@ -30,6 +30,7 @@
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.14.1",
         "openai": "^6.1.0",
+        "puppeteer": "^24.34.0",
         "uploaded-file-saver": "^1.0.1"
     }
 }
