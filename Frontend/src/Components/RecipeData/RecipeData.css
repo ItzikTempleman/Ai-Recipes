@@ -328,3 +328,97 @@ html[dir="rtl"] .FiltersRow {
     font-size: 10px !important;
   }
 }
+
+
+/* ==========================================================
+   EXPORT FIXES (THIS IS THE IMPORTANT PART)
+   - No cropping in PNG capture (.share-capture)
+   - No cropping in Print/PDF (@media print)
+   ========================================================== */
+
+/* ---- Share capture mode (html2canvas) ---- */
+.share-capture .RecipeStepsWide {
+  width: 100% !important;
+  max-width: 100% !important;
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Collapse 2-column steps into 1 column during capture */
+.share-capture .RecipeStepsGrid {
+  display: block !important;
+  gap: 0 !important;
+}
+
+.share-capture .RecipeStepsGrid::before {
+  display: none !important;
+}
+
+.share-capture .RecipeStepsGrid > .IngredientsList,
+.share-capture .RecipeStepsGrid > .InstructionsList {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Prevent surprise horizontal overflow in capture */
+.share-capture .RecipeData,
+.share-capture .RecipeData * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ---- Print/PDF mode ---- */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Disable the wide 100vw hack in print (main cause of cut-off) */
+  .RecipeStepsWide {
+    width: 100% !important;
+    max-width: 100% !important;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Force single column in print too */
+  .RecipeStepsGrid {
+    display: block !important;
+    gap: 0 !important;
+  }
+
+  .RecipeStepsGrid::before {
+    display: none !important;
+  }
+
+  .RecipeStepsGrid > .IngredientsList,
+  .RecipeStepsGrid > .InstructionsList {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent horizontal overflow in PDF */
+  .RecipeData,
+  .RecipeData * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}

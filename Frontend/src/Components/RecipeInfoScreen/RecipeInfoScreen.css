@@ -56,74 +56,171 @@ background-color: white;
   cursor: pointer;
 }
 
+/* =========================
+   Capture + Print Overrides
+   ========================= */
+
+/* Wrapper used for capture/print target */
 .PdfCapture {
-  overflow: visible;
-}
-
-/* Share mode: make layout phone-safe and prevent overflow */
-.share-capture .InfoScreenContainer {
-  max-width: 800px;
+  overflow: visible; /* allow shadows etc. */
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* -------------------------
+   SHARE-CAPTURE MODE
+   (html2canvas capture)
+   ------------------------- */
+
+/* Make capture deterministic: prevent "desktop wide" layouts */
+.share-capture .InfoScreenContainer {
+  width: 100%;
+  max-width: 800px;
   padding: 16px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Force any 2-column recipe grid into 1 column during capture */
-.share-capture .RecipeStepsGrid {
-  display: block !important;    /* if it’s grid/flex, collapse */
+/* If your screen wrapper is a scroll container, disable clipping */
+.share-capture .RecipeInfoScreen {
+  overflow: visible !important;
 }
 
-.share-capture .RecipeStepsGrid::before {
-  display: none !important;     /* hide the vertical divider line */
-}
-
-/* If you use a two-column layout for steps, force stacking */
-.share-capture .RecipeStepsLeft,
-.share-capture .RecipeStepsRight,
-.share-capture .IngredientsColumn,
-.share-capture .InstructionsColumn {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* Prevent horizontal overflow anywhere */
-.share-capture .PdfCapture,
-.share-capture .PdfCapture * {
-  overflow-x: visible !important;
-}
-
-/* ===== share-capture mode: turn off the 100vw negative-margin hack ===== */
+/* Turn off full-bleed "100vw negative margins" layout hacks */
 .share-capture .RecipeStepsWide {
   width: 100% !important;
   max-width: 100% !important;
-  box-sizing: border-box !important;
   position: static !important;
   left: auto !important;
   right: auto !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
   transform: none !important;
+  box-sizing: border-box !important;
 }
 
-.share-capture html[dir="rtl"] .RecipeStepsWide {
-  transform: none !important;
-}
-
-/* Optional: make it single-column during capture to avoid any horizontal overflow */
+/* Force two-column ingredients/instructions into one column during capture */
 .share-capture .RecipeStepsGrid {
   display: block !important;
-  gap: 0 !important;
 }
 
 .share-capture .RecipeStepsGrid::before {
-  display: none !important;
+  display: none !important; /* hide vertical divider line */
 }
 
+.share-capture .RecipeStepsLeft,
+.share-capture .RecipeStepsRight,
+.share-capture .IngredientsColumn,
+.share-capture .InstructionsColumn,
 .share-capture .RecipeStepsGrid > .IngredientsList,
 .share-capture .RecipeStepsGrid > .InstructionsList {
   width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* Also prevent your scroll container from clipping anything */
-.share-capture .RecipeInfoScreen {
-  overflow: visible !important;
+/* IMPORTANT: don't set overflow-x: visible on EVERYTHING.
+   Instead: prevent accidental horizontal scroll by constraining widths. */
+.share-capture .PdfCapture,
+.share-capture .PdfCapture * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* -------------------------
+   PRINT MODE (PDF via print)
+   ------------------------- */
+
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  /* Keep colors */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide UI chrome */
+  .BackBtnContainer,
+  .ShareBtn,
+  .LoadImageBtn,
+  .RoundedBtn,
+  header,
+  nav {
+    display: none !important;
+  }
+
+  /* Disable scroll containers / clipping */
+  .RecipeInfoScreen,
+  .PdfCapture {
+    overflow: visible !important;
+  }
+
+  /* Print-safe container width */
+  .InfoScreenContainer {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Print-safe: kill full-bleed hack */
+  .RecipeStepsWide {
+    width: 100% !important;
+    max-width: 100% !important;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure 2 columns become 1 in PDF too */
+  .RecipeStepsGrid {
+    display: block !important;
+  }
+  .RecipeStepsGrid::before {
+    display: none !important;
+  }
+  .RecipeStepsLeft,
+  .RecipeStepsRight,
+  .IngredientsColumn,
+  .InstructionsColumn,
+  .RecipeStepsGrid > .IngredientsList,
+  .RecipeStepsGrid > .InstructionsList {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent any accidental horizontal overflow */
+  .PdfCapture,
+  .PdfCapture * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+/* Global recipe typography */
+.RecipeInfoScreen,
+.RecipeInfoScreen * {
+  font-family: Arial, sans-serif;
+}
+
+/* Also force in capture mode (html2canvas clone) */
+.share-capture,
+.share-capture * {
+  font-family: Arial, sans-serif !important;
+}
+
+/* And in print/PDF */
+@media print {
+  body, body * {
+    font-family: Arial, sans-serif !important;
+  }
 }

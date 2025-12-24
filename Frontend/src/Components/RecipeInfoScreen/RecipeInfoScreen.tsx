@@ -16,9 +16,7 @@ import { useTitle } from "../../Utils/Utils";
 import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
 import IosShareIcon from '@mui/icons-material/IosShare';
-import { shareRecipeAsImage } from "../../Utils/ShareRecipeImage";
-
-
+import { shareOrCopyRecipeImage } from "../../Utils/ShareRecipeImage";
 
 type Props = {
   filters?: Filters;
@@ -41,6 +39,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   const recipeId = Number(id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
+    const [isSharing, setIsSharing] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -57,7 +56,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   function returnToList() {
     navigate("/home");
   }
-
+const sharingRef = useRef(false);
   if (!recipe) return null;
 
   async function loadImageHelper(recipe: RecipeModel) {
@@ -68,12 +67,31 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
     return updated;
   }
   
-
 async function sharePdf() {
-  if (!recipe) return;
-  await shareRecipeAsImage(pdfRef, recipe);
-}
+  if (sharingRef.current) return;
+  sharingRef.current = true;
+    try {
+      setIsSharing(true);
 
+      const result = await shareOrCopyRecipeImage(pdfRef, {
+        recipeName: recipe.title ?? recipe.description?? "recipe",
+      });
+
+      if (!result.ok) {
+        notify.error(result);
+        return;
+      }
+
+     if (result.method === "clipboard") {
+      notify.success("Copied image. Paste into WhatsApp.");
+    }
+  } finally {
+    // small delay prevents accidental double-taps on mobile
+    setTimeout(() => {
+      sharingRef.current = false;
+    }, 600);
+  }
+}
   const imgSrc = (() => {
     const url = (recipe.imageUrl ?? "").trim();
     return url && url !== "null" && url !== "undefined" ? url : "";
