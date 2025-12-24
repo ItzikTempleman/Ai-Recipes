@@ -1,15 +1,17 @@
 // Frontend/src/Utils/ShareRecipeImage.ts
 import html2canvas from "html2canvas";
-import type React from "react";
+import type { RefObject } from "react";
 
-
-export function isMobile(): boolean {
-  if (typeof navigator === "undefined") return false;
-
-  return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
-    navigator.userAgent
-  );
-}
+type Html2CanvasOptionsCompat = {
+  scale?: number;
+  backgroundColor?: string | null;
+  useCORS?: boolean;
+  allowTaint?: boolean;
+  scrollX?: number;
+  scrollY?: number;
+  windowWidth?: number;
+  windowHeight?: number;
+};
 
 type ShareRecipeArgs = {
   recipeName: string;
@@ -26,6 +28,12 @@ export type ShareResult =
 const CAPTURE_SCALE = 2;
 const CAPTURE_PADDING_PX = 24;
 const REVOKE_URL_AFTER_MS = 15000;
+
+/** Simple UA check used only for fallback behavior */
+function isMobile(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
 
 function sanitizeFilename(name: string): string {
   const cleaned = (name ?? "").trim().replace(/[\/\\?%*:|"<>]/g, "-");
@@ -45,10 +53,10 @@ async function canvasToPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 }
 
 /**
- * Creates a PNG capture of `el` in a way that avoids common html2canvas edge-cropping:
- * - clones into an offscreen wrapper
- * - adds padding around the cloned content
- * - forces a capture-safe CSS mode via `.share-capture`
+ * Capture target element to PNG without edge-cropping:
+ * - clone into offscreen wrapper
+ * - add padding
+ * - add `.share-capture` class so your CSS can disable wide/overflow hacks
  */
 async function createPngFromElement(el: HTMLElement): Promise<Blob> {
   const rect = el.getBoundingClientRect();
@@ -65,7 +73,6 @@ async function createPngFromElement(el: HTMLElement): Promise<Blob> {
   wrapper.style.width = `${baseWidth + CAPTURE_PADDING_PX * 2}px`;
 
   const clone = el.cloneNode(true) as HTMLElement;
-  // Your CSS should define .share-capture overrides to disable wide/overflow layouts
   clone.classList.add("share-capture");
   clone.style.width = `${baseWidth}px`;
   clone.style.boxSizing = "border-box";
@@ -74,16 +81,18 @@ async function createPngFromElement(el: HTMLElement): Promise<Blob> {
   document.body.appendChild(wrapper);
 
   try {
-    const canvas = await html2canvas(wrapper, {
-      scale: CAPTURE_SCALE,
-      backgroundColor: "#ffffff",
-      useCORS: true,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: wrapper.scrollWidth,
-      windowHeight: wrapper.scrollHeight,
-    });
+const options: Html2CanvasOptionsCompat = {
+  scale: CAPTURE_SCALE,
+  backgroundColor: "#ffffff",
+  useCORS: true,
+  scrollX: 0,
+  scrollY: 0,
+  windowWidth: wrapper.scrollWidth,
+  windowHeight: wrapper.scrollHeight,
+};
 
+
+    const canvas = await html2canvas(wrapper, options as any);
     return await canvasToPngBlob(canvas);
   } finally {
     wrapper.remove();
@@ -113,10 +122,6 @@ async function openBlobInNewTab(blobOrFile: Blob): Promise<void> {
   }
 }
 
-/**
- * Attempts to copy an image blob to the clipboard.
- * Works on secure contexts (https/localhost) and when the browser supports ClipboardItem.
- */
 async function copyImageToClipboard(pngBlob: Blob): Promise<boolean> {
   try {
     const navAny = navigator as any;
@@ -141,15 +146,15 @@ function canNativeShareFiles(file: File): boolean {
 }
 
 /**
- * Export/share flow:
+ * Flow:
  * 1) Capture PNG (reliable, not cropped)
- * 2) If Web Share API supports files -> native share (WhatsApp can appear here)
- * 3) Else try clipboard copy (best for WhatsApp Web / pasting anywhere)
- * 4) Else on mobile open new tab (user shares/saves from there)
+ * 2) If Web Share supports files -> native share (WhatsApp can appear here)
+ * 3) Else try clipboard copy (best for WhatsApp Web)
+ * 4) Else on mobile open new tab
  * 5) Else download
  */
 export async function shareOrCopyRecipeImage(
-  pdfRef: React.RefObject<HTMLDivElement>,
+  pdfRef: RefObject<HTMLDivElement>,
   args: ShareRecipeArgs
 ): Promise<ShareResult> {
   try {
@@ -160,23 +165,19 @@ export async function shareOrCopyRecipeImage(
     const pngBlob = await createPngFromElement(el);
     const file = blobToFile(pngBlob, `${safeName}.png`);
 
-    // 1) Native share sheet (WhatsApp appears here IF supported/installed)
+    // 1) Native share (no title/text so WhatsApp won't add captions/paths)
     if (canNativeShareFiles(file)) {
       const navAny = navigator as any;
-await navAny.share({
-  files: [file],
-  // DO NOT set title/text — WhatsApp may show it as a caption/path
-});
+      await navAny.share({ files: [file] });
       return { ok: true, method: "native-share", file };
     }
 
-    // 2) Clipboard fallback (best for desktop / WhatsApp Web)
-    const copied = await copyImageToClipboard(pngBlob);
-    if (copied) {
+    // 2) Clipboard fallback
+    if (await copyImageToClipboard(pngBlob)) {
       return { ok: true, method: "clipboard", file };
     }
 
-    // 3) Mobile fallback: open new tab so user can share/save from browser UI
+    // 3) Mobile fallback: open in new tab so user can share/save via OS/browser UI
     if (isMobile()) {
       await openBlobInNewTab(file);
       return { ok: true, method: "new-tab", file };

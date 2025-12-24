@@ -39,7 +39,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   const recipeId = Number(id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
-    const [isSharing, setIsSharing] = useState(false);
+
   const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ async function sharePdf() {
   if (sharingRef.current) return;
   sharingRef.current = true;
     try {
-      setIsSharing(true);
+   
 
       const result = await shareOrCopyRecipeImage(pdfRef, {
         recipeName: recipe.title ?? recipe.description?? "recipe",
@@ -86,7 +86,7 @@ async function sharePdf() {
       notify.success("Copied image. Paste into WhatsApp.");
     }
   } finally {
-    // small delay prevents accidental double-taps on mobile
+    
     setTimeout(() => {
       sharingRef.current = false;
     }, 600);
