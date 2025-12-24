@@ -1,12 +1,12 @@
-import {Notyf} from "notyf"
+import { Notyf } from "notyf"
 
 class Notify {
     private notyf = new Notyf({
         duration: 3000,
-        position: {x: "center", y: "top"},
+        position: { x: "center", y: "top" },
         dismissible: true,
         ripple: true
-    
+
     });
 
     public success(message: string): void {
@@ -14,16 +14,17 @@ class Notify {
     }
 
     public error(err: unknown): void {
-        const message=this.extractMessage(err)
+        const message = this.extractMessage(err)
         this.notyf.error(message)
     }
 
 
     private extractMessage(err: any): string {
-        if (typeof err === "string") return err
+        if (typeof err === "string") return err;
+        if (typeof err?.error?.message === "string") return err.error.message;
         if (typeof err?.response?.data === "string") return err.response.data;
         if (typeof err?.response?.data?.message === "string") return err.response.data.message;
-        if (typeof err?.message === "string") return err.message
+        if (typeof err?.message === "string") return err.message;
         return "Some error, please try again."
     }
 }

@@ -16,7 +16,7 @@ import { useTitle } from "../../Utils/Utils";
 import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
 import IosShareIcon from '@mui/icons-material/IosShare';
-import { shareOrCopyRecipeImage } from "../../Utils/ShareRecipeImage";
+import { sharePdf } from "../../Utils/ShareRecipeImage";
 
 type Props = {
   filters?: Filters;
@@ -24,6 +24,9 @@ type Props = {
 };
 
 export function RecipeInfoScreen({ filters, loadImage }: Props) {
+  const pdfRef = useRef<HTMLDivElement>(null);
+const sharingRef = useRef(false);
+
   const { t, i18n } = useTranslation();
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
@@ -40,7 +43,6 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
 
-  const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!recipeId) {
@@ -56,7 +58,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   function returnToList() {
     navigate("/home");
   }
-const sharingRef = useRef(false);
+
   if (!recipe) return null;
 
   async function loadImageHelper(recipe: RecipeModel) {
@@ -66,32 +68,11 @@ const sharingRef = useRef(false);
     setRecipe(updated);
     return updated;
   }
-  
-async function sharePdf() {
-  if (sharingRef.current) return;
-  sharingRef.current = true;
-    try {
-   
 
-      const result = await shareOrCopyRecipeImage(pdfRef, {
-        recipeName: recipe.title ?? recipe.description?? "recipe",
-      });
+  const onShare = async () => {
+  await sharePdf(recipe, pdfRef, sharingRef);
+};
 
-      if (!result.ok) {
-        notify.error(result);
-        return;
-      }
-
-     if (result.method === "clipboard") {
-      notify.success("Copied image. Paste into WhatsApp.");
-    }
-  } finally {
-    
-    setTimeout(() => {
-      sharingRef.current = false;
-    }, 600);
-  }
-}
   const imgSrc = (() => {
     const url = (recipe.imageUrl ?? "").trim();
     return url && url !== "null" && url !== "undefined" ? url : "";
@@ -105,29 +86,29 @@ async function sharePdf() {
   };
 
   return (
-<div className="RecipeInfoScreen">
+    <div className="RecipeInfoScreen">
 
-  <div className="TopRow">
-  <div className={`BackBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={returnToList}>
-    <ArrowBackIosNew />
-    {t("recipeUi.back")}
-  </div>
+      <div className="TopRow">
+        <div className={`BackBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={returnToList}>
+          <ArrowBackIosNew />
+          {t("recipeUi.back")}
+        </div>
 
-    <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={sharePdf}>
-        <IosShareIcon />
-        {t("recipeUi.share")}
+        <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={onShare}>
+          <IosShareIcon />
+          {t("recipeUi.share")}
+        </div>
+      </div>
+      <div ref={pdfRef} className="PdfCapture">
+        <div className="InfoScreenContainer">
+          <RecipeData
+            loadImage={loadImageHelper}
+            recipe={recipe}
+            imageSrc={imgSrc}
+            filters={filters ?? filtersFromRecipe}
+          />
+        </div>
+      </div>
     </div>
-</div>
-<div ref={pdfRef} className="PdfCapture">
-  <div className="InfoScreenContainer">
-    <RecipeData
-      loadImage={loadImageHelper}
-      recipe={recipe}
-      imageSrc={imgSrc}
-      filters={filters ?? filtersFromRecipe}
-    />
-  </div>
-</div>
-</div>
   );
 }
