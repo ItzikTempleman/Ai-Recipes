@@ -26,7 +26,7 @@ class RecipeController {
         this.router.get("/api/recipes/liked", verificationMiddleware.verifyLoggedIn, this.getMyLikedRecipeIds);
         this.router.post("/api/recipes/:recipeId/generate-image", verificationMiddleware.verifyLoggedIn, this.generateImageForSavedRecipe);
         this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
-
+        this.router.get("/api/recipe/public/:recipeId",this.getPublicRecipe);
         this.router.get("/api/recipes/:recipeId/share.pdf", this.getSharePdf);
     };
 

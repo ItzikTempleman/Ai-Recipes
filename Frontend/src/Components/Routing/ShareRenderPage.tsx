@@ -12,7 +12,7 @@ export function ShareRenderPage() {
   useEffect(() => {
     if (!id || id <= 0) return;
 
-    fetch(`/api/recipe/${id}`, { credentials: "include" })
+    fetch(`/api/recipe/public/${id}`)
       .then(async (r) => {
         if (!r.ok) throw new Error(await r.text());
         return r.json();
