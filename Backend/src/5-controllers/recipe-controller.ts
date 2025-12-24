@@ -9,6 +9,8 @@ import { generateImage } from "../4-services/image-service";
 import { ResourceNotFound } from "../3-models/client-errors";
 import { chromium } from "playwright";
 import { PDFDocument } from "pdf-lib";
+import { appConfig } from "../2-utils/app-config";
+import { sharePdfService } from "../2-utils/share-pdf-service";
 
 class RecipeController {
     public router: Router = express.Router();
@@ -19,22 +21,21 @@ class RecipeController {
         this.router.get("/api/recipes/all", verificationMiddleware.verifyLoggedIn, this.getRecipes);
         this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
         this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-        this.router.delete("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.deleteRecipe)
+        this.router.delete("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.deleteRecipe);
         this.router.post("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.likeRecipe);
         this.router.delete("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
         this.router.get("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.isRecipeLikedByUser);
         this.router.get("/api/recipes/liked", verificationMiddleware.verifyLoggedIn, this.getMyLikedRecipeIds);
         this.router.post("/api/recipes/:recipeId/generate-image", verificationMiddleware.verifyLoggedIn, this.generateImageForSavedRecipe);
         this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
-        this.router.get("/api/recipe/public/:recipeId",this.getPublicRecipe);
-        this.router.get("/api/recipes/:recipeId/share.pdf", this.getSharePdf);
+        this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe.bind(this));
+        this.router.get("/api/recipes/:recipeId/share.pdf", this.getSharePdf.bind(this));
+        this.router.post("/api/recipes/share.pdf", this.sharePdfFromBody.bind(this));
+        this.router.get("/api/share-payload/:token", this.getSharePayload.bind(this));
     };
 
-    private getFrontendBaseUrl(request: Request): string {
-        return (
-            process.env.FRONTEND_BASE_URL ||
-            `${request.header("x-forwarded-proto") || request.protocol}://${request.get("host")}`
-        );
+    private getFrontendBaseUrl(_request: Request): string {
+        return appConfig.frontendBaseUrl;
     }
 
     private async getRecipes(request: Request, response: Response) {
@@ -333,6 +334,39 @@ class RecipeController {
         const success = await recipeService.unlikeRecipe(userId, recipeId);
         response.json(success ? "un-liked" : "not liked");
     }
+
+    private async sharePdfFromBody(request: Request, response: Response) {
+        try {
+            const recipe = request.body;
+
+            if (!recipe || !recipe.title || !recipe.data) {
+                response.status(StatusCode.BadRequest).send("Missing recipe payload");
+                return;
+            }
+
+            const token = sharePdfService.createTokenForPayload(recipe);
+            const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), token);
+
+            response.setHeader("Content-Type", "application/pdf");
+            response.setHeader("Cache-Control", "no-store");
+            response.status(200).send(pdf);
+        } catch (e: any) {
+            console.error("sharePdfFromBody failed:", e);
+            response.status(500).send(e?.stack || e?.message || String(e));
+        }
+    }
+
+    private async getSharePayload(request: Request, response: Response) {
+        const token = String(request.params.token || "");
+        const payload = sharePdfService.getPayload(token);
+
+        if (!payload) {
+            response.status(404).send("Share payload expired");
+            return;
+        }
+
+        response.json(payload);
+    }
 }
 
 export const recipeController = new RecipeController();
@@ -341,14 +375,14 @@ export const recipeController = new RecipeController();
 //this.router.get("/api/recipes/liked/count/:recipeId", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
 
 
-    // private async getRecipesTotalLikeCount(request: Request, response: Response) {
-    //   const recipeId = Number(request.params.recipeId);
-    //   if (Number.isNaN(recipeId) || recipeId <= 0) {
-    //     response
-    //       .status(StatusCode.BadRequest)
-    //       .send("Route param recipe id must be a positive number");
-    //     return;
-    //   }
-    //   const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
-    //   response.json(likedCount);
-    // }
+// private async getRecipesTotalLikeCount(request: Request, response: Response) {
+//   const recipeId = Number(request.params.recipeId);
+//   if (Number.isNaN(recipeId) || recipeId <= 0) {
+//     response
+//       .status(StatusCode.BadRequest)
+//       .send("Route param recipe id must be a positive number");
+//     return;
+//   }
+//   const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
+//   response.json(likedCount);
+// }

@@ -82,7 +82,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
   const handleShare = async () => {
     try {
-      await shareRecipeAsPdfWithToasts(recipe.id, recipe.title ?? recipe.description ?? "recipe");
+      await shareRecipeAsPdfWithToasts(recipe);
     } catch (e: any) {
       notify.error(e?.message || String(e));
     }

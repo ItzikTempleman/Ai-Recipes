@@ -8,21 +8,21 @@
   grid-template-columns: 1fr;
   background:
     /* strong grid, visible */
-    linear-gradient(90deg, rgba(148, 163, 184, 0.22) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(148, 163, 184, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(133, 154, 183, 0.22) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(105, 116, 131, 0.18) 1px, transparent 1px),
 
     /* blue wash */
     radial-gradient(1100px 720px at 12% 0%,
-      rgba(42, 132, 191, 0.726) 0%,
-      rgba(29, 100, 167, 0.42) 35%,
-      rgba(8, 63, 114, 0.18) 55%,
+      rgba(0, 153, 255, 0.726) 0%,
+      rgba(25, 136, 240, 0.42) 35%,
+      rgba(33, 124, 209, 0.18) 55%,
       transparent 70%),
 
     /* gold wash */
     radial-gradient(900px 680px at 92% 10%,
-      rgba(174, 132, 49, 0.72) 0%,
+      rgba(237, 138, 25, 0.72) 0%,
       rgba(240, 180, 58, 0.40) 34%,
-      rgba(240, 180, 58, 0.16) 54%,
+      rgba(201, 145, 32, 0.16) 54%,
       transparent 70%),
 
     /* silver depth */
@@ -71,20 +71,20 @@ main:has(.RecipeCard) {
 
       /* blue wash – narrower + centered */
       radial-gradient(520px 520px at 50% 0%,
-        rgba(42, 132, 191, 0.72) 0%,
-        rgba(29, 100, 167, 0.42) 38%,
+        rgba(49, 148, 214, 0.72) 0%,
+        rgba(43, 140, 231, 0.42) 38%,
         rgba(8, 63, 114, 0.18) 58%,
         transparent 72%),
 
       /* gold wash – centered so it reaches edges */
       radial-gradient(520px 520px at 50% 28%,
-        rgba(174, 132, 49, 0.72) 0%,
+        rgba(235, 143, 5, 0.72) 0%,
         rgba(240, 180, 58, 0.42) 36%,
-        rgba(240, 180, 58, 0.18) 58%,
+        rgba(208, 147, 25, 0.18) 58%,
         transparent 72%),
 
       /* base */
-      linear-gradient(180deg, #cfd8e6 0%, #c7d3e4 35%, #d7dee9 100%);
+      linear-gradient(180deg, #b7b8ba 0%, #81a7dc 35%, #d7dee9 100%);
 
     background-size: 36px 36px, 36px 36px, auto, auto, auto;
   }

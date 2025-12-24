@@ -1,8 +1,5 @@
+import { RecipeModel } from "../Models/RecipeModel";
 import { notify } from "../Utils/Notify";
-
-export type SharePdfResult =
-  | { ok: true; method: "native-share" | "download"; file: File }
-  | { ok: false; error: Error };
 
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -39,15 +36,29 @@ async function downloadBlob(blob: Blob, filename: string) {
   }
 }
 
-async function fetchSharePdf(recipeId: number): Promise<Blob> {
-  const resp = await fetch(`/api/recipes/${recipeId}/share.pdf`, {
-    method: "GET",
-    credentials: "include",
-  });
+async function fetchRecipePdfBlob(recipe: RecipeModel): Promise<Blob> {
+  const hasId = Number(recipe?.id) > 0;
+  const payload = {
+    ...recipe,
+    title: recipe?.title ?? "",
+    data: recipe?.data ?? {
+      ingredients: recipe?.data?.ingredients ??[],
+      instructions: recipe?.data?.instructions ?? [],
+    },
+    queryRestrictions: recipe?.queryRestrictions ?? [],
+    imageUrl: recipe?.imageUrl ?? recipe?.image ?? "",
+  };
+  console.log("share payload", payload);
+  const resp = hasId
+    ? await fetch(`/api/recipes/${recipe.id}/share.pdf`)
+    : await fetch(`/api/recipes/share.pdf`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
   if (!resp.ok) {
-    const text = await resp.text().catch(() => "");
-    throw new Error(`Share PDF failed: ${resp.status} ${resp.statusText} ${text}`.trim());
+    throw new Error(await resp.text());
   }
 
   const blob = await resp.blob();
@@ -57,63 +68,36 @@ async function fetchSharePdf(recipeId: number): Promise<Blob> {
   return blob;
 }
 
-export async function shareRecipeAsPdf(
-  recipeId: number,
-  recipeName: string
-): Promise<SharePdfResult> {
+export async function shareRecipeAsPdfWithToasts(recipe: any) {
   try {
-    const safeName = sanitizeFilename(recipeName);
-    const pdf = await fetchSharePdf(recipeId);
+    const safeName = sanitizeFilename(recipe?.title ?? "recipe");
+    const pdf = await fetchRecipePdfBlob(recipe);
     const file = new File([pdf], `${safeName}.pdf`, { type: "application/pdf" });
 
-    // iOS: download is most reliable
     if (isIOS()) {
       await downloadBlob(pdf, `${safeName}.pdf`);
-      return { ok: true, method: "download", file };
+      notify.success("Saved PDF. Share it from Files / WhatsApp.");
+      return;
     }
 
-    // Android / desktop
     if (canNativeShareFiles(file)) {
       try {
         await (navigator as any).share({
           files: [file],
           title: safeName,
         });
-        return { ok: true, method: "native-share", file };
+        return;
       } catch (e: any) {
         if (e?.name === "AbortError") {
-          return { ok: false, error: new Error("Share cancelled.") };
+          return;
         }
       }
     }
 
     await downloadBlob(pdf, `${safeName}.pdf`);
-    return { ok: true, method: "download", file };
-  } catch (e: any) {
-    return { ok: false, error: e instanceof Error ? e : new Error(String(e)) };
-  }
-}
-
-function isShareError(
-  r: SharePdfResult
-): r is { ok: false; error: Error } {
-  return r.ok === false;
-}
-
-export async function shareRecipeAsPdfWithToasts(
-  recipeId: number,
-  recipeName: string
-) {
-  const result = await shareRecipeAsPdf(recipeId, recipeName);
-
-  if (isShareError(result)) {
-    if (result.error.message !== "Share cancelled.") {
-      notify.error(result.error.message);
-    }
-    return;
-  }
-
-  if (result.method === "download") {
     notify.success("Saved PDF. Share it from Files / WhatsApp.");
+  } catch (e: any) {
+    const err = e instanceof Error ? e : new Error(String(e));
+    if (err.message !== "Share cancelled.") notify.error(err.message);
   }
 }
