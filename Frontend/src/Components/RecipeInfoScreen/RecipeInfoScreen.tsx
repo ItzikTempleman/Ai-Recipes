@@ -15,9 +15,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../Utils/Utils";
 import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
-import { Button } from "@mui/material";
 import IosShareIcon from '@mui/icons-material/IosShare';
-import { shareRecipePdf } from "../../Utils/SharePdf";
+import { shareRecipeAsImage } from "../../Utils/ShareRecipeImage";
+
+
+
 type Props = {
   filters?: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
@@ -39,7 +41,8 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   const recipeId = Number(id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
-const pdfRef = useRef<HTMLDivElement>(null);
+  const pdfRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!recipeId) {
       navigate("/home");
@@ -57,17 +60,18 @@ const pdfRef = useRef<HTMLDivElement>(null);
 
   if (!recipe) return null;
 
-  function loadImageHelper(recipe: RecipeModel) {
+  async function loadImageHelper(recipe: RecipeModel) {
     if (loadImage) return loadImage(recipe);
 
-    return recipeService.generateImageForSavedRecipe(recipe.id).then((updated) => {
-      setRecipe(updated);
-      return updated;
-    });
+    const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
+    setRecipe(updated);
+    return updated;
   }
+  
 
 async function sharePdf() {
-  await shareRecipePdf(pdfRef, recipe);
+  if (!recipe) return;
+  await shareRecipeAsImage(pdfRef, recipe);
 }
 
   const imgSrc = (() => {
@@ -84,20 +88,20 @@ async function sharePdf() {
 
   return (
 <div className="RecipeInfoScreen">
+
+  <div className="TopRow">
   <div className={`BackBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={returnToList}>
     <ArrowBackIosNew />
     {t("recipeUi.back")}
   </div>
 
-  <div className="InfoScreenContainer">
-    <div className="ShareBtn">
-      <Button variant="contained" onClick={sharePdf}>
+    <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={sharePdf}>
         <IosShareIcon />
         {t("recipeUi.share")}
-      </Button>
     </div>
-
+</div>
 <div ref={pdfRef} className="PdfCapture">
+  <div className="InfoScreenContainer">
     <RecipeData
       loadImage={loadImageHelper}
       recipe={recipe}
@@ -105,7 +109,7 @@ async function sharePdf() {
       filters={filters ?? filtersFromRecipe}
     />
   </div>
-  </div>
+</div>
 </div>
   );
 }
