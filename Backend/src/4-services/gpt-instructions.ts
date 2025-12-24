@@ -480,8 +480,7 @@ YOU MUST:
      - Use the country name in English and capitalize it, e.g. "Italy", "Japan",
        "Mexico", "Israel".
      - For very global or unclear dishes, choose the country most strongly
-       associated with the classic version, or use "Unknown" if there is
-       no reasonable answer.
+       associated with the classic version.you must return a country name. DO NOT RETURN UNKNOWN
 
 Return ONLY a JSON object in exactly this shape (no comments inside the JSON).
 The example numbers below MUST be replaced with realistic values that follow rules 3 and 4:
