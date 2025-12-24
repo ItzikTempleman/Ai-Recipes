@@ -1,5 +1,5 @@
 import html2canvas from "html2canvas";
-import { useRef, type RefObject } from "react";
+import {type RefObject } from "react";
 import { RecipeModel } from "../Models/RecipeModel";
 import { notify } from "./Notify";
 
@@ -17,8 +17,6 @@ type Html2CanvasOptionsCompat = {
 type ShareRecipeArgs = {
   recipeName: string;
 };
-
-
 
 export type ShareResult =
   | {
