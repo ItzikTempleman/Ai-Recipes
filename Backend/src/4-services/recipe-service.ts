@@ -35,12 +35,12 @@ class RecipeService {
     return { ...data, amountOfServings: input.quantity };
   }
 
-public async setRecipeImageName(recipeId: number, userId: number, imageName: string):Promise<void>{
-  const sql = "update recipe set imageName=? where id=? and userId=?";
-  const values = [imageName, recipeId, userId];
-  const info = await dal.execute(sql, values) as OkPacketParams;
+  public async setRecipeImageName(recipeId: number, userId: number, imageName: string): Promise<void> {
+    const sql = "update recipe set imageName=? where id=? and userId=?";
+    const values = [imageName, recipeId, userId];
+    const info = await dal.execute(sql, values) as OkPacketParams;
     if (info.affectedRows === 0) throw new ResourceNotFound(recipeId);
-}
+  }
 
   public async getRecipes(userId: number): Promise<FullRecipeModel[]> {
     const sql = "select * from recipe where userId = ?";
@@ -58,6 +58,17 @@ public async setRecipeImageName(recipeId: number, userId: number, imageName: str
     return mapDbRowToFullRecipe(row);
   };
 
+
+  public async getRecipePublicById(id: number): Promise<FullRecipeModel> {
+    const sql = "select * from recipe where id=?";
+    const values = [id];
+    const rows = await dal.execute(sql, values) as DbRecipeRow[];
+    const row = rows[0];
+    if (!row) throw new ResourceNotFound(id);
+    return mapDbRowToFullRecipe(row);
+  };
+
+  
   public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
@@ -193,10 +204,10 @@ public async setRecipeImageName(recipeId: number, userId: number, imageName: str
   // }
 
   public async getLikedRecipeIdsByUser(userId: number): Promise<number[]> {
-  const sql = "select recipeId from likes where userId=?";
-  const rows = await dal.execute(sql, [userId]) as { recipeId: number }[];
-  return rows.map(r => r.recipeId);
-}
+    const sql = "select recipeId from likes where userId=?";
+    const rows = await dal.execute(sql, [userId]) as { recipeId: number }[];
+    return rows.map(r => r.recipeId);
+  }
 
   private async isLikedRecipe(userId: number, recipeId: number): Promise<boolean> {
     const sql = "select userId, recipeId from likes where userId=? and recipeId=? limit 1";

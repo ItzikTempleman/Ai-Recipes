@@ -1,22 +1,16 @@
 import { ArrowBackIosNew } from "@mui/icons-material";
-import {
-  DietaryRestrictions,
-  GlutenRestrictions,
-  LactoseRestrictions,
-  RecipeModel,
-  SugarRestriction,
-} from "../../Models/RecipeModel";
+import {DietaryRestrictions,GlutenRestrictions,LactoseRestrictions,RecipeModel,SugarRestriction} from "../../Models/RecipeModel";
 import { Filters } from "../RecipeCard/RecipeCard";
 import { RecipeData } from "../RecipeData/RecipeData";
 import { notify } from "../../Utils/Notify";
 import { recipeService } from "../../Services/RecipeService";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../Utils/Utils";
 import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
-import IosShareIcon from '@mui/icons-material/IosShare';
-import { sharePdf } from "../../Utils/ShareRecipeImage";
+
+
 
 type Props = {
   filters?: Filters;
@@ -24,8 +18,6 @@ type Props = {
 };
 
 export function RecipeInfoScreen({ filters, loadImage }: Props) {
-  const pdfRef = useRef<HTMLDivElement>(null);
-const sharingRef = useRef(false);
 
   const { t, i18n } = useTranslation();
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
@@ -69,9 +61,6 @@ const sharingRef = useRef(false);
     return updated;
   }
 
-  const onShare = async () => {
-  await sharePdf(recipe, pdfRef, sharingRef);
-};
 
   const imgSrc = (() => {
     const url = (recipe.imageUrl ?? "").trim();
@@ -88,18 +77,13 @@ const sharingRef = useRef(false);
   return (
     <div className="RecipeInfoScreen">
 
-      <div className="TopRow">
+
         <div className={`BackBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={returnToList}>
           <ArrowBackIosNew />
           {t("recipeUi.back")}
         </div>
 
-        <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={onShare}>
-          <IosShareIcon />
-          {t("recipeUi.share")}
-        </div>
-      </div>
-      <div ref={pdfRef} className="PdfCapture">
+  
         <div className="InfoScreenContainer">
           <RecipeData
             loadImage={loadImageHelper}
@@ -107,8 +91,9 @@ const sharingRef = useRef(false);
             imageSrc={imgSrc}
             filters={filters ?? filtersFromRecipe}
           />
-        </div>
+  
       </div>
-    </div>
+ </div>
   );
 }
+

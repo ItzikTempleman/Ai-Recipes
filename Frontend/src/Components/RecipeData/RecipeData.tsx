@@ -10,15 +10,18 @@ import { RecipeModel } from "../../Models/RecipeModel";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../Utils/Notify";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import { shareRecipeAsPdfWithToasts } from "../../Services/ShareRecipeService";
 
 type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
   filters?: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
+  shareMode?: boolean;
 };
 
-export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps) {
+export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
 
@@ -45,6 +48,24 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
     setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
   }, [imageSrc]);
 
+  useEffect(() => {
+    if (!shareMode) return;
+
+    (window as any).__SHARE_READY__ = false;
+
+    const raf = requestAnimationFrame(() => {
+      const img = document.querySelector<HTMLImageElement>("#share-root img.RecipeImage");
+      if (img && !img.complete) {
+        img.onload = () => ((window as any).__SHARE_READY__ = true);
+        img.onerror = () => ((window as any).__SHARE_READY__ = true);
+        return;
+      }
+      (window as any).__SHARE_READY__ = true;
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [shareMode, localImgSrc, recipe]);
+
   const handleLoadImage = async () => {
     try {
       if (!loadImage || isImageLoading) return;
@@ -59,12 +80,22 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
     }
   };
 
+  const handleShare = async () => {
+    try {
+      await shareRecipeAsPdfWithToasts(recipe.id, recipe.title ?? recipe.description ?? "recipe");
+    } catch (e: any) {
+      notify.error(e?.message || String(e));
+    }
+  };
+
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
     i18n.on("languageChanged", onLangChange);
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
+
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
+
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];
     const isModifierLine = (text: string) =>
@@ -74,19 +105,14 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
     for (const line of ingredients) {
       const ingredientText = String((line as any)?.ingredient ?? "").trim();
       const rawAmount = (line as any)?.amount;
-      const amountText =
-        rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+      const amountText = rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
       if (!ingredientText) continue;
       if (out.length > 0 && isModifierLine(ingredientText)) {
-        (out[out.length - 1] as any).ingredient = `${String(
-          (out[out.length - 1] as any).ingredient
-        ).trim()}, ${ingredientText}`;
+        (out[out.length - 1] as any).ingredient = `${String((out[out.length - 1] as any).ingredient).trim()}, ${ingredientText}`;
         continue;
       }
       if (!amountText && out.length > 0) {
-        (out[out.length - 1] as any).ingredient = `${String(
-          (out[out.length - 1] as any).ingredient
-        ).trim()}, ${ingredientText}`;
+        (out[out.length - 1] as any).ingredient = `${String((out[out.length - 1] as any).ingredient).trim()}, ${ingredientText}`;
         continue;
       }
       out.push(line);
@@ -95,22 +121,25 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
   })();
 
   return (
-    <div className="RecipeData">
-      <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-        {recipe.title}
-      </h2>
+    <div className="RecipeData" id="share-root">
+      <div className="RecipeHeaderRow">
+        {!shareMode && (
+          <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={handleShare}>
+            <IosShareIcon />
+            {t("recipeUi.share")}
+          </div>
+        )}
+        <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+          {recipe.title}
+        </h2>
+      </div>
 
       <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
         {recipe.description}
       </p>
 
       {localImgSrc ? (
-        <img
-          className="RecipeImage"
-          src={localImgSrc}
-          alt={recipe.title}
-          onError={() => setLocalImgSrc("")}
-        />
+        <img className="RecipeImage" src={localImgSrc} alt={recipe.title} onError={() => setLocalImgSrc("")} />
       ) : loadImage ? (
         isImageLoading ? (
           <>
@@ -125,10 +154,12 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
             </div>
           </>
         ) : (
-          <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
-            <ImageSearchIcon />
-            {t("recipeUi.loadImage")}
-          </Button>
+          !shareMode && (
+            <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+              <ImageSearchIcon />
+              {t("recipeUi.loadImage")}
+            </Button>
+          )
         )
       ) : null}
 
@@ -152,11 +183,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage }: RecipeProps
             <img className="SugarIcon" src="/sugar.png" />
             <div className="SugarAmountInnerDiv">
               <p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`}</p>
-              <p>
-                {Number(recipe.totalSugar) === 0
-                  ? " "
-                  : `${t("units.tbspShort")} ${t("units.per100g")}`}
-              </p>
+              <p>{Number(recipe.totalSugar) === 0 ? " " : `${t("units.tbspShort")} ${t("units.per100g")}`}</p>
             </div>
           </div>
         </div>

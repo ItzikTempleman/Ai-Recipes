@@ -329,14 +329,6 @@ html[dir="rtl"] .FiltersRow {
   }
 }
 
-
-/* ==========================================================
-   EXPORT FIXES (THIS IS THE IMPORTANT PART)
-   - No cropping in PNG capture (.share-capture)
-   - No cropping in Print/PDF (@media print)
-   ========================================================== */
-
-/* ---- Share capture mode (html2canvas) ---- */
 .share-capture .RecipeStepsWide {
   width: 100% !important;
   max-width: 100% !important;
@@ -349,7 +341,6 @@ html[dir="rtl"] .FiltersRow {
   box-sizing: border-box !important;
 }
 
-/* Collapse 2-column steps into 1 column during capture */
 .share-capture .RecipeStepsGrid {
   display: block !important;
   gap: 0 !important;
@@ -366,14 +357,12 @@ html[dir="rtl"] .FiltersRow {
   box-sizing: border-box !important;
 }
 
-/* Prevent surprise horizontal overflow in capture */
 .share-capture .RecipeData,
 .share-capture .RecipeData * {
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
-/* ---- Print/PDF mode ---- */
 @page {
   size: A4;
   margin: 12mm;
@@ -385,7 +374,6 @@ html[dir="rtl"] .FiltersRow {
     print-color-adjust: exact !important;
   }
 
-  /* Disable the wide 100vw hack in print (main cause of cut-off) */
   .RecipeStepsWide {
     width: 100% !important;
     max-width: 100% !important;
@@ -398,7 +386,6 @@ html[dir="rtl"] .FiltersRow {
     box-sizing: border-box !important;
   }
 
-  /* Force single column in print too */
   .RecipeStepsGrid {
     display: block !important;
     gap: 0 !important;
@@ -415,10 +402,38 @@ html[dir="rtl"] .FiltersRow {
     box-sizing: border-box !important;
   }
 
-  /* Prevent horizontal overflow in PDF */
   .RecipeData,
   .RecipeData * {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+}
+
+.RecipeHeaderRow{
+  display: flex;
+}
+
+.ShareBtnContainer {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  background-color: rgb(21, 65, 121);
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+
+.ShareBtnContainer.rtl {
+  right: auto;
+  left: 16px;
+}
+
+.ShareBtnContainer:hover {
+  cursor: pointer;
 }
