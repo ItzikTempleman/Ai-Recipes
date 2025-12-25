@@ -1,6 +1,8 @@
 import { RecipeModel } from "../Models/RecipeModel";
 import { notify } from "../Utils/Notify";
 
+
+
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
   const ua = navigator.userAgent || "";
@@ -39,6 +41,7 @@ async function downloadBlob(blob: Blob, filename: string) {
   }
 }
 
+
 async function fetchRecipePdfBlob(recipe: RecipeModel): Promise<Blob> {
   const hasId = Number(recipe?.id) > 0;
   const payload = {
@@ -72,23 +75,37 @@ async function fetchRecipePdfBlob(recipe: RecipeModel): Promise<Blob> {
 }
 
 let sharingInFlight = false;
+
 export async function shareRecipeAsPdfWithToasts(recipe: any) {
-    if (sharingInFlight) return;
+  if (sharingInFlight) return;
   sharingInFlight = true;
+
+  // Keep the guard active briefly even if we exit early (prevents double-trigger/bubbling)
+  const releaseGuardSoon = () => {
+    setTimeout(() => {
+      sharingInFlight = false;
+    }, 800);
+  };
+
   try {
     const safeName = sanitizeFilename(recipe?.title ?? "recipe");
     const hasId = Number(recipe?.id) > 0;
 
-    // MOBILE (iOS + Android): open PDF in a new tab (native viewer/share works)
-    const isMobile = isIOS() || /Android/i.test(navigator.userAgent);
+    const isMobile = isIOS() || /Android/i.test(navigator.userAgent || "");
 
     if (isMobile) {
+      // ✅ If saved recipe: open the GET endpoint directly
       if (hasId) {
         window.open(`/api/recipes/${recipe.id}/share.pdf`, "_blank");
+        notify.success("Opened PDF.");
         return;
       }
 
-      // Guest: mint token then open GET PDF
+      // ✅ Guest mobile:
+      // iOS Safari blocks popups if window.open happens after an await.
+      // So open a placeholder tab synchronously first:
+      const opened = window.open("about:blank", "_blank");
+
       const payload = {
         ...recipe,
         title: recipe?.title ?? "",
@@ -109,11 +126,21 @@ export async function shareRecipeAsPdfWithToasts(recipe: any) {
       if (!tokenResp.ok) throw new Error(await tokenResp.text());
       const { token } = await tokenResp.json();
 
-      window.open(`/api/recipes/share.pdf?token=${encodeURIComponent(token)}`, "_blank");
+      const pdfUrl = `/api/recipes/share.pdf?token=${encodeURIComponent(token)}`;
+
+      // If popup was blocked, fall back to same-tab navigation
+      if (!opened) {
+        window.location.href = pdfUrl;
+        notify.success("Opened PDF.");
+        return;
+      }
+
+      opened.location.href = pdfUrl;
+      notify.success("Opened PDF.");
       return;
     }
 
-    // DESKTOP: keep existing file-share / download behavior
+    // ✅ DESKTOP behavior (unchanged logic, but still protected from double-call)
     const pdf = await fetchRecipePdfBlob(recipe);
     const file = new File([pdf], `${safeName}.pdf`, { type: "application/pdf" });
 
@@ -127,7 +154,8 @@ export async function shareRecipeAsPdfWithToasts(recipe: any) {
     notify.success("Downloaded PDF.");
   } catch (err: any) {
     notify.error(err?.message ?? "Failed to share recipe");
-  }finally {
-    sharingInFlight = false;
+  } finally {
+    releaseGuardSoon();
   }
 }
+

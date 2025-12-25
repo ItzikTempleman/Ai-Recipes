@@ -6,11 +6,8 @@ import { InputModel } from "../3-models/InputModel";
 import { verificationMiddleware } from "../6-middleware/verification-middleware";
 import { UserModel } from "../3-models/user-model";
 import { generateImage } from "../4-services/image-service";
-import { ResourceNotFound } from "../3-models/client-errors";
-import { chromium } from "playwright";
-import { PDFDocument } from "pdf-lib";
 import { appConfig } from "../2-utils/app-config";
-import { sharePdfService } from "../2-utils/share-pdf-service";
+import { sharePdfService } from "../4-services/share-pdf-service";
 
 class RecipeController {
     public router: Router = express.Router();
@@ -241,10 +238,7 @@ private async getSharePdf(request: Request, response: Response) {
       return;
     }
 
-    // public fetch so it works without auth too
-    const recipe = await recipeService.getRecipePublicById(recipeId);
-
-    const pdf = await sharePdfService.pdfForRecipePayload(recipe);
+    const pdf = await sharePdfService.pdfForRecipeId(this.getFrontendBaseUrl(request), recipeId);
 
     response.setHeader("Content-Type", "application/pdf");
     response.setHeader("Cache-Control", "no-store");
@@ -255,6 +249,7 @@ private async getSharePdf(request: Request, response: Response) {
     response.status(StatusCode.InternalServerError).send("Some error, please try again");
   }
 }
+
     private async getImageFile(request: Request, response: Response) {
         try {
             const { fileName } = request.params;
@@ -305,7 +300,6 @@ private async getSharePdf(request: Request, response: Response) {
         const success = await recipeService.unlikeRecipe(userId, recipeId);
         response.json(success ? "un-liked" : "not liked");
     }
-
 private async sharePdfFromBody(request: Request, response: Response) {
   try {
     const recipe = request.body;
@@ -314,7 +308,8 @@ private async sharePdfFromBody(request: Request, response: Response) {
       return;
     }
 
-    const pdf = await sharePdfService.pdfForRecipePayload(recipe);
+    const token = sharePdfService.createTokenForPayload(recipe);
+    const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), token);
 
     response.setHeader("Content-Type", "application/pdf");
     response.setHeader("Cache-Control", "no-store");
@@ -325,6 +320,7 @@ private async sharePdfFromBody(request: Request, response: Response) {
     response.status(StatusCode.InternalServerError).send("Some error, please try again");
   }
 }
+
 
     private async getSharePayload(request: Request, response: Response) {
         const token = String(request.params.token || "");
@@ -338,16 +334,33 @@ private async sharePdfFromBody(request: Request, response: Response) {
         response.json(payload);
     }
 
-    private async createShareToken(request: Request, response: Response) {
-        const recipe = request.body;
+private async createShareToken(request: Request, response: Response) {
+  const recipe = request.body;
 
-        if (!recipe || !recipe.title || recipe.data) {
-            response.status(StatusCode.BadRequest).send("Missing recipe payload");
-            return;
-        }
-        const token = sharePdfService.createTokenForPayload(recipe);
-        response.json({ token })
-    }
+  // Must include title and recipe content (data.ingredients + data.instructions)
+  const title = String(recipe?.title ?? "").trim();
+  const ingredients = recipe?.data?.ingredients ?? recipe?.ingredients ?? [];
+  const instructions = recipe?.data?.instructions ?? recipe?.instructions ?? [];
+
+  if (!title) {
+    response.status(StatusCode.BadRequest).send("Missing recipe title");
+    return;
+  }
+  if (!Array.isArray(ingredients) || !Array.isArray(instructions)) {
+    response.status(StatusCode.BadRequest).send("Missing recipe payload");
+    return;
+  }
+
+  // Normalize to a stable shape so ShareRenderPage can always read it
+  const normalized = {
+    ...recipe,
+    title,
+    data: { ingredients, instructions },
+  };
+
+  const token = sharePdfService.createTokenForPayload(normalized);
+  response.json({ token });
+}
 
     private async getSharePdfByToken(request: Request, response: Response) {
         const token = String(request.query.token || "");

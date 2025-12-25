@@ -1,0 +1,61 @@
+/* This CSS only activates while ShareRenderPage is mounted */
+body.share-render-mode header {
+  display: none !important; /* hides <Header/> inside MainLayout */
+}
+
+body.share-render-mode .MainLayout {
+  background: transparent !important; /* removes the grid/washes behind */
+}
+
+body.share-render-mode main {
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+/* THIS is what the PDF generator will crop to */
+#recipe-print-root {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  display: inline-block; /* bounding box = recipe only */
+}
+
+@media print {
+  /* Don't let the page break inside the whole "stats squares" block */
+  .share-print-root .StatsGrid,
+  .share-print-root .statsGrid,
+  .share-print-root .InfoSquares,
+  .share-print-root .infoSquares,
+  .share-print-root .RecipeStats,
+  .share-print-root .recipeStats {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Don't let a single square split */
+  .share-print-root .StatCard,
+  .share-print-root .statCard,
+  .share-print-root .InfoSquare,
+  .share-print-root .infoSquare {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
+
+@media print {
+  /* Keep the entire stats/squares block together (prevents row split across pages) */
+  [data-print-block="stats"] {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+
+    /* Chromium respects this better than flex/grid during printing */
+    display: table !important;
+    width: 100% !important;
+  }
+
+  /* Also prevent breaking inside any tile content */
+  [data-print-block="stats"] * {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
