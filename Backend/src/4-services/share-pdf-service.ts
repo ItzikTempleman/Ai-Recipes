@@ -4,7 +4,7 @@ import { appConfig } from "../2-utils/app-config";
 type ShareStore = Map<string, any>;
 
 const TIMEOUT_MS = 45_000;
-const PDF_CACHE_TTL_MS = 15_000; 
+const PDF_CACHE_TTL_MS = 15_000;
 const __pdfInflight = new Map<string, Promise<Buffer>>();
 const __pdfCache = new Map<string, { at: number; buf: Buffer }>();
 
@@ -74,6 +74,69 @@ type PdfOptions = {
   a4?: boolean;
 };
 
+async function renderUrlToPdfOnceWithIntercept(url: string, payload: any, opts: PdfOptions = {}): Promise<Buffer> {
+  // No cache key reuse here to avoid mixing payloads; keep it simple/reliable
+  return await withBrowser(async (browser) => {
+    const page = await browser.newPage();
+
+    // ✅ Intercept the payload fetch from the share-render page and inject JSON
+    await page.route("**/api/share-payload/**", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "cache-control": "no-store" },
+        body: JSON.stringify(payload),
+      });
+    });
+
+    page.setDefaultTimeout(TIMEOUT_MS);
+
+    await page.goto(url, { waitUntil: "domcontentloaded" });
+
+    // Let React finish rendering
+    await page.waitForSelector("#recipe-print-root", { state: "attached" });
+
+    // Wait for fonts/layout settle a bit
+    await page.waitForTimeout(150);
+
+    // (Optional) Wait for images if you want (your file already has waitForImages)
+    await waitForImages(page, TIMEOUT_MS);
+
+    // Inject print CSS (same style block you already use)
+    await page
+      .addStyleTag({
+        content: `
+          @page { margin: 0; }
+          html, body { margin: 0 !important; padding: 0 !important; background: transparent !important; }
+        `,
+      })
+      .catch(() => {});
+
+    const targetSelector = "#recipe-print-root";
+
+    const widthPx = await page.evaluate((sel) => {
+      const el = document.querySelector(sel) as HTMLElement | null;
+      if (!el) return null;
+      const rect = el.getBoundingClientRect();
+      return Math.ceil(rect.width);
+    }, targetSelector);
+
+    if (!widthPx) throw new Error("Failed to measure recipe-print-root width");
+
+    const pdf = await page.pdf({
+      printBackground: true,
+      margin: { top: "0px", right: "0px", bottom: "0px", left: "0px" },
+      width: `${widthPx}px`,
+      format: opts.a4 === false ? "Letter" : "A4",
+      preferCSSPageSize: false,
+      scale: 1,
+    });
+
+    await page.close();
+    return Buffer.from(pdf);
+  });
+}
+
 async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffer> {
   return await withBrowser(async (browser) => {
     const page = await browser.newPage({
@@ -89,7 +152,7 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
           html, body { margin: 0 !important; padding: 0 !important; }
         `,
       })
-      .catch(() => {});
+      .catch(() => { });
 
     await page.goto(url, { waitUntil: "networkidle", timeout: TIMEOUT_MS });
     await page.emulateMedia({ media: "print" });
@@ -98,7 +161,7 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
       .evaluate(async () => {
         if (document.fonts?.ready) await document.fonts.ready;
       })
-      .catch(() => {});
+      .catch(() => { });
     await waitForFonts(page, TIMEOUT_MS);
     await waitForShareReady(page, TIMEOUT_MS);
     const targetSelector = "#recipe-print-root";
@@ -113,7 +176,7 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
             background: transparent !important;
           }`,
       })
-      .catch(() => {});
+      .catch(() => { });
 
     const widthPx = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement | null;
@@ -182,4 +245,16 @@ export const sharePdfService = {
     const url = `${base.replace(/\/$/, "")}/share-render/0?token=${encodeURIComponent(token)}`;
     return renderUrlToPdfOnce(url, { a4: true });
   },
+
+  async pdfForShareToken(frontendBaseUrl: string, shareToken: string): Promise<Buffer> {
+    const base = frontendBaseUrl || appConfig.frontendBaseUrl;
+    const url = `${base.replace(/\/$/, "")}/share-render/0?token=${encodeURIComponent(shareToken)}`;
+    return renderUrlToPdfOnce(url, { a4: true });
+  },
+  async pdfForPayloadInjected(frontendBaseUrl: string, payload: any): Promise<Buffer> {
+  const base = frontendBaseUrl || appConfig.frontendBaseUrl;
+  const url = `${base.replace(/\/$/, "")}/share-render/0?token=injected`;
+
+  return await renderUrlToPdfOnceWithIntercept(url, payload, { a4: true });
+},
 };
