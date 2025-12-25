@@ -321,67 +321,112 @@ private async sharePdfFromBody(request: Request, response: Response) {
   }
 }
 
-
-    private async getSharePayload(request: Request, response: Response) {
+private async getSharePayload(request: Request, response: Response) {
+    try {
         const token = String(request.params.token || "");
-        const payload = sharePdfService.getPayload(token);
+        if (!token) {
+            response.status(StatusCode.BadRequest).send("Missing token");
+            return;
+        }
 
+        // ✅ Decode payload from token (stateless)
+        const payload = RecipeController.decodeShareToken(token);
         if (!payload) {
             response.status(404).send("Share payload expired");
             return;
         }
 
         response.json(payload);
+    } catch (e: any) {
+        console.error("getSharePayload failed:", e?.stack || e);
+        response.status(StatusCode.BadRequest).send("Invalid token");
     }
-
-private async createShareToken(request: Request, response: Response) {
-  const recipe = request.body;
-
-  // Must include title and recipe content (data.ingredients + data.instructions)
-  const title = String(recipe?.title ?? "").trim();
-  const ingredients = recipe?.data?.ingredients ?? recipe?.ingredients ?? [];
-  const instructions = recipe?.data?.instructions ?? recipe?.instructions ?? [];
-
-  if (!title) {
-    response.status(StatusCode.BadRequest).send("Missing recipe title");
-    return;
-  }
-  if (!Array.isArray(ingredients) || !Array.isArray(instructions)) {
-    response.status(StatusCode.BadRequest).send("Missing recipe payload");
-    return;
-  }
-
-  // Normalize to a stable shape so ShareRenderPage can always read it
-  const normalized = {
-    ...recipe,
-    title,
-    data: { ingredients, instructions },
-  };
-
-  const token = sharePdfService.createTokenForPayload(normalized);
-  response.json({ token });
 }
 
-    private async getSharePdfByToken(request: Request, response: Response) {
+
+private async createShareToken(request: Request, response: Response) {
+    try {
+        const recipe = request.body;
+
+        const title = String(recipe?.title ?? "").trim();
+        const ingredients = recipe?.data?.ingredients ?? [];
+        const instructions = recipe?.data?.instructions ?? [];
+
+        if (!title) {
+            response.status(StatusCode.BadRequest).send("Missing recipe title");
+            return;
+        }
+
+        if (!Array.isArray(ingredients) || !Array.isArray(instructions)) {
+            response.status(StatusCode.BadRequest).send("Missing recipe payload");
+            return;
+        }
+
+        const normalized = {
+            ...recipe,
+            title,
+            data: { ingredients, instructions },
+        };
+
+        // ✅ Stateless token: payload is embedded inside the token
+        const token = RecipeController.encodeShareToken(normalized);
+
+        response.json({ token });
+    } catch (e: any) {
+        console.error("createShareToken failed:", e?.stack || e);
+        response.status(StatusCode.InternalServerError).send("Some error, please try again");
+    }
+}
+
+
+
+private async getSharePdfByToken(request: Request, response: Response) {
+    try {
         const token = String(request.query.token || "");
         if (!token) {
             response.status(StatusCode.BadRequest).send("Missing token");
             return;
         }
 
-        const payload = sharePdfService.getPayload(token);
+        // ✅ Decode payload from token (stateless)
+        const payload = RecipeController.decodeShareToken(token);
         if (!payload) {
             response.status(404).send("Share payload expired");
             return;
         }
 
-        const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), token);
+        // We still reuse your existing PDF pipeline which expects a stored token:
+        // store it on THIS request handler and render immediately
+        const internalToken = sharePdfService.createTokenForPayload(payload);
+        const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), internalToken);
 
         response.setHeader("Content-Type", "application/pdf");
         response.setHeader("Cache-Control", "no-store");
         response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
-        response.status(200).send(pdf);
+        response.status(StatusCode.OK).send(pdf);
+    } catch (e: any) {
+        console.error("getSharePdfByToken failed:", e?.stack || e);
+        response.status(StatusCode.InternalServerError).send("Some error, please try again");
     }
+}
+private static encodeShareToken(payload: any): string {
+    const json = JSON.stringify(payload);
+    const b64 = Buffer.from(json, "utf8").toString("base64");
+    // base64url
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+private static decodeShareToken(token: string): any | null {
+    // base64url -> base64
+    let b64 = token.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4 !== 0) b64 += "=";
+
+    const json = Buffer.from(b64, "base64").toString("utf8");
+    const obj = JSON.parse(json);
+
+    if (!obj || !obj.title) return null;
+    return obj;
+}
 
 }
 

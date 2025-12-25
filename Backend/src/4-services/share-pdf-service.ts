@@ -154,7 +154,7 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
 
       // DO NOT set custom height; let it paginate
       preferCSSPageSize: false,
-      scale: 1,
+     scale: 1
     });
 
     await page.close();

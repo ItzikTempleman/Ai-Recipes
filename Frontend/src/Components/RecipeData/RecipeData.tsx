@@ -5,7 +5,7 @@ import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { FilterBadges } from "../Filters/FilterBadges";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../Models/RecipeModel";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
@@ -24,7 +24,7 @@ type RecipeProps = {
 export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
-
+  const shareLockRef = useRef(false);
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
 
@@ -124,7 +124,21 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
     <div className="RecipeData" id="share-root">
       <div className="RecipeHeaderRow">
         {!shareMode && (
-          <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={handleShare}>
+          <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (shareLockRef.current) return;
+            shareLockRef.current = true;
+
+            try {
+              await handleShare();
+            } finally {
+              setTimeout(() => {
+                shareLockRef.current = false;
+              }, 1200);
+            }
+          }}>
             <IosShareIcon />
             {t("recipeUi.share")}
           </div>
@@ -164,78 +178,78 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
       ) : null}
 
       <FilterBadges filters={filters} isRTL={isRTL} />
+      <div className="PrintExtraDataBlock">
+        <div className="RecipeExtraDataContainer">
+          <div className="CaloryParent">
+            <p>{t("recipeUi.calories")}</p>
+            <div className="CaloriesDiv">
+              <img className="CaloriesIcon" src="/calories.png" />
+              <div className="CaloriesInnerDiv">
+                <p>{recipe.calories}</p>
+                <p>{t("recipeUi.kcal")}</p>
+              </div>
+            </div>
+          </div>
 
-      <div className="RecipeExtraDataContainer">
-        <div className="CaloryParent">
-          <p>{t("recipeUi.calories")}</p>
-          <div className="CaloriesDiv">
-            <img className="CaloriesIcon" src="/calories.png" />
-            <div className="CaloriesInnerDiv">
-              <p>{recipe.calories}</p>
-              <p>{t("recipeUi.kcal")}</p>
+          <div className="SugarParent">
+            <p>{t("recipeUi.sugar")}</p>
+            <div className="SugarAmountDiv">
+              <img className="SugarIcon" src="/sugar.png" />
+              <div className="SugarAmountInnerDiv">
+                <p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`}</p>
+                <p>{Number(recipe.totalSugar) === 0 ? " " : `${t("units.tbspShort")} ${t("units.per100g")}`}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="ProteinParent">
+            <p>{t("recipeUi.protein")}</p>
+            <div className="ProteinAmountDiv">
+              <img className="ProteinIcon" src="/protein.png" />
+              <div className="ProteinInnerDiv">
+                <p>
+                  {recipe.totalProtein} {t("units.per100g")}{" "}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="HealthParent">
+            <p>{t("recipeUi.health")}</p>
+            <div className="HealthLevelDiv">
+              <img className="HealthIcon" src="/health.png" />
+              <div className="HealthLevelInnerDiv">
+                <p>{recipe.healthLevel}</p>
+                <p> / 10</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="SugarParent">
-          <p>{t("recipeUi.sugar")}</p>
-          <div className="SugarAmountDiv">
-            <img className="SugarIcon" src="/sugar.png" />
-            <div className="SugarAmountInnerDiv">
-              <p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`}</p>
-              <p>{Number(recipe.totalSugar) === 0 ? " " : `${t("units.tbspShort")} ${t("units.per100g")}`}</p>
-            </div>
+        <div className="RecipeBottomExtraDataContainer">
+          <div className="AmountParent">
+            <RestaurantIcon fontSize="small" />
+            <p>x {recipe.amountOfServings}</p>
           </div>
-        </div>
 
-        <div className="ProteinParent">
-          <p>{t("recipeUi.protein")}</p>
-          <div className="ProteinAmountDiv">
-            <img className="ProteinIcon" src="/protein.png" />
-            <div className="ProteinInnerDiv">
-              <p>
-                {recipe.totalProtein} {t("units.per100g")}{" "}
-              </p>
-            </div>
+          <div className="PrepTimeParent">
+            <img className="ExtraDataImg" src={"/clock.png"} />
+            <p>
+              {recipe.prepTime} {t("units.minuteShort")}{" "}
+            </p>
           </div>
-        </div>
 
-        <div className="HealthParent">
-          <p>{t("recipeUi.health")}</p>
-          <div className="HealthLevelDiv">
-            <img className="HealthIcon" src="/health.png" />
-            <div className="HealthLevelInnerDiv">
-              <p>{recipe.healthLevel}</p>
-              <p> / 10</p>
-            </div>
+          <div className="CountryNameParent">
+            <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
+            <p>{recipe.countryOfOrigin}</p>
+          </div>
+
+          <div className="DifficultyParent">
+            <img className="ExtraDataImg" src={difficulty.icon} />
+            <p>{t(difficulty.labelKey)}</p>
           </div>
         </div>
       </div>
-
-      <div className="RecipeBottomExtraDataContainer">
-        <div className="AmountParent">
-          <RestaurantIcon fontSize="small" />
-          <p>x {recipe.amountOfServings}</p>
-        </div>
-
-        <div className="PrepTimeParent">
-          <img className="ExtraDataImg" src={"/clock.png"} />
-          <p>
-            {recipe.prepTime} {t("units.minuteShort")}{" "}
-          </p>
-        </div>
-
-        <div className="CountryNameParent">
-          <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
-          <p>{recipe.countryOfOrigin}</p>
-        </div>
-
-        <div className="DifficultyParent">
-          <img className="ExtraDataImg" src={difficulty.icon} />
-          <p>{t(difficulty.labelKey)}</p>
-        </div>
-      </div>
-
       <div className="RecipeStepsWide">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
           <div className={`IngredientsList ${headingDir}`} dir={headingDir}>
