@@ -8,7 +8,7 @@ import { UserModel } from "../3-models/user-model";
 import { generateImage } from "../4-services/image-service";
 import { appConfig } from "../2-utils/app-config";
 import { sharePdfService } from "../4-services/share-pdf-service";
-
+import zlib from "zlib";
 class RecipeController {
     public router: Router = express.Router();
 
@@ -394,47 +394,71 @@ class RecipeController {
         }
     }
 
-private async getSharePdfByToken(request: Request, response: Response) {
-  try {
-    const token = String(request.query.token || "");
-    if (!token) {
-      response.status(StatusCode.BadRequest).send("Missing token");
-      return;
+    private async getSharePdfByToken(request: Request, response: Response) {
+        try {
+            const token = String(request.query.token || "");
+            if (!token) {
+                response.status(StatusCode.BadRequest).send("Missing token");
+                return;
+            }
+
+            // Decode the public share token (your existing method)
+            const payload = RecipeController.decodeShareToken(token);
+            if (!payload) {
+                response.status(404).send("Share payload expired");
+                return;
+            }
+
+            const pdf = await sharePdfService.pdfForPayloadInjected(this.getFrontendBaseUrl(request), payload);
+
+            response.setHeader("Content-Type", "application/pdf");
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+            response.status(StatusCode.OK).send(pdf);
+        } catch (e: any) {
+            console.error("getSharePdfByToken failed:", e?.stack || e);
+            response.status(StatusCode.InternalServerError).send("Some error, please try again later.");
+        }
     }
 
-    // Decode the public share token (your existing method)
-    const payload = RecipeController.decodeShareToken(token);
-    if (!payload) {
-      response.status(404).send("Share payload expired");
-      return;
-    }
 
-    const pdf = await sharePdfService.pdfForPayloadInjected(this.getFrontendBaseUrl(request), payload);
-
-    response.setHeader("Content-Type", "application/pdf");
-    response.setHeader("Cache-Control", "no-store");
-    response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
-    response.status(StatusCode.OK).send(pdf);
-  } catch (e: any) {
-    console.error("getSharePdfByToken failed:", e?.stack || e);
-    response.status(StatusCode.InternalServerError).send("Some error, please try again later.");
-  }
-}
-
-
-    private static encodeShareToken(payload: any): string {
+    static encodeShareToken(payload: any): string {
+        // v2: deflateRaw(JSON) -> base64url, prefixed so decode can be backwards compatible
         const json = JSON.stringify(payload);
-        const b64 = Buffer.from(json, "utf8").toString("base64");
-        return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+        const deflated = zlib.deflateRawSync(Buffer.from(json, "utf8"), { level: 9 });
+        const b64 = deflated.toString("base64");
+        const b64url = b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+        return `v2.${b64url}`;
     }
 
     private static decodeShareToken(token: string): any | null {
-        let b64 = token.replace(/-/g, "+").replace(/_/g, "/");
-        while (b64.length % 4 !== 0) b64 += "=";
-        const json = Buffer.from(b64, "base64").toString("utf8");
-        const obj = JSON.parse(json);
-        if (!obj || !obj.title) return null;
-        return obj;
+        try {
+            // v2 token: "v2.<base64url(deflateRaw(json))>"
+            if (token.startsWith("v2.")) {
+                const part = token.slice(3);
+
+                let b64 = part.replace(/-/g, "+").replace(/_/g, "/");
+                while (b64.length % 4 !== 0) b64 += "=";
+
+                const compressed = Buffer.from(b64, "base64");
+                const json = zlib.inflateRawSync(compressed).toString("utf8");
+
+                const obj = JSON.parse(json);
+                if (!obj || !obj.title) return null;
+                return obj;
+            }
+
+            // v1 token (legacy): base64url(JSON)
+            let b64 = token.replace(/-/g, "+").replace(/_/g, "/");
+            while (b64.length % 4 !== 0) b64 += "=";
+
+            const json = Buffer.from(b64, "base64").toString("utf8");
+            const obj = JSON.parse(json);
+            if (!obj || !obj.title) return null;
+            return obj;
+        } catch {
+            return null;
+        }
     }
 }
 
