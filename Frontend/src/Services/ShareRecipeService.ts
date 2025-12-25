@@ -104,64 +104,67 @@ console.log("[SHARE] shareRecipeAsPdfWithToasts call #", __shareCallCounter, {
     const isMobile = isIOS() || /Android/i.test(navigator.userAgent || "");
 
     // MOBILE: open PDF in viewer tab
-  if (isMobile) {
+// MOBILE: use native share sheet with URL (reliable), fallback to opening PDF tab
+if (isMobile) {
+  const safeName = sanitizeFilename(recipe?.title ?? "recipe");
+  const hasId = Number(recipe?.id) > 0;
+
+  let pdfPath = "";
+
   if (hasId) {
-    const url = `/api/recipes/${recipe.id}/share.pdf`;
+    pdfPath = `/api/recipes/${recipe.id}/share.pdf`;
+  } else {
+    // Guest: you already have share-token flow in your code, keep it.
+    const payload = {
+      ...recipe,
+      title: recipe?.title ?? "",
+      data: recipe?.data ?? {
+        ingredients: recipe?.data?.ingredients ?? [],
+        instructions: recipe?.data?.instructions ?? [],
+      },
+      queryRestrictions: recipe?.queryRestrictions ?? [],
+      imageUrl: recipe?.imageUrl ?? recipe?.image ?? "",
+    };
 
-    // Open a placeholder tab synchronously (iOS-safe), then set the URL once.
-    const opened = window.open("about:blank", "_blank");
+    const tokenResp = await fetch(`/api/recipes/share-token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!tokenResp.ok) throw new Error(await tokenResp.text());
+    const { token } = await tokenResp.json();
 
-    if (!opened) {
-      // popup blocked → fallback to same tab
-      window.location.href = url;
-      notify.success("Opened PDF.");
+    pdfPath = `/api/recipes/share.pdf?token=${encodeURIComponent(token)}`;
+  }
+
+  // IMPORTANT: share expects an absolute URL on many mobile share sheets
+  const pdfUrl = new URL(pdfPath, window.location.href).toString();
+
+  const navAny = navigator as any;
+  if (typeof navAny?.share === "function") {
+    try {
+      await navAny.share({ title: safeName, url: pdfUrl });
+      notify.success("Shared.");
       return;
+    } catch (e: any) {
+      // user canceled share → don't show error toast
+      if (e?.name === "AbortError") return;
+      // fall through to open tab
     }
+  }
 
-    // Use replace so iOS doesn't "double-load" history entries
-    opened.location.replace(url);
+  // Fallback: open PDF in viewer tab (old behavior)
+  const opened = window.open("about:blank", "_blank");
+  if (!opened) {
+    window.location.href = pdfUrl;
     notify.success("Opened PDF.");
     return;
   }
+  opened.location.replace(pdfUrl);
+  notify.success("Opened PDF.");
+  return;
+}
 
-      // Guest mobile:
-      // iOS blocks window.open if it's called after await.
-      // So open a placeholder tab synchronously first:
-      const opened = window.open("about:blank", "_blank");
-
-      const payload = {
-        ...recipe,
-        title: recipe?.title ?? "",
-        data: recipe?.data ?? {
-          ingredients: recipe?.data?.ingredients ?? [],
-          instructions: recipe?.data?.instructions ?? [],
-        },
-        queryRestrictions: recipe?.queryRestrictions ?? [],
-        imageUrl: recipe?.imageUrl ?? recipe?.image ?? "",
-      };
-
-      const tokenResp = await fetch(`/api/recipes/share-token`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!tokenResp.ok) throw new Error(await tokenResp.text());
-      const { token } = await tokenResp.json();
-
-      const pdfUrl = `/api/recipes/share.pdf?token=${encodeURIComponent(token)}`;
-
-      if (!opened) {
-        // popup blocked → fallback to same tab
-        window.location.href = pdfUrl;
-        notify.success("Opened PDF.");
-        return;
-      }
-
-      opened.location.href = pdfUrl;
-      notify.success("Opened PDF.");
-      return;
-    }
 
     // DESKTOP: download/share file
     const pdf = await fetchRecipePdfBlob(recipe);

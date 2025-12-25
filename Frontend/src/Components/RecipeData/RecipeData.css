@@ -332,7 +332,7 @@ html[dir="rtl"] .FiltersRow {
   }
 }
 
-.share-capture .RecipeStepsWide {
+/* .share-capture .RecipeStepsWide {
   width: 100% !important;
   max-width: 100% !important;
   position: static !important;
@@ -440,7 +440,6 @@ html[dir="rtl"] .FiltersRow {
     print-color-adjust: exact !important;
   }
 
-  /* === KEEP: layout fix to stop Chromium splitting the flex rows === */
   .PrintExtraDataBlock {
     display: table !important;
     width: 100% !important;
@@ -466,7 +465,7 @@ html[dir="rtl"] .FiltersRow {
     page-break-inside: avoid !important;
   }
 
-  /* === MINIMAL FIX: do NOT kill shadows / do NOT add borders in print === */
+  
   .AmountParent,
   .PrepTimeParent,
   .CountryNameParent,
@@ -495,7 +494,7 @@ html[dir="rtl"] .FiltersRow {
   }
 }
 
-/* FINAL: ensure shadows exist in PDF (must be after the table print rules) */
+
 @media print {
   .AmountParent,
   .PrepTimeParent,
@@ -510,4 +509,4 @@ html[dir="rtl"] .FiltersRow {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6) !important;
     border: none !important;
   }
-}
+} */
