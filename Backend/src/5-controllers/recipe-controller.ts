@@ -233,59 +233,28 @@ class RecipeController {
         response.status(StatusCode.OK).json(recipe);
     }
 
-    private async getSharePdf(request: Request, response: Response) {
-        const recipeId = Number(request.params.recipeId);
-        if (Number.isNaN(recipeId) || recipeId <= 0) {
-            response.status(StatusCode.BadRequest).send("Invalid recipeId");
-            return;
-        }
-
-        await recipeService.getRecipePublicById(recipeId);
-
-        const shareUrl = `${this.getFrontendBaseUrl(request)}/share-render/${recipeId}`;
-
-        const browser = await chromium.launch({
-            headless: true,
-            args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-        });
-
-        try {
-            const page = await browser.newPage({
-                viewport: { width: 1000, height: 1600 },
-                deviceScaleFactor: 2,
-            });
-            await page.goto(shareUrl, { waitUntil: "networkidle" });
-            await page.waitForFunction(() => (window as any).__SHARE_READY__ === true, null, { timeout: 15000 });
-
-            const root = await page.$("#share-root");
-            if (!root) {
-                response.status(StatusCode.InternalServerError).send("share-root not found");
-                return;
-            }
-
-            const png = await root.screenshot({ type: "png", omitBackground: false });
-
-            const pdfDoc = await PDFDocument.create();
-            const img = await pdfDoc.embedPng(png);
-
-            const width = img.width * (72 / 96);
-            const height = img.height * (72 / 96);
-
-            const pdfPage = pdfDoc.addPage([width, height]);
-            pdfPage.drawImage(img, { x: 0, y: 0, width, height });
-
-            const pdfBytes = await pdfDoc.save();
-
-            response.setHeader("Content-Type", "application/pdf");
-            response.setHeader("Cache-Control", "no-store");
-            response.status(StatusCode.OK).send(Buffer.from(pdfBytes));
-        } catch (e: any) {
-            response.status(StatusCode.InternalServerError).json({ message: e?.message || String(e) });
-        } finally {
-            await browser.close();
-        }
+private async getSharePdf(request: Request, response: Response) {
+  try {
+    const recipeId = Number(request.params.recipeId);
+    if (Number.isNaN(recipeId) || recipeId <= 0) {
+      response.status(StatusCode.BadRequest).send("Invalid recipeId");
+      return;
     }
 
+    // public fetch so it works without auth too
+    const recipe = await recipeService.getRecipePublicById(recipeId);
+
+    const pdf = await sharePdfService.pdfForRecipePayload(recipe);
+
+    response.setHeader("Content-Type", "application/pdf");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+    response.status(StatusCode.OK).send(pdf);
+  } catch (e: any) {
+    console.error("getSharePdf failed:", e?.stack || e);
+    response.status(StatusCode.InternalServerError).send("Some error, please try again");
+  }
+}
     private async getImageFile(request: Request, response: Response) {
         try {
             const { fileName } = request.params;
@@ -337,27 +306,25 @@ class RecipeController {
         response.json(success ? "un-liked" : "not liked");
     }
 
-    private async sharePdfFromBody(request: Request, response: Response) {
-        try {
-            const recipe = request.body;
-
-            if (!recipe || !recipe.title || !recipe.data) {
-                response.status(StatusCode.BadRequest).send("Missing recipe payload");
-                return;
-            }
-
-            const token = sharePdfService.createTokenForPayload(recipe);
-            response.setHeader("x-share-token", token);
-            const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), token);
-
-            response.setHeader("Content-Type", "application/pdf");
-            response.setHeader("Cache-Control", "no-store");
-            response.status(200).send(pdf);
-        } catch (e: any) {
-            console.error("sharePdfFromBody failed:", e);
-            response.status(500).send(e?.stack || e?.message || String(e));
-        }
+private async sharePdfFromBody(request: Request, response: Response) {
+  try {
+    const recipe = request.body;
+    if (!recipe || !recipe.title || !(recipe.data || recipe.ingredients || recipe.instructions)) {
+      response.status(StatusCode.BadRequest).send("Missing recipe payload");
+      return;
     }
+
+    const pdf = await sharePdfService.pdfForRecipePayload(recipe);
+
+    response.setHeader("Content-Type", "application/pdf");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+    response.status(StatusCode.OK).send(pdf);
+  } catch (e: any) {
+    console.error("sharePdfFromBody failed:", e?.stack || e);
+    response.status(StatusCode.InternalServerError).send("Some error, please try again");
+  }
+}
 
     private async getSharePayload(request: Request, response: Response) {
         const token = String(request.params.token || "");

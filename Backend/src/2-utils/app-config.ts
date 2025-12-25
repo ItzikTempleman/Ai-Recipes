@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
+import fs from "fs";
+
 
 class AppConfig {
   public readonly isDevelopment = process.env.ENVIRONMENT === "development";
@@ -68,6 +70,9 @@ public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
   const host = process.env.PUBLIC_HOST || "localhost";
   return `http://${host}`;
 }
+
+
+
 }
 
 export const appConfig = new AppConfig();

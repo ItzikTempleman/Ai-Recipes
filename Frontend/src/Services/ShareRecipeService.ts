@@ -70,7 +70,11 @@ async function fetchRecipePdfBlob(recipe: RecipeModel): Promise<Blob> {
   }
   return blob;
 }
+
+let sharingInFlight = false;
 export async function shareRecipeAsPdfWithToasts(recipe: any) {
+    if (sharingInFlight) return;
+  sharingInFlight = true;
   try {
     const safeName = sanitizeFilename(recipe?.title ?? "recipe");
     const hasId = Number(recipe?.id) > 0;
@@ -123,5 +127,7 @@ export async function shareRecipeAsPdfWithToasts(recipe: any) {
     notify.success("Downloaded PDF.");
   } catch (err: any) {
     notify.error(err?.message ?? "Failed to share recipe");
+  }finally {
+    sharingInFlight = false;
   }
 }
