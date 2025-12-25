@@ -3,7 +3,10 @@ import { notify } from "../Utils/Notify";
 
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
-  return /iPad|iPhone|iPod/i.test(navigator.userAgent);
+  const ua = navigator.userAgent || "";
+  const iOS = /iPad|iPhone/i.test(ua);
+  const iPadOS = ua.includes("Macintosh") && "ontouchend" in document;
+  return iOS || iPadOS;
 }
 
 function sanitizeFilename(name: string): string {
@@ -42,7 +45,7 @@ async function fetchRecipePdfBlob(recipe: RecipeModel): Promise<Blob> {
     ...recipe,
     title: recipe?.title ?? "",
     data: recipe?.data ?? {
-      ingredients: recipe?.data?.ingredients ??[],
+      ingredients: recipe?.data?.ingredients ?? [],
       instructions: recipe?.data?.instructions ?? [],
     },
     queryRestrictions: recipe?.queryRestrictions ?? [],
@@ -67,37 +70,58 @@ async function fetchRecipePdfBlob(recipe: RecipeModel): Promise<Blob> {
   }
   return blob;
 }
-
 export async function shareRecipeAsPdfWithToasts(recipe: any) {
   try {
     const safeName = sanitizeFilename(recipe?.title ?? "recipe");
-    const pdf = await fetchRecipePdfBlob(recipe);
-    const file = new File([pdf], `${safeName}.pdf`, { type: "application/pdf" });
+    const hasId = Number(recipe?.id) > 0;
 
-    if (isIOS()) {
-      await downloadBlob(pdf, `${safeName}.pdf`);
-      notify.success("Saved PDF. Share it from Files / WhatsApp.");
+    // MOBILE (iOS + Android): open PDF in a new tab (native viewer/share works)
+    const isMobile = isIOS() || /Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      if (hasId) {
+        window.open(`/api/recipes/${recipe.id}/share.pdf`, "_blank");
+        return;
+      }
+
+      // Guest: mint token then open GET PDF
+      const payload = {
+        ...recipe,
+        title: recipe?.title ?? "",
+        data: recipe?.data ?? {
+          ingredients: recipe?.data?.ingredients ?? [],
+          instructions: recipe?.data?.instructions ?? [],
+        },
+        queryRestrictions: recipe?.queryRestrictions ?? [],
+        imageUrl: recipe?.imageUrl ?? recipe?.image ?? "",
+      };
+
+      const tokenResp = await fetch(`/api/recipes/share-token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!tokenResp.ok) throw new Error(await tokenResp.text());
+      const { token } = await tokenResp.json();
+
+      window.open(`/api/recipes/share.pdf?token=${encodeURIComponent(token)}`, "_blank");
       return;
     }
 
+    // DESKTOP: keep existing file-share / download behavior
+    const pdf = await fetchRecipePdfBlob(recipe);
+    const file = new File([pdf], `${safeName}.pdf`, { type: "application/pdf" });
+
     if (canNativeShareFiles(file)) {
-      try {
-        await (navigator as any).share({
-          files: [file],
-          title: safeName,
-        });
-        return;
-      } catch (e: any) {
-        if (e?.name === "AbortError") {
-          return;
-        }
-      }
+      await (navigator as any).share({ files: [file], title: safeName });
+      notify.success("Shared.");
+      return;
     }
 
     await downloadBlob(pdf, `${safeName}.pdf`);
-    notify.success("Saved PDF. Share it from Files / WhatsApp.");
-  } catch (e: any) {
-    const err = e instanceof Error ? e : new Error(String(e));
-    if (err.message !== "Share cancelled.") notify.error(err.message);
+    notify.success("Downloaded PDF.");
+  } catch (err: any) {
+    notify.error(err?.message ?? "Failed to share recipe");
   }
 }

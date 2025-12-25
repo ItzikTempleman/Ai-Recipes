@@ -53,7 +53,6 @@ public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
 
     return `http://${host}:${this.port}/api/recipes/images/`;
   }
-  
   private normalizeFrontendBaseUrl(): string {
   // If you ever define it, it will be used. Otherwise fall back safely.
   const raw = process.env.FRONTEND_BASE_URL;

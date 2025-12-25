@@ -32,6 +32,8 @@ class RecipeController {
         this.router.get("/api/recipes/:recipeId/share.pdf", this.getSharePdf.bind(this));
         this.router.post("/api/recipes/share.pdf", this.sharePdfFromBody.bind(this));
         this.router.get("/api/share-payload/:token", this.getSharePayload.bind(this));
+        this.router.get("/api/recipes/share.pdf", this.getSharePdfByToken.bind(this));
+        this.router.post("/api/recipes/share-token", this.createShareToken.bind(this));
     };
 
     private getFrontendBaseUrl(_request: Request): string {
@@ -345,6 +347,7 @@ class RecipeController {
             }
 
             const token = sharePdfService.createTokenForPayload(recipe);
+            response.setHeader("x-share-token", token);
             const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), token);
 
             response.setHeader("Content-Type", "application/pdf");
@@ -367,6 +370,39 @@ class RecipeController {
 
         response.json(payload);
     }
+
+    private async createShareToken(request: Request, response: Response) {
+        const recipe = request.body;
+
+        if (!recipe || !recipe.title || recipe.data) {
+            response.status(StatusCode.BadRequest).send("Missing recipe payload");
+            return;
+        }
+        const token = sharePdfService.createTokenForPayload(recipe);
+        response.json({ token })
+    }
+
+    private async getSharePdfByToken(request: Request, response: Response) {
+        const token = String(request.query.token || "");
+        if (!token) {
+            response.status(StatusCode.BadRequest).send("Missing token");
+            return;
+        }
+
+        const payload = sharePdfService.getPayload(token);
+        if (!payload) {
+            response.status(404).send("Share payload expired");
+            return;
+        }
+
+        const pdf = await sharePdfService.pdfForPayloadToken(this.getFrontendBaseUrl(request), token);
+
+        response.setHeader("Content-Type", "application/pdf");
+        response.setHeader("Cache-Control", "no-store");
+        response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+        response.status(200).send(pdf);
+    }
+
 }
 
 export const recipeController = new RecipeController();

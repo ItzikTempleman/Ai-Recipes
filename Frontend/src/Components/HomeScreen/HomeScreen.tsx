@@ -16,9 +16,13 @@ export function HomeScreen() {
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
  const navigate = useNavigate();
+
+
   useEffect(() => {
-    recipeService.getAllRecipes();
-    recipeService.loadMyLikes();
+      const token = localStorage.getItem("token");
+  if (!token) return;
+    recipeService.getAllRecipes().catch(() => {});
+    recipeService.loadMyLikes().catch(() => {});
   }, [user?.id]);
 
   const list = Array.isArray(items) ? items : [];

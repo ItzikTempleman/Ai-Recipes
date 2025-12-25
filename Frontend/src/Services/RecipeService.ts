@@ -16,6 +16,7 @@ class RecipeService {
 
   private getAuth(): AxiosRequestConfig {
     const token = localStorage.getItem("token") ?? "";
+    if (!token) return {};
     return { headers: { Authorization: `Bearer ${token}` } };
   }
 
@@ -70,10 +71,15 @@ public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: stri
 }
 
   public async getAllRecipes(): Promise<RecipeModel[]> {
+      try {
     const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
     const list = Array.isArray(data) ? data : [];
     store.dispatch(getAllRecipes(list));
     return list;
+      }catch(err:any){
+          if (err?.response?.status === 401) return [];
+    throw err;
+      }
   }
 
   public async getSingleRecipe(id: number): Promise<RecipeModel> {
