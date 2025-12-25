@@ -2,6 +2,7 @@ import { RecipeModel } from "../Models/RecipeModel";
 import { notify } from "../Utils/Notify";
 
 
+let __shareCallCounter = 0;
 
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -78,6 +79,14 @@ let sharingInFlight = false;
 
 
 export async function shareRecipeAsPdfWithToasts(recipe: any) {
+  __shareCallCounter += 1;
+console.log("[SHARE] shareRecipeAsPdfWithToasts call #", __shareCallCounter, {
+  time: new Date().toISOString(),
+  recipeId: recipe?.id,
+  title: recipe?.title,
+  stack: new Error("share call stack").stack,
+});
+
   if (sharingInFlight) return;
   sharingInFlight = true;
 
@@ -95,12 +104,25 @@ export async function shareRecipeAsPdfWithToasts(recipe: any) {
     const isMobile = isIOS() || /Android/i.test(navigator.userAgent || "");
 
     // MOBILE: open PDF in viewer tab
-    if (isMobile) {
-      if (hasId) {
-        window.open(`/api/recipes/${recipe.id}/share.pdf`, "_blank");
-        notify.success("Opened PDF.");
-        return;
-      }
+  if (isMobile) {
+  if (hasId) {
+    const url = `/api/recipes/${recipe.id}/share.pdf`;
+
+    // Open a placeholder tab synchronously (iOS-safe), then set the URL once.
+    const opened = window.open("about:blank", "_blank");
+
+    if (!opened) {
+      // popup blocked → fallback to same tab
+      window.location.href = url;
+      notify.success("Opened PDF.");
+      return;
+    }
+
+    // Use replace so iOS doesn't "double-load" history entries
+    opened.location.replace(url);
+    notify.success("Opened PDF.");
+    return;
+  }
 
       // Guest mobile:
       // iOS blocks window.open if it's called after await.

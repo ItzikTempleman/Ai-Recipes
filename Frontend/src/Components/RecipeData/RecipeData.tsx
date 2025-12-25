@@ -24,7 +24,8 @@ type RecipeProps = {
 export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
-  const shareLockRef = useRef(false);
+const shareOnceRef = useRef(false);
+
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
 
@@ -80,13 +81,25 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
     }
   };
 
-  const handleShare = async () => {
-    try {
-      await shareRecipeAsPdfWithToasts(recipe);
-    } catch (e: any) {
-      notify.error(e?.message || String(e));
-    }
-  };
+const handleShare = async (e?: any) => {
+  if (e?.preventDefault) e.preventDefault();
+  if (e?.stopPropagation) e.stopPropagation();
+
+  // HARD LOCK: no matter what iOS fires, this makes it run once
+  if (shareOnceRef.current) return;
+  shareOnceRef.current = true;
+
+  try {
+    await shareRecipeAsPdfWithToasts(recipe);
+  } catch (err: any) {
+    notify.error(err?.message || String(err));
+  } finally {
+    // release after a short window to block ghost taps
+    setTimeout(() => {
+      shareOnceRef.current = false;
+    }, 2500);
+  }
+};
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
@@ -121,27 +134,17 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
   })();
 
   return (
-    <div className="RecipeData" id="share-root">
+    <div className="RecipeData">
       <div className="RecipeHeaderRow">
         {!shareMode && (
-          <div className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (shareLockRef.current) return;
-            shareLockRef.current = true;
-
-            try {
-              await handleShare();
-            } finally {
-              setTimeout(() => {
-                shareLockRef.current = false;
-              }, 1200);
-            }
-          }}>
+          <Button
+            className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`}
+            variant="contained"
+            onClick={handleShare}
+          >
             <IosShareIcon />
             {t("recipeUi.share")}
-          </div>
+          </Button>
         )}
         <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
           {recipe.title}

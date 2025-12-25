@@ -3,6 +3,18 @@ import { appConfig } from "../2-utils/app-config";
 
 type ShareStore = Map<string, any>;
 
+const TIMEOUT_MS = 45_000;
+
+/**
+ * Idempotency / anti-double-request:
+ * Some mobile PDF viewers (iOS especially) can request the same PDF URL twice
+ * (initial load + retry / range / prefetch). If we render on every request,
+ * it looks like "it sends twice". This makes rendering single-flight + short cached.
+ */
+const PDF_CACHE_TTL_MS = 15_000; // absorb double requests within 15s
+const __pdfInflight = new Map<string, Promise<Buffer>>();
+const __pdfCache = new Map<string, { at: number; buf: Buffer }>();
+
 function getStore(): ShareStore {
   (globalThis as any).__sharePayloadStore ??= new Map<string, any>();
   return (globalThis as any).__sharePayloadStore as ShareStore;
@@ -12,7 +24,7 @@ function makeToken(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
-async function waitForImages(page: any, timeoutMs = 20000) {
+async function waitForImages(page: any, timeoutMs = TIMEOUT_MS) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const allDone = await page.evaluate(() => {
@@ -24,12 +36,29 @@ async function waitForImages(page: any, timeoutMs = 20000) {
   }
 }
 
-async function waitForFonts(page: any, timeoutMs = 20000) {
+async function waitForFonts(page: any, timeoutMs = TIMEOUT_MS) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const ready = await page.evaluate(() => {
       // @ts-ignore
       return !!document.fonts && document.fonts.status === "loaded";
+    });
+    if (ready) return;
+    await page.waitForTimeout(150);
+  }
+}
+
+/**
+ * You already set window.__SHARE_READY__ in RecipeData.tsx when shareMode=true.
+ * We wait for it to become true so the PDF prints AFTER the page is fully ready.
+ */
+async function waitForShareReady(page: any, timeoutMs = TIMEOUT_MS) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const ready = await page.evaluate(() => {
+      // @ts-ignore
+      const v = (window as any).__SHARE_READY__;
+      return v === undefined ? true : v === true;
     });
     if (ready) return;
     await page.waitForTimeout(150);
@@ -81,33 +110,26 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
       })
       .catch(() => {});
 
-    await page.goto(url, { waitUntil: "networkidle" });
+    await page.goto(url, { waitUntil: "networkidle", timeout: TIMEOUT_MS });
 
-    // Wait for layout stability factors
-    await waitForImages(page, 20000);
+    // Keep your existing behavior (screen media). Not related to the "double send" bug.
+    await page.emulateMedia({ media: "screen" });
+
+    await waitForImages(page, TIMEOUT_MS);
+
     await page
       .evaluate(async () => {
         // @ts-ignore
         if (document.fonts?.ready) await document.fonts.ready;
       })
       .catch(() => {});
-    await waitForFonts(page, 20000);
+    await waitForFonts(page, TIMEOUT_MS);
+
+    await waitForShareReady(page, TIMEOUT_MS);
 
     const targetSelector = "#recipe-print-root";
+    await page.waitForSelector(targetSelector, { state: "attached", timeout: TIMEOUT_MS });
 
-    // Ensure wrapper exists
-    await page.waitForSelector(targetSelector, { state: "attached", timeout: 20000 });
-
-    /**
-     * IMPORTANT:
-     * Do NOT force `overflow: visible` on every descendant (`${targetSelector} *`)
-     * because it can break tables/cards that rely on overflow for layout.
-     *
-     * We only ensure:
-     * - body has no padding/margins
-     * - wrapper doesn't add extra padding
-     * - wrapper background is transparent
-     */
     await page
       .addStyleTag({
         content: `
@@ -121,40 +143,22 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
       })
       .catch(() => {});
 
-    // Measure wrapper width accurately
     const widthPx = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement | null;
       if (!el) return null;
       const rect = el.getBoundingClientRect();
-      // Use rect.width for actual rendered width (what you want 1:1)
       return Math.ceil(rect.width);
     }, targetSelector);
 
     if (!widthPx) throw new Error("Failed to measure recipe-print-root width");
 
-    /**
-     * Core fix for your “cut off / no continuation”:
-     * - stop trying to make one giant custom-height page (many viewers truncate it)
-     * - instead: set a fixed width and let PDF paginate normally
-     *
-     * This still looks like a clean invoice/boarding-pass PDF:
-     * - width matches the card 1:1
-     * - no site chrome
-     * - backgrounds/shadows kept
-     */
     const pdf = await page.pdf({
       printBackground: true,
       margin: { top: "0px", right: "0px", bottom: "0px", left: "0px" },
-
-      // force the content width to be exactly the recipe card width
       width: `${widthPx}px`,
-
-      // choose paper size for pagination consistency
       format: opts.a4 === false ? "Letter" : "A4",
-
-      // DO NOT set custom height; let it paginate
       preferCSSPageSize: false,
-     scale: 1
+      scale: 1,
     });
 
     await page.close();
@@ -162,13 +166,39 @@ async function renderUrlToPdf(url: string, opts: PdfOptions = {}): Promise<Buffe
   });
 }
 
+/**
+ * Core fix for "sends twice":
+ * - short cache absorbs repeated requests (same URL) from mobile PDF viewer
+ * - inflight de-dupe ensures only one Playwright render runs at a time per URL
+ */
+async function renderUrlToPdfOnce(url: string, opts: PdfOptions = {}): Promise<Buffer> {
+  const key = `${url}|a4=${opts.a4 !== false}`;
+
+  const cached = __pdfCache.get(key);
+  if (cached && Date.now() - cached.at < PDF_CACHE_TTL_MS) return cached.buf;
+
+  const inflight = __pdfInflight.get(key);
+  if (inflight) return inflight;
+
+  const p = (async () => {
+    try {
+      const buf = await renderUrlToPdf(url, opts);
+      __pdfCache.set(key, { at: Date.now(), buf });
+      return buf;
+    } finally {
+      __pdfInflight.delete(key);
+    }
+  })();
+
+  __pdfInflight.set(key, p);
+  return p;
+}
+
 export const sharePdfService = {
-  // ===== token store =====
   createTokenForPayload(payload: any): string {
     const token = makeToken();
     getStore().set(token, payload);
 
-    // auto-expire after 10 minutes
     setTimeout(() => {
       getStore().delete(token);
     }, 10 * 60 * 1000).unref?.();
@@ -180,11 +210,10 @@ export const sharePdfService = {
     return getStore().get(token) ?? null;
   },
 
-  // ===== PDFs =====
   async pdfForRecipeId(frontendBaseUrl: string, recipeId: number): Promise<Buffer> {
     const base = frontendBaseUrl || appConfig.frontendBaseUrl;
     const url = `${base.replace(/\/$/, "")}/share-render/${recipeId}`;
-    return renderUrlToPdf(url, { a4: true });
+    return renderUrlToPdfOnce(url, { a4: true });
   },
 
   async pdfForPayloadToken(frontendBaseUrl: string, token: string): Promise<Buffer> {
@@ -193,6 +222,6 @@ export const sharePdfService = {
 
     const base = frontendBaseUrl || appConfig.frontendBaseUrl;
     const url = `${base.replace(/\/$/, "")}/share-render/0?token=${encodeURIComponent(token)}`;
-    return renderUrlToPdf(url, { a4: true });
+    return renderUrlToPdfOnce(url, { a4: true });
   },
 };

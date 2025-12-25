@@ -10,7 +10,6 @@ export function ShareRenderPage() {
 
   const [recipe, setRecipe] = useState<RecipeModel | null>(null);
 
-  // Hide site chrome only while this route is mounted:
   useEffect(() => {
     document.body.classList.add("share-render-mode");
     return () => document.body.classList.remove("share-render-mode");
@@ -20,7 +19,6 @@ export function ShareRenderPage() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
-    // Guest share: fetch payload by token
     if (token) {
       fetch(`/api/share-payload/${token}`)
         .then(async (r) => {
@@ -32,7 +30,6 @@ export function ShareRenderPage() {
       return;
     }
 
-    // Saved recipe share: fetch public recipe by id
     if (!id || id <= 0) return;
 
     fetch(`/api/recipe/public/${id}`)
@@ -44,7 +41,6 @@ export function ShareRenderPage() {
       .catch(() => setRecipe(null));
   }, [id]);
 
-  // After the recipe renders, tag the "stats squares" container so print CSS can keep it together
   useEffect(() => {
     if (!recipe) return;
 
@@ -61,10 +57,8 @@ export function ShareRenderPage() {
       if (el) labelEls.push(el);
     }
 
-    // If we didn't find most labels, don't tag anything
     if (labelEls.length < 3) return;
 
-    // Build ancestor lists
     const ancestorLists = labelEls.map((el) => {
       const list: HTMLElement[] = [];
       let cur: HTMLElement | null = el;
@@ -76,7 +70,6 @@ export function ShareRenderPage() {
       return list;
     });
 
-    // Find first common ancestor
     let common: HTMLElement | null = null;
     for (const candidate of ancestorLists[0]) {
       if (ancestorLists.every((lst) => lst.includes(candidate))) {
@@ -86,8 +79,6 @@ export function ShareRenderPage() {
     }
     if (!common) return;
 
-    // Walk up until we contain BOTH rows (the split happens between rows)
-    // We stop when parent is root or when width grows to full block.
     let container = common;
     for (let i = 0; i < 6; i++) {
       const p = container.parentElement as HTMLElement | null;
@@ -101,12 +92,20 @@ export function ShareRenderPage() {
 
   if (!recipe) return null;
 
+  // ✅ FIX: FilterBadges expects a structured object, not recipe.queryRestrictions
+  const filters = {
+    sugarLevel: recipe.sugarRestriction as any,
+    hasLactose: recipe.lactoseRestrictions as any,
+    hasGluten: recipe.glutenRestrictions as any,
+    dietType: recipe.dietaryRestrictions as any,
+  };
+
   return (
     <div id="recipe-print-root" className="share-print-root">
       <RecipeData
         recipe={recipe}
         imageSrc={recipe.imageUrl ?? ""}
-        filters={recipe.queryRestrictions as any}
+        filters={filters as any}
         shareMode={true}
       />
     </div>
