@@ -99,7 +99,7 @@ console.log("[SHARE] shareRecipeAsPdfWithToasts call #", __shareCallCounter, {
 
   try {
     const safeName = sanitizeFilename(recipe?.title ?? "recipe");
-    const hasId = Number(recipe?.id) > 0;
+
 
     const isMobile = isIOS() || /Android/i.test(navigator.userAgent || "");
 
