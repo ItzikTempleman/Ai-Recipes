@@ -15,15 +15,43 @@
 }
 
 .GenerateContainer {
-  background: rgba(255, 255, 255, 0.78);
+    background: rgba(194, 225, 237, 0.78);
+  border: 1px solid rgba(17, 24, 39, 0.08);
   width: 100%;
   max-width: 640px;
   padding: 24px;
-  border-radius: 4px;
-  box-shadow: 0 0 8px rgba(15, 23, 42, 0.45), 0 0 8px rgba(15, 23, 42, 0.55);
+  border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
 }
+
+.InputData.rtl .SearchTF .MuiInputLabel-root {
+  right: 14px;
+  left: auto !important;
+  transform-origin: top right !important;
+  text-align: right;
+}
+.InputData.rtl .SearchTF .MuiOutlinedInput-input {
+  padding-right: 12px !important; /* adjust 8–16px to taste */
+}
+
+/* nudge the label a bit inward from the right */
+.InputData.rtl .SearchTF .MuiInputLabel-root {
+  right: 22px; /* was 14px */
+}
+
+.InputData.rtl .SearchTF input {
+  direction: rtl;
+  text-align: right;
+}
+
+.InputData.rtl .SearchTF input::placeholder {
+  direction: rtl;
+  text-align: right;
+}
+
 .InputData.rtl {
   flex-direction: row-reverse;
 }
@@ -67,6 +95,7 @@
 }
 
 .GenerateAmountDiv {
+
   display: flex;
   align-items: center;
 }
@@ -123,6 +152,7 @@
 
 
 .InputData {
+  
   display: flex;
   align-items: center;
   gap: 12px;
@@ -149,7 +179,11 @@
 
 .ExcludeTF .MuiOutlinedInput-root {
   width: 220px;
+  background-color: white;
+}
 
+.SearchTF .MuiOutlinedInput-root{
+    background-color: white;
 }
 
 .ErrorText {
@@ -223,7 +257,22 @@ border-radius: 10px !important;
   gap: 4px;
 }
 
+.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root {
+  background-color: #fff !important;        
+}
 
+.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root.Mui-selected {
+  background-color: #f0c487 !important;     
+}
+
+/* optional hover consistency */
+.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root:hover {
+  background-color: #fff !important;
+}
+
+.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root.Mui-selected:hover {
+  background-color: #f0c487 !important;
+}
 
 @media (max-width: 600px) {
   .GenerateContainer {

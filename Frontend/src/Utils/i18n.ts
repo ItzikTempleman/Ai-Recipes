@@ -212,7 +212,7 @@ const resources = {
         guest:"אורח",
         title: "?אז מה אוכלים היום",
         quantitySelector: "עבור כמה סועדים",
-        labelGenerate: "?מה בא לך להכין",
+        labelGenerate: "מה בא לך להכין?",
         requiredTitle: "נדרשת כותרת",
         go: "צור מתכון",
         excludeIngredient: "הסר רכיבים שאת/ה לא רוצה",

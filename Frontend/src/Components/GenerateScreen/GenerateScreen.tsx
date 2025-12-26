@@ -1,7 +1,7 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./GenerateScreen.css";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
@@ -39,7 +39,7 @@ export function GenerateScreen() {
       },
     }
   );
-  
+
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
     hasLactose: LactoseRestrictions.DEFAULT,
@@ -51,7 +51,7 @@ export function GenerateScreen() {
 
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
   const dispatch = useDispatch();
-const user = useSelector((state: AppState) => state.user);
+  const user = useSelector((state: AppState) => state.user);
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
@@ -66,18 +66,18 @@ const user = useSelector((state: AppState) => state.user);
   const recipeHasData = Boolean(recipe?.title);
 
 
-const didResetOnEnterRef = useRef(false);
+  const didResetOnEnterRef = useRef(false);
 
-useEffect(() => {
-  if (
-    user &&                    
-    !loading &&                 
-    !didResetOnEnterRef.current  
-  ) {
-    dispatch(resetGenerated());
-    didResetOnEnterRef.current = true;
-  }
-}, [dispatch, user, loading]);
+  useEffect(() => {
+    if (
+      user &&
+      !loading &&
+      !didResetOnEnterRef.current
+    ) {
+      dispatch(resetGenerated());
+      didResetOnEnterRef.current = true;
+    }
+  }, [dispatch, user, loading]);
 
   async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
 
@@ -125,12 +125,12 @@ useEffect(() => {
     <div className={`GenerateScreen ${recipeHasData ? "GenerateScreen--hasData" : ""}`}>
       <div className="GenerateContainer">
         <div>
-{
-  !user&&(
- <div className={`GuestBadge ${isRTL ? "GuestBadge--rtl" : ""}`}>
-      <h4>{t("generate.guest")}</h4></div>
-  )
-}
+          {
+            !user && (
+              <div className={`GuestBadge ${isRTL ? "GuestBadge--rtl" : ""}`}>
+                <h4>{t("generate.guest")}</h4></div>
+            )
+          }
           <h2 className="GenerateTitle">
             <RestaurantMenuIcon className="TitleIcon" />
             <span>{t("generate.title")}</span>
@@ -142,12 +142,12 @@ useEffect(() => {
               className="SearchTF"
               size="small"
               label={t("generate.labelGenerate")}
-              {...register("query",
-                {
-                  required:
-                    `${t("generate.requiredTitle")}`
-                })}
-              disabled={loading} />
+              {...register("query", { required: `${t("generate.requiredTitle")}` })}
+              disabled={loading}
+              InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
+              inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
+              InputLabelProps={{ style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" } }}
+            />
             {loading ? (
               <IconButton className="RoundedBtn large-loading" edge="end" disabled>
                 <Box><CircularProgress /></Box>
@@ -237,9 +237,9 @@ useEffect(() => {
             </div>
           </div>
         </form>
-        
+
       </div>
-       
+
       {
         recipe && (
           <div className="CenterRow">
