@@ -1,7 +1,7 @@
 import { RecipeModel } from "../Models/RecipeModel";
 import { notify } from "../Utils/Notify";
 
-let __shareCallCounter = 0;
+
 
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -47,14 +47,34 @@ async function downloadBlob(blob: Blob, filename: string) {
 }
 
 async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
- const payload = {
-  title: recipe?.title ?? "",
-  data: {
-    ingredients: recipe?.data?.ingredients ?? [],
-    instructions: recipe?.data?.instructions ?? [],
-  },
-  image: recipe?.imageUrl ?? recipe?.image ?? "",
-};
+  const payload = {
+    title: recipe?.title ?? "",
+    data: {
+      ingredients: recipe?.data?.ingredients ?? [],
+      instructions: recipe?.data?.instructions ?? [],
+    },
+
+    // ShareRenderPage uses imageUrl in your backend code comments
+    imageUrl: (recipe as any)?.imageUrl ?? (recipe as any)?.image ?? "",
+    image: (recipe as any)?.imageUrl ?? (recipe as any)?.image ?? "",
+
+    // badges / filters (these exist in backend’s "minimal" already)
+    sugarRestriction: (recipe as any)?.sugarRestriction,
+    lactoseRestrictions: (recipe as any)?.lactoseRestrictions,
+    glutenRestrictions: (recipe as any)?.glutenRestrictions,
+    dietaryRestrictions: (recipe as any)?.dietaryRestrictions,
+
+    // meta
+    prepTime: (recipe as any)?.prepTime,               // cook time
+    difficultyLevel: (recipe as any)?.difficultyLevel, // hardship level
+    countryOfOrigin: (recipe as any)?.countryOfOrigin, // country name (flag comes from UI logic)
+    healthLevel: (recipe as any)?.healthLevel,
+
+    // nutrition
+    calories: (recipe as any)?.calories,
+    totalProtein: (recipe as any)?.totalProtein,
+    totalSugar: (recipe as any)?.totalSugar,
+  };
 
   const tokenResp = await fetch(`/api/recipes/share-token`, {
     method: "POST",
@@ -62,14 +82,15 @@ async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
     body: JSON.stringify(payload),
   });
 
-  if (!tokenResp.ok) {
-    throw new Error(await tokenResp.text());
-  }
+  if (!tokenResp.ok) throw new Error(await tokenResp.text());
 
   const { token } = await tokenResp.json();
+
   const pdfPath = `/api/recipes/share.pdf?token=${encodeURIComponent(token)}`;
 
-  return new URL(pdfPath, window.location.href).toString();
+  // IMPORTANT: your current code uses window.location.href (can include SPA route/query)
+  // use origin so the URL is clean and consistent
+  return new URL(pdfPath, window.location.origin).toString();
 }
 
 async function fetchPdfBlobFromUrl(pdfUrl: string): Promise<Blob> {
@@ -81,68 +102,58 @@ async function fetchPdfBlobFromUrl(pdfUrl: string): Promise<Blob> {
   return blob;
 }
 
-let sharingInFlight = false;
+
+function isLocalhostUrl(u: string): boolean {
+  try {
+    const url = new URL(u);
+    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
 
 export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
-  __shareCallCounter += 1;
-  console.log("[SHARE] shareRecipeAsPdfWithToasts call #", __shareCallCounter, {
-    time: new Date().toISOString(),
-    recipeId: (recipe as any)?.id,
-    title: (recipe as any)?.title,
-    stack: new Error("share call stack").stack,
-  });
+  // ...keep your existing code up to:
+  const safeName = sanitizeFilename((recipe as any)?.title ?? "recipe");
+  const pdfUrl = await getTokenPdfUrl(recipe);
 
-  if (sharingInFlight) return;
-  sharingInFlight = true;
+  // MOBILE
+  if (isMobileUA()) {
+    const navAny = navigator as any;
 
-  const releaseLater = () => setTimeout(() => (sharingInFlight = false), 1200);
+    // ✅ FIX #4: if it's localhost, share a FILE instead of an unreachable URL
+    if (isLocalhostUrl(pdfUrl)) {
+      const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
+      const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
 
-  try {
-    const safeName = sanitizeFilename((recipe as any)?.title ?? "recipe");
-    const pdfUrl = await getTokenPdfUrl(recipe);
-
-    // MOBILE: prefer sharing URL (more reliable than file share on iOS)
-    if (isMobileUA()) {
-      const navAny = navigator as any;
-
-      if (typeof navAny?.share === "function") {
-        try {
-          await navAny.share({ title: safeName, url: pdfUrl });
-          notify.success("Shared.");
-          return;
-        } catch (e: any) {
-          // user canceled share → don't toast error
-          if (e?.name === "AbortError") return;
-          // else fall back to opening tab
-        }
+      if (typeof navAny?.share === "function" && canNativeShareFiles(file)) {
+        await navAny.share({ files: [file], title: safeName });
+        notify.success("Shared.");
+        return;
       }
 
-      // Fallback: open PDF
-      const opened = window.open("about:blank", "_blank");
-      if (!opened) {
-        window.location.href = pdfUrl;
-      } else {
-        opened.location.replace(pdfUrl);
-      }
-      notify.success("Opened PDF.");
+      // fallback if native file share not supported
+      await downloadBlob(pdfBlob, `${safeName}.pdf`);
+      notify.success("Downloaded PDF.");
       return;
     }
 
-    // DESKTOP: try native file share, else download
-    const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
-    const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
-
-    if (canNativeShareFiles(file)) {
-      await (navigator as any).share({ files: [file], title: safeName });
-      notify.success("Shared.");
-      return;
+    // existing behavior (share URL) for real domains like https://www.itzikrecipe.com
+    if (typeof navAny?.share === "function") {
+      try {
+        await navAny.share({ title: safeName, url: pdfUrl });
+        notify.success("Shared.");
+        return;
+      } catch (e: any) {
+        if (e?.name === "AbortError") return;
+      }
     }
 
-    await downloadBlob(pdfBlob, `${safeName}.pdf`);
-    notify.success("Downloaded PDF.");
-  } catch (err: any) {
-    notify.error(err?.message ?? "Failed to share recipe");
-  } finally {
-    releaseLater();
+    // existing fallback open tab
+    const opened = window.open("about:blank", "_blank");
+    if (!opened) window.location.href = pdfUrl;
+    else opened.location.replace(pdfUrl);
+    notify.success("Opened PDF.");
+    return;
   }
 }

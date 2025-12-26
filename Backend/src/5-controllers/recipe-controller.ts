@@ -32,6 +32,7 @@ class RecipeController {
         this.router.get("/api/share-payload/:token", this.getSharePayload.bind(this));
         this.router.get("/api/recipes/share.pdf", this.getSharePdfByToken.bind(this));
         this.router.post("/api/recipes/share-token", this.createShareToken.bind(this));
+
     };
 
     private async getRecipes(request: Request, response: Response) {
@@ -319,111 +320,101 @@ class RecipeController {
         }
     }
 
-    // ✅ Minimal/compatible: only decodeShareToken (no decodeRecipeIdToken here)
-    private async getSharePayload(request: Request, response: Response) {
-        try {
-            const token = String(request.params.token || "").trim();
-            if (!token) {
-                response.status(StatusCode.BadRequest).send("Missing token");
-                return;
-            }
 
-            const payload = RecipeController.decodeShareToken(token);
-            if (!payload) {
-                response.status(404).send("Share payload expired");
-                return;
-            }
-
-            response.json(payload);
-        } catch (e: any) {
-            console.error("getSharePayload failed:", e?.stack || e);
-            response.status(StatusCode.BadRequest).send("Invalid token");
-        }
+private async getSharePayload(request: Request, response: Response) {
+  try {
+    const token = String(request.params.token || "").trim();
+    if (!token) {
+      response.status(StatusCode.BadRequest).send("Missing token");
+      return;
     }
 
-    // ✅ BUG #2 FIX: include imageUrl + restriction fields in the token payload
-    private async createShareToken(request: Request, response: Response) {
-        try {
-            const recipe = request.body ?? {};
-            const title = String(recipe?.title ?? "").trim();
-            const ingredients = recipe?.data?.ingredients ?? [];
-            const instructions = recipe?.data?.instructions ?? [];
+    // ✅ FIX #1/#3: first try memory store (short token)
+    // fallback to legacy long-token decode so old links still work
+    const payload =
+      sharePdfService.getPayload(token) ??
+      RecipeController.decodeShareToken(token);
 
-            if (!title) {
-                response.status(StatusCode.BadRequest).send("Missing recipe title");
-                return;
-            }
-            if (!Array.isArray(ingredients) || !Array.isArray(instructions)) {
-                response.status(StatusCode.BadRequest).send("Missing recipe payload");
-                return;
-            }
-
-            const normalized = {
-                ...recipe,
-                title,
-                data: { ingredients, instructions },
-            };
-
-            // ShareRenderPage expects these:
-            const minimal = {
-                title: normalized.title,
-                data: normalized.data,
-
-                // ✅ imageUrl is what the ShareRenderPage uses for the image:
-                imageUrl: normalized.imageUrl || normalized.image || "",
-
-                // ✅ badges:
-                sugarRestriction: normalized.sugarRestriction,
-                lactoseRestrictions: normalized.lactoseRestrictions,
-                glutenRestrictions: normalized.glutenRestrictions,
-                dietaryRestrictions: normalized.dietaryRestrictions,
-
-                // ✅ optional stats cards (prevents "undefined" there too):
-                calories: normalized.calories,
-                totalSugar: normalized.totalSugar,
-                totalProtein: normalized.totalProtein,
-                healthLevel: normalized.healthLevel,
-                prepTime: normalized.prepTime,
-                difficultyLevel: normalized.difficultyLevel,
-                countryOfOrigin: normalized.countryOfOrigin,
-            };
-
-            const token = RecipeController.encodeShareToken(minimal);
-            response.json({ token });
-        } catch (e: any) {
-            console.error("createShareToken failed:", e?.stack || e);
-            response.status(StatusCode.InternalServerError).send("Some error, please try again");
-        }
+    if (!payload) {
+      response.status(404).send("Share payload expired");
+      return;
     }
 
-    private async getSharePdfByToken(request: Request, response: Response) {
-        try {
-            const token = String(request.query.token || "");
-            if (!token) {
-                response.status(StatusCode.BadRequest).send("Missing token");
-                return;
-            }
+    response.json(payload);
+  } catch (e: any) {
+    console.error("getSharePayload failed:", e?.stack || e);
+    response.status(StatusCode.InternalServerError).send("Some error, please try again");
+  }
+}
 
-            const payload = RecipeController.decodeShareToken(token);
-            if (!payload) {
-                response.status(StatusCode.BadRequest).send("Invalid or expired token");
-                return;
-            }
 
-            const pdf = await sharePdfService.pdfForPayloadInjected(
-                this.getFrontendBaseUrl(request),
-                payload
-            );
 
-            response.setHeader("Content-Type", "application/pdf");
-            response.setHeader("Cache-Control", "no-store");
-            response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
-            response.status(StatusCode.OK).send(pdf);
-        } catch (e: any) {
-            console.error("getSharePdfByToken failed:", e?.stack || e);
-            response.status(StatusCode.InternalServerError).send("Some error, please try again later.");
-        }
+private async createShareToken(request: Request, response: Response) {
+  try {
+    const normalized = request.body;
+
+    // this object already exists in your code (I’m keeping the same fields)
+    const minimal = {
+      title: normalized.title,
+      data: normalized.data,
+      imageUrl: normalized.imageUrl || normalized.image || "",
+
+      sugarRestriction: normalized.sugarRestriction,
+      lactoseRestrictions: normalized.lactoseRestrictions,
+      glutenRestrictions: normalized.glutenRestrictions,
+      dietaryRestrictions: normalized.dietaryRestrictions,
+
+      calories: normalized.calories,
+      totalSugar: normalized.totalSugar,
+      totalProtein: normalized.totalProtein,
+      healthLevel: normalized.healthLevel,
+      prepTime: normalized.prepTime,
+      difficultyLevel: normalized.difficultyLevel,
+      countryOfOrigin: normalized.countryOfOrigin,
+    };
+
+    // ✅ FIX #1: short token stored in memory (NO DB)
+    const token = sharePdfService.createTokenForPayload(minimal);
+
+    response.json({ token });
+  } catch (e: any) {
+    console.error("createShareToken failed:", e?.stack || e);
+    response.status(StatusCode.InternalServerError).send("Some error, please try again");
+  }
+}
+
+private async getSharePdfByToken(request: Request, response: Response) {
+  try {
+    const token = String(request.query.token || "");
+    if (!token) {
+      response.status(StatusCode.BadRequest).send("Missing token");
+      return;
     }
+
+    // ✅ FIX #1/#3: short token first, legacy decode fallback
+    const payload =
+      sharePdfService.getPayload(token) ??
+      RecipeController.decodeShareToken(token);
+
+    if (!payload) {
+      response.status(StatusCode.BadRequest).send("Invalid or expired token");
+      return;
+    }
+
+    const pdf = await sharePdfService.pdfForPayloadInjected(
+      this.getFrontendBaseUrl(request),
+      payload
+    );
+
+    response.setHeader("Content-Type", "application/pdf");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+    response.end(pdf);
+  } catch (e: any) {
+    console.error("getSharePdfByToken failed:", e?.stack || e);
+    response.status(StatusCode.InternalServerError).send("Some error, please try again");
+  }
+}
 
     static encodeShareToken(payload: any): string {
         // v2: deflateRaw(JSON) -> base64url, prefixed so decode can be backwards compatible
@@ -478,24 +469,32 @@ class RecipeController {
             fProto = mProto?.[1]?.replace(/"/g, "");
             fHost = mHost?.[1]?.replace(/"/g, "");
         }
-const host =
-  xfHost ||
-  fHost ||
-  (request.headers["x-original-host"] as string | undefined) ||
-  (request.headers["x-host"] as string | undefined) ||
-  request.headers.host;
+        const host =
+            xfHost ||
+            fHost ||
+            (request.headers["x-original-host"] as string | undefined) ||
+            (request.headers["x-host"] as string | undefined) ||
+            request.headers.host;
 
-let proto = xfProto || fProto || "https";
-if (host && (host.includes("localhost") || host.startsWith("127.0.0.1"))) {
-  proto = "http";
-}
+        let proto = xfProto || fProto || "https";
+        if (host && (host.includes("localhost") || host.startsWith("127.0.0.1"))) {
+            proto = "http";
+        }
 
-if (!host) {
-  return "https://www.itzikrecipe.com";
-}
+        if (!host) {
+            return "https://www.itzikrecipe.com";
+        }
 
-return `${proto}://${host}`.replace(/\/$/, "");
+        return `${proto}://${host}`.replace(/\/$/, "");
     }
+
+    public async createSharePayloadToken(req: Request, res: Response) {
+  const payload = req.body;
+  if (!payload?.title) return res.status(400).send("Missing payload");
+
+  const token = sharePdfService.createTokenForPayload(payload); // short token in memory
+  res.json({ token });
+}
 }
 
 export const recipeController = new RecipeController();

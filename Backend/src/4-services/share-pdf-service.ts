@@ -219,12 +219,17 @@ async function renderUrlToPdfOnce(url: string, opts: PdfOptions = {}): Promise<B
 }
 
 export const sharePdfService = {
-  createTokenForPayload(payload: any): string {
+
+    createTokenForPayload(payload: any): string {
     const token = makeToken();
     getStore().set(token, payload);
+
+    // WAS: 10 * 60 * 1000 (10 minutes)
+    // CHANGE TO: 24 hours (or whatever you want)
     setTimeout(() => {
       getStore().delete(token);
-    }, 10 * 60 * 1000).unref?.();
+    }, 24 * 60 * 60 * 1000).unref?.();
+
     return token;
   },
 
