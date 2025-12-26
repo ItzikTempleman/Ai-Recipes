@@ -9,6 +9,7 @@ import { generateImage } from "../4-services/image-service";
 import { appConfig } from "../2-utils/app-config";
 import { sharePdfService } from "../4-services/share-pdf-service";
 import zlib from "zlib";
+
 class RecipeController {
     public router: Router = express.Router();
 
@@ -32,8 +33,6 @@ class RecipeController {
         this.router.get("/api/recipes/share.pdf", this.getSharePdfByToken.bind(this));
         this.router.post("/api/recipes/share-token", this.createShareToken.bind(this));
     };
-
-
 
     private async getRecipes(request: Request, response: Response) {
         const user = (request as any).user as UserModel;
@@ -298,6 +297,7 @@ class RecipeController {
         const success = await recipeService.unlikeRecipe(userId, recipeId);
         response.json(success ? "un-liked" : "not liked");
     }
+
     private async sharePdfFromBody(request: Request, response: Response) {
         try {
             const recipe = request.body;
@@ -319,9 +319,10 @@ class RecipeController {
         }
     }
 
+    // ✅ Minimal/compatible: only decodeShareToken (no decodeRecipeIdToken here)
     private async getSharePayload(request: Request, response: Response) {
         try {
-            const token = String(request.params.token || "");
+            const token = String(request.params.token || "").trim();
             if (!token) {
                 response.status(StatusCode.BadRequest).send("Missing token");
                 return;
@@ -340,72 +341,89 @@ class RecipeController {
         }
     }
 
+    // ✅ BUG #2 FIX: include imageUrl + restriction fields in the token payload
     private async createShareToken(request: Request, response: Response) {
-  try {
-    const recipe = request.body;
-    const title = String(recipe?.title ?? "").trim();
-    const ingredients = recipe?.data?.ingredients ?? [];
-    const instructions = recipe?.data?.instructions ?? [];
-    if (!title) {
-      response.status(StatusCode.BadRequest).send("Missing recipe title");
-      return;
+        try {
+            const recipe = request.body ?? {};
+            const title = String(recipe?.title ?? "").trim();
+            const ingredients = recipe?.data?.ingredients ?? [];
+            const instructions = recipe?.data?.instructions ?? [];
+
+            if (!title) {
+                response.status(StatusCode.BadRequest).send("Missing recipe title");
+                return;
+            }
+            if (!Array.isArray(ingredients) || !Array.isArray(instructions)) {
+                response.status(StatusCode.BadRequest).send("Missing recipe payload");
+                return;
+            }
+
+            const normalized = {
+                ...recipe,
+                title,
+                data: { ingredients, instructions },
+            };
+
+            // ShareRenderPage expects these:
+            const minimal = {
+                title: normalized.title,
+                data: normalized.data,
+
+                // ✅ imageUrl is what the ShareRenderPage uses for the image:
+                imageUrl: normalized.imageUrl || normalized.image || "",
+
+                // ✅ badges:
+                sugarRestriction: normalized.sugarRestriction,
+                lactoseRestrictions: normalized.lactoseRestrictions,
+                glutenRestrictions: normalized.glutenRestrictions,
+                dietaryRestrictions: normalized.dietaryRestrictions,
+
+                // ✅ optional stats cards (prevents "undefined" there too):
+                calories: normalized.calories,
+                totalSugar: normalized.totalSugar,
+                totalProtein: normalized.totalProtein,
+                healthLevel: normalized.healthLevel,
+                prepTime: normalized.prepTime,
+                difficultyLevel: normalized.difficultyLevel,
+                countryOfOrigin: normalized.countryOfOrigin,
+            };
+
+            const token = RecipeController.encodeShareToken(minimal);
+            response.json({ token });
+        } catch (e: any) {
+            console.error("createShareToken failed:", e?.stack || e);
+            response.status(StatusCode.InternalServerError).send("Some error, please try again");
+        }
     }
-    if (!Array.isArray(ingredients) || !Array.isArray(instructions)) {
-      response.status(StatusCode.BadRequest).send("Missing recipe payload");
-      return;
+
+    private async getSharePdfByToken(request: Request, response: Response) {
+        try {
+            const token = String(request.query.token || "");
+            if (!token) {
+                response.status(StatusCode.BadRequest).send("Missing token");
+                return;
+            }
+
+            const payload = RecipeController.decodeShareToken(token);
+            if (!payload) {
+                response.status(StatusCode.BadRequest).send("Invalid or expired token");
+                return;
+            }
+
+            const pdf = await sharePdfService.pdfForPayloadInjected(
+                this.getFrontendBaseUrl(request),
+                payload
+            );
+
+            response.setHeader("Content-Type", "application/pdf");
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+            response.status(StatusCode.OK).send(pdf);
+        } catch (e: any) {
+            console.error("getSharePdfByToken failed:", e?.stack || e);
+            response.status(StatusCode.InternalServerError).send("Some error, please try again later.");
+        }
     }
-
-    const normalized = {
-      ...recipe,
-      title,
-      data: { ingredients, instructions },
-    };
-    const minimal = {
-      title: normalized.title,
-      data: normalized.data,
-      image: normalized.image || normalized.imageUrl || "", // ShareRenderPage uses recipe.image
-      // add only what ShareRenderPage actually needs
-    };
-
-    // Self-contained token (safe across restarts / multiple containers)
-    const token = RecipeController.encodeShareToken(minimal);
-    response.json({ token });
-  } catch (e: any) {
-    console.error("createShareToken failed:", e?.stack || e);
-    response.status(StatusCode.InternalServerError).send("Some error, please try again");
-  }
-}
-
-
-private async getSharePdfByToken(request: Request, response: Response) {
-  try {
-    const token = String(request.query.token || "");
-    if (!token) {
-      response.status(StatusCode.BadRequest).send("Missing token");
-      return;
-    }
-
-    const payload = RecipeController.decodeShareToken(token);
-    if (!payload) {
-      response.status(StatusCode.BadRequest).send("Invalid or expired token");
-      return;
-    }
-
-    const pdf = await sharePdfService.pdfForPayloadInjected(
-      this.getFrontendBaseUrl(request),
-      payload
-    );
-
-    response.setHeader("Content-Type", "application/pdf");
-    response.setHeader("Cache-Control", "no-store");
-    response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
-    response.status(StatusCode.OK).send(pdf);
-  } catch (e: any) {
-    console.error("getSharePdfByToken failed:", e?.stack || e);
-    response.status(StatusCode.InternalServerError).send("Some error, please try again later.");
-  }
-}
-
 
     static encodeShareToken(payload: any): string {
         // v2: deflateRaw(JSON) -> base64url, prefixed so decode can be backwards compatible
@@ -460,19 +478,23 @@ private async getSharePdfByToken(request: Request, response: Response) {
             fProto = mProto?.[1]?.replace(/"/g, "");
             fHost = mHost?.[1]?.replace(/"/g, "");
         }
-        const host =
-            xfHost ||
-            fHost ||
-            (request.headers["x-original-host"] as string | undefined) ||
-            (request.headers["x-host"] as string | undefined) ||
-            request.headers.host;
-        const proto = xfProto || fProto || "https";
+const host =
+  xfHost ||
+  fHost ||
+  (request.headers["x-original-host"] as string | undefined) ||
+  (request.headers["x-host"] as string | undefined) ||
+  request.headers.host;
 
-        if (!host) {
-            return "https://www.itzikrecipe.com";
-        }
+let proto = xfProto || fProto || "https";
+if (host && (host.includes("localhost") || host.startsWith("127.0.0.1"))) {
+  proto = "http";
+}
 
-        return `${proto}://${host}`.replace(/\/$/, "");
+if (!host) {
+  return "https://www.itzikrecipe.com";
+}
+
+return `${proto}://${host}`.replace(/\/$/, "");
     }
 }
 

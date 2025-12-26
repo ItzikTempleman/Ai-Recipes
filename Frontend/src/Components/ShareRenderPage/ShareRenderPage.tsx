@@ -104,7 +104,7 @@ export function ShareRenderPage() {
     <div id="recipe-print-root" className="share-print-root">
       <RecipeData
         recipe={recipe}
-        imageSrc={recipe.imageUrl ?? ""}
+        imageSrc={(recipe as any).imageUrl ?? (recipe as any).image ?? ""}
         filters={filters as any}
         shareMode={true}
       />
