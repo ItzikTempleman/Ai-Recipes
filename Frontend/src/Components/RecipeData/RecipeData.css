@@ -260,6 +260,20 @@ html[dir="rtl"] .FiltersRow {
   color: #303030;
 }
 
+.ExtraDataFlag {
+  font-size: 1.2rem;
+
+  /* force emoji-capable fallbacks (PDF render) */
+  font-family:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    "Twemoji Mozilla",
+    system-ui,
+    sans-serif;
+  line-height: 1;
+}
+
 @media (min-width: 780px) {
   .RecipeStepsWide {
     margin-top: 60px;

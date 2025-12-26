@@ -45,7 +45,7 @@ const {i18n } = useTranslation();
   return (
 <div className="RecipeCard">
   <div
-    className={`ClearFormDiv ${isRTL ? "rtl" : ""}`}
+    className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
     onClick={() => dispatch(resetGenerated())}
   >
     ❌

@@ -127,3 +127,82 @@ body.share-render-mode #recipe-print-root {
     box-shadow: 0 1px 2px rgba(0,0,0,0.18) !important; /* very light */
   }
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm; /* tweak 6–12mm to taste */
+  }
+
+  html, body {
+    height: auto !important;
+    min-height: auto !important;
+    background: #fff !important;
+  }
+
+  body.share-render-mode main {
+    min-height: auto !important;
+    padding: 0 !important;      /* IMPORTANT: removes the “big gap feel” */
+    margin: 0 !important;
+    align-items: stretch !important;
+  }
+
+  body.share-render-mode #recipe-print-root {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* avoid page-break inside the “header area” boxes where possible */
+  body.share-render-mode .RecipeExtraDataContainer,
+  body.share-render-mode .RecipeBottomExtraDataContainer,
+  body.share-render-mode .FiltersRow,
+  body.share-render-mode .RecipeImage {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
+
+
+@media print {
+  @page {
+    size: A4;
+    margin: 6mm; /* smaller margin => less “gap” */
+  }
+
+  html, body {
+    height: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* the page wrapper used by ShareRenderPage */
+  body.share-render-mode main {
+    min-height: auto !important;
+    padding: 0 !important;      /* removes the big empty space feeling */
+    margin: 0 !important;
+    align-items: stretch !important;
+  }
+
+  /* remove “screen-only” decoration that can amplify page split look */
+  body.share-render-mode .RecipeImage {
+    box-shadow: none !important;
+  }
+
+  /* keep these blocks from splitting across pages when possible */
+  body.share-render-mode .FiltersRow,
+  body.share-render-mode .RecipeExtraDataContainer,
+  body.share-render-mode .RecipeBottomExtraDataContainer {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* tighten vertical whitespace for print */
+  body.share-render-mode .RecipeExtraDataContainer,
+  body.share-render-mode .RecipeBottomExtraDataContainer {
+    margin-top: 8px !important;
+    height: auto !important;
+  }
+}

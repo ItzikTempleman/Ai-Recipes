@@ -39,8 +39,7 @@ export function GenerateScreen() {
       },
     }
   );
-
-
+  
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
     hasLactose: LactoseRestrictions.DEFAULT,

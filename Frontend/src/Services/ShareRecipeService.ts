@@ -2,6 +2,8 @@ import { RecipeModel } from "../Models/RecipeModel";
 import { notify } from "../Utils/Notify";
 
 
+let __shareCallCounter = 0;
+let sharingInFlight = false;
 
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -103,6 +105,7 @@ async function fetchPdfBlobFromUrl(pdfUrl: string): Promise<Blob> {
 }
 
 
+
 function isLocalhostUrl(u: string): boolean {
   try {
     const url = new URL(u);
@@ -113,47 +116,72 @@ function isLocalhostUrl(u: string): boolean {
 }
 
 export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
-  // ...keep your existing code up to:
-  const safeName = sanitizeFilename((recipe as any)?.title ?? "recipe");
-  const pdfUrl = await getTokenPdfUrl(recipe);
+  __shareCallCounter += 1;
 
-  // MOBILE
-  if (isMobileUA()) {
-    const navAny = navigator as any;
+  if (sharingInFlight) return;
+  sharingInFlight = true;
 
-    // ✅ FIX #4: if it's localhost, share a FILE instead of an unreachable URL
-    if (isLocalhostUrl(pdfUrl)) {
-      const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
-      const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
+  const releaseLater = () => setTimeout(() => (sharingInFlight = false), 1200);
 
-      if (typeof navAny?.share === "function" && canNativeShareFiles(file)) {
-        await navAny.share({ files: [file], title: safeName });
-        notify.success("Shared.");
+  try {
+    const safeName = sanitizeFilename((recipe as any)?.title ?? "recipe");
+    const pdfUrl = await getTokenPdfUrl(recipe);
+
+    // MOBILE
+    if (isMobileUA()) {
+      const navAny = navigator as any;
+
+      // ✅ NEW: localhost => share as FILE (same behavior as desktop)
+      if (isLocalhostUrl(pdfUrl)) {
+        const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
+        const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
+
+        if (canNativeShareFiles(file)) {
+          await navAny.share({ files: [file], title: safeName });
+          notify.success("Shared.");
+          return;
+        }
+
+        await downloadBlob(pdfBlob, `${safeName}.pdf`);
+        notify.success("Downloaded PDF.");
         return;
       }
 
-      // fallback if native file share not supported
-      await downloadBlob(pdfBlob, `${safeName}.pdf`);
-      notify.success("Downloaded PDF.");
+      // existing: public domain => share URL
+      if (typeof navAny?.share === "function") {
+        try {
+          await navAny.share({ title: safeName, url: pdfUrl });
+          notify.success("Shared.");
+          return;
+        } catch (e: any) {
+          if (e?.name === "AbortError") return;
+          // fall through
+        }
+      }
+
+      const opened = window.open("about:blank", "_blank");
+      if (!opened) window.location.href = pdfUrl;
+      else opened.location.replace(pdfUrl);
+
+      notify.success("Opened PDF.");
       return;
     }
 
-    // existing behavior (share URL) for real domains like https://www.itzikrecipe.com
-    if (typeof navAny?.share === "function") {
-      try {
-        await navAny.share({ title: safeName, url: pdfUrl });
-        notify.success("Shared.");
-        return;
-      } catch (e: any) {
-        if (e?.name === "AbortError") return;
-      }
+    // DESKTOP (unchanged)
+    const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
+    const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
+
+    if (canNativeShareFiles(file)) {
+      await (navigator as any).share({ files: [file], title: safeName });
+      notify.success("Shared.");
+      return;
     }
 
-    // existing fallback open tab
-    const opened = window.open("about:blank", "_blank");
-    if (!opened) window.location.href = pdfUrl;
-    else opened.location.replace(pdfUrl);
-    notify.success("Opened PDF.");
-    return;
+    await downloadBlob(pdfBlob, `${safeName}.pdf`);
+    notify.success("Downloaded PDF.");
+  } catch (err: any) {
+    notify.error(err?.message ?? "Failed to share recipe");
+  } finally {
+    releaseLater();
   }
 }

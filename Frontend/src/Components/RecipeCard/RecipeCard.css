@@ -12,20 +12,24 @@
 
 }
 
-
 .ClearFormDiv {
   position: absolute;
   top: 16px;
-  right: 16px; 
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  z-index: 10;
 }
 
 .ClearFormDiv.rtl {
-  right: auto;
-  left: 16px; 
+  right: 16px;   /* ✅ RTL on the right */
+  left: auto;
+}
+
+.ClearFormDiv.ltr {
+  right: 16px;   /* LTR on the right too (keep if you want same) */
+  left: auto;
 }
 
 @media (max-width: 600px) {

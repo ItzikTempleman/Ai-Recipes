@@ -123,14 +123,21 @@ async function renderUrlToPdfOnceWithIntercept(url: string, payload: any, opts: 
 
     if (!widthPx) throw new Error("Failed to measure recipe-print-root width");
 
-    const pdf = await page.pdf({
-      printBackground: true,
-      margin: { top: "0px", right: "0px", bottom: "0px", left: "0px" },
-      width: `${widthPx}px`,
-      format: opts.a4 === false ? "Letter" : "A4",
-      preferCSSPageSize: false,
-      scale: 1,
-    });
+ const pdf = await page.pdf({
+  printBackground: true,
+
+  // Let CSS @page control size+margin (we added it in ShareRenderPage.css)
+  preferCSSPageSize: true,
+
+  // Do not force margins here (CSS @page handles it)
+  margin: undefined as any,
+
+  // Do not set width when printing to A4 via CSS
+  width: undefined as any,
+  format: undefined as any,
+
+  scale: 1,
+});
 
     await page.close();
     return Buffer.from(pdf);

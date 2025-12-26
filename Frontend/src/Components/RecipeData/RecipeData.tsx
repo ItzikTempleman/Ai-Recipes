@@ -85,7 +85,6 @@ const handleShare = async (e?: any) => {
   if (e?.preventDefault) e.preventDefault();
   if (e?.stopPropagation) e.stopPropagation();
 
-  // HARD LOCK: no matter what iOS fires, this makes it run once
   if (shareOnceRef.current) return;
   shareOnceRef.current = true;
 
@@ -94,7 +93,7 @@ const handleShare = async (e?: any) => {
   } catch (err: any) {
     notify.error(err?.message || String(err));
   } finally {
-    // release after a short window to block ghost taps
+ 
     setTimeout(() => {
       shareOnceRef.current = false;
     }, 2500);
