@@ -50,6 +50,12 @@ async function downloadBlob(blob: Blob, filename: string) {
 async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
   const payload = {
     title: recipe?.title ?? "",
+
+    description:
+  (recipe as any)?.description ??
+  (recipe as any)?.data?.description ??
+  "",
+  
     data: {
       ingredients: recipe?.data?.ingredients ?? [],
       instructions: recipe?.data?.instructions ?? [],

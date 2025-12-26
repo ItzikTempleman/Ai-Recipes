@@ -358,7 +358,7 @@ private async createShareToken(request: Request, response: Response) {
       title: normalized.title,
       data: normalized.data,
       imageUrl: normalized.imageUrl || normalized.image || "",
-
+      description: normalized.description,
       sugarRestriction: normalized.sugarRestriction,
       lactoseRestrictions: normalized.lactoseRestrictions,
       glutenRestrictions: normalized.glutenRestrictions,

@@ -24,7 +24,7 @@ type RecipeProps = {
 export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
-const shareOnceRef = useRef(false);
+  const shareOnceRef = useRef(false);
 
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
@@ -43,7 +43,7 @@ const shareOnceRef = useRef(false);
 
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
-const flag = getCountryFlag(recipe.countryOfOrigin);
+  const flag = getCountryFlag(recipe.countryOfOrigin);
   useEffect(() => {
     const url = (imageSrc ?? "").trim();
     setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
@@ -81,24 +81,24 @@ const flag = getCountryFlag(recipe.countryOfOrigin);
     }
   };
 
-const handleShare = async (e?: any) => {
-  if (e?.preventDefault) e.preventDefault();
-  if (e?.stopPropagation) e.stopPropagation();
+  const handleShare = async (e?: any) => {
+    if (e?.preventDefault) e.preventDefault();
+    if (e?.stopPropagation) e.stopPropagation();
 
-  if (shareOnceRef.current) return;
-  shareOnceRef.current = true;
+    if (shareOnceRef.current) return;
+    shareOnceRef.current = true;
 
-  try {
-    await shareRecipeAsPdfWithToasts(recipe);
-  } catch (err: any) {
-    notify.error(err?.message || String(err));
-  } finally {
- 
-    setTimeout(() => {
-      shareOnceRef.current = false;
-    }, 2500);
-  }
-};
+    try {
+      await shareRecipeAsPdfWithToasts(recipe);
+    } catch (err: any) {
+      notify.error(err?.message || String(err));
+    } finally {
+
+      setTimeout(() => {
+        shareOnceRef.current = false;
+      }, 2500);
+    }
+  };
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
@@ -107,6 +107,21 @@ const handleShare = async (e?: any) => {
   }, [i18n]);
 
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
+
+  function normalizeIngredientRow(row: any) {
+    const ingredient = String(row?.ingredient ?? "").trim();
+    let amount = row?.amount == null ? "" : String(row.amount).trim();
+
+    if (!ingredient || !amount) return { ingredient, amount };
+
+    // remove ingredient name from amount (handles "2 liters water" / "2 ליטר קצח" etc.)
+    const escaped = ingredient.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(escaped, "gi");
+
+    amount = amount.replace(re, "").replace(/\s{2,}/g, " ").trim();
+
+    return { ingredient, amount };
+  }
 
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];
@@ -145,17 +160,25 @@ const handleShare = async (e?: any) => {
             {t("recipeUi.share")}
           </Button>
         )}
-        <h2 className={`RecipeTitle ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-          {recipe.title}
-        </h2>
+<h2
+  className={`RecipeTitle ${(shareMode ? headingDir : isRTL ? "rtl" : "ltr")}`}
+  dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
+  lang={shareMode ? headingLng : undefined}
+>
+  {recipe.title}
+</h2>
       </div>
 
-      <p className={`Description ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-        {recipe.description}
-      </p>
+<p
+  className={`Description ${(shareMode ? headingDir : isRTL ? "rtl" : "ltr")}`}
+  dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
+  lang={shareMode ? headingLng : undefined}
+>
+  {recipe.description}
+</p>
 
       {localImgSrc ? (
-        <img className="RecipeImage" src={localImgSrc} alt={recipe.title} onError={() => setLocalImgSrc("")} />
+        <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
       ) : loadImage ? (
         isImageLoading ? (
           <>
@@ -198,8 +221,13 @@ const handleShare = async (e?: any) => {
             <div className="SugarAmountDiv">
               <img className="SugarIcon" src="/sugar.png" />
               <div className="SugarAmountInnerDiv">
-                <p>{Number(recipe.totalSugar) === 0 ? "None" : `${recipe.totalSugar}`}</p>
-                <p>{Number(recipe.totalSugar) === 0 ? " " : `${t("units.tbspShort")} ${t("units.per100g")}`}</p>
+          {Number(recipe.totalSugar) === 0 ? (
+  <p>None</p>
+) : (
+  <p className="BidiLtr">
+    {recipe.totalSugar} {t("units.tbspShort")} {t("units.per100g")}
+  </p>
+)}
               </div>
             </div>
           </div>
@@ -209,21 +237,17 @@ const handleShare = async (e?: any) => {
             <div className="ProteinAmountDiv">
               <img className="ProteinIcon" src="/protein.png" />
               <div className="ProteinInnerDiv">
-                <p>
-                  {recipe.totalProtein} {t("units.per100g")}{" "}
+          <p className="BidiLtr">
+                   {recipe.totalProtein} {t("units.per100g")}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="HealthParent">
-            <p>{t("recipeUi.health")}</p>
+           <p className="BidiLtr">{recipe.healthLevel} / 10</p>
             <div className="HealthLevelDiv">
               <img className="HealthIcon" src="/health.png" />
-              <div className="HealthLevelInnerDiv">
-                <p>{recipe.healthLevel}</p>
-                <p> / 10</p>
-              </div>
             </div>
           </div>
         </div>
@@ -242,14 +266,14 @@ const handleShare = async (e?: any) => {
           </div>
 
 
-<div className="CountryNameParent">
-  {shareMode && flag ? (
-    <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} alt="" />
-  ) : (
-    <span className="ExtraDataFlag">{flag}</span>
-  )}
-  <p>{recipe.countryOfOrigin}</p>
-</div>
+          <div className="CountryNameParent">
+            {shareMode && flag ? (
+              <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} alt="" />
+            ) : (
+              <span className="ExtraDataFlag">{flag}</span>
+            )}
+            <p>{recipe.countryOfOrigin}</p>
+          </div>
 
           <div className="DifficultyParent">
             <img className="ExtraDataImg" src={difficulty.icon} />
@@ -264,12 +288,15 @@ const handleShare = async (e?: any) => {
               {t("recipeUi.ingredients", { lng: headingLng })}
             </h2>
 
-            {normalizedIngredients.map((line, index) => (
-              <div key={index} className="IngredientRow">
-                <span className="IngredientName">{(line as any).ingredient}</span>
-                <span className="IngredientAmount">{formatAmount((line as any).amount) ?? ""}</span>
-              </div>
-            ))}
+            {normalizedIngredients.map((line, index) => {
+              const { ingredient, amount } = normalizeIngredientRow(line);
+              return (
+                <div key={index} className="IngredientRow">
+                  <span className="IngredientName">{ingredient}</span>
+                  <span className="IngredientAmount">{formatAmount(amount) ?? ""}</span>
+                </div>
+              );
+            })}
           </div>
 
           <div className={`InstructionsList ${headingDir}`} dir={headingDir}>

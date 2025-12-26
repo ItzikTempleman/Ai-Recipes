@@ -13,8 +13,9 @@
 .GenerateScreen--hasData {
   background-color: white;
 }
+
 .GenerateContainer {
-   background-color: white;
+  background: rgba(255, 255, 255, 0.78);
   width: 100%;
   max-width: 640px;
   padding: 24px;

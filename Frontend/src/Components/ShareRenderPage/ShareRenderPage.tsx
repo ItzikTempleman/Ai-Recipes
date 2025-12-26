@@ -92,6 +92,20 @@ export function ShareRenderPage() {
 
   if (!recipe) return null;
 
+  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
+
+  const ingredients = (recipe as any)?.data?.ingredients ?? [];
+  const instructions = (recipe as any)?.data?.instructions ?? [];
+
+  const recipeIsHebrew =
+    hasHebrew((recipe as any)?.title) ||
+    hasHebrew((recipe as any)?.description) ||
+    ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
+    instructions.some((x: any) => hasHebrew(x));
+
+  const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
+  const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
+
   const filters = {
     sugarLevel: recipe.sugarRestriction as any,
     hasLactose: recipe.lactoseRestrictions as any,
@@ -100,12 +114,10 @@ export function ShareRenderPage() {
   };
 
   return (
-    <div id="recipe-print-root" className="share-print-root">
-
-
-    <div className="PdfBannerWatermark" aria-hidden="true">
-      <h3>Itzik's AI Recipes</h3>
-    </div>
+    <div id="recipe-print-root" className="share-print-root" dir={headingDir} lang={headingLng}>
+      <div className="PdfBannerWatermark" aria-hidden="true">
+        <h3>Itzik's AI Recipes</h3>
+      </div>
 
       <RecipeData
         recipe={recipe}

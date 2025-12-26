@@ -412,6 +412,28 @@ YOU MUST:
 - Do NOT forget to include in the "ingredients" array any item that is used in the instructions (including water, oil, salt, spices, etc.).
 - Before returning the JSON, mentally cross-check that the "ingredients" list and "instructions" refer to the exact same set of ingredients.
 
+
+CRITICAL SANITY & SAFETY RULES (MUST FOLLOW):
+- Ingredient field purity:
+  - "ingredient" must be NAME ONLY (no quantity words).
+  - "amount" must be QUANTITY+UNIT ONLY.
+  - NEVER include the ingredient name inside "amount".
+    BAD:  { "ingredient": "water", "amount": "2 liters water" }
+    GOOD: { "ingredient": "water", "amount": "2 liters" }
+
+- WATER / LIQUID REALISM (VERY IMPORTANT):
+  - Use common sense with liquid quantities relative to servings.
+  - For 1–4 servings, do NOT list huge volumes like "2 liters water" unless the dish is clearly a soup/stew/boil-heavy dish.
+  - If water is only used for boiling and then discarded (e.g., pasta water), do NOT include it in the ingredients list. Mention it in the instructions as "water for boiling" without adding it as an ingredient line.
+  - If water is used as part of the final dish (dough/batter/sauce), keep it realistic:
+    - Typically 1–4 servings: most dishes should be in the range of tablespoons up to ~2 cups (≈500 ml) unless it is explicitly a soup.
+  - If you are unsure, choose the smaller realistic amount.
+
+- DISH IDENTITY (VERY IMPORTANT):
+  - Preserve culturally essential ingredients for classic dishes whenever they are compatible with restrictions.
+  - Example: For Bukharian-style "גיז׳גיז׳ה", include traditional flavor elements such as "קצח" when appropriate.
+  - Do NOT omit key signature ingredients unless a restriction forbids them.
+  
   INSTRUCTIONS ARRAY FORMAT (VERY IMPORTANT):
 - In the "instructions" array, each item must be a plain sentence or sentences
   describing that step.

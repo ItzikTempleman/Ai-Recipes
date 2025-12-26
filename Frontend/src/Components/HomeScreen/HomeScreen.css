@@ -6,7 +6,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  color: #0f172a;
+
 }
 
 .SiteTitleDiv {
@@ -50,7 +50,7 @@
 .HomeScreenTitleContainer {
   padding: 18px 18px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(194, 225, 237, 0.78);
   border: 1px solid rgba(17, 24, 39, 0.08);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
   backdrop-filter: blur(10px);
