@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build   # should execute: tsc -p tsconfig.json
 FROM node:20-alpine AS run
 WORKDIR /app
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl chromium
 COPY package*.json ./
 ENV NODE_ENV=production
 RUN npm ci --omit=dev
