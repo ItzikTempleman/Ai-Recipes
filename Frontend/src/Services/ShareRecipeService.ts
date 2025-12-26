@@ -46,26 +46,15 @@ async function downloadBlob(blob: Blob, filename: string) {
   }
 }
 
-function buildSharePayload(recipe: RecipeModel) {
-  return {
-    ...recipe,
-    title: recipe?.title ?? "",
-    data: recipe?.data ?? {
-      ingredients: recipe?.data?.ingredients ?? [],
-      instructions: recipe?.data?.instructions ?? [],
-    },
-    queryRestrictions: recipe?.queryRestrictions ?? [],
-    imageUrl: (recipe as any)?.imageUrl ?? (recipe as any)?.image ?? "",
-  };
-}
-
-/**
- * Always uses token flow, works for private + guest + saved recipes.
- * Backend: POST /api/recipes/share-token -> { token }
- * PDF URL: /api/recipes/share.pdf?token=...
- */
 async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
-  const payload = buildSharePayload(recipe);
+ const payload = {
+  title: recipe?.title ?? "",
+  data: {
+    ingredients: recipe?.data?.ingredients ?? [],
+    instructions: recipe?.data?.instructions ?? [],
+  },
+  image: recipe?.imageUrl ?? recipe?.image ?? "",
+};
 
   const tokenResp = await fetch(`/api/recipes/share-token`, {
     method: "POST",
@@ -80,7 +69,6 @@ async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
   const { token } = await tokenResp.json();
   const pdfPath = `/api/recipes/share.pdf?token=${encodeURIComponent(token)}`;
 
-  // Share sheets are much happier with absolute URLs
   return new URL(pdfPath, window.location.href).toString();
 }
 

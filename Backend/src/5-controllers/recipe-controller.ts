@@ -33,34 +33,7 @@ class RecipeController {
         this.router.post("/api/recipes/share-token", this.createShareToken.bind(this));
     };
 
-    private getFrontendBaseUrl(request: Request): string {
-        const envOrigin = process.env.PUBLIC_ORIGIN?.trim();
-        if (envOrigin) return envOrigin.replace(/\/$/, "");
-        const xfProto = (request.headers["x-forwarded-proto"] as string | undefined)?.split(",")[0]?.trim();
-        const xfHost = (request.headers["x-forwarded-host"] as string | undefined)?.split(",")[0]?.trim();
-        const forwarded = (request.headers["forwarded"] as string | undefined);
-        let fProto: string | undefined;
-        let fHost: string | undefined;
-        if (forwarded) {
-            const mProto = forwarded.match(/proto=([^;,\s]+)/i);
-            const mHost = forwarded.match(/host=([^;,\s]+)/i);
-            fProto = mProto?.[1]?.replace(/"/g, "");
-            fHost = mHost?.[1]?.replace(/"/g, "");
-        }
-        const host =
-            xfHost ||
-            fHost ||
-            (request.headers["x-original-host"] as string | undefined) ||
-            (request.headers["x-host"] as string | undefined) ||
-            request.headers.host;
-        const proto = xfProto || fProto || "https";
 
-        if (!host) {
-            return "https://www.itzikrecipe.com";
-        }
-
-        return `${proto}://${host}`.replace(/\/$/, "");
-    }
 
     private async getRecipes(request: Request, response: Response) {
         const user = (request as any).user as UserModel;
@@ -386,7 +359,16 @@ class RecipeController {
                 title,
                 data: { ingredients, instructions },
             };
-            const token = RecipeController.encodeShareToken(normalized);
+            const minimal = {
+                title: normalized.title,
+                data: normalized.data,
+                image: normalized.image || normalized.imageUrl || "", // ShareRenderPage uses recipe.image
+                // add only what ShareRenderPage actually needs
+            };
+
+            // Short, server-side token:
+            const token = sharePdfService.createTokenForPayload(minimal);
+            response.json({ token });
             response.json({ token });
         } catch (e: any) {
             console.error("createShareToken failed:", e?.stack || e);
@@ -402,14 +384,10 @@ class RecipeController {
                 return;
             }
 
-            // Decode the public share token (your existing method)
-            const payload = RecipeController.decodeShareToken(token);
-            if (!payload) {
-                response.status(404).send("Share payload expired");
-                return;
-            }
-
-            const pdf = await sharePdfService.pdfForPayloadInjected(this.getFrontendBaseUrl(request), payload);
+ const pdf = await sharePdfService.pdfForPayloadToken(
+  this.getFrontendBaseUrl(request),
+  token
+);
 
             response.setHeader("Content-Type", "application/pdf");
             response.setHeader("Cache-Control", "no-store");
@@ -459,6 +437,35 @@ class RecipeController {
         } catch {
             return null;
         }
+    }
+
+    private getFrontendBaseUrl(request: Request): string {
+        const envOrigin = process.env.PUBLIC_ORIGIN?.trim();
+        if (envOrigin) return envOrigin.replace(/\/$/, "");
+        const xfProto = (request.headers["x-forwarded-proto"] as string | undefined)?.split(",")[0]?.trim();
+        const xfHost = (request.headers["x-forwarded-host"] as string | undefined)?.split(",")[0]?.trim();
+        const forwarded = (request.headers["forwarded"] as string | undefined);
+        let fProto: string | undefined;
+        let fHost: string | undefined;
+        if (forwarded) {
+            const mProto = forwarded.match(/proto=([^;,\s]+)/i);
+            const mHost = forwarded.match(/host=([^;,\s]+)/i);
+            fProto = mProto?.[1]?.replace(/"/g, "");
+            fHost = mHost?.[1]?.replace(/"/g, "");
+        }
+        const host =
+            xfHost ||
+            fHost ||
+            (request.headers["x-original-host"] as string | undefined) ||
+            (request.headers["x-host"] as string | undefined) ||
+            request.headers.host;
+        const proto = xfProto || fProto || "https";
+
+        if (!host) {
+            return "https://www.itzikrecipe.com";
+        }
+
+        return `${proto}://${host}`.replace(/\/$/, "");
     }
 }
 
