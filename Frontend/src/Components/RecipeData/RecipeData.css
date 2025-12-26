@@ -16,7 +16,7 @@
   height: 120px;
   align-items: stretch;
   gap: 8px;
-  box-sizing: border-box; /* was: box-sizing: border-box; / */
+  box-sizing: border-box;
 }
 
 .RecipeImage {
@@ -27,6 +27,14 @@
   object-fit: cover;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
+}
+
+/* IMPORTANT:
+   Allow the block to break across pages to avoid big white gaps before a page break.
+   (This is the part you called out.) */
+.PrintExtraDataBlock {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
 }
 
 .RecipeStepsGrid,
@@ -260,10 +268,10 @@ html[dir="rtl"] .FiltersRow {
   color: #303030;
 }
 
+/* Emoji fallback fonts can help in browsers, but PDF headless may still miss emoji fonts.
+   If you render the flag as <img class="ExtraDataFlagImg" ...>, this stays as a fallback. */
 .ExtraDataFlag {
   font-size: 1.2rem;
-
-  /* force emoji-capable fallbacks (PDF render) */
   font-family:
     "Apple Color Emoji",
     "Segoe UI Emoji",
@@ -272,6 +280,13 @@ html[dir="rtl"] .FiltersRow {
     system-ui,
     sans-serif;
   line-height: 1;
+}
+
+.ExtraDataFlagImg {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 @media (min-width: 780px) {
@@ -345,182 +360,3 @@ html[dir="rtl"] .FiltersRow {
     font-size: 10px !important;
   }
 }
-
-/* .share-capture .RecipeStepsWide {
-  width: 100% !important;
-  max-width: 100% !important;
-  position: static !important;
-  left: auto !important;
-  right: auto !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  transform: none !important;
-  box-sizing: border-box !important;
-}
-
-.share-capture .RecipeStepsGrid {
-  display: block !important;
-  gap: 0 !important;
-}
-
-.share-capture .RecipeStepsGrid::before {
-  display: none !important;
-}
-
-.share-capture .RecipeStepsGrid > .IngredientsList,
-.share-capture .RecipeStepsGrid > .InstructionsList {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.share-capture .RecipeData,
-.share-capture .RecipeData * {
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-@page {
-  size: A4;
-  margin: 0;
-}
-
-@media print {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .RecipeStepsWide {
-    width: 100% !important;
-    max-width: 100% !important;
-    position: static !important;
-    left: auto !important;
-    right: auto !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    transform: none !important;
-    box-sizing: border-box !important;
-  }
-
-  .RecipeStepsGrid {
-    display: block !important;
-    gap: 0 !important;
-  }
-
-  .RecipeStepsGrid::before {
-    display: none !important;
-  }
-
-  .RecipeStepsGrid > .IngredientsList,
-  .RecipeStepsGrid > .InstructionsList {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .RecipeData,
-  .RecipeData * {
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-}
-
-.RecipeHeaderRow {
-  display: flex;
-}
-
-.ShareBtnContainer {
-  position: absolute;
-  top: 0;
-  right: 16px;
-  align-items: center;
-  height: 40px !important;
-  color: #fff;
-}
-
-.ShareBtnContainer.rtl {
-  right: auto;
-  left: 16px;
-}
-
-.ShareBtnContainer:hover {
-  cursor: pointer;
-}
-
-@media print {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .PrintExtraDataBlock {
-    display: table !important;
-    width: 100% !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  .PrintExtraDataBlock .RecipeExtraDataContainer,
-  .PrintExtraDataBlock .RecipeBottomExtraDataContainer {
-    display: table-row !important;
-    width: 100% !important;
-    height: auto !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  .PrintExtraDataBlock .RecipeExtraDataContainer > div,
-  .PrintExtraDataBlock .RecipeBottomExtraDataContainer > div {
-    display: table-cell !important;
-    width: 25% !important;
-    vertical-align: middle !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  
-  .AmountParent,
-  .PrepTimeParent,
-  .CountryNameParent,
-  .DifficultyParent,
-  .CaloryParent,
-  .SugarParent,
-  .ProteinParent,
-  .HealthParent {
-    background: #fff !important;
-    border: none !important;
-  }
-}
-
-@media print {
-  #recipe-print-root,
-  .RecipeData {
-    overflow: visible !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .RecipeExtraDataContainer,
-  .RecipeBottomExtraDataContainer {
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-}
-
-
-@media print {
-  .AmountParent,
-  .PrepTimeParent,
-  .CountryNameParent,
-  .DifficultyParent,
-  .CaloryParent,
-  .SugarParent,
-  .ProteinParent,
-  .HealthParent,
-  .FilterBadge,
-  .RecipeImage {
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6) !important;
-    border: none !important;
-  }
-} */

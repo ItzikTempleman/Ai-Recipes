@@ -141,3 +141,11 @@ export function getCountryFlag(countryName: string): string | undefined {
     default: return undefined;
   }
 }
+
+export function flagEmojiToTwemojiUrl(flag: string): string {
+  // flag is two regional-indicator codepoints (e.g. 🇮🇱)
+  const codepoints = Array.from(flag)
+    .map(ch => ch.codePointAt(0)!.toString(16))
+    .join("-");
+  return `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codepoints}.svg`;
+}

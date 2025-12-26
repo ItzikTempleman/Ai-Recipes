@@ -1,6 +1,6 @@
 import "./RecipeData.css";
 import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
-import { getCountryFlag } from "../../Utils/CountryFlag";
+import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { FilterBadges } from "../Filters/FilterBadges";
@@ -43,7 +43,7 @@ const shareOnceRef = useRef(false);
 
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
-
+const flag = getCountryFlag(recipe.countryOfOrigin);
   useEffect(() => {
     const url = (imageSrc ?? "").trim();
     setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
@@ -241,10 +241,15 @@ const handleShare = async (e?: any) => {
             </p>
           </div>
 
-          <div className="CountryNameParent">
-            <span className="ExtraDataFlag">{getCountryFlag(recipe.countryOfOrigin)}</span>
-            <p>{recipe.countryOfOrigin}</p>
-          </div>
+
+<div className="CountryNameParent">
+  {shareMode && flag ? (
+    <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} alt="" />
+  ) : (
+    <span className="ExtraDataFlag">{flag}</span>
+  )}
+  <p>{recipe.countryOfOrigin}</p>
+</div>
 
           <div className="DifficultyParent">
             <img className="ExtraDataImg" src={difficulty.icon} />

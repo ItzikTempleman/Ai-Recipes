@@ -363,7 +363,7 @@ private async createShareToken(request: Request, response: Response) {
       lactoseRestrictions: normalized.lactoseRestrictions,
       glutenRestrictions: normalized.glutenRestrictions,
       dietaryRestrictions: normalized.dietaryRestrictions,
-
+      amountOfServings: normalized.amountOfServings,
       calories: normalized.calories,
       totalSugar: normalized.totalSugar,
       totalProtein: normalized.totalProtein,

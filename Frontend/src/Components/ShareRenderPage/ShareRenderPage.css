@@ -206,3 +206,21 @@ body.share-render-mode #recipe-print-root {
     height: auto !important;
   }
 }
+
+body.share-render-mode main {
+  padding: 24px 16px 40px !important;
+  min-height: 100vh !important;
+}
+
+@media print {
+  body.share-render-mode main {
+    padding: 6px 0 10px !important; /* smaller page-edge whitespace */
+    min-height: auto !important;
+    margin: 0 !important;
+    align-items: stretch !important;
+  }
+
+  body.share-render-mode #recipe-print-root {
+    max-width: none !important;
+  }
+}
