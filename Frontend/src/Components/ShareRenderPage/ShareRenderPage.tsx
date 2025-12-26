@@ -92,7 +92,6 @@ export function ShareRenderPage() {
 
   if (!recipe) return null;
 
-  // ✅ FIX: FilterBadges expects a structured object, not recipe.queryRestrictions
   const filters = {
     sugarLevel: recipe.sugarRestriction as any,
     hasLactose: recipe.lactoseRestrictions as any,
@@ -102,6 +101,12 @@ export function ShareRenderPage() {
 
   return (
     <div id="recipe-print-root" className="share-print-root">
+
+
+    <div className="PdfBannerWatermark" aria-hidden="true">
+      <h3>Itzik's AI Recipes</h3>
+    </div>
+
       <RecipeData
         recipe={recipe}
         imageSrc={(recipe as any).imageUrl ?? (recipe as any).image ?? ""}
