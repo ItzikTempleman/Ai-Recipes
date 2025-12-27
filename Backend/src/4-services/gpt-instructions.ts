@@ -346,8 +346,28 @@ YOU MUST:
      - Only use 0 if the recipe literally has no caloric ingredients (almost never).
 
    - "totalProtein":
-     - Real-life accurate grams of protein **per 100 grams of the final dish** (not for the whole recipe).
-     - Use realistic values based on typical nutrition data for the ingredients; do NOT just invent random numbers.
+TOTAL PROTEIN CALCULATION (CRITICAL — MUST FOLLOW):
+- "totalProtein" MUST be computed from the ingredients list using a weighted calculation.
+- It is NOT allowed to copy typical protein-per-100g of a main ingredient (e.g., fish/chicken).
+- Compute like this (internally):
+  1) Estimate TOTAL protein grams in the whole recipe by summing each ingredient’s protein contribution.
+     - Use realistic typical protein values:
+       • fish fillet: ~20 g per 100 g
+       • eggs: ~6 g per large egg
+       • breadcrumbs/flour: low (approx 8–11 g per 100 g)
+       • vegetables/sauce: very low (approx 0–2 g per 100 g)
+  2) Estimate FINAL cooked weight of the dish in grams:
+     - Start with sum of ingredient weights in grams.
+     - Subtract a realistic moisture loss if applicable:
+       • frying/baking: 5–12% loss
+       • simmering in sauce: 0–8% loss (often minimal)
+     - If the dish includes sauce/liquid that remains in the final dish, KEEP that weight (do not discard it).
+  3) Set:
+     totalProtein = round( (totalProteinGramsTotal / finalCookedWeightGrams) * 100 , 1 )
+
+- Sanity check (MUST):
+  - For mixed dishes (fish cakes + sauce), "totalProtein" should usually be lower than plain fish.
+  - If the recipe includes sauce and binders, values like 8–14 g/100g are common; 20 g/100g is suspicious unless it is nearly pure fish.
 
 - "totalSugar":
   - The TOTAL amount of **ADDED SUGAR** in the entire recipe, measured in **TABLESPOONS**.
@@ -482,6 +502,20 @@ CRITICAL SANITY & SAFETY RULES (MUST FOLLOW):
            - You MUST set "prepTime" to a value between **20 and 30** minutes.
            - Prefer **20** minutes for a basic margherita-style pizza.
            - Never use a value above 30 minutes for "prepTime" for pizza recipes.
+PIZZA COMPOSITION RULE (CRITICAL):
+- If the dish is a pizza (query or cleaned title contains "pizza" / "piza" / "pitsa" / "פיצה"):
+  - The recipe MUST include these core components unless explicitly forbidden by restrictions:
+    1) Dough base (from-scratch dough ingredients)
+    2) Pizza sauce (from-scratch sauce ingredients)
+    3) A melting cheese layer (e.g., mozzarella OR a realistic "melting cheese blend")
+  - If the user specifies a specific cheese (e.g., "Bulgarian cheese", "feta", "goat cheese"):
+    - Treat it as a TOPPING or secondary cheese.
+    - STILL include a melting cheese layer unless:
+      • LactoseRestrictions = 1 (then use a plant-based melting cheese), OR
+      • the user explicitly asks for no cheese, OR
+      • "cheese" or the relevant cheese is in queryRestrictions.
+  - Do NOT interpret "pizza with <ingredient>" as "<ingredient> only".
+  - Every topping mentioned in the query MUST appear in the ingredients list AND be used in instructions.
 
            LONG-COOK DISH TIMING (CRITICAL):
 - If the dish is a slow-cook/braise/roast dish by its classic identity (e.g., asado),

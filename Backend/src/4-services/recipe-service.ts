@@ -68,7 +68,7 @@ class RecipeService {
     return mapDbRowToFullRecipe(row);
   };
 
-  
+
   public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
@@ -230,6 +230,13 @@ class RecipeService {
     const values = [userId, recipeId];
     const result: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
     return result.affectedRows === 1;
+  }
+
+  public async getLikedRecipesByUseriD(userId: number): Promise<FullRecipeModel[]> {
+    const sql = "select r.* from recipe r inner join likes l on l.recipeId=r.id where l.userId=?"
+    const values = [userId];
+    const likedRecipes = await dal.execute(sql, values) as DbRecipeRow[];
+    return likedRecipes.map(mapDbRowToFullRecipe);
   }
 }
 
