@@ -20,10 +20,11 @@ const resources = {
         login: "Log in",
       },
       homeScreen: {
-        generate:"Press here to start",
-        siteTitle:"Ai recipe generator",
-        hello:"Hello",
-        guest:"guest",
+        shareIntro: "Share your recipe as a PDF",
+        generate: "Press here to start",
+        siteTitle: "Ai recipe generator",
+        hello: "Hello",
+        guest: "guest",
         recentlyViewed: "Recently viewed",
         noRecipes: "Blank history",
         guestNoticeLine1: "Generate recipes freely",
@@ -41,8 +42,8 @@ const resources = {
         return: "Return",
       },
       generate: {
-        youCanGenerateImageLater:"You can add an image later",
-        guest:"Guest",
+        youCanGenerateImageLater: "You can add an image later",
+        guest: "Guest",
         title: "So, what are we eating today?",
         labelGenerate: "Generate recipe",
         quantitySelector: "How many servings",
@@ -135,9 +136,9 @@ const resources = {
         imageUpdated: "Profile image updated",
       },
       recipeUi: {
-        share:"Share",
-        instructions:"Instructions",
-        ingredients:"Ingredients",
+        share: "Share",
+        instructions: "Instructions",
+        ingredients: "Ingredients",
         loadImage: "Load image",
         clear: "Clear",
         showRecipe: "Show Recipe",
@@ -185,10 +186,11 @@ const resources = {
       },
 
       homeScreen: {
-        generate:"התחל כאן",
-             siteTitle:"יוצר מתכונים חכם",
-          hello:"שלום",
-        guest:"אורח",
+        shareIntro: "ניתן לשתף מתכונים באופן חופשי ",
+        generate: "התחל כאן",
+        siteTitle: "יוצר מתכונים חכם",
+        hello: "שלום",
+        guest: "אורח",
         recentlyViewed: "נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
@@ -196,8 +198,8 @@ const resources = {
       },
 
       about: {
-      title: "אודות אתר זה",
-         topSection: getTopSectionHe(),
+        title: "אודות אתר זה",
+        topSection: getTopSectionHe(),
         restOfSection: getRestOfSectionHe(),
         footer: "© 2025 כל הזכויות שמורות ® מחולל המתכונים של איציק",
       },
@@ -208,8 +210,8 @@ const resources = {
       },
 
       generate: {
-        youCanGenerateImageLater:"תמיד ניתן להוסיף תמונה אחר כך",
-        guest:"אורח",
+        youCanGenerateImageLater: "תמיד ניתן להוסיף תמונה אחר כך",
+        guest: "אורח",
         title: "?אז מה אוכלים היום",
         quantitySelector: "עבור כמה סועדים",
         labelGenerate: "מה בא לך להכין?",
@@ -308,9 +310,9 @@ const resources = {
       },
 
       recipeUi: {
-        share:"שיתוף",
-        instructions:"הוראות הכנה",
-        ingredients:"מצרכים",
+        share: "שיתוף",
+        instructions: "הוראות הכנה",
+        ingredients: "מצרכים",
         loadImage: "טען תמונה",
         clear: "נקה",
         showRecipe: "הצג מתכון",

@@ -9,7 +9,7 @@ import { AppState } from "../../Redux/Store";
 import { recipeService } from "../../Services/RecipeService";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { useNavigate } from "react-router-dom";
-
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 export function HomeScreen() {
   useTitle("Home");
   const { items } = useSelector((state: AppState) => state.recipes);
@@ -48,19 +48,25 @@ export function HomeScreen() {
             </div>
           )
         ) : (
-          <div className="HomeScreenTitleContainer">
-            <div className="GuestNotice">
-              <div className="GuestHello">{t("homeScreen.hello")} {t("homeScreen.guest")}</div>
+          <div>
+            <div className="HomeScreenTitleContainer">
+              <div className="GuestNotice">
+                <div className="GuestHello">{t("homeScreen.hello")} {t("homeScreen.guest")}</div>
 
-              <div className="GuestInstructions"
-                onClick={() => navigate("/generate")}
-              ><LibraryAdd /><h4 className="GuestGenerate">{t("homeScreen.generate")}</h4></div>
+                <div className="GuestInstructions"
+                  onClick={() => navigate("/generate")}
+                ><LibraryAdd /><h4 className="GuestGenerate">{t("homeScreen.generate")}</h4></div>
 
-              <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
-              <h3 className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</h3>
-              <div className="GuestLoginContainer"
-                onClick={() => navigate("/login")}
-              ><LoginIcon /><h4 className="GuestLoginTitle">{t("drawer.login")}</h4></div>
+                <div className="GuestNoticeLine1">{t("homeScreen.guestNoticeLine1")}</div>
+                <h3 className="GuestNoticeLine2">{t("homeScreen.guestNoticeLine2")}</h3>
+                <div className="GuestLoginContainer"
+                  onClick={() => navigate("/login")}
+                ><LoginIcon /><h4 className="GuestLoginTitle">{t("drawer.login")}</h4></div>
+              </div>
+              <div className="ShareIntro">
+                <PictureAsPdfIcon className="ShareIntroIcon"/>
+                <h1 className="ShareIntroTitle">{t("homeScreen.shareIntro")}</h1>
+              </div>
             </div>
           </div>
         )}
