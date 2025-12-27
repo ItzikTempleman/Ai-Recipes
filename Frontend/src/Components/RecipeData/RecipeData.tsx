@@ -26,10 +26,10 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const [isImageLoading, setIsImageLoading] = useState(false);
   const shareOnceRef = useRef(false);
 
-  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
-  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
+  // ✅ only change: compute RTL directly from i18n
+  const isRTL = (i18n.language ?? "").startsWith("he");
 
-  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
   const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
 
   const ingredients = recipe.data?.ingredients ?? [];
@@ -44,6 +44,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const flag = getCountryFlag(recipe.countryOfOrigin);
+
   useEffect(() => {
     const url = (imageSrc ?? "").trim();
     setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
@@ -93,18 +94,11 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
     } catch (err: any) {
       notify.error(err?.message || String(err));
     } finally {
-
       setTimeout(() => {
         shareOnceRef.current = false;
       }, 2500);
     }
   };
-
-  useEffect(() => {
-    const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
-    i18n.on("languageChanged", onLangChange);
-    return () => i18n.off("languageChanged", onLangChange);
-  }, [i18n]);
 
   const difficulty = getDifficultyLevel(recipe.difficultyLevel);
 
@@ -114,7 +108,6 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
     if (!ingredient || !amount) return { ingredient, amount };
 
-    // remove ingredient name from amount (handles "2 liters water" / "2 ליטר קצח" etc.)
     const escaped = ingredient.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const re = new RegExp(escaped, "gi");
 
@@ -125,25 +118,44 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
   const normalizedIngredients = (() => {
     const out: typeof ingredients = [];
+
     const isModifierLine = (text: string) =>
       /^(finely|roughly|coarsely|thinly|freshly|cut|sliced|diced|minced|chopped|grated|shredded|cubed|peeled|crushed)\b/i.test(
-        text
+        text.trim()
       );
+
+    const appendToPrev = (suffix: string) => {
+      if (out.length === 0) return;
+      const prev = out[out.length - 1] as any;
+      const prevText = String(prev.ingredient ?? "").trim();
+      const add = suffix.trim();
+      if (!add) return;
+
+      const lastPart = prevText.split(",").pop()?.trim().toLowerCase();
+      if (lastPart === add.toLowerCase()) return;
+
+      const parts = prevText.split(",").map((p: string) => p.trim().toLowerCase());
+      if (parts.includes(add.toLowerCase())) return;
+
+      prev.ingredient = `${prevText}, ${add}`;
+    };
+
     for (const line of ingredients) {
       const ingredientText = String((line as any)?.ingredient ?? "").trim();
       const rawAmount = (line as any)?.amount;
-      const amountText = rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+      const amountText =
+        rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+
       if (!ingredientText) continue;
-      if (out.length > 0 && isModifierLine(ingredientText)) {
-        (out[out.length - 1] as any).ingredient = `${String((out[out.length - 1] as any).ingredient).trim()}, ${ingredientText}`;
+
+      if (!amountText && isModifierLine(ingredientText)) {
+        appendToPrev(ingredientText);
         continue;
       }
-      if (!amountText && out.length > 0) {
-        (out[out.length - 1] as any).ingredient = `${String((out[out.length - 1] as any).ingredient).trim()}, ${ingredientText}`;
-        continue;
-      }
+
       out.push(line);
     }
+
     return out;
   })();
 
@@ -160,22 +172,23 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             {t("recipeUi.share")}
           </Button>
         )}
-<h2
-  className={`RecipeTitle ${(shareMode ? headingDir : isRTL ? "rtl" : "ltr")}`}
-  dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
-  lang={shareMode ? headingLng : undefined}
->
-  {recipe.title}
-</h2>
+
+        <h2
+          className={`RecipeTitle ${shareMode ? headingDir : isRTL ? "rtl" : "ltr"}`}
+          dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
+          lang={shareMode ? headingLng : undefined}
+        >
+          {recipe.title}
+        </h2>
       </div>
 
-<p
-  className={`Description ${(shareMode ? headingDir : isRTL ? "rtl" : "ltr")}`}
-  dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
-  lang={shareMode ? headingLng : undefined}
->
-  {recipe.description}
-</p>
+      <p
+        className={`Description ${shareMode ? headingDir : isRTL ? "rtl" : "ltr"}`}
+        dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
+        lang={shareMode ? headingLng : undefined}
+      >
+        {recipe.description}
+      </p>
 
       {localImgSrc ? (
         <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
@@ -203,6 +216,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
       ) : null}
 
       <FilterBadges filters={filters} isRTL={isRTL} />
+
       <div className="PrintExtraDataBlock">
         <div className="RecipeExtraDataContainer">
           <div className="CaloryParent">
@@ -221,13 +235,25 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             <div className="SugarAmountDiv">
               <img className="SugarIcon" src="/sugar.png" />
               <div className="SugarAmountInnerDiv">
-          {Number(recipe.totalSugar) === 0 ? (
-  <p>None</p>
-) : (
-  <p className="BidiLtr">
-    {recipe.totalSugar} {t("units.tbspShort")} {t("units.per100g")}
-  </p>
-)}
+                {Number(recipe.totalSugar) === 0 ? (
+                  <p>None</p>
+                ) : isRTL ? (
+                  <div className="StatValueRowRtl">
+                    <span>{t("units.gramShort")}</span>
+                    <bdi dir="ltr">100</bdi>
+                    <span>|</span>
+                    <span>{t("units.tbspShort")}</span>
+                    <bdi dir="ltr">{recipe.totalSugar}</bdi>
+                  </div>
+                ) : (
+                  <div className="StatValueRowLtr">
+                    <bdi dir="ltr">{recipe.totalSugar}</bdi>
+                    <span>{t("units.tbspShort")}</span>
+                    <span>|</span>
+                    <bdi dir="ltr">100</bdi>
+                    <span>{t("units.gramShort")}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -237,18 +263,33 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             <div className="ProteinAmountDiv">
               <img className="ProteinIcon" src="/protein.png" />
               <div className="ProteinInnerDiv">
-          <p className="BidiLtr">
-                   {recipe.totalProtein} {t("units.per100g")}
-                </p>
+                {isRTL ? (
+                  <div className="StatValueRowRtl">
+                    <span>{t("units.gramShort")}</span>
+                    <bdi dir="ltr">100</bdi>
+                    <span>|</span>
+                    <span>{t("units.gramShort")}</span>
+                    <bdi dir="ltr">{recipe.totalProtein}</bdi>
+                  </div>
+                ) : (
+                  <div className="StatValueRowLtr">
+                    <bdi dir="ltr">{recipe.totalProtein}</bdi>
+                    <span>{t("units.gramShort")}</span>
+                    <span>|</span>
+                    <bdi dir="ltr">100</bdi>
+                    <span>{t("units.gramShort")}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           <div className="HealthParent">
-           <p className="BidiLtr">{recipe.healthLevel} / 10</p>
+            <p>{t("recipeUi.health")}</p>
             <div className="HealthLevelDiv">
               <img className="HealthIcon" src="/health.png" />
             </div>
+            <p className="BidiLtr">{recipe.healthLevel} / 10</p>
           </div>
         </div>
 
@@ -265,7 +306,6 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             </p>
           </div>
 
-
           <div className="CountryNameParent">
             {shareMode && flag ? (
               <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} alt="" />
@@ -281,6 +321,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
           </div>
         </div>
       </div>
+
       <div className="RecipeStepsWide">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
           <div className={`IngredientsList ${headingDir}`} dir={headingDir}>

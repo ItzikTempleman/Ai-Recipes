@@ -9,7 +9,7 @@ import { LoginScreen } from "../LoginScreen/LoginScreen";
 import { RecipeInfoScreen } from "../RecipeInfoScreen/RecipeInfoScreen";
 import { RegistrationScreen } from "../RegistrationScreen/RegistrationScreen";
 import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
-import { ShareRenderPage } from "../ShareRenderPage/ShareRenderPage";
+import { PdfScreen } from "../ShareRenderPage/PdfScreen";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
@@ -26,7 +26,7 @@ export function Routing() {
                 <Route path="/login" element={ <LoginScreen />} />
                 <Route path="/registration" element={ <RegistrationScreen />} />
                 <Route path="/profile" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home" replace />}/>
-                <Route path="/share-render/:recipeId" element={<ShareRenderPage />} />
+                <Route path="/share-render/:recipeId" element={<PdfScreen />} />
             </Routes>
         </div>
     );

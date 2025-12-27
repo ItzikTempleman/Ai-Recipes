@@ -341,10 +341,37 @@ html[dir="rtl"] .FiltersRow {
   }
 }
 
-.BidiLtr {
+.StatValueRowRtl {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 6px;
+  direction: rtl !important;
+  unicode-bidi: isolate !important;
+  white-space: nowrap;
+}
+
+.StatValueRowLtr {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 6px;
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  white-space: nowrap;
+}
+
+.BidiIso {
   direction: ltr;
   unicode-bidi: isolate;
   display: inline-block;
+}
+
+.BidiLtr {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .RecipeTitle.rtl,

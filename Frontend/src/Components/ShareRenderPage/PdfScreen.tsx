@@ -1,20 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { RecipeModel } from "../../Models/RecipeModel";
 import { RecipeData } from "../RecipeData/RecipeData";
-import "./ShareRenderPage.css";
+import "./PdfScreen.css";
 
-export function ShareRenderPage() {
+export function PdfScreen() {
+  const { i18n } = useTranslation();
   const { recipeId } = useParams();
   const id = Number(recipeId);
 
   const [recipe, setRecipe] = useState<RecipeModel | null>(null);
 
+  // Add print/share mode class
   useEffect(() => {
     document.body.classList.add("share-render-mode");
     return () => document.body.classList.remove("share-render-mode");
   }, []);
 
+  // Fetch recipe: token share payload OR public id
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
@@ -41,6 +45,40 @@ export function ShareRenderPage() {
       .catch(() => setRecipe(null));
   }, [id]);
 
+  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
+
+  // Detect content language/direction based on recipe text (not UI language)
+  const { headingLng, headingDir } = useMemo<{
+    headingLng: "he" | "en";
+    headingDir: "rtl" | "ltr";
+  }>(() => {
+    if (!recipe) return { headingLng: "en", headingDir: "ltr" };
+
+    const ingredients = (recipe as any)?.data?.ingredients ?? [];
+    const instructions = (recipe as any)?.data?.instructions ?? [];
+
+    const recipeIsHebrew =
+      hasHebrew((recipe as any)?.title) ||
+      hasHebrew((recipe as any)?.description) ||
+      ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
+      instructions.some((x: any) => hasHebrew(x));
+
+    return {
+      headingLng: recipeIsHebrew ? "he" : "en",
+      headingDir: recipeIsHebrew ? "rtl" : "ltr",
+    };
+  }, [recipe]);
+
+  // Mirror RecipeData behavior: render PDF using the recipe content language
+  useEffect(() => {
+    if (!recipe) return;
+    if (i18n.language !== headingLng) {
+      i18n.changeLanguage(headingLng);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipe, headingLng]);
+
+  // Tag the stats block in DOM (kept from your original logic)
   useEffect(() => {
     if (!recipe) return;
 
@@ -92,20 +130,6 @@ export function ShareRenderPage() {
 
   if (!recipe) return null;
 
-  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
-
-  const ingredients = (recipe as any)?.data?.ingredients ?? [];
-  const instructions = (recipe as any)?.data?.instructions ?? [];
-
-  const recipeIsHebrew =
-    hasHebrew((recipe as any)?.title) ||
-    hasHebrew((recipe as any)?.description) ||
-    ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
-    instructions.some((x: any) => hasHebrew(x));
-
-  const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
-  const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
-
   const filters = {
     sugarLevel: recipe.sugarRestriction as any,
     hasLactose: recipe.lactoseRestrictions as any,
@@ -114,17 +138,19 @@ export function ShareRenderPage() {
   };
 
   return (
-    <div id="recipe-print-root" className="share-print-root" dir={headingDir} lang={headingLng}>
-      <div className="PdfBannerWatermark" aria-hidden="true">
-        <h3>Itzik's AI Recipes</h3>
-      </div>
+    <div className="PdfScreen">
+      <div id="recipe-print-root" className="share-print-root" dir={headingDir} lang={headingLng}>
+        <div className="PdfBannerWatermark" aria-hidden="true">
+          <h3>Itzik's AI Recipes</h3>
+        </div>
 
-      <RecipeData
-        recipe={recipe}
-        imageSrc={(recipe as any).imageUrl ?? (recipe as any).image ?? ""}
-        filters={filters as any}
-        shareMode={true}
-      />
+        <RecipeData
+          recipe={recipe}
+          imageSrc={(recipe as any).imageUrl ?? (recipe as any).image ?? ""}
+          filters={filters as any}
+          shareMode={true}
+        />
+      </div>
     </div>
   );
 }

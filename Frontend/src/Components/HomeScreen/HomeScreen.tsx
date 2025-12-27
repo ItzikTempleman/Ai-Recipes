@@ -36,7 +36,7 @@ export function HomeScreen() {
 
           list.length === 0 ? (
 
-            <div className="HomeScreenTitleContainer">
+          <div className={`HomeScreenTitleContainer ${!user ? "guest" : ""}`}>
               <div className="UserHello">{t("homeScreen.hello")} {user.firstName} {user.familyName}</div>
               <h3 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h3>
             </div>

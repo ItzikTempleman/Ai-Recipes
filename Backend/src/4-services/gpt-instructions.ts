@@ -5,9 +5,7 @@ export function getInstructions(): string {
 LANGUAGE & DIRECTION:
 - First, detect the script used in the user's query.
 - If the query contains any Hebrew letters (א–ת), respond fully in Hebrew.
-- If the query contains any Arabic letters (ء–ي), respond fully in Arabic.
-- If the query clearly uses some other non-Latin script (e.g. Cyrillic, Greek, Chinese),
-  respond fully in that language.
+- If the query clearly uses some other non-Latin script respond fully in that language.
 - IMPORTANT: If the query is written ONLY with Latin letters (A–Z, a–z),
   you MUST respond in ENGLISH, even if the word is borrowed from another language
   or slightly misspelled (e.g. "piza", "shnitzel", "bourekas").
@@ -468,11 +466,15 @@ CRITICAL SANITY & SAFETY RULES (MUST FOLLOW):
        • and any long passive waits (dough rising, chilling, marinating, long simmering).
      - Do NOT invent extra hidden minutes that are not mentioned or implied by the steps.
 
-     - GLOBAL LIMITS:
-       • Minimum: 5 minutes.
-       • Maximum: 190 minutes.
-       If your calculated time is outside this range, adjust the written steps so that
-       the final "prepTime" is inside 5–190.
+- GLOBAL LIMITS:
+  • Minimum: 5 minutes.
+  • No artificial maximum.
+
+  - "prepTime" MUST reflect the real-world total duration of the recipe,
+    including all active and passive time, even if it spans many hours or days.
+  - Long processes (slow roasting, braising, fermenting, curing, resting,
+    overnight marinating, dough proofing, stock simmering) MUST be counted in full.
+  - Do NOT compress or shorten time values to fit UI or aesthetic constraints.
 
      - PIZZA-SPECIFIC HARD RULE (IMPORTANT):
        • If the dish is a pizza recipe (the query or title contains the word "pizza",

@@ -1,0 +1,147 @@
+/* Hide site chrome in share/PDF mode */
+body.share-render-mode header {
+  display: none !important;
+}
+
+body.share-render-mode .ShareBtnContainer,
+body.share-render-mode .BackBtnContainer {
+  display: none !important;
+}
+
+/* Screen (non-print) layout for the share render page */
+body.share-render-mode main {
+  background: #fff !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  margin: 0 !important;
+  padding: 24px 16px 40px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+
+body.share-render-mode #recipe-print-root {
+  width: 100% !important;
+  max-width: 800px !important;
+}
+
+/* Make filters align based on recipe dir (Hebrew goes right) */
+body.share-render-mode #recipe-print-root[dir="rtl"] .FiltersRow {
+  direction: rtl !important;
+  justify-content: flex-end !important;
+}
+
+body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
+  direction: ltr !important;
+  justify-content: flex-start !important;
+}
+
+/* Watermark default hidden */
+.PdfBannerWatermark {
+  display: none;
+}
+
+/* ---------------- PRINT ---------------- */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 6mm;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  body.share-render-mode,
+  body.share-render-mode .MainLayout,
+  body.share-render-mode main,
+  body.share-render-mode #recipe-print-root,
+  body.share-render-mode .RecipeData,
+  body.share-render-mode .RecipeExtraDataContainer,
+  body.share-render-mode .RecipeBottomExtraDataContainer,
+  body.share-render-mode .FiltersRow,
+  body.share-render-mode .RecipeStepsGrid,
+  body.share-render-mode .IngredientsList,
+  body.share-render-mode .InstructionsList {
+    background: #fff !important;
+    background-image: none !important;
+  }
+
+  /* Remove weird layout paddings/margins for printing */
+  body.share-render-mode main {
+    min-height: auto !important;
+    padding: 6px 0 10px !important;
+    margin: 0 !important;
+    align-items: stretch !important;
+  }
+
+  body.share-render-mode #recipe-print-root {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Keep key blocks together on one page when possible */
+  body.share-render-mode .FiltersRow,
+  body.share-render-mode .RecipeExtraDataContainer,
+  body.share-render-mode .RecipeBottomExtraDataContainer,
+  body.share-render-mode .RecipeImage {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Print-friendly card look (consistent, no duplicates) */
+  body.share-render-mode .FilterBadge,
+  body.share-render-mode .RecipeImage,
+  body.share-render-mode .AmountParent,
+  body.share-render-mode .PrepTimeParent,
+  body.share-render-mode .CountryNameParent,
+  body.share-render-mode .DifficultyParent,
+  body.share-render-mode .CaloryParent,
+  body.share-render-mode .SugarParent,
+  body.share-render-mode .ProteinParent,
+  body.share-render-mode .HealthParent {
+    filter: none !important;
+    outline: none !important;
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.18) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18) !important;
+  }
+
+  /* Watermark in print */
+  #recipe-print-root {
+    position: relative;
+    padding-top: 22px;
+  }
+
+  .PdfBannerWatermark {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .PdfBannerWatermark h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.65);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+}
