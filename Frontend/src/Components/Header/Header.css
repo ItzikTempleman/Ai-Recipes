@@ -16,19 +16,65 @@
 .GeneralNavigation {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;              
+  margin-top: 8px;       
 }
 
 .Header.rtl .GeneralNavigation {
   flex-direction: row-reverse;
 }
 
-.Header:not(.rtl) .GeneralNavigation a + a,
-.Header.rtl .GeneralNavigation a + a {
+.AboutScreenBtn,
+.GenerateScreenBtn,
+.HomeScreenBtn {
+  padding: 4px 8px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(202, 204, 207, 0.65) !important;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
+  color: #074975;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  margin: 0;           
+  font-size: 12px;
+  width: 44px;
+  transition: transform 120ms ease, box-shadow 120ms ease
+}
+
+
+.Header:not(.rtl) .GeneralNavigation {
   margin-left: 0;
-  padding-left: 0;
+}
+.Header.rtl .GeneralNavigation {
   margin-right: 0;
-  padding-right: 0;
+}
+
+.MenuBtn.active,
+.AboutScreenBtn.active,
+.GenerateScreenBtn.active,
+.HomeScreenBtn.active {
+  font-weight: bold;
+  background: rgba(190, 235, 255, 0.555);
+
+}
+
+.AboutScreenBtn svg,
+.GenerateScreenBtn svg,
+.HomeScreenBtn svg,
+.MenuBtn svg {
+  color: #074975;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.10));
+}
+
+.AboutScreenBtn:hover,
+.GenerateScreenBtn:hover,
+.HomeScreenBtn:hover,
+.MenuBtn:hover {
+  background: rgba(167, 211, 230, 0.382);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
 }
 
 .HeaderRight {
@@ -49,63 +95,55 @@
   position: relative;
 }
 
-
 .Header.rtl .LanguageSelector {
   padding-right: 0;
   padding-left: 14px;
 }
 
-.AboutScreenLink,
-.GenerateScreenLink,
-.HomeScreenLink {
-  display: flex;
-  flex-direction: column;
+.MenuBtn {
+  display: inline-flex;
   align-items: center;
-  padding: 2px 0;
-  font-size: 12px;
-  text-decoration: none;
+  justify-content: center;
+  width: 50px;
+  height: 44px;               
+  border-radius: 12px;
+  border: 1px solid rgba(202, 204, 207, 0.65);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
   color: #074975;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 120ms ease, box-shadow 120ms ease
 }
 
-.AboutScreenLink.active,
-.GenerateScreenLink.active,
-.HomeScreenLink.active {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-
-.Menu svg {
-  color: #074975;
-}
-
-.SelectLanguage {
-  display: flex;
-  flex-direction: row;
+.MenuBtn button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  gap: 8px;
-  align-items: center;
+  height: 100%;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
   .Header {
     padding: 0 12px;
-    gap: 8px;
   }
 
   .GeneralNavigation {
-    gap: 10px;
+    gap: 6px;  
   }
 
-  .AboutScreenLink,
-  .GenerateScreenLink,
-  .HomeScreenLink {
+  .AboutScreenBtn,
+  .GenerateScreenBtn,
+  .HomeScreenBtn {
     font-size: 11px;
   }
 
   .LanguageSelector {
     font-size: 12px;
-    padding-right: 14px; 
+    padding-right: 14px;
   }
 
   .Header.rtl .LanguageSelector {

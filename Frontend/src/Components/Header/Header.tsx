@@ -19,25 +19,19 @@ export function Header() {
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
-        <NavLink to="/home" className="HomeScreenLink">
-          <div className="Home">
+        <NavLink to="/home" className="HomeScreenBtn">
             <HomeOutlinedIcon />
             <p>{t("nav.home")}</p>
-          </div>
         </NavLink>
 
-        <NavLink to="/generate" className="GenerateScreenLink">
-          <div className="Generate">
+        <NavLink to="/generate" className="GenerateScreenBtn">
             <LibraryAdd />
             <p>{t("nav.generate")}</p>
-          </div>
         </NavLink>
 
-        <NavLink to="/about" className="AboutScreenLink">
-          <div className="About">
+        <NavLink to="/about" className="AboutScreenBtn">
             <InfoOutlinedIcon />
             <p>{t("nav.about")}</p>
-          </div>
         </NavLink>
       </div>
 
@@ -52,7 +46,7 @@ export function Header() {
             <option value="he">{t("drawer.hebrew")}</option>
           </select>
         </div>
-        <div className="Menu">
+        <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
         </div>
       </div>
