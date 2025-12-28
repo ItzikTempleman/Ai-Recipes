@@ -171,7 +171,7 @@ const resources = {
     translation: {
       nav: {
         home: "בית",
-        generate: "צור מתכון חדש",
+        generate: "צור חדש",
         about: "אודות",
         selectLanguage: "שפה",
       },

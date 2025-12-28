@@ -43,7 +43,7 @@ const { t, i18n } = useTranslation();
   async function send(user: User) {
     try {
       await userService.loginOrRegister({ register: user });
-      navigate("/generate");
+      navigate("/home");
       reset();
     } catch (err) {
       console.error("Registration failed", err);
