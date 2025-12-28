@@ -42,7 +42,7 @@ export function HomeScreen() {
               <div className="UserHello">
                 {t("homeScreen.hello")} {user.firstName} {user.familyName}
               </div>
-              <h3 className="HomeScreenTitle">{t("homeScreen.noRecipes")}</h3>
+              <h3 className={`HomeScreenTitle ${!user ? "guest" : "user"}`}>{t("homeScreen.noRecipes")}</h3>
             </div>
           ) : (
             <div className="HomeScreenTitleContainer">

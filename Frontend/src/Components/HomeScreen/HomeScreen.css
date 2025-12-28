@@ -65,6 +65,19 @@
   align-items: center;
 }
 
+/* If the container contains the hello line, stack vertically */
+.HomeScreenTitleContainer:has(.UserHello) {
+  display: flex;              /* override inline-flex */
+  flex-direction: column;
+  align-items: flex-start;    /* or flex-end for RTL if you want */
+  gap: 6px;
+}
+
+/* Optional RTL alignment */
+.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer:has(.UserHello) {
+  align-items: flex-end;
+}
+
 .HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer {
   margin-left: 0;
   margin-right: 0;
@@ -89,7 +102,7 @@
 }
 
 .ShareIntroIcon {
-  font-size: 70px !important;
+  font-size: 60px !important;
   color: rgb(100, 100, 100);
 }
 
@@ -119,8 +132,7 @@
 
 /* ONLY logged-in title: do not stretch */
 .HomeScreenTitle.user {
-  display: inline-block;
-  width: auto;
+white-space: pre-line;
 }
 
 .GuestNotice {
@@ -282,12 +294,24 @@
 }
 
 @media (max-width: 600px) {
+    .HomeScreenTitleWrapper.ltr .GuestInstructions,
+  .HomeScreenTitleWrapper.rtl .GuestInstructions,
+  .HomeScreenTitleWrapper.ltr .GuestLoginContainer,
+  .HomeScreenTitleWrapper.rtl .GuestLoginContainer {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
   .HomeScreen {
     padding: 18px 14px 44px;
   }
 
   .SiteTitle {
     font-size: 24px;
+  }
+  .HomeScreenTitleWrapper {
+    display: flex;
   }
 
   .HomeScreenTitleContainer {
@@ -305,31 +329,36 @@
 
   .GuestInstructions,
   .GuestLoginContainer {
-    width: auto;
-    max-width: 100%;
+    width: min(70%, 360px);   /* 70% but not huge on tablets */
+    max-width: 70%;
+    min-width: 0 !important;  /* kills your 260/320px mins */
     padding: 10px 14px;
     border-radius: 12px;
     font-size: 16px;
-    box-shadow: 0 8px 14px rgba(8, 63, 114, 0.18),
-      0 1px 0 rgba(255, 255, 255, 0.16) inset;
-    align-self: flex-start;
+
+    display: inline-flex;     /* keep your inner layout */
+    justify-content: center;
+
+    margin: 12px auto 0;      /* ✅ centers horizontally */
+    align-self: center;       /* ✅ centers in the flex column */
+    box-sizing: border-box;
   }
 
-  .GuestInstructions,
-  .GuestLoginContainer {
-    width: 100% !important;
-  }
 
   .GuestGenerate,
   .GuestLoginTitle {
     font-size: 16px;
     white-space: nowrap;
   }
-
   .HomeScreenTitleContainer.guest {
-    padding-bottom: 24px;
-    min-height: 420px;
+    width: 100% !important;
+    max-width: 100%;
+    display: block !important;   /* ensure it's not treated like inline content */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
   }
+
 
   .ShareIntro {
     position: static !important;
@@ -352,10 +381,10 @@
     font-size: 28px;
   }
 
-  .ShareIntroIcon.MuiSvgIcon-root,
-  .ShareIntro .ShareIntroIcon {
-    font-size: 90px !important;
-    width: 90px !important;
-    height: 90px !important;
-  }
+.ShareIntroIcon.MuiSvgIcon-root,
+.ShareIntro .ShareIntroIcon {
+  font-size: 56px !important;
+  width: 56px !important;
+  height: 56px !important;
+}
 }
