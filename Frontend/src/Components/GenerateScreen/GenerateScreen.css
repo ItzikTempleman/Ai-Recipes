@@ -5,24 +5,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-   box-sizing: border-box;
-     overflow-x: hidden;
-     align-items: center;
-
+  box-sizing: border-box;
+  overflow-x: hidden;
+  align-items: center;
 }
+
 .GenerateScreen--hasData {
   background-color: white;
 }
 
 .GenerateContainer {
-    background: rgba(194, 225, 237, 0.78);
-  border: 1px solid rgba(17, 24, 39, 0.08);
+  border-radius: 18px;
+  border: 2px solid rgb(201, 201, 201);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(190, 190, 190, 0.8) inset;
+  backdrop-filter: blur(12px);
   width: 100%;
   max-width: 640px;
   padding: 24px;
-  border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
   display: flex;
   flex-direction: column;
 }
@@ -33,13 +33,13 @@
   transform-origin: top right !important;
   text-align: right;
 }
+
 .InputData.rtl .SearchTF .MuiOutlinedInput-input {
-  padding-right: 12px !important; /* adjust 8–16px to taste */
+  padding-right: 12px !important;
 }
 
-/* nudge the label a bit inward from the right */
 .InputData.rtl .SearchTF .MuiInputLabel-root {
-  right: 22px; /* was 14px */
+  right: 22px;
 }
 
 .InputData.rtl .SearchTF input {
@@ -102,13 +102,13 @@
 
 .HasImage {
   display: flex;
-  flex-direction: column; 
-  align-items: center;   
-  gap: 0.25rem;           
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .HasImage__title {
-  font-weight: bold;   
+  font-weight: bold;
 }
 
 .HasImage__sub {
@@ -116,6 +116,7 @@
   font-size: 16px;
   color: #03517a;
 }
+
 .GenerateTitle {
   margin: 10px 0 20px;
   display: flex;
@@ -150,9 +151,8 @@
   color: #ff9500;
 }
 
-
 .InputData {
-  
+
   display: flex;
   align-items: center;
   gap: 12px;
@@ -167,8 +167,6 @@
   gap: 8px;
 }
 
-
-
 .QuantitySelector {
   width: 44px;
   height: 30px;
@@ -176,14 +174,13 @@
   border: 1px solid rgb(208, 208, 208);
 }
 
-
 .ExcludeTF .MuiOutlinedInput-root {
   width: 220px;
   background-color: white;
 }
 
-.SearchTF .MuiOutlinedInput-root{
-    background-color: white;
+.SearchTF .MuiOutlinedInput-root {
+  background-color: white;
 }
 
 .ErrorText {
@@ -194,15 +191,16 @@
 
 .Loading {
   text-align: center;
-
 }
-.AddImageLaterNotice{
+
+.AddImageLaterNotice {
   color: #d27403;
 }
+
 .CenterRow {
   width: 100%;
   display: flex;
-    padding-left: 0 !important;
+  padding-left: 0 !important;
   padding-right: 0 !important;
   justify-content: center;
   box-sizing: border-box;
@@ -216,35 +214,35 @@
 }
 
 .GenerateBtn {
-gap:8px;
-background: #074975 !important;
-border-radius: 10px !important;
+  gap: 8px;
+  background: #074975 !important;
+  border-radius: 10px !important;
 }
 
 .BtnIcon {
   color: #f0b43a;
 }
 
-.GuestBadge{
-   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+.GuestBadge {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
   width: 70px;
   height: 35px;
   border-radius: 8px;
   display: flex;
   align-items: center;
-  background-color: #e9ca8c;   
+  background-color: #e9ca8c;
   justify-content: center;
 }
 
-.GuestBadge--rtl{
-  margin-left: auto;  
+.GuestBadge--rtl {
+  margin-left: auto;
 }
 
-.GuestBadge h4{
+.GuestBadge h4 {
   margin: 0;
   color: rgb(74, 74, 74);
-
 }
+
 .GenerateBtn:hover {
   cursor: pointer;
 }
@@ -258,14 +256,13 @@ border-radius: 10px !important;
 }
 
 .FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root {
-  background-color: #fff !important;        
+  background-color: #fff !important;
 }
 
 .FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root.Mui-selected {
-  background-color: #f0c487 !important;     
+  background-color: #f0c487 !important;
 }
 
-/* optional hover consistency */
 .FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root:hover {
   background-color: #fff !important;
 }

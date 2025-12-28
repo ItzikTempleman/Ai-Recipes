@@ -24,6 +24,7 @@ class RecipeController {
         this.router.delete("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
         this.router.get("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.isRecipeLikedByUser);
         this.router.get("/api/recipes/liked", verificationMiddleware.verifyLoggedIn, this.getMyLikedRecipeIds);
+        this.router.get("/api/recipes/liked/full-recipe", verificationMiddleware.verifyLoggedIn, this.getLikedRecipesByUserId);
         this.router.post("/api/recipes/:recipeId/generate-image", verificationMiddleware.verifyLoggedIn, this.generateImageForSavedRecipe);
         this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
         this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe.bind(this));
@@ -47,6 +48,13 @@ class RecipeController {
         const recipes = await recipeService.getSingleRecipe(recipeId, user.id);
         response.json(recipes);
     }
+
+    
+      public async getLikedRecipesByUserId(request: Request, response: Response) {
+   const userId = (request as any).user.id;
+  const likedRecipes = await recipeService.getLikedRecipesByUserId(userId);
+  response.status(StatusCode.OK).json(likedRecipes);
+      }
 
     private async generateFreeNoImageRecipe(request: Request, response: Response): Promise<void> {
         const user = (request as any).user as UserModel | undefined;

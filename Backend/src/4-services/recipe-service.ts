@@ -232,7 +232,7 @@ class RecipeService {
     return result.affectedRows === 1;
   }
 
-  public async getLikedRecipesByUseriD(userId: number): Promise<FullRecipeModel[]> {
+  public async getLikedRecipesByUserId(userId: number): Promise<FullRecipeModel[]> {
     const sql = "select r.* from recipe r inner join likes l on l.recipeId=r.id where l.userId=?"
     const values = [userId];
     const likedRecipes = await dal.execute(sql, values) as DbRecipeRow[];
