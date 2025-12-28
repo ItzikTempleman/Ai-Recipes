@@ -294,16 +294,42 @@ white-space: pre-line;
 }
 
 @media (max-width: 600px) {
-    .HomeScreenTitleWrapper.ltr .GuestInstructions,
+
+   .HomeScreenTitleWrapper {
+    justify-content: center;
+  }
+  
+    /* 1) Guest mode: make the box slimmer */
+  .HomeScreenTitleContainer:has(.GuestNotice) {
+    width: 90% !important;   /* <-- tweak: 50%–65% */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* 2) Logged-in "Hello + Blank history": make it spread (full width) */
+  .HomeScreenTitleContainer:has(.UserHello) {
+    width: 100% !important;  /* if you really wanted 10%, change to 10% */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Optional: if logged-in "Recently viewed" should also be full width on mobile */
+  .HomeScreenTitleContainer:has(.HomeScreenTitle.user):not(:has(.UserHello)) {
+    width: 100% !important;
+  }
+
+  .HomeScreenTitleWrapper.ltr .GuestInstructions,
   .HomeScreenTitleWrapper.rtl .GuestInstructions,
   .HomeScreenTitleWrapper.ltr .GuestLoginContainer,
-  .HomeScreenTitleWrapper.rtl .GuestLoginContainer {
+  .HomeScreenTitleWrapper.rtl .GuestLoginContainer 
+  {
     margin-left: auto !important;
     margin-right: auto !important;
     text-align: center !important;
   }
 
-  .HomeScreen {
+  .HomeScreen 
+  {
     padding: 18px 14px 44px;
   }
 
@@ -329,36 +355,29 @@ white-space: pre-line;
 
   .GuestInstructions,
   .GuestLoginContainer {
-    width: min(70%, 360px);   /* 70% but not huge on tablets */
+    width: min(70%, 360px); 
     max-width: 70%;
-    min-width: 0 !important;  /* kills your 260/320px mins */
+    min-width: 0 !important; 
     padding: 10px 14px;
     border-radius: 12px;
     font-size: 16px;
-
-    display: inline-flex;     /* keep your inner layout */
+    display: inline-flex;     
     justify-content: center;
-
-    margin: 12px auto 0;      /* ✅ centers horizontally */
-    align-self: center;       /* ✅ centers in the flex column */
+    margin: 12px auto 0;      
+    align-self: center;       
     box-sizing: border-box;
   }
-
 
   .GuestGenerate,
   .GuestLoginTitle {
     font-size: 16px;
     white-space: nowrap;
   }
+
   .HomeScreenTitleContainer.guest {
-    width: 100% !important;
-    max-width: 100%;
-    display: block !important;   /* ensure it's not treated like inline content */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    width: 70% !important;
     box-sizing: border-box;
   }
-
 
   .ShareIntro {
     position: static !important;
@@ -386,5 +405,5 @@ white-space: pre-line;
   font-size: 56px !important;
   width: 56px !important;
   height: 56px !important;
-}
+ }
 }
