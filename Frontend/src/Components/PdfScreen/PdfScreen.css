@@ -138,8 +138,8 @@ body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
 
   .PdfBannerWatermark h3 {
     margin: 0;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 800;
     background: rgba(255, 255, 255, 0.65);
     padding: 4px 8px;
     border-radius: 4px;

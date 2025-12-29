@@ -11,8 +11,8 @@ import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 import { ArrowForwardIos } from "@mui/icons-material";
-
-
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 type RecipeProps = {
     recipe: RecipeModel;
 }
@@ -48,7 +48,7 @@ const { t } = useTranslation();
             <div className="TopRightActions">
                 {user && (
                     <IconButton className="LikeBtn" onClick={handleLikeState}>
-                        {isLiked ? <GradeIcon  /> : <GradeOutlinedIcon />}
+                        {isLiked ? <FavoriteIcon  /> : <FavoriteBorderIcon />}
                     </IconButton>
                 )}
                 <IconButton className="DeleteBtn"

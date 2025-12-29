@@ -9,7 +9,7 @@ import { LoginScreen } from "../LoginScreen/LoginScreen";
 import { RecipeInfoScreen } from "../RecipeInfoScreen/RecipeInfoScreen";
 import { RegistrationScreen } from "../RegistrationScreen/RegistrationScreen";
 import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
-import { PdfScreen } from "../ShareRenderPage/PdfScreen";
+import { PdfScreen } from "../PdfScreen/PdfScreen";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);

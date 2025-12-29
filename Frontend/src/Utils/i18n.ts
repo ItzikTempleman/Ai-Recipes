@@ -7,7 +7,7 @@ const resources = {
     translation: {
       nav: {
         home: "Home",
-        generate: "Generate",
+        generate: "New",
         about: "About",
         selectLanguage: "Language"
       },
@@ -171,7 +171,7 @@ const resources = {
     translation: {
       nav: {
         home: "בית",
-        generate: "צור חדש",
+        generate:"חדש",
         about: "אודות",
         selectLanguage: "שפה",
       },

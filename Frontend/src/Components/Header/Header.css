@@ -38,15 +38,15 @@
   align-items: center;
   text-decoration: none;
   margin: 0;           
-  font-size: 12px;
-  width: 44px;
+  font-size: 16px;
+  width: 50px;
   transition: transform 120ms ease, box-shadow 120ms ease
 }
-
 
 .Header:not(.rtl) .GeneralNavigation {
   margin-left: 0;
 }
+
 .Header.rtl .GeneralNavigation {
   margin-right: 0;
 }
@@ -57,7 +57,6 @@
 .HomeScreenBtn.active {
   font-weight: bold;
   background: rgba(190, 235, 255, 0.555);
-
 }
 
 .AboutScreenBtn svg,
@@ -66,6 +65,8 @@
 .MenuBtn svg {
   color: #074975;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.10));
+  height: 30px;
+  width: 30px ;
 }
 
 .AboutScreenBtn:hover,
@@ -105,7 +106,7 @@
   align-items: center;
   justify-content: center;
   width: 50px;
-  height: 44px;               
+  height: 50px;               
   border-radius: 12px;
   border: 1px solid rgba(202, 204, 207, 0.65);
   backdrop-filter: blur(6px);

@@ -1,6 +1,4 @@
-// HomeScreen.tsx
 import { useEffect } from "react";
-import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import LoginIcon from "@mui/icons-material/Login";
@@ -11,6 +9,7 @@ import { recipeService } from "../../Services/RecipeService";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { useNavigate } from "react-router-dom";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import AddIcon from "@mui/icons-material/Add";
 
 export function HomeScreen() {
   useTitle("Home");
@@ -38,22 +37,20 @@ export function HomeScreen() {
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
         {user ? (
           list.length === 0 ? (
-            <div className={`HomeScreenTitleContainer ${!user ? "guest" : ""}`}>
+            <div className="HomeScreenTitleContainer user">
               <div className="UserHello">
                 {t("homeScreen.hello")} {user.firstName} {user.familyName}
               </div>
-              <h3 className={`HomeScreenTitle ${!user ? "guest" : "user"}`}>{t("homeScreen.noRecipes")}</h3>
+              <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
             </div>
           ) : (
-            <div className="HomeScreenTitleContainer">
-              <h3 className={`HomeScreenTitle ${!user ? "guest" : "user"}`}>
-                {t("homeScreen.recentlyViewed")}
-              </h3>
+            <div className="HomeScreenTitleContainer user">
+              <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
             </div>
           )
         ) : (
           <div>
-            <div className="HomeScreenTitleContainer">
+            <div className="HomeScreenTitleContainer guest">
               <div className="GuestNotice">
                 <div className="GuestHello">
                   {t("homeScreen.hello")} {t("homeScreen.guest")}
@@ -63,13 +60,14 @@ export function HomeScreen() {
                   className="GuestInstructions"
                   onClick={() => navigate("/generate")}
                 >
-                  <LibraryAdd />
+                  <AddIcon />
                   <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
                 </div>
 
                 <div className="GuestNoticeLine1">
                   {t("homeScreen.guestNoticeLine1")}
                 </div>
+
                 <h3 className="GuestNoticeLine2">
                   {t("homeScreen.guestNoticeLine2")}
                 </h3>

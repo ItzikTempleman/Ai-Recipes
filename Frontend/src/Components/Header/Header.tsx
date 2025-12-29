@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
-import LibraryAdd from "@mui/icons-material/LibraryAdd";
 import { useState } from "react";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { DrawerLayout, Language } from "../DrawerLayout/DrawerLayout";
@@ -8,12 +7,11 @@ import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useLanguage } from "../../Utils/SetLanguage";
-
+import AddIcon from '@mui/icons-material/Add';
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t } = useTranslation();
-
   const { initialLanguage, setLang, isRtl } = useLanguage();
 
   return (
@@ -23,12 +21,10 @@ export function Header() {
             <HomeOutlinedIcon />
             <p>{t("nav.home")}</p>
         </NavLink>
-
         <NavLink to="/generate" className="GenerateScreenBtn">
-            <LibraryAdd />
+            <AddIcon />
             <p>{t("nav.generate")}</p>
         </NavLink>
-
         <NavLink to="/about" className="AboutScreenBtn">
             <InfoOutlinedIcon />
             <p>{t("nav.about")}</p>

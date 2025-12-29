@@ -58,26 +58,48 @@
   width: 100%;
 }
 
-/* ONLY logged-in "Recently viewed": shrink the BOX to wrap text */
-.HomeScreenTitleContainer:has(.HomeScreenTitle.user) {
-  width: 320px;
-  display: inline-flex;
-  align-items: center;
+/* ======== YOUR REQUIREMENT ========
+   If user exists -> remove the border/shadow/backdrop (container becomes invisible).
+   Content stays and layout stays.
+*/
+.HomeScreenTitleContainer.user {
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  background: transparent;
+  padding: 0;
 }
 
-/* If the container contains the hello line, stack vertically */
-.HomeScreenTitleContainer:has(.UserHello) {
-  display: flex;              /* override inline-flex */
+/* Logged-in empty-history layout: stack name + "no history" */
+.HomeScreenTitleContainer.user {
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;    /* or flex-end for RTL if you want */
   gap: 6px;
 }
 
-/* Optional RTL alignment */
-.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer:has(.UserHello) {
+/* RTL alignment for logged-in */
+.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer.user {
   align-items: flex-end;
+  text-align: right;
 }
 
+/* LTR alignment for logged-in */
+.HomeScreenTitleWrapper.ltr .HomeScreenTitleContainer.user {
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Guest keeps the full box look + padding */
+.HomeScreenTitleContainer.guest {
+  padding: 18px 18px;
+  border: 2px solid rgb(201, 201, 201);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06),
+    0 1px 0 rgba(190, 190, 190, 0.8) inset;
+  backdrop-filter: blur(12px);
+  background: transparent;
+}
+
+/* keep your existing RTL wrapper behavior */
 .HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer {
   margin-left: 0;
   margin-right: 0;
@@ -132,7 +154,7 @@
 
 /* ONLY logged-in title: do not stretch */
 .HomeScreenTitle.user {
-white-space: pre-line;
+  white-space: pre-line;
 }
 
 .GuestNotice {
@@ -294,42 +316,16 @@ white-space: pre-line;
 }
 
 @media (max-width: 600px) {
-
-   .HomeScreenTitleWrapper {
-    justify-content: center;
-  }
-  
-    /* 1) Guest mode: make the box slimmer */
-  .HomeScreenTitleContainer:has(.GuestNotice) {
-    width: 90% !important;   /* <-- tweak: 50%–65% */
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* 2) Logged-in "Hello + Blank history": make it spread (full width) */
-  .HomeScreenTitleContainer:has(.UserHello) {
-    width: 100% !important;  /* if you really wanted 10%, change to 10% */
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Optional: if logged-in "Recently viewed" should also be full width on mobile */
-  .HomeScreenTitleContainer:has(.HomeScreenTitle.user):not(:has(.UserHello)) {
-    width: 100% !important;
-  }
-
   .HomeScreenTitleWrapper.ltr .GuestInstructions,
   .HomeScreenTitleWrapper.rtl .GuestInstructions,
   .HomeScreenTitleWrapper.ltr .GuestLoginContainer,
-  .HomeScreenTitleWrapper.rtl .GuestLoginContainer 
-  {
+  .HomeScreenTitleWrapper.rtl .GuestLoginContainer {
     margin-left: auto !important;
     margin-right: auto !important;
     text-align: center !important;
   }
 
-  .HomeScreen 
-  {
+  .HomeScreen {
     padding: 18px 14px 44px;
   }
 
@@ -345,6 +341,14 @@ white-space: pre-line;
     border-radius: 16px;
   }
 
+  /* keep user invisible even in mobile overrides */
+  .HomeScreenTitleContainer.user {
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
   .HomeScreenTitle {
     font-size: 20px;
   }
@@ -355,16 +359,18 @@ white-space: pre-line;
 
   .GuestInstructions,
   .GuestLoginContainer {
-    width: min(70%, 360px); 
+    width: min(70%, 360px);   /* 70% but not huge on tablets */
     max-width: 70%;
-    min-width: 0 !important; 
+    min-width: 0 !important;  /* kills your 260/320px mins */
     padding: 10px 14px;
     border-radius: 12px;
     font-size: 16px;
-    display: inline-flex;     
+
+    display: inline-flex;     /* keep your inner layout */
     justify-content: center;
-    margin: 12px auto 0;      
-    align-self: center;       
+
+    margin: 12px auto 0;      /* ✅ centers horizontally */
+    align-self: center;       /* ✅ centers in the flex column */
     box-sizing: border-box;
   }
 
@@ -375,7 +381,11 @@ white-space: pre-line;
   }
 
   .HomeScreenTitleContainer.guest {
-    width: 70% !important;
+    width: 100% !important;
+    max-width: 100%;
+    display: block !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     box-sizing: border-box;
   }
 
@@ -400,10 +410,10 @@ white-space: pre-line;
     font-size: 28px;
   }
 
-.ShareIntroIcon.MuiSvgIcon-root,
-.ShareIntro .ShareIntroIcon {
-  font-size: 56px !important;
-  width: 56px !important;
-  height: 56px !important;
- }
+  .ShareIntroIcon.MuiSvgIcon-root,
+  .ShareIntro .ShareIntroIcon {
+    font-size: 56px !important;
+    width: 56px !important;
+    height: 56px !important;
+  }
 }
