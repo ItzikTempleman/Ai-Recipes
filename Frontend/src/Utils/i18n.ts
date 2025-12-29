@@ -14,7 +14,7 @@ const resources = {
       drawer: {
         profile: "Profile",
         english: "English",
-        hebrew: "Hebrew",
+        hebrew: "עברית",
         logout: "Logout",
         helloGuest: "Hello Guest",
         login: "Log in",
@@ -178,7 +178,7 @@ const resources = {
 
       drawer: {
         profile: "פרופיל",
-        english: "אנגלית",
+        english: "English",
         hebrew: "עברית",
         logout: "התנתק",
         helloGuest: "שלום אורח",
