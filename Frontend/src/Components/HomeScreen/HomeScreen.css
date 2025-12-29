@@ -58,78 +58,72 @@
   width: 100%;
 }
 
-/* ======== YOUR REQUIREMENT ========
-   If user exists -> remove the border/shadow/backdrop (container becomes invisible).
-   Content stays and layout stays.
-*/
-.HomeScreenTitleContainer.user {
+/* ========= REPLACED :has(...) WITH .user/.history ========= */
+
+/* ONLY logged-in "Recently viewed": shrink the BOX to wrap text */
+.HomeScreenTitleContainer.user.history {
+  width: 320px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ✅ logged-in history title: remove ONLY the box chrome (keep text visible) */
+.HomeScreenTitleContainer.user.history {
   border: none;
   box-shadow: none;
   backdrop-filter: none;
-  background: transparent;
   padding: 0;
+  background: transparent;
 }
 
-/* Logged-in empty-history layout: stack name + "no history" */
-.HomeScreenTitleContainer.user {
+/* If the container contains the hello line (logged-in empty history), stack vertically */
+.HomeScreenTitleContainer.user:not(.history) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 6px;
 }
 
-/* RTL alignment for logged-in */
-.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer.user {
+/* Optional RTL alignment for empty-history */
+.HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer.user:not(.history) {
   align-items: flex-end;
-  text-align: right;
 }
 
-/* LTR alignment for logged-in */
-.HomeScreenTitleWrapper.ltr .HomeScreenTitleContainer.user {
-  align-items: flex-start;
-  text-align: left;
-}
+/* ========================================================= */
 
-/* Guest keeps the full box look + padding */
-.HomeScreenTitleContainer.guest {
-  padding: 18px 18px;
-  border: 2px solid rgb(201, 201, 201);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06),
-    0 1px 0 rgba(190, 190, 190, 0.8) inset;
-  backdrop-filter: blur(12px);
-  background: transparent;
-}
-
-/* keep your existing RTL wrapper behavior */
 .HomeScreenTitleWrapper.rtl .HomeScreenTitleContainer {
   margin-left: 0;
   margin-right: 0;
 }
-
 .ShareIntro {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 14px;                /* top aligned */
+  transform: none;          /* remove vertical centering */
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
+  gap: 6px;
+  padding: 6px 8px;
 }
 
 .HomeScreenTitleWrapper.ltr .ShareIntro {
-  right: 100px;
+  right: 14px;              /* top-right */
 }
 
 .HomeScreenTitleWrapper.rtl .ShareIntro {
-  left: 100px;
+  left: 14px;               /* top-left */
 }
 
 .ShareIntroIcon {
-  font-size: 60px !important;
+  font-size: 28px !important; /* was 60 */
   color: rgb(100, 100, 100);
 }
 
 .ShareIntroTitle {
   color: rgb(100, 100, 100);
+  font-size: 18px;          /* make text smaller */
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;                /* IMPORTANT: remove h1 default margins */
 }
 
 .UserHello,
@@ -333,20 +327,15 @@
     font-size: 24px;
   }
   .HomeScreenTitleWrapper {
-    display: flex;
+    display: block;   
+    width: 100%;
   }
 
   .HomeScreenTitleContainer {
     padding: 16px 14px;
     border-radius: 16px;
-  }
-
-  /* keep user invisible even in mobile overrides */
-  .HomeScreenTitleContainer.user {
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
+      width: 100%;
+    box-sizing: border-box;
   }
 
   .HomeScreenTitle {
@@ -359,18 +348,18 @@
 
   .GuestInstructions,
   .GuestLoginContainer {
-    width: min(70%, 360px);   /* 70% but not huge on tablets */
+    width: min(70%, 360px); /* 70% but not huge on tablets */
     max-width: 70%;
-    min-width: 0 !important;  /* kills your 260/320px mins */
+    min-width: 0 !important; /* kills your 260/320px mins */
     padding: 10px 14px;
     border-radius: 12px;
     font-size: 16px;
 
-    display: inline-flex;     /* keep your inner layout */
+    display: inline-flex; /* keep your inner layout */
     justify-content: center;
 
-    margin: 12px auto 0;      /* ✅ centers horizontally */
-    align-self: center;       /* ✅ centers in the flex column */
+    margin: 12px auto 0; /* ✅ centers horizontally */
+    align-self: center; /* ✅ centers in the flex column */
     box-sizing: border-box;
   }
 
@@ -389,31 +378,34 @@
     box-sizing: border-box;
   }
 
-  .ShareIntro {
-    position: static !important;
-    top: auto !important;
-    right: auto !important;
-    left: auto !important;
-    transform: none !important;
-    margin-top: 18px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    text-align: center;
-  }
-
+.ShareIntro {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin-top: 80px;
+  width: 100%;
+  display: inline-flex;        
+  flex-direction: row;          
+  align-items: center;
+  justify-content: center;
+  gap: 8px;                   
+  text-align: center;
+}
   .ShareIntroTitle {
     text-align: center;
-    font-size: 28px;
+    font-size: 14px;
+  }
+
+    .ShareIntroIcon {
+    font-size: 36px !important;
   }
 
   .ShareIntroIcon.MuiSvgIcon-root,
   .ShareIntro .ShareIntroIcon {
-    font-size: 56px !important;
-    width: 56px !important;
-    height: 56px !important;
+    font-size: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
   }
 }

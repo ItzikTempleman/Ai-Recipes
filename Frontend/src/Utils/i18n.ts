@@ -20,8 +20,8 @@ const resources = {
         login: "Log in",
       },
       homeScreen: {
-        shareIntro: "Share your recipe as a PDF",
-        generate: "Press here to start",
+        shareIntro: "Share your recipes",
+        generate: "New",
         siteTitle: "Ai recipe generator",
         hello: "Hello",
         guest: "guest",
@@ -186,8 +186,8 @@ const resources = {
       },
 
       homeScreen: {
-        shareIntro: "ניתן לשתף מתכונים באופן חופשי ",
-        generate: "התחל כאן",
+        shareIntro: "שתף את המתכונים",
+        generate: "חדש",
         siteTitle: "יוצר מתכונים חכם",
         hello: "שלום",
         guest: "אורח",

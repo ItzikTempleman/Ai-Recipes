@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
 import { useState } from "react";
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import HomeIcon from '@mui/icons-material/Home';
 import { DrawerLayout, Language } from "../DrawerLayout/DrawerLayout";
 import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -18,7 +18,7 @@ export function Header() {
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
         <NavLink to="/home" className="HomeScreenBtn">
-            <HomeOutlinedIcon />
+            <HomeIcon />
             <p>{t("nav.home")}</p>
         </NavLink>
         <NavLink to="/generate" className="GenerateScreenBtn">

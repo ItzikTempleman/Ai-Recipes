@@ -12,7 +12,7 @@ export type DecodedToken = {
 }
 
 class UserService {
-    private logoutTimer: number | null = null;
+    private logoutTimer: ReturnType<typeof setTimeout> | null = null;
 
     private logoutAfterTimeout(token: string) {
         try {

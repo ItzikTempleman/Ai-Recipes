@@ -32,7 +32,6 @@
   border: 1px solid rgba(202, 204, 207, 0.65) !important;
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
-  color: #074975;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +39,7 @@
   margin: 0;           
   font-size: 16px;
   width: 50px;
-  transition: transform 120ms ease, box-shadow 120ms ease
+transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 .Header:not(.rtl) .GeneralNavigation {
@@ -51,32 +50,52 @@
   margin-right: 0;
 }
 
-.MenuBtn.active,
+
 .AboutScreenBtn.active,
 .GenerateScreenBtn.active,
 .HomeScreenBtn.active {
   font-weight: bold;
-  background: rgba(190, 235, 255, 0.555);
+  background: rgba(202, 203, 203, 0.624);
 }
 
 .AboutScreenBtn svg,
 .GenerateScreenBtn svg,
 .HomeScreenBtn svg,
 .MenuBtn svg {
-  color: #074975;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.10));
   height: 30px;
-  width: 30px ;
+  width: 30px;
 }
 
-.AboutScreenBtn:hover,
-.GenerateScreenBtn:hover,
-.HomeScreenBtn:hover,
-.MenuBtn:hover {
-  background: rgba(167, 211, 230, 0.382);
-  transform: translateY(-1px);
-  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
+.HomeScreenBtn svg {
+  color: #1279ce;
 }
+
+.HomeScreenBtn p {
+  color: #1279ce;
+}
+
+/* Match the new icon colors */
+.GenerateScreenBtn p {
+  color: #E07A12; /* warm orange */
+}
+
+.AboutScreenBtn p {
+  color: #10a245; /* teal */
+}
+
+/* New accent colors */
+.GenerateScreenBtn svg {
+  color: #E07A12; /* warm orange */
+}
+
+.AboutScreenBtn svg {
+  color: #10a245; /* teal */
+}
+
+.HomeScreenBtn.active { background: rgba(169, 220, 242, 0.624); } /* your current */
+.GenerateScreenBtn.active { background: rgba(224, 122, 18, 0.18); }
+.AboutScreenBtn.active { background: rgba(13, 148, 136, 0.16); }
 
 .HeaderRight {
   display: flex;
@@ -92,13 +111,21 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #074975;
+  color: #636262;
   position: relative;
 }
 
 .Header.rtl .LanguageSelector {
   padding-right: 0;
   padding-left: 14px;
+}
+
+.AboutScreenBtn,
+.GenerateScreenBtn,
+.HomeScreenBtn,
+.MenuBtn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .MenuBtn {
@@ -111,10 +138,10 @@
   border: 1px solid rgba(202, 204, 207, 0.65);
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
-  color: #074975;
+  color: #636262;
   cursor: pointer;
   user-select: none;
-  transition: transform 120ms ease, box-shadow 120ms ease
+transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 .MenuBtn button {
@@ -150,5 +177,28 @@
   .Header.rtl .LanguageSelector {
     padding-left: 14px;
     padding-right: 0;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .AboutScreenBtn:hover,
+  .GenerateScreenBtn:hover,
+  .HomeScreenBtn:hover,
+  .MenuBtn:hover {
+    background: rgba(167, 211, 230, 0.382);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
+  }
+}
+
+/* Touch devices: use :active for feedback instead of :hover */
+@media (hover: none) and (pointer: coarse) {
+  .AboutScreenBtn:active,
+  .GenerateScreenBtn:active,
+  .HomeScreenBtn:active,
+  .MenuBtn:active {
+    background: rgba(167, 211, 230, 0.382);
+      transform: translateY(0);
+    box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
   }
 }
