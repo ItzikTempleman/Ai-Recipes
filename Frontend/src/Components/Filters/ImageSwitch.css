@@ -1,40 +1,33 @@
 .ImageSwitchDiv{
-display: flex;
-align-items: center; 
-gap: 8px;
+  display: flex;
+  flex-direction: column;   /* stack: toggle on top, icons below */
+  align-items: center;
+  gap: 6px;
+
 }
 
-.imageSwitchIcon {
-  color: #074975;
-}
-.imageSwitchIcon-NoImage{
-      color: red;
-}
-.imageSwitch .MuiToggleButton-root {
-  border: 1px solid #074975;     
-  color: #074975;
-  padding: 8px ;
-    background-color: white;
+.ImageSwitchIconsRow{
+  display: flex;
+  justify-content: center; /* also fix your typo: "ce" -> "center" */
+  gap: 48px;               /* increase this */
 }
 
-.imageSwitch .MuiToggleButton-root:hover {
 
-    background-color: white;
-}
-
-.imageSwitch .MuiToggleButton-root.Mui-selected {
-  background-color: #074975;
-  color: #fff;
-  border-color: #074975;
-}
-.imageSwitch .MuiToggleButtonGroup-grouped {
-  font-size: 14px;
-}
-.imageSwitch .MuiToggleButtonGroup-grouped.Mui-selected {
-  font-size: 18px !important;
-  
+.imageSwitchIcon,.imageSwitchIcon-NoImage {
+  color: #4a4a4a;
 }
 
-.imageSwitch .MuiToggleButton-root.Mui-selected:hover {
-  background-color: #074975;
+.imageSwitch .MuiToggleButton-root, .imageSwitch .MuiToggleButton-root:hover,
+.FiltersColumn .MuiToggleButton-root, .FiltersColumn .MuiToggleButton-root:hover
+{
+  border: transparent;
+  height: 40px !important;
+}
+
+.imageSwitch .MuiToggleButton-root.Mui-selected,
+.FiltersColumn .MuiToggleButton-root.Mui-selected
+{
+border: 1px solid rgba(128, 128, 128, 0.551);
+background: rgba(189, 234, 249, 0.422);
+border-radius: 4px;
 }

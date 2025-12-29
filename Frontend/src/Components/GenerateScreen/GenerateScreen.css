@@ -95,7 +95,6 @@
 }
 
 .GenerateAmountDiv {
-
   display: flex;
   align-items: center;
 }
@@ -104,7 +103,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
 }
 
 .HasImage__title {
@@ -114,7 +112,7 @@
 .HasImage__sub {
   font-weight: normal;
   font-size: 16px;
-  color: #03517a;
+
 }
 
 .GenerateTitle {
@@ -125,30 +123,19 @@
   gap: 10px;
   font-size: clamp(1.3rem, 2.2vw, 2em);
   letter-spacing: 0.02em;
-  color: #074276;
+  color: #4f4f4f;
   position: relative;
 }
 
-.GenerateTitle::after {
-  content: "";
-  position: absolute;
-  bottom: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
-  height: 3px;
-  border-radius: 180px;
-  background: #03517a;
-  opacity: 0.7;
-}
+
 
 .TitleIcon {
-  font-size: 2rem;
+
   padding: 8px;
   border-radius: 180px;
   background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.6);
-  color: #ff9500;
+  color: #f0b43a;
 }
 
 .InputData {
@@ -194,7 +181,7 @@
 }
 
 .AddImageLaterNotice {
-  color: #d27403;
+  color: #6b6a69;
 }
 
 .CenterRow {
@@ -241,13 +228,25 @@
 .FiltersDropdown__panel {
   max-height: 0;
   overflow: hidden;
+
+  margin: 12px;
+  padding: 12px;
+  border-radius: 4px;
+
   transition: max-height 220ms ease;
 }
 
 /* OPEN when filtersOpen === true */
 .FiltersDropdown__panel.open {
   max-height: 800px; /* make this big enough for all filters */
+    border: 1px solid rgba(145, 184, 194, 0.618);
 }
+
+/* add a short vertical separator between buttons */
+.FiltersDropdown__panelInner .MuiToggleButtonGroup-root .MuiToggleButton-root {
+  position: relative;
+}
+
 
 .FiltersDropdown__panelInner {
   padding-top: 12px;
@@ -255,9 +254,20 @@
   flex-direction: column;
   gap: 12px;
 }
+.FiltersDropdown__panelInner > div + div {
+  border-top: 1px solid rgba(0,0,0,0.12);
+
+  padding-top: 6px;
+}
+
+/* keep full width so the line spans across */
+.FiltersDropdown__panelInner > div {
+  width: 100%;
+}
+
 .FiltersSelectorRow {
   display: flex;
-  align-items: center;
+ 
   gap: 12px;
 }
 
@@ -266,9 +276,7 @@
 }
 
 .GenerateBtn {
-  gap: 8px;
-  background: #074975 !important;
-  border-radius: 10px !important;
+
 }
 
 .BtnIcon {
@@ -305,22 +313,6 @@
   padding: 4px;
   align-items: center;
   gap: 4px;
-}
-
-.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root {
-  background-color: #fff !important;
-}
-
-.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root.Mui-selected {
-  background-color: #f0c487 !important;
-}
-
-.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root:hover {
-  background-color: #fff !important;
-}
-
-.FiltersColumn .MuiToggleButtonGroup-root:not(.imageSwitch) .MuiToggleButton-root.Mui-selected:hover {
-  background-color: #f0c487 !important;
 }
 
 @media (max-width: 600px) {

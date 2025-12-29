@@ -188,7 +188,7 @@ const resources = {
 
       homeScreen: {
         shareIntro: "שתף את המתכונים",
-        generate: "חדש",
+        generate: "יצירת מתכון",
         siteTitle: "יוצר מתכונים חכם",
         hello: "שלום",
         guest: "אורח",
@@ -218,7 +218,7 @@ const resources = {
         quantitySelector: "עבור כמה סועדים",
         labelGenerate: "מה בא לך להכין?",
         requiredTitle: "נדרשת כותרת",
-        go: "צור מתכון",
+        go: "למתכון",
         excludeIngredient: "הסר רכיבים שאת/ה לא רוצה",
         loadingWithImage: "...מייצר תמונה",
         loadingWithImageLowerMessage: "זה יקח דקה",

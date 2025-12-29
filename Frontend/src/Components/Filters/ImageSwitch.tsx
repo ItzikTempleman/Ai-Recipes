@@ -31,13 +31,21 @@ export function ImageSwitch({ onChange, defaultHasImage = false }: Props) {
   }
 
   return (
-    <div className="ImageSwitchDiv">
-      <HideImageOutlinedIcon className="imageSwitchIcon-NoImage"/>
-    <ToggleButtonGroup value={mode} exclusive onChange={handleChange} className="imageSwitch">
+  <div className="ImageSwitchDiv">
+    <ToggleButtonGroup
+      value={mode}
+      exclusive
+      onChange={handleChange}
+      className="imageSwitch"
+    >
       <ToggleButton value="No Image">{t("filters.image.noImage")}</ToggleButton>
       <ToggleButton value="Full">{t("filters.image.withImage")}</ToggleButton>
     </ToggleButtonGroup>
-    <ImageIcon className="imageSwitchIcon"/>
+
+    <div className="ImageSwitchIconsRow">
+      <HideImageOutlinedIcon className="imageSwitchIcon-NoImage" />
+      <ImageIcon className="imageSwitchIcon" />
     </div>
+  </div>
   );
 }

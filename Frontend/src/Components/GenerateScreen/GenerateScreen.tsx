@@ -61,8 +61,8 @@ export function GenerateScreen() {
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
 
-  const [filtersOpen, setFiltersOpen]= useState(false);
-  
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
   const [initialQuantity, setQuantity] = useState(1);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
@@ -215,49 +215,47 @@ export function GenerateScreen() {
               />
             </div>
             <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
-<Button
-  className="FiltersDropdown__header"
-  onClick={() => setFiltersOpen((v) => !v)}
-  fullWidth
-  variant="outlined"
-  endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
->
-  {t("generate.filters")}
-</Button>
-    <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
-    <div className="FiltersDropdown__panelInner">
-            <div>
-              <SugarFilter
-                key={`sugar-${filtersResetKey}`}
-                onSugarLevelSelect={(sl) => {
-                  setSugarLevel(sl)
-                }} />
+              <Button
+                className="FiltersDropdown__header"
+                onClick={() => setFiltersOpen((v) => !v)}
+                fullWidth
+                variant="outlined"
+                endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              >
+                {t("generate.filters")}
+              </Button>
+              <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
+                <div className="FiltersDropdown__panelInner">
+                  <div>
+                    <SugarFilter
+                      key={`sugar-${filtersResetKey}`}
+                      onSugarLevelSelect={(sl) => {
+                        setSugarLevel(sl)
+                      }} />
+                  </div>
+                  <div>
+                    <LactoseFilter
+                      key={`lac-${filtersResetKey}`}
+                      onChange={setHasLactose} />
+                  </div>
+                  <div>
+                    <GlutenFilter
+                      key={`glu-${filtersResetKey}`}
+                      onChange={setHasGluten} />
+                  </div>
+                  <div>
+                    <DietaryFilter
+                      key={`diet-${filtersResetKey}`}
+                      onDietSelect={(d) => {
+                        setDietType(d)
+                      }} />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <LactoseFilter
-                key={`lac-${filtersResetKey}`}
-                onChange={setHasLactose} />
-            </div>
-            <div>
-              <GlutenFilter
-                key={`glu-${filtersResetKey}`}
-                onChange={setHasGluten} />
-            </div>
-            <div>
-              <DietaryFilter
-                key={`diet-${filtersResetKey}`}
-                onDietSelect={(d) => {
-                  setDietType(d)
-                }} />
-            </div>
-            </div>
-            </div>
-       </div>
           </div>
         </form>
-
       </div>
-
       {
         recipe && (
           <div className="CenterRow">
