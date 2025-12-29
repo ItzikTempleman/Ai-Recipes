@@ -42,6 +42,7 @@ const resources = {
         return: "Return",
       },
       generate: {
+        filters:"Filters",
         youCanGenerateImageLater: "You can add an image later",
         guest: "Guest",
         title: "So, what are we eating today?",
@@ -210,6 +211,7 @@ const resources = {
       },
 
       generate: {
+        filters:"סינון",
         youCanGenerateImageLater: "תמיד ניתן להוסיף תמונה אחר כך",
         guest: "אורח",
         title: "?אז מה אוכלים היום",

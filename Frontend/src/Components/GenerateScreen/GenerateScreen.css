@@ -213,6 +213,58 @@
   text-align: center;
 }
 
+.FiltersDropdown__panelInner {
+  align-items: flex-start;   /* left */
+  text-align: left;
+}
+
+/* RTL override when parent has dir="rtl" */
+.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner {
+  align-items: flex-end;     /* right */
+  text-align: right;
+}
+
+/* Make each filter row take full width so it can align nicely */
+.FiltersDropdown__panelInner > div {
+  width: 100%;
+}
+
+/* Optional: align MUI toggle groups themselves */
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root {
+  justify-content: flex-end;
+}
+.FiltersDropdown[dir="ltr"] .MuiToggleButtonGroup-root {
+  justify-content: flex-start;
+}
+
+/* CLOSED by default */
+.FiltersDropdown__panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+}
+
+/* OPEN when filtersOpen === true */
+.FiltersDropdown__panel.open {
+  max-height: 800px; /* make this big enough for all filters */
+}
+
+.FiltersDropdown__panelInner {
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.FiltersSelectorRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.FiltersSelector {
+  padding: 6px 10px;
+}
+
 .GenerateBtn {
   gap: 8px;
   background: #074975 !important;

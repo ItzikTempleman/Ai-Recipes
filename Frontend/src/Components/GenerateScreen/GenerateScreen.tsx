@@ -18,6 +18,8 @@ import { RecipeCard } from "../RecipeCard/RecipeCard";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { AppState } from "../../Redux/Store";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -59,7 +61,8 @@ export function GenerateScreen() {
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
 
-
+  const [filtersOpen, setFiltersOpen]= useState(false);
+  
   const [initialQuantity, setQuantity] = useState(1);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
@@ -211,6 +214,18 @@ export function GenerateScreen() {
                 defaultHasImage={false}
               />
             </div>
+            <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
+<Button
+  className="FiltersDropdown__header"
+  onClick={() => setFiltersOpen((v) => !v)}
+  fullWidth
+  variant="outlined"
+  endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+>
+  {t("generate.filters")}
+</Button>
+    <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
+    <div className="FiltersDropdown__panelInner">
             <div>
               <SugarFilter
                 key={`sugar-${filtersResetKey}`}
@@ -235,6 +250,9 @@ export function GenerateScreen() {
                   setDietType(d)
                 }} />
             </div>
+            </div>
+            </div>
+       </div>
           </div>
         </form>
 
