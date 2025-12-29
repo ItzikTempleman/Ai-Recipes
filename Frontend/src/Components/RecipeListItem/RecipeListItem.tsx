@@ -6,8 +6,6 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import IconButton from '@mui/material/IconButton';
 import { recipeService } from "../../Services/RecipeService";
 import { useTranslation } from "react-i18next";
-import GradeIcon from '@mui/icons-material/Grade';
-import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 import { ArrowForwardIos } from "@mui/icons-material";
