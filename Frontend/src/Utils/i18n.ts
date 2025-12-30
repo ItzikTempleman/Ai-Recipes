@@ -230,7 +230,7 @@ const resources = {
       filters: {
         image: {
            image:"תמונה",
-          withImage: "אם",
+          withImage: "עם",
           noImage: "ללא",
         },
         sugar: {
