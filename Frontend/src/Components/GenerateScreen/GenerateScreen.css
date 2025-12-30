@@ -425,7 +425,7 @@
 
 .FiltersColumn .MuiToggleButton-root{
   width: auto !important;
-  min-width: 75px;
+  width: 80px;
 }
 
 }
