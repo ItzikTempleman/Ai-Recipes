@@ -3,7 +3,7 @@ import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
 import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
-import { FilterBadges } from "../Filters/FilterBadges";
+import { FilterBadges } from "../../Utils/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../Models/RecipeModel";

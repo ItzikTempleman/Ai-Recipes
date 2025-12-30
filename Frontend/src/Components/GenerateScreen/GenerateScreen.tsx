@@ -136,7 +136,7 @@ export function GenerateScreen() {
                 <h4>{t("generate.guest")}</h4></div>
             )
           }
-          <h2 className="GenerateTitle">
+         <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>
             <RestaurantMenuIcon className="TitleIcon" />
             <span>{t("generate.title")}</span>
           </h2>
@@ -197,6 +197,7 @@ export function GenerateScreen() {
                 key={`img-${filtersResetKey}`}
                 onChange={setHasImage}
                 defaultHasImage={false}
+                
               />
               
             </div>
@@ -235,7 +236,9 @@ export function GenerateScreen() {
               >
                 {t("generate.filters")}
               </Button>
+              
               <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
+                
                 <div className="FiltersDropdown__panelInner">
                   <div>
                     <SugarFilter
@@ -264,7 +267,8 @@ export function GenerateScreen() {
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+  
         </form>
       </div>
       {

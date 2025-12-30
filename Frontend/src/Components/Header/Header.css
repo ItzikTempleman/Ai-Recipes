@@ -60,8 +60,7 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 
 .AboutScreenBtn svg,
 .GenerateScreenBtn svg,
-.HomeScreenBtn svg,
-.MenuBtn svg {
+.HomeScreenBtn svg{
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.10));
   height: 30px;
   width: 30px;
@@ -93,7 +92,7 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   color: #10a245; /* teal */
 }
 
-.HomeScreenBtn.active { background: rgba(169, 220, 242, 0.624); } /* your current */
+.HomeScreenBtn.active { background: rgba(169, 220, 242, 0.624); } 
 .GenerateScreenBtn.active { background: rgba(224, 122, 18, 0.18); }
 .AboutScreenBtn.active { background: rgba(13, 148, 136, 0.16); }
 
@@ -122,8 +121,7 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 
 .AboutScreenBtn,
 .GenerateScreenBtn,
-.HomeScreenBtn,
-.MenuBtn {
+.HomeScreenBtn {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -134,18 +132,12 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   justify-content: center;
   width: 50px;
   height: 50px;               
-  border-radius: 12px;
-  border: 1px solid rgba(202, 204, 207, 0.65);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
   color: #636262;
   cursor: pointer;
-  user-select: none;
-transition: transform 120ms ease, box-shadow 120ms ease;
+
 }
 
 .MenuBtn button {
-  all: unset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -183,8 +175,7 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 @media (hover: hover) and (pointer: fine) {
   .AboutScreenBtn:hover,
   .GenerateScreenBtn:hover,
-  .HomeScreenBtn:hover,
-  .MenuBtn:hover {
+  .HomeScreenBtn:hover {
     background: rgba(167, 211, 230, 0.382);
     transform: translateY(-1px);
     box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
@@ -195,8 +186,7 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 @media (hover: none) and (pointer: coarse) {
   .AboutScreenBtn:active,
   .GenerateScreenBtn:active,
-  .HomeScreenBtn:active,
-  .MenuBtn:active {
+  .HomeScreenBtn:active {
     background: rgba(167, 211, 230, 0.382);
       transform: translateY(0);
     box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
