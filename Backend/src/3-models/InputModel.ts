@@ -31,7 +31,7 @@ export class InputModel {
             sugarRestriction: Joi.number().valid(SugarRestriction.DEFAULT, SugarRestriction.LOW, SugarRestriction.NONE).optional(),
             lactoseRestrictions: Joi.number().valid(LactoseRestrictions.DEFAULT, LactoseRestrictions.NONE).optional(),
             glutenRestrictions: Joi.number().valid(GlutenRestrictions.DEFAULT, GlutenRestrictions.NONE).optional(),
-            dietaryRestrictions: Joi.number().valid(DietaryRestrictions.DEFAULT,DietaryRestrictions.VEGAN,DietaryRestrictions.KOSHER,DietaryRestrictions.HALAL).optional(),
+            dietaryRestrictions: Joi.number().valid(DietaryRestrictions.DEFAULT,DietaryRestrictions.VEGAN,DietaryRestrictions.KOSHER).optional(),
             caloryRestrictions: Joi.number().valid(CaloryRestrictions.DEFAULT, CaloryRestrictions.LOW).optional(),
             queryRestrictions: Joi.array().items(Joi.string().allow("")).optional()
         }

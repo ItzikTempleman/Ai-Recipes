@@ -29,7 +29,7 @@ export function FilterBadges({ filters, isRTL }: { filters?: Filters; isRTL: boo
     [DietaryRestrictions.DEFAULT]: t("filters.diet.none"),
     [DietaryRestrictions.VEGAN]: t("filters.diet.vegan"),
     [DietaryRestrictions.KOSHER]: t("filters.diet.kosher"),
-    [DietaryRestrictions.HALAL]: t("filters.diet.halal"),
+  
   };
 
   const sugar = Number(filters.sugarLevel);
@@ -53,8 +53,7 @@ export function FilterBadges({ filters, isRTL }: { filters?: Filters; isRTL: boo
 
   if (
     diet === DietaryRestrictions.VEGAN ||
-    diet === DietaryRestrictions.KOSHER ||
-    diet === DietaryRestrictions.HALAL
+    diet === DietaryRestrictions.KOSHER 
   ) {
     filterBadges.push(dietText[diet]);
   }

@@ -218,46 +218,94 @@
 }
 
 .FiltersColumn {
-  margin-top: 12px;
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px
+  gap: 6px
 }
-
-.Servings {
+.Servings{
+  width: 100%;
+  max-width: 520px;
+  display: flex;
   align-items: center;
-  margin: 4px;
-  gap: 4px;
-  border-radius: 8px;
-  display: flex
+  gap: 8px;
+  margin: 0;
+  padding: 0 2px;
 }
 
+.Servings.ltr{
+  flex-direction: row;          /* label -> select */
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.Servings.rtl{
+  flex-direction: row-reverse;  /* select -> label */
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.Servings p{
+  margin: 0;
+}
+
+/* responsive select sizing */
+.QuantitySelector{
+  width: 56px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid rgb(208, 208, 208);
+}
 .GenerateAmountDiv {
   display: flex;
   align-items: center
 }
 
-.QuantitySelector {
-  width: 44px;
-  height: 30px;
-  border-radius: 4px;
-  border: 1px solid rgb(208, 208, 208)
+.ExcludedSection[dir="rtl"] .ExcludeTF input{
+  direction: rtl;
+  text-align: right;
 }
 
-.ExcludedSection {
-  display: flex;
-  flex-direction: column;
-  padding: 4px;
-  align-items: center;
-  gap: 4px
+.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{
+  direction: rtl;
+  text-align: right;
 }
 
-.ExcludeTF .MuiOutlinedInput-root {
-  width: 220px;
-  background-color: #fff
+/* MUI input element padding feels better in RTL */
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input{
+  text-align: right;
+  padding-right: 12px;
+  padding-left: 0;
 }
 
+.ExcludedSection{
+  width: 100%;
+}
+
+.ExcludeTF{
+  width: 100%;
+}
+
+.ExcludeTF .MuiOutlinedInput-root{
+  width: 420px; /* pick your size */
+  max-width: 100%;
+  background-color: #fff;
+}
+
+.ExcludeTF .MuiOutlinedInput-root{
+  width: 100%;
+  max-width: 520px; /* cap so it doesn't get ridiculous */
+  background-color: #fff;
+}
+
+/* Label to the right (same trick you used elsewhere) */
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root{
+  right: 22px;
+  left: auto !important;
+  transform-origin: top right !important;
+  text-align: right;
+}
 .FiltersDropdown__panelInner {
   padding-top: 12px;
   display: flex;
@@ -484,10 +532,32 @@
   border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
+.FilterBtn{
+  gap: 12px;
+    margin-top: 40px !important;
+}
+
+.PrettyDivider{
+  width: 100%;
+  max-width: 520px;        
+  height: 2px;
+  margin: 10px auto 2px;    
+  background: linear-gradient(
+    90deg,
+    rgb(255, 136, 0),
+    rgb(0, 204, 255)
+  );
+  border-radius: 999px;
+
+}
+
 @media (max-width:600px) {
   .GenerateContainer {
     border: none;
     box-shadow: none
+  }
+    .ExcludeTF .MuiOutlinedInput-root{
+    max-width: 100%;
   }
   /* Keep the image switch compact but readable */
   .imageSwitch .MuiToggleButton-root {

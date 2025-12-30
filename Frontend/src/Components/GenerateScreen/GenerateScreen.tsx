@@ -136,7 +136,7 @@ export function GenerateScreen() {
                 <h4>{t("generate.guest")}</h4></div>
             )
           }
-         <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>
+          <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>
             <RestaurantMenuIcon className="TitleIcon" />
             <span>{t("generate.title")}</span>
           </h2>
@@ -186,32 +186,32 @@ export function GenerateScreen() {
               </h2>
             )
           }
-<div className={`ImageSwitchSection ${isRTL ? "rtl" : "ltr"}`}>
-  <div className="ImageSwitchRow">
-    {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
-    <p>{t("filters.image.image")}</p>
+          <div className={`ImageSwitchSection ${isRTL ? "rtl" : "ltr"}`}>
+            <div className="ImageSwitchRow">
+              {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
+              <p>{t("filters.image.image")}</p>
 
-    {isRTL && !hasImage && (
-      <span className="AddImageLaterNotice inline">
-        {t("generate.youCanGenerateImageLater")}
-      </span>
-    )}
+              {isRTL && !hasImage && (
+                <span className="AddImageLaterNotice inline">
+                  {t("generate.youCanGenerateImageLater")}
+                </span>
+              )}
 
-    <ImageSwitch
-      key={`img-${filtersResetKey}`}
-      onChange={setHasImage}
-      defaultHasImage={false}
-    />
+              <ImageSwitch
+                key={`img-${filtersResetKey}`}
+                onChange={setHasImage}
+                defaultHasImage={false}
+              />
 
-    {!isRTL && !hasImage && (
-      <span className="AddImageLaterNotice inline">
-        {t("generate.youCanGenerateImageLater")}
-      </span>
-    )}
-  </div>
-</div>
+              {!isRTL && !hasImage && (
+                <span className="AddImageLaterNotice inline">
+                  {t("generate.youCanGenerateImageLater")}
+                </span>
+              )}
+            </div>
+          </div>
           <div className="FiltersColumn">
-            <div className="Servings">
+        <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
               <p>{t("generate.quantitySelector")}</p>
               <select className="QuantitySelector"
                 value={initialQuantity}
@@ -223,29 +223,34 @@ export function GenerateScreen() {
                 }
               </select>
             </div>
-            <div className="ExcludedSection">
+
+
+            <div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
               <div>
-                <TextField className="ExcludeTF"
+                <TextField
+                  className="ExcludeTF"
                   label={t("generate.excludeIngredient")}
                   size="small"
                   {...register("excludedIngredients.0")}
                 />
               </div>
             </div>
- 
+<div className="PrettyDivider" aria-hidden="true" />
+
             <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
               <Button
-                className="FiltersDropdown__header"
+                className="FilterBtn"
+
                 onClick={() => setFiltersOpen((v) => !v)}
                 fullWidth
-                variant="outlined"
+                variant="contained"
                 endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               >
                 {t("generate.filters")}
               </Button>
-              
+
               <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
-                
+
                 <div className="FiltersDropdown__panelInner">
                   <div>
                     <SugarFilter
@@ -274,8 +279,8 @@ export function GenerateScreen() {
                 </div>
               </div>
             </div>
-            </div>
-  
+          </div>
+
         </form>
       </div>
       {

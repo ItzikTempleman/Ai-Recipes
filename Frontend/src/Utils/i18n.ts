@@ -77,8 +77,7 @@ const resources = {
         diet: {
           none: "None",
           vegan: "Vegan",
-          kosher: "Kosher",
-          halal: "Halal",
+          kosher: "Kosher"
         },
       },
       auth: {
@@ -248,8 +247,7 @@ const resources = {
         diet: {
           none: "רגיל",
           vegan: "טבעוני",
-          kosher: "כשר",
-          halal: "חלאל",
+          kosher: "כשר"
         },
       },
 

@@ -11,7 +11,7 @@
 };
 
  export enum DietaryRestrictions {
-    DEFAULT, VEGAN, KOSHER, HALAL
+    DEFAULT, VEGAN, KOSHER
 }
 
  export enum CaloryRestrictions {

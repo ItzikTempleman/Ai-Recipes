@@ -67,11 +67,11 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 .HomeScreenBtn svg {
-  color: #1279ce;
+  color: #0c4d97;
 }
 
 .HomeScreenBtn p {
-  color: #1279ce;
+  color: #0c4d97;
 }
 
 /* Match the new icon colors */

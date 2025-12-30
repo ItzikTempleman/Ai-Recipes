@@ -88,11 +88,6 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
     }
   }
 
-  if (recipe.dietaryRestrictions === DietaryRestrictions.HALAL) {
-    promptParts.push(
-      "The dish must be halal: no pork or pork derivatives and no alcohol. Ensure the visuals do not resemble pork-based substitutes."
-    );
-  }
 
   const isLactoseFree = Number(recipe.lactoseRestrictions) === 1;
   if (isLactoseFree) {
