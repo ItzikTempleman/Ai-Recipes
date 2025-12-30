@@ -75,7 +75,7 @@ const resources = {
           none: "Gluten free",
         },
         diet: {
-          none: "No diet restriction",
+          none: "None",
           vegan: "Vegan",
           kosher: "Kosher",
           halal: "Halal",

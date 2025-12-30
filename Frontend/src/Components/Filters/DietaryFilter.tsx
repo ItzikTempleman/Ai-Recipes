@@ -7,7 +7,7 @@ type DietTypeProp = {
     onDietSelect: (dietType: DietaryRestrictions) => void
 }
 
-type DietMode = "Regular" | "Vegan" | "Kosher" | "Halal"
+type DietMode = "Regular" | "Vegan" | "Kosher" 
 
 
 export function DietaryFilter(
@@ -19,7 +19,7 @@ export function DietaryFilter(
         switch (mode) {
             case "Vegan": return DietaryRestrictions.VEGAN;
             case "Kosher": return DietaryRestrictions.KOSHER;
-            case "Halal": return DietaryRestrictions.HALAL;
+        
             default: return DietaryRestrictions.DEFAULT;
         }
     }
@@ -37,7 +37,7 @@ export function DietaryFilter(
                 <ToggleButton value="Regular">{t("filters.diet.none")}</ToggleButton>
                 <ToggleButton value="Vegan">{t("filters.diet.vegan")}</ToggleButton>
                 <ToggleButton value="Kosher" >{t("filters.diet.kosher")}</ToggleButton>
-                 <ToggleButton value="Halal">{t("filters.diet.halal")}</ToggleButton>
+            
             </ToggleButtonGroup>
         </div>
     );

@@ -161,14 +161,43 @@
   margin-left: 0 !important;
   margin-right: 0 !important
 }
-
-.AddImageLaterNotice {
-  margin: 0;
-  font-size: .9rem;
-  color: #6b6a69;
-  width: fit-content
+.ImageSwitchRow{
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.ImageSwitchSection.rtl .AddImageLaterNotice.inline{
+  order: 99;            /* make it come after the toggle in the flex row */
+  margin-right: 0;
+  margin-left: 10px;    /* spacing from the toggle */
+}
+
+.AddImageLaterNotice.inline{
+  font-size: 0.82rem;
+  color: #6b6a69;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* spacing: in LTR it sits to the right of the toggle */
+.ImageSwitchSection.ltr .AddImageLaterNotice.inline{
+  margin-left: 10px;
+}
+
+/* spacing: in RTL it sits to the left of the toggle */
+.ImageSwitchSection.rtl .AddImageLaterNotice.inline{
+  margin-right: 10px;
+}
+/* keep column aligned nicely in RTL */
+.ImageSwitchSection.rtl .ImageSwitchLabelCol{
+  align-items: flex-end;
+  text-align: right;
+}
+.ImageSwitchSection.ltr .ImageSwitchLabelCol{
+  align-items: flex-start;
+  text-align: left;
+}
 .HasImage {
   display: flex;
   flex-direction: column;
@@ -376,7 +405,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .ImageSwitchIconsRow{
@@ -388,13 +416,7 @@
   color: #4a4a4a;
 }
 
-.ImageSwitchSection.rtl .MuiToggleButtonGroup-grouped{
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
 .imageSwitch .MuiToggleButton-root{
-
   width: 100px !important;
 }
 
@@ -408,24 +430,92 @@
 .FiltersColumn .MuiToggleButton-root.Mui-selected{
   border-radius: 4px;
 }
+/* ImageSwitch ToggleButtonGroup borders in RTL (missing outer edge) */
+.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-root {
+  direction: rtl;
+}
 
+.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped {
+  margin: 0 !important;
+}
+
+/* inner seam in RTL should remove RIGHT border, keep LEFT */
+.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  border-right: 0 !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ensure the outer edge exists */
+.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:first-of-type {
+  border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+/* optional: eliminate 1px “gap” if you still see one */
+.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  margin-right: -1px !important;
+}
 
 .FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div{
   justify-content: flex-start;
   text-align: right;
 }
 
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root {
+  direction: rtl;
+}
 
+/* MUI removes border-left on grouped buttons; in RTL we want the opposite logic */
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped {
+  margin: 0 !important;
+}
+
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  margin-right: -1px !important;
+}
+
+/* For every button AFTER the first, remove RIGHT border (inner seam), keep LEFT border */
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  border-right: 0 !important; /* inner seam */
+  border-left: 1px solid rgba(0, 0, 0, 0.12) !important; /* keep edge visible */
+}
+
+/* Make sure the very first button (the rightmost visually in RTL) has its outer border */
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type {
+  border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
 
 @media (max-width:600px) {
   .GenerateContainer {
     border: none;
     box-shadow: none
   }
+  /* Keep the image switch compact but readable */
+  .imageSwitch .MuiToggleButton-root {
+    width: 72px !important;
+    min-width: 72px !important;
+    padding: 4px 6px !important;
+    font-size: 0.75rem !important;
+  }
 
-.FiltersColumn .MuiToggleButton-root{
-  width: auto !important;
-  width: 80px;
-}
+  /* Make ALL filter toggles (inside the dropdown) narrower */
+  .FiltersColumn .MuiToggleButton-root,
+  .FiltersDropdown__panelInner .MuiToggleButton-root {
+    width: auto !important;          /* don't force fixed width */
+    min-width: 72px !important;      /* narrower than your current 100px */
+    padding: 4px 6px !important;     /* tighter */
+    font-size: 0.75rem !important;   /* smaller text */
+  }
+
+  /* Allow the group to pack tighter */
+  .FiltersDropdown__panelInner .MuiToggleButtonGroup-root {
+    column-gap: 6px;
+    row-gap: 6px;
+  }
+
+  /* Optional: make the dropdown panel feel less “wide” on mobile */
+  .FiltersDropdown__panel {
+    margin: 8px;
+    padding: 10px;
+  }
 
 }

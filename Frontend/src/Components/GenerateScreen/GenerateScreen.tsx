@@ -186,23 +186,30 @@ export function GenerateScreen() {
               </h2>
             )
           }
-                     <div className={`ImageSwitchSection ${isRTL ? "rtl" : "ltr"}`}>
-            <div className="ImageSwitchRow">
-            
-             {
-              hasImage?<ImageIcon/>:<HideImageOutlinedIcon/>
-             }
-              <p>{t("filters.image.image")}</p>
-              <ImageSwitch
-                key={`img-${filtersResetKey}`}
-                onChange={setHasImage}
-                defaultHasImage={false}
-                
-              />
-              
-            </div>
-             {!hasImage&&(<p className="AddImageLaterNotice">{t("generate.youCanGenerateImageLater")}</p>) }
-           </div>
+<div className={`ImageSwitchSection ${isRTL ? "rtl" : "ltr"}`}>
+  <div className="ImageSwitchRow">
+    {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
+    <p>{t("filters.image.image")}</p>
+
+    {isRTL && !hasImage && (
+      <span className="AddImageLaterNotice inline">
+        {t("generate.youCanGenerateImageLater")}
+      </span>
+    )}
+
+    <ImageSwitch
+      key={`img-${filtersResetKey}`}
+      onChange={setHasImage}
+      defaultHasImage={false}
+    />
+
+    {!isRTL && !hasImage && (
+      <span className="AddImageLaterNotice inline">
+        {t("generate.youCanGenerateImageLater")}
+      </span>
+    )}
+  </div>
+</div>
           <div className="FiltersColumn">
             <div className="Servings">
               <p>{t("generate.quantitySelector")}</p>
