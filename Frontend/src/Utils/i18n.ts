@@ -6,8 +6,9 @@ const resources = {
   en: {
     translation: {
       nav: {
+        likes:"Likes",
         home: "Home",
-        generate: "New",
+        generate: "Create",
         about: "About",
         selectLanguage: "Language"
       },
@@ -171,8 +172,9 @@ const resources = {
   he: {
     translation: {
       nav: {
+        likes:"אהבתי",
         home: "בית",
-        generate:"חדש",
+        generate:"מתכון",
         about: "אודות",
         selectLanguage: "שפה",
       },

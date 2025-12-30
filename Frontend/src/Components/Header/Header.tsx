@@ -7,13 +7,16 @@ import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useLanguage } from "../../Utils/SetLanguage";
-import AddIcon from '@mui/icons-material/Add';
+
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useSelector } from "react-redux";
+import { AppState } from "../../Redux/Store";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t } = useTranslation();
   const { initialLanguage, setLang, isRtl } = useLanguage();
-
+  const user = useSelector((state: AppState) => state.user);
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
@@ -21,10 +24,13 @@ export function Header() {
             <HomeIcon />
             <p>{t("nav.home")}</p>
         </NavLink>
-        <NavLink to="/generate" className="GenerateScreenBtn">
-            <AddIcon />
-            <p>{t("nav.generate")}</p>
-        </NavLink>
+       
+     {user && (
+  <NavLink to="/likes" className="LikesScreenBtn">
+    <FavoriteIcon />
+    <p>{t("nav.likes")}</p>
+  </NavLink>
+)}
         <NavLink to="/about" className="AboutScreenBtn">
             <InfoOutlinedIcon />
             <p>{t("nav.about")}</p>

@@ -30,27 +30,40 @@ export function HomeScreen() {
 
   return (
     <div className="HomeScreen">
-      <div className={`SiteTitleDiv ${isRTL ? "rtl" : "ltr"}`}>
+
+      {/* <div className={`SiteTitleDiv ${isRTL ? "rtl" : "ltr"}`}>
         <div className="SiteTitle">{t("homeScreen.siteTitle")}</div>
-      </div>
+      </div> */}
 
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-        {user ? (
-          list.length === 0 ? (
-            <div className="HomeScreenTitleContainer user">
-              <div className="UserHello">
-                {t("homeScreen.hello")} {user.firstName} {user.familyName}
-              </div>
-              <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
-            </div>
-          ) : (
-            <div className="HomeScreenTitleContainer user">
-              <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
-            </div>
-          )
-        ) : (
+        {user ? 
+        
+        (
+
+  <>
+    <div
+      className="GuestInstructions"
+      onClick={() => navigate("/generate")}
+    >
+      <AddIcon />
+      <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
+    </div>
+
+    {list.length === 0 ? (
+      <div className="HomeScreenTitleContainer ">
+        <div className="UserHello">
+          {t("homeScreen.hello")} {user.firstName} {user.familyName}
+        </div>
+        <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
+      </div>
+    ) : (
+      <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
+    )}
+  </>
+        )
+         : (
           <div>
-            <div className="HomeScreenTitleContainer guest">
+           
               <div className="GuestNotice">
                 <div className="GuestHello">
                   {t("homeScreen.hello")} {t("homeScreen.guest")}
@@ -64,13 +77,9 @@ export function HomeScreen() {
                   <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
                 </div>
 
-                <div className="GuestNoticeLine1">
-                  {t("homeScreen.guestNoticeLine1")}
-                </div>
+        
 
-                <h3 className="GuestNoticeLine2">
-                  {t("homeScreen.guestNoticeLine2")}
-                </h3>
+
 
                 <div
                   className="GuestLoginContainer"
@@ -80,12 +89,14 @@ export function HomeScreen() {
                   <h4 className="GuestLoginTitle">{t("drawer.login")}</h4>
                 </div>
               </div>
-
+                <h3 className="GuestNoticeLine2">
+                  {t("homeScreen.guestNoticeLine2")}
+                </h3>
               <div className="ShareIntro">
                 <PictureAsPdfIcon className="ShareIntroIcon" />
                 <h1 className="ShareIntroTitle">{t("homeScreen.shareIntro")}</h1>
               </div>
-            </div>
+            
           </div>
         )}
       </div>
