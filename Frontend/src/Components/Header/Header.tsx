@@ -27,6 +27,13 @@ export function Header() {
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
+        {showUndo && (
+          <NavLink to="/generate" className="ReturnScreenBtn">
+            <UndoIcon className= {`ReturnSvg ${isRtl ? "rtl" : ""}`}/>         
+            <p>{t("nav.return")}</p>
+          </NavLink>
+        )}
+
         <NavLink to="/home" className="HomeScreenBtn">
           <HomeIcon />
           <p>{t("nav.home")}</p>
@@ -35,12 +42,6 @@ export function Header() {
           <NavLink to="/likes" className="LikesScreenBtn">
             <FavoriteIcon />
             <p>{t("nav.likes")}</p>
-          </NavLink>
-        )}
-        {showUndo && (
-          <NavLink to="/generate" className="ReturnScreenBtn">
-            <UndoIcon />
-            <p>{t("nav.return")}</p>
           </NavLink>
         )}
         <NavLink to="/about" className="AboutScreenBtn">
