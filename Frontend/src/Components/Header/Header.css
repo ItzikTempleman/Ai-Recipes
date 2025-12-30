@@ -24,11 +24,6 @@
   flex-direction: row-reverse;
 }
 
-.ReturnScreenBtn{
- width: 120px !important;
-}
-
-
 .ReturnScreenBtn,
 .AboutScreenBtn,
 .LikesScreenBtn,
@@ -88,22 +83,21 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 .HomeScreenBtn p {
   color: #3c82d2;
 }
-/* Match the new icon colors */
+
 .LikesScreenBtn p {
-  color: #fb1d5c; /* warm orange */
+  color: #fb1d5c; 
 }
 
 .AboutScreenBtn p {
-  color: #10a245; /* teal */
+  color: #10a245; 
 }
 
-/* New accent colors */
 .LikesScreenBtn svg {
-  color: #fb1d5c; /* warm orange */
+  color: #fb1d5c; 
 }
 
 .AboutScreenBtn svg {
-  color: #10a245; /* teal */
+  color: #10a245; 
 }
 
  .HomeScreenBtn.active, .HomeScreenBtn:hover{ background: rgba(171, 216, 235, 0.79); } 
@@ -149,7 +143,6 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   height: 50px;               
   color: #636262;
   cursor: pointer;
-
 }
 
 .MenuBtn button {
