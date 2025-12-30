@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import "./ImageSwitch.css";
+
 
 
 type Props = {

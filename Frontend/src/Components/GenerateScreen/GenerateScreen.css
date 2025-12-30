@@ -157,7 +157,6 @@
   direction: rtl
 }
 
-/* FIX 1: stop MUI “merge borders” negative margin from pushing into the LEFT (clipped by overflow-x hidden) */
 .ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-groupedHorizontal {
   margin-left: 0 !important;
   margin-right: 0 !important
@@ -290,9 +289,9 @@
   white-space: nowrap
 }
 
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped{
-  margin-left:0!important;
-  margin-right:0!important;
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped {
+  margin-left: 0 !important;
+  margin-right: 0 !important
 }
 
 .FiltersDropdown__panelInner>div {
@@ -309,10 +308,6 @@
   margin-right: 0 !important
 }
 
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root {
-  justify-content: flex-end
-}
-
 .FiltersDropdown[dir="ltr"] .MuiToggleButtonGroup-root {
   justify-content: flex-start
 }
@@ -322,17 +317,10 @@
   gap: 12px
 }
 
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root{
-  flex-direction:row-reverse;
-}
-
 .FiltersSelector {
   padding: 6px 10px
 }
 
-.GenerateBtn {
-
-}
 
 .GenerateBtn:hover {
   cursor: pointer
@@ -366,7 +354,7 @@
   border-radius: 8px;
   display: flex;
   align-items: center;
-  background-color: #e9ca8c;
+  background-color: #E07A12;
   justify-content: center
 }
 
@@ -376,7 +364,7 @@
 
 .GuestBadge h4 {
   margin: 0;
-  color: rgb(74, 74, 74)
+  color: rgb(255, 255, 255)
 }
 
 .NewScreenTitle {
@@ -384,28 +372,60 @@
   text-align: center
 }
 
-/* RTL: align the whole filters area to the right (mirror of LTR left) */
-.FiltersDropdown[dir="rtl"]{text-align:right}
+.ImageSwitchDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-/* stop centering filters column when RTL */
-.FiltersDropdown[dir="rtl"] .FiltersColumn{align-items:flex-end}
+}
 
-/* make rows align to the right */
-.FiltersDropdown[dir="rtl"] .Servings,
-.FiltersDropdown[dir="rtl"] .ExcludedSection{align-items:flex-end}
+.ImageSwitchIconsRow{
+  display: flex;
+  justify-content: center;
+}
 
-/* push each filter row wrapper to the right */
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner>div{justify-content:flex-end}
+.imageSwitchIcon,.imageSwitchIcon-NoImage {
+  color: #4a4a4a;
+}
 
-/* make the toggle group itself hug the right edge */
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{justify-content:flex-end;width:100%}
+.ImageSwitchSection.rtl .MuiToggleButtonGroup-grouped{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
 
-/* optional: if you want the group content to start from the right AND keep your row-reverse */
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{flex-direction:row-reverse}
+.imageSwitch .MuiToggleButton-root{
+
+  width: 100px !important;
+}
+
+.FiltersColumn .MuiToggleButton-root{
+  width: auto !important;
+  min-width: 100px;
+}
+
+
+.imageSwitch .MuiToggleButton-root.Mui-selected,
+.FiltersColumn .MuiToggleButton-root.Mui-selected{
+  border-radius: 4px;
+}
+
+
+.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div{
+  justify-content: flex-start;
+  text-align: right;
+}
+
+
 
 @media (max-width:600px) {
   .GenerateContainer {
     border: none;
     box-shadow: none
   }
+
+.FiltersColumn .MuiToggleButton-root{
+  width: auto !important;
+  min-width: 80px;
+}
+
 }

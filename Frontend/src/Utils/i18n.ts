@@ -21,7 +21,7 @@ const resources = {
       },
       homeScreen: {
         shareIntro: "Share your recipes",
-        generate: "New",
+        generate: "Generate a recipe",
         siteTitle: "Ai recipe generator",
         hello: "Hello",
         guest: "guest",
@@ -246,7 +246,7 @@ const resources = {
           none: "ללא גלוטן",
         },
         diet: {
-          none: "ללא הגבלה",
+          none: "רגיל",
           vegan: "טבעוני",
           kosher: "כשר",
           halal: "חלאל",
