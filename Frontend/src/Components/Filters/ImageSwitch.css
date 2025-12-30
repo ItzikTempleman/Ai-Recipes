@@ -1,33 +1,27 @@
 .ImageSwitchDiv{
   display: flex;
-  flex-direction: column;   /* stack: toggle on top, icons below */
+  flex-direction: column;   
   align-items: center;
-  gap: 6px;
-
 }
 
 .ImageSwitchIconsRow{
   display: flex;
-  justify-content: center; /* also fix your typo: "ce" -> "center" */
-  gap: 48px;               /* increase this */
+  justify-content: center; 
 }
-
 
 .imageSwitchIcon,.imageSwitchIcon-NoImage {
   color: #4a4a4a;
 }
 
 .imageSwitch .MuiToggleButton-root, .imageSwitch .MuiToggleButton-root:hover,
-.FiltersColumn .MuiToggleButton-root, .FiltersColumn .MuiToggleButton-root:hover
-{
+.FiltersColumn .MuiToggleButton-root, .FiltersColumn .MuiToggleButton-root:hove{
   border: transparent;
-  height: 40px !important;
+  height: 20px !important;
 }
 
 .imageSwitch .MuiToggleButton-root.Mui-selected,
-.FiltersColumn .MuiToggleButton-root.Mui-selected
-{
+.FiltersColumn .MuiToggleButton-root.Mui-selected{
 border: 1px solid rgba(128, 128, 128, 0.551);
-background: rgba(189, 234, 249, 0.422);
+background: rgba(0, 195, 255, 0.313);
 border-radius: 4px;
 }

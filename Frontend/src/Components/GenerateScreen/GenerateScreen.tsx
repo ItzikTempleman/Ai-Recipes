@@ -20,6 +20,8 @@ import { resetGenerated } from "../../Redux/RecipeSlice";
 import { AppState } from "../../Redux/Store";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
+import ImageIcon from '@mui/icons-material/Image';
 
 type RecipeStateType = {
   recipes: RecipeState
@@ -184,6 +186,22 @@ export function GenerateScreen() {
               </h2>
             )
           }
+                     <div className={`ImageSwitchSection ${isRTL ? "rtl" : "ltr"}`}>
+            <div className="ImageSwitchRow">
+            
+             {
+              hasImage?<ImageIcon/>:<HideImageOutlinedIcon/>
+             }
+              <p>{t("filters.image.image")}</p>
+              <ImageSwitch
+                key={`img-${filtersResetKey}`}
+                onChange={setHasImage}
+                defaultHasImage={false}
+              />
+              
+            </div>
+             {!hasImage&&(<p className="AddImageLaterNotice">{t("generate.youCanGenerateImageLater")}</p>) }
+           </div>
           <div className="FiltersColumn">
             <div className="Servings">
               <p>{t("generate.quantitySelector")}</p>
@@ -206,14 +224,7 @@ export function GenerateScreen() {
                 />
               </div>
             </div>
-            <div className="ImageSwitchRow">
-              <h3 className="AddImageLaterNotice">{t("generate.youCanGenerateImageLater")}</h3>
-              <ImageSwitch
-                key={`img-${filtersResetKey}`}
-                onChange={setHasImage}
-                defaultHasImage={false}
-              />
-            </div>
+ 
             <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
               <Button
                 className="FiltersDropdown__header"

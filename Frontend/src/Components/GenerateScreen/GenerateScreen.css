@@ -127,6 +127,48 @@
   position: relative;
 }
 
+.ImageSwitchSection{
+  margin:12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* EN (LTR) -> LEFT */
+.ImageSwitchSection.ltr{
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* HE (RTL) -> RIGHT */
+.ImageSwitchSection.rtl{
+  align-items: flex-end;
+  text-align: right;
+}
+
+.ImageSwitchRow{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+}
+
+.ImageSwitchRow p{
+  margin: 0;
+}
+
+/* flip row content in RTL */
+.ImageSwitchSection.rtl .ImageSwitchRow{
+  flex-direction: row-reverse;
+}
+
+.AddImageLaterNotice{
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b6a69;
+  width: fit-content;
+}
 
 
 .TitleIcon {

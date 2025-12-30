@@ -57,8 +57,9 @@ const resources = {
       },
       filters: {
         image: {
-          withImage: "With image",
-          noImage: "No image",
+          image:"Image",
+          withImage: "ON",
+          noImage: "OFF",
         },
         sugar: {
           regular: "Regular sugar",
@@ -227,8 +228,9 @@ const resources = {
 
       filters: {
         image: {
-          withImage: "עם תמונה",
-          noImage: "בלי תמונה",
+           image:"תמונה",
+          withImage: "אם",
+          noImage: "ללא",
         },
         sugar: {
           regular: "סוכר רגיל",
