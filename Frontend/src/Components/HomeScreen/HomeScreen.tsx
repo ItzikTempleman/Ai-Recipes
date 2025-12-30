@@ -22,90 +22,68 @@ export function HomeScreen() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    recipeService.getAllRecipes().catch(() => {});
-    recipeService.loadMyLikes().catch(() => {});
+    recipeService.getAllRecipes().catch(() => { });
+    recipeService.loadMyLikes().catch(() => { });
   }, [user?.id]);
 
   const list = Array.isArray(items) ? items : [];
 
   return (
     <div className="HomeScreen">
-
-      {/* <div className={`SiteTitleDiv ${isRTL ? "rtl" : "ltr"}`}>
-        <div className="SiteTitle">{t("homeScreen.siteTitle")}</div>
-      </div> */}
-
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-        {user ? 
-        
-        (
-
-  <>
-    <div
-      className="GuestInstructions"
-      onClick={() => navigate("/generate")}
-    >
-      <AddIcon />
-      <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
-    </div>
-
-    {list.length === 0 ? (
-      <div className="HomeScreenTitleContainer ">
-        <div className="UserHello">
-          {t("homeScreen.hello")} {user.firstName} {user.familyName}
-        </div>
-        <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
-      </div>
-    ) : (
-      <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
-    )}
-  </>
-        )
-         : (
-          <div>
-           
-              <div className="GuestNotice">
-                <div className="GuestHello">
-                  {t("homeScreen.hello")} {t("homeScreen.guest")}
+        {user ? (
+          <>
+            <div
+              className="GuestInstructions"
+              onClick={() => navigate("/generate")}>
+              <AddIcon />
+              <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
+            </div>
+            {list.length === 0 ? (
+              <div className="HomeScreenTitleContainer ">
+                <div className="UserHello">
+                  {t("homeScreen.hello")} {user.firstName} {user.familyName}
                 </div>
-
-                <div
-                  className="GuestInstructions"
-                  onClick={() => navigate("/generate")}
-                >
-                  <AddIcon />
-                  <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
-                </div>
-
-        
-
-
-
-                <div
-                  className="GuestLoginContainer"
-                  onClick={() => navigate("/login")}
-                >
-                  <LoginIcon />
-                  <h4 className="GuestLoginTitle">{t("drawer.login")}</h4>
-                </div>
+                <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
               </div>
-                <h3 className="GuestNoticeLine2">
-                  {t("homeScreen.guestNoticeLine2")}
-                </h3>
-              <div className="ShareIntro">
-                <PictureAsPdfIcon className="ShareIntroIcon" />
-                <h1 className="ShareIntroTitle">{t("homeScreen.shareIntro")}</h1>
+            ) : (
+              <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
+            )}
+          </>) : (
+          <>
+            <div className="GuestNotice">
+              <div className="GuestHello">
+                {t("homeScreen.hello")} {t("homeScreen.guest")}
               </div>
-            
-          </div>
+              <div
+                className="GuestInstructions"
+                onClick={() => navigate("/generate")} >
+                <AddIcon />
+                <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
+              </div>
+              <div
+                className="GuestLoginContainer"
+                onClick={() => navigate("/login")}
+              >
+                <LoginIcon />
+                <h4 className="GuestLoginTitle">{t("drawer.login")}</h4>
+              </div>
+            </div>
+            <h3 className="GuestNoticeLine2">
+              {t("homeScreen.guestNoticeLine2")}
+            </h3>
+            <div className="ShareIntro">
+              <PictureAsPdfIcon className="ShareIntroIcon" />
+              <h1 className="ShareIntroTitle">{t("homeScreen.shareIntro")}</h1>
+            </div>
+          </>
         )}
       </div>
-
       <div className="RecipeList">
         {user && list.length > 0
           ? list.map((recipe) => (
-              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
-            ))
+            <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
+          ))
           : null}
       </div>
     </div>

@@ -8,28 +8,6 @@
   flex-direction: column;
 }
 
-/* .SiteTitleDiv {
-  width: 100%;
-  max-width: 1080px;
-  margin: 0 auto;
-  padding-bottom: 14px;
-}
-
-.SiteTitleDiv.ltr {
-  text-align: left;
-}
-
-.SiteTitleDiv.rtl {
-  text-align: right;
-}
-
-.SiteTitle {
-  padding: 6px 0;
-  font-size: 36px;
-  font-weight: 800;
-  color: rgb(100, 100, 100);
-} */
-
 .HomeScreenTitleWrapper {
   width: 100%;
   max-width: 1080px;
@@ -50,28 +28,22 @@
   width: 100%;
 }
 
-
 .HomeScreenTitleWrapper.rtl  {
   align-items: flex-end;
 }
-
-
 
 .HomeScreenTitleWrapper.rtl {
   margin-left: 0;
   margin-right: 0;
 }
 
-
-
 .HomeScreenTitleWrapper.ltr .ShareIntro {
-  right: 14px;              /* top-right */
+  right: 14px;            
 }
 
 .HomeScreenTitleWrapper.rtl .ShareIntro {
-  left: 14px;               /* top-left */
+  left: 14px;              
 }
-
 
 .ShareIntro {
   position: static !important;
@@ -91,7 +63,7 @@
   .ShareIntroTitle {
     text-align: center;
     font-size: 14px;
-color: rgb(86, 86, 86);
+    color: rgb(86, 86, 86);
   }
 
   .ShareIntroIcon.MuiSvgIcon-root,
@@ -168,7 +140,6 @@ background: #f0d4bacf;
 .GuestLoginContainer:active,.GuestLoginContainer:hover {
 background: rgba(198, 220, 241, 0.869);;
 }
-
 
 .GuestGenerate {
   margin: 0;
@@ -257,7 +228,6 @@ background: rgba(198, 220, 241, 0.869);;
     0 2px 0 rgba(255, 255, 255, 0.18) inset;
 }
 
-
 .GuestNoticeLine2 {
   margin:12px;
   font-weight: 700;
@@ -311,10 +281,8 @@ background: rgba(198, 220, 241, 0.869);;
     padding: 10px 14px;
     border-radius: 12px;
     font-size: 16px;
-
     display: inline-flex; 
     justify-content: center;
-
     margin: 12px auto 0;
     align-self: center; 
     box-sizing: border-box;

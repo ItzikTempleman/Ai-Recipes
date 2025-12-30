@@ -24,6 +24,12 @@
   flex-direction: row-reverse;
 }
 
+.ReturnScreenBtn{
+ width: 120px !important;
+}
+
+
+.ReturnScreenBtn,
 .AboutScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
@@ -50,13 +56,21 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   margin-right: 0;
 }
 
-
+.ReturnScreenBtn svg,
 .AboutScreenBtn svg,
 .LikesScreenBtn svg,
 .HomeScreenBtn svg{
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.10));
   height: 24px;
   width: 24px;
+}
+
+.ReturnScreenBtn svg {
+  color: #f48720;
+}
+
+.ReturnScreenBtn p {
+  color: #f48720;
 }
 
 .HomeScreenBtn svg {
@@ -67,6 +81,13 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   color: #3c82d2;
 }
 
+.HomeScreenBtn svg {
+  color: #3c82d2;
+}
+
+.HomeScreenBtn p {
+  color: #3c82d2;
+}
 /* Match the new icon colors */
 .LikesScreenBtn p {
   color: #fb1d5c; /* warm orange */
@@ -88,6 +109,7 @@ transition: transform 120ms ease, box-shadow 120ms ease;
  .HomeScreenBtn.active, .HomeScreenBtn:hover{ background: rgba(171, 216, 235, 0.79); } 
 .LikesScreenBtn.active ,.LikesScreenBtn:hover { background: #f0b0c27c; }
 .AboutScreenBtn.active , .AboutScreenBtn:hover{ background: rgba(199, 243, 210, 0.675); }
+.ReturnScreenBtn.active ,.ReturnScreenBtn:hover { background: #faccb2b5; }
 
 .HeaderRight {
   display: flex;

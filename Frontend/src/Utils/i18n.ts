@@ -6,6 +6,7 @@ const resources = {
   en: {
     translation: {
       nav: {
+        return:"Return Recipe",
         likes:"Likes",
         home: "Home",
         generate: "Create",
@@ -172,6 +173,7 @@ const resources = {
   he: {
     translation: {
       nav: {
+        return:"חזור למתכון",
         likes:"אהבתי",
         home: "בית",
         generate:"מתכון",
