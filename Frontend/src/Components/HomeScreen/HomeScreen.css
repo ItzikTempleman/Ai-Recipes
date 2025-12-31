@@ -37,45 +37,9 @@
   margin-right: 0;
 }
 
-.HomeScreenTitleWrapper.ltr .ShareIntro {
-  right: 14px;            
-}
-
-.HomeScreenTitleWrapper.rtl .ShareIntro {
-  left: 14px;              
-}
-
-.ShareIntro {
-  position: static !important;
-  top: auto !important;
-  right: auto !important;
-  left: auto !important;
-  transform: none !important;
-  margin-top: 80px;
-  width: 100%;
-  display: inline-flex;        
-  flex-direction: row;          
-  align-items: center;
-  justify-content: center;
-  gap: 8px;                   
-  text-align: center;
-}
-  .ShareIntroTitle {
-    text-align: center;
-    font-size: 14px;
-    color: rgb(86, 86, 86);
-  }
-
-  .ShareIntroIcon.MuiSvgIcon-root,
-  .ShareIntro .ShareIntroIcon {
-    font-size: 36px !important;
-    width: 36px !important;
-    height: 36px !important;
-    color: rgb(86, 86, 86);
-  }
 
 .UserHello,
-.GuestHello {
+.GuestTitle {
   font-size: 26px;
   font-weight: 700;
   color: rgb(100, 100, 100);
@@ -116,7 +80,7 @@
   text-align: right;
 }
 
-.GuestInstructions {
+.GenerateBtn {
   margin-top: 12px;
   display: inline-flex;
   align-items: center;
@@ -228,12 +192,6 @@ background: rgba(198, 220, 241, 0.869);;
     0 2px 0 rgba(255, 255, 255, 0.18) inset;
 }
 
-.GuestNoticeLine2 {
-  margin:12px;
-  font-weight: 700;
-  font-size: 16px;
-  color: rgba(39, 126, 207, 0.95);
-}
 
 .RecipeList {
   width: 100%;

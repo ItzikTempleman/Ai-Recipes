@@ -8,7 +8,7 @@ import type { AppState } from "../../Redux/Store";
 import { userService } from "../../Services/UserService";
 import "./DrawerLayout.css";
 import { useTranslation } from "react-i18next";
-import LoginIcon from "@mui/icons-material/Login";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Button } from "@mui/material";
 
@@ -59,17 +59,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
               </div>
             ) : (
               <div>
-                <h3 className="UserName">{t("drawer.helloGuest")}</h3>
-
-                <NavLink
-                  className="LoginLink"
-                  to="/login"
-                  onClick={() => setOpen(false)}>
-                  <div className="LoginRow">
-                    <LoginIcon />
-                    <p>{t("drawer.login")}</p>
-                  </div>
-                </NavLink>
+  
               </div>
             )}
             {isLoggedIn ? (
@@ -83,6 +73,11 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                 </div>
                 </NavLink>
             ) : null}
+      <NavLink to="/about" className="AboutScreenBtn">
+          <InfoOutlinedIcon />
+          <p>{t("nav.about")}</p>
+        </NavLink>
+            
           </div>
         </aside>
       </Drawer>

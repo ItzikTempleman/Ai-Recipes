@@ -8,8 +8,9 @@ import { AppState } from "../../Redux/Store";
 import { recipeService } from "../../Services/RecipeService";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { useNavigate } from "react-router-dom";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+
 import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
 
 export function HomeScreen() {
   useTitle("Home");
@@ -50,33 +51,20 @@ export function HomeScreen() {
               <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
             )}
           </>) : (
-          <>
-            <div className="GuestNotice">
-              <div className="GuestHello">
-                {t("homeScreen.hello")} {t("homeScreen.guest")}
-              </div>
-              <div
-                className="GuestInstructions"
-                onClick={() => navigate("/generate")} >
-                <AddIcon />
-                <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
-              </div>
-              <div
-                className="GuestLoginContainer"
-                onClick={() => navigate("/login")}
-              >
-                <LoginIcon />
-                <h4 className="GuestLoginTitle">{t("drawer.login")}</h4>
-              </div>
-            </div>
-            <h3 className="GuestNoticeLine2">
-              {t("homeScreen.guestNoticeLine2")}
+
+          <div>
+            <h3 className="GuestTitle">
+              {t("homeScreen.hello")} {t("homeScreen.guest")}
             </h3>
-            <div className="ShareIntro">
-              <PictureAsPdfIcon className="ShareIntroIcon" />
-              <h1 className="ShareIntroTitle">{t("homeScreen.shareIntro")}</h1>
-            </div>
-          </>
+            <Button
+              className="GenerateBtn"
+              onClick={() => navigate("/generate")}
+              variant="contained"
+            >
+              <AddIcon />
+              <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
+            </Button>
+          </div>
         )}
       </div>
       <div className="RecipeList">

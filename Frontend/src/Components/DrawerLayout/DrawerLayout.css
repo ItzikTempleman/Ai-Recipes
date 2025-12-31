@@ -81,30 +81,6 @@
   text-decoration: none;
 }
 
-/* .LoginRow,
-.LogoutRow {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  border-radius: 2px;
-  height: 40px !important;
-  box-sizing: border-box;
-  margin:  0 0 4px 0;  
-}
-
-.LoginRow {
-  color: white !important;
-  background-color: #215d9a;
-}
-
-.LogoutRow {
-  background-color: #cb0e0e;
-  color:white;
-} */
-
- 
 
  .LoginRow,
 .LogoutRow {
