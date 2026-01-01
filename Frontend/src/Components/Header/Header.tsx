@@ -67,6 +67,20 @@ export function Header() {
       </div>
 
       <div className="HeaderRight">
+
+
+        <div className="LanguageLink">
+          <LanguageIcon />
+          <select
+            className="LanguageSelector"
+            value={initialLanguage}
+            onChange={(e) => setLang(e.target.value as Language)}
+          >
+            <option value="en">{t("drawer.english")}</option>
+            <option value="he">{t("drawer.hebrew")}</option>
+          </select>
+        </div>
+
         {!isGuest ? (
           <Button
             variant="contained"
@@ -87,19 +101,6 @@ export function Header() {
             {t("drawer.login")}
           </Button>
         )}
-
-        <div className="LanguageLink">
-          <LanguageIcon />
-          <select
-            className="LanguageSelector"
-            value={initialLanguage}
-            onChange={(e) => setLang(e.target.value as Language)}
-          >
-            <option value="en">{t("drawer.english")}</option>
-            <option value="he">{t("drawer.hebrew")}</option>
-          </select>
-        </div>
-
         <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
         </div>

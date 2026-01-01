@@ -16,24 +16,48 @@
   padding:24px;
   display:flex;
   flex-direction:column;
-
-  border-radius:18px;
-  border:2px solid rgb(201,201,201);
-  backdrop-filter:blur(12px);
-  box-shadow:0 10px 30px rgba(15,23,42,.06), 0 1px 0 rgba(255,255,255,.8) inset;
 }
 
 .GenerateTitle{
-  margin:10px 0 20px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  line-height:1.1;
-}
-.GenerateTitle.rtl{ flex-direction:row-reverse; }
+  margin: 20px 0 30px;
+  display: block;
+  width: 100%;
+  text-align: center;
 
-/* ===== Top input row ===== */
+  /* BIGGER */
+  font-size: clamp(30px, 3.2vw, 52px);
+  line-height: 1.02;
+  font-weight: 1100;
+  letter-spacing: -1.4px;
+
+  /* richer gradient */
+  background: linear-gradient(
+    180deg,
+    #7c5cff 0%,
+    #6a4dff 28%,
+    #4f46e5 60%,
+    #2b1fb8 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* stronger glow / depth */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.35),
+    0 14px 30px rgba(106,77,255,.45),
+    0 38px 80px rgba(106,77,255,.25);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* RTL */
+.GenerateTitle.rtl{
+  direction: rtl;
+  letter-spacing: -0.8px;
+}
+
 .InputData{
   display:flex;
   align-items:center;
@@ -65,10 +89,8 @@
 /* ===== Image switch (prettier) ===== */
 .ImageSwitchSection{
   width:100%;
-  margin:26px 0 18px;
+  margin:12px;
   display:flex;
-  justify-content:center;
-  padding:0 6px;
 }
 
 .ImageSwitchRow{
@@ -77,7 +99,7 @@
   display:flex;
   align-items:center;
   gap:10px;
-  padding:12px 14px;
+  padding:8px;
 }
 
 /* text */
@@ -92,12 +114,13 @@
   width:26px; height:26px;
   padding:8px;
   border-radius:14px;
-  background:rgba(171, 206, 236, 0.681);
-  color:#0585d4;
+  background:rgba(231, 187, 248, 0.597);
+  color:#6a4dff;
 }
 
 /* keep toggle aligned to edge */
-.ImageSwitchRow .imageSwitch{ margin-left:auto; }
+.ImageSwitchRow .imageSwitch{ 
+  margin-left:auto; }
 .ImageSwitchSection.rtl .ImageSwitchRow .imageSwitch{ margin-left:0; margin-right:auto; }
 
 /* RTL layout */
@@ -111,16 +134,44 @@
   border:1px solid rgba(148,163,184,.45);
   background:rgba(255,255,255,.55);
 }
+.imageSwitch .MuiToggleButtonGroup-root {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* override MUI grouped reset */
+.imageSwitch .MuiToggleButtonGroup-grouped {
+  border-radius: 0 !important; /* middle stays square */
+}
+
+/* round the two ends */
+.imageSwitch .MuiToggleButtonGroup-grouped:first-of-type {
+  border-top-left-radius: 14px !important;
+  border-bottom-left-radius: 14px !important;
+}
+
+.imageSwitch .MuiToggleButtonGroup-grouped:last-of-type {
+  border-top-right-radius: 14px !important;
+  border-bottom-right-radius: 14px !important;
+}
+
 .imageSwitch .MuiToggleButton-root{
   padding:8px 14px !important;
   min-width:90px;
   font-weight:800;
 }
 .imageSwitch .MuiToggleButton-root.Mui-selected{
-  background:linear-gradient(180deg,#76bae4 0%,#0585d4 100%) !important;
+  border-radius:14px;
+  background:linear-gradient(180deg, #a07bff 0%, #6a4dff 100%) !important;
   color:#fff !important;
+  box-shadow:0 12px 22px rgba(106, 77, 255, .22),
+             0 2px 0 rgba(255, 255, 255, .22) inset !important;
 }
 
+
+.MuiToggleButton-root:not(.Mui-selected) {
+border-radius: 14px;
+}
 /* ===== Status text ===== */
 .Loading{ text-align:center; }
 .HasImage{ display:flex; flex-direction:column; align-items:center; }
@@ -136,28 +187,71 @@
   align-items:center;
   gap:6px;
 }
-
+/* center the whole "Servings + select" group */
 .Servings{
   width:100%;
-  max-width:520px;
+  max-width:520px;          /* match ExcludedSection width */
+  margin:6px auto 0;
+  min-height:38px;
+  padding:0;                /* remove extra padding that shifts things */
   display:flex;
   align-items:center;
-  gap:8px;
-  margin:0;
-  padding:0 2px;
+  justify-content:center;   /* ✅ this is the real center */
+  gap:10px;                 /* space between text and select */
 }
-.Servings.ltr{ justify-content:flex-start; text-align:left; }
-.Servings.rtl{ flex-direction:row-reverse; justify-content:flex-end; text-align:right; }
-.Servings p{ margin:0; }
 
+/* label */
+.Servings p{
+  margin:0 !important;
+  font-weight:900;
+  font-size:15px;
+  color:rgba(17,24,39,.82);
+  line-height:1;
+}
+
+/* RTL: keep centered, just reverse order */
+.Servings.rtl{
+  flex-direction:row-reverse;
+  justify-content:center;   /* ✅ keep centered in RTL too */
+}
+.Servings.rtl p{ direction:rtl; text-align:right; }
+
+/* SELECT with ONE custom arrow inside */
 .QuantitySelector{
-  width:56px;
-  height:32px;
-  border-radius:6px;
-  border:1px solid rgb(208,208,208);
+  height:28px;
+  min-width:72px;
+  padding:0 28px 0 10px;          /* room for arrow on right */
+  border:none !important;
+  outline:none;
+  border-radius:12px;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 5px 10px rgba(2,6,23,.10);
+  font-weight:900;
+  font-size:15px;
+  color:rgba(17,24,39,.78);
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  cursor:pointer;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(17,24,39,.55) 50%),
+    linear-gradient(135deg, rgba(17,24,39,.55) 50%, transparent 50%);
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+  background-position: calc(100% - 14px) 11px, calc(100% - 8px) 11px;
 }
 
-/* ===== Exclude field: make it ACTUALLY stretch like SearchTF ===== */
+
+.Servings.rtl .QuantitySelector{
+  padding:0 10px;
+  background-image:none !important;
+
+  appearance:auto !important;
+  -webkit-appearance:menulist !important;
+  -moz-appearance:auto !important;
+
+  direction:rtl;
+  text-align:right;
+}
 .ExcludedSection{
   width:100%;
   display:flex;
@@ -171,7 +265,7 @@
 }
 
 /* Exclude TF fills its wrapper */
-.ExcludeTF{ width:100%; }
+.ExcludeTF{ width:50%; }
 .ExcludeTF .MuiOutlinedInput-root{ width:100%; }
 
 /* Exclude RTL text + label + notch */
@@ -336,50 +430,42 @@
   padding:0 12px;
 }
 
-.FilterBtn.MuiButton-root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 12px auto 0;
-  border-radius: 14px !important;
-  padding: 8px 32px !important;
-  height: 40px !important;
-  text-transform: none !important;
-  gap: 12px !important;
-  background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
-  box-shadow:
-    0 18px 34px rgba(243, 164, 0, .30),
-    0 10px 18px rgba(243, 164, 0, .22),
-    0 2px 0 rgba(255, 255, 255, .22) inset !important;
-  font-size: 20px !important;
-  font-weight: 900 !important;
-  letter-spacing: .3px;
-  color: #6a6a6a !important;
-  text-shadow: none !important;
+.FilterBtn.MuiButton-root{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:12px auto 0;
+  border-radius:14px !important;
+  padding:8px 32px !important;
+  height:40px !important;
+  text-transform:none !important;
+  gap:12px !important;
+
+  background:linear-gradient(180deg, #a07bff 0%, #6a4dff 100%) !important;
+  box-shadow:0 12px 22px rgba(106, 77, 255, .22),
+             0 2px 0 rgba(255, 255, 255, .22) inset !important;
+
+  font-size:20px !important;
+  font-weight:900 !important;
+  letter-spacing:.3px;
+  color:#fff !important;
+  text-shadow:none !important;
 }
 
-.FilterBtn.MuiButton-root svg {
-  color: #6a6a6a !important;
-  font-size: 30px !important;
-  filter: none !important;
+.FilterBtn.MuiButton-root svg{
+  color:#fff !important;
+  font-size:30px !important;
 }
 
-.FilterBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #ffc54a 0%, #f6ac00 100%) !important;
-  transform: translateY(-1px);
-  box-shadow:
-    0 24px 44px rgba(243, 164, 0, .34),
-    0 12px 22px rgba(243, 164, 0, .26),
-    0 2px 0 rgba(255, 255, 255, .22) inset !important;
+/* hover/active feel like GenerateRecipeBtn */
+.FilterBtn.MuiButton-root:hover{
+  filter:brightness(1.03);
+  transform:translateY(-1px);
 }
 
-.FilterBtn.MuiButton-root:active {
-  transform: translateY(1px);
-  box-shadow:
-    0 10px 18px rgba(243, 164, 0, .22),
-    0 2px 0 rgba(255, 255, 255, .18) inset !important;
+.FilterBtn.MuiButton-root:active{
+  transform:translateY(1px);
 }
-
 
 
 

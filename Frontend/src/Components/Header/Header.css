@@ -58,9 +58,8 @@
 .ReturnScreenBtn p,
 .LikesScreenBtn p,
 .HomeScreenBtn p {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.2px;
 }
 
 .HomeScreenBtn svg {
@@ -252,96 +251,26 @@
   .ReturnScreenBtn,
   .LikesScreenBtn,
   .HomeScreenBtn {
-    width: 46px !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    border-radius: 0 !important;
-    height: auto !important;
-    justify-content: flex-start;
-    transition: transform 120ms ease, filter 120ms ease;
+    width: 36px !important;
+    height: 36px !important;
   }
 
   .ReturnScreenBtn svg,
   .LikesScreenBtn svg,
   .HomeScreenBtn svg {
-    width: 36px !important;
-    height: 36px !important;
-    filter: none !important;
+    width: 26px !important;
+    height: 26px !important;
+  
   }
-
-  .ReturnScreenBtn p,
+  .HomeScreenBtn p,
   .LikesScreenBtn p,
-  .HomeScreenBtn p {
-    font-size: 11px !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.1px !important;
-    margin-top: 2px !important;
-  }
+.ReturnScreenBtn p{
+ font-size: 10px;
+}
 
-  .HomeScreenBtn,
-  .LikesScreenBtn,
-  .ReturnScreenBtn {
-    position: relative;
-  }
 
-  .HomeScreenBtn::after,
-  .LikesScreenBtn::after,
-  .ReturnScreenBtn::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -4px;
-    width: 18px;
-    height: 3px;
-    border-radius: 99px;
-    opacity: 0;
-  }
 
-  .HomeScreenBtn:hover svg,
-  .HomeScreenBtn.active svg {
-    filter: drop-shadow(0 6px 14px rgba(47, 125, 50, 0.22));
-  }
 
-  .HomeScreenBtn:hover p,
-  .HomeScreenBtn.active p {
-    color: #7c75e1 !important;
-  }
-.HomeScreenBtn.active::after { background: #7c75e1; opacity: 1; }
-  .LikesScreenBtn:hover svg,
-  .LikesScreenBtn.active svg {
-    filter: drop-shadow(0 6px 14px rgba(194, 24, 91, 0.22));
-  }
-
-  .LikesScreenBtn:hover p,
-  .LikesScreenBtn.active p {
-    color: #d34b86 !important;
-  }
-
-  .LikesScreenBtn:hover::after,
-  .LikesScreenBtn.active::after {
-    background: #d34b86;
-    opacity: 1;
-  }
-
-  .ReturnScreenBtn:hover svg,
-  .ReturnScreenBtn.active svg {
-    filter: drop-shadow(0 6px 14px rgba(217, 119, 6, 0.22));
-  }
-
-  .ReturnScreenBtn:hover p,
-  .ReturnScreenBtn.active p {
-    color: #b45309 !important;
-  }
-
-  .ReturnScreenBtn:hover::after,
-  .ReturnScreenBtn.active::after {
-    background: rgba(217, 119, 6, 0.85);
-    opacity: 1;
-  }
 
   .LanguageLink {
     height: 42px;

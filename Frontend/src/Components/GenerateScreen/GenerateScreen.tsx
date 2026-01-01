@@ -174,28 +174,30 @@ export function GenerateScreen() {
             </div>
           </div>
           <div className="FiltersColumn">
-        <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-              <p>{t("generate.quantitySelector")}</p>
-              <select className="QuantitySelector"
-                value={initialQuantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}>
-                {
-                  [...Array(10)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                  ))
-                }
-              </select>
-            </div>
-            <div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
-              <div>
-                <TextField
-                  className="ExcludeTF"
-                  label={t("generate.excludeIngredient")}
-                  size="small"
-                  {...register("excludedIngredients.0")}
-                />
-              </div>
-            </div>
+
+<div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
+  <div>
+    <TextField
+      className="ExcludeTF"
+      label={t("generate.excludeIngredient")}
+      size="small"
+      {...register("excludedIngredients.0")}
+    />
+  </div>
+</div>
+
+<div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+  <p>{t("generate.quantitySelector")}</p>
+  <select
+    className="QuantitySelector"
+    value={initialQuantity}
+    onChange={(e) => setQuantity(Number(e.target.value))}
+  >
+    {[...Array(10)].map((_, i) => (
+      <option key={i + 1} value={i + 1}>{i + 1}</option>
+    ))}
+  </select>
+</div>
             <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
               <Button
                 className="FilterBtn"
