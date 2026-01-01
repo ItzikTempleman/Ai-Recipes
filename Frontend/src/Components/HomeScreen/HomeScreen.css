@@ -88,6 +88,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+    margin-right: 0 !important;
+  margin-left: auto !important;
   margin: 120px auto 0;
   border-radius: 14px !important;
   padding: 8px 32px !important;
@@ -145,6 +147,13 @@
   content: "";
   flex: 0 0 34px;        
 }
+.HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
+  margin: 24px 0 0 !important;     /* keep your existing top spacing */
+  margin-left: auto !important;    /* right align in RTL */
+  margin-right: 0 !important;
+}
+
+
 .RecipeList {
   width: 100%;
   max-width: 1080px;
