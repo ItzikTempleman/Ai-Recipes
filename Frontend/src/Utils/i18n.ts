@@ -44,6 +44,8 @@ const resources = {
         return: "Return",
       },
       generate: {
+             withImage:"With image",
+         withoutImage:"Without image",
         filters:"Filters",
         youCanGenerateImageLater: "You can add an image later",
         guest: "Guest",
@@ -218,6 +220,8 @@ const resources = {
       },
 
       generate: {
+        withImage:"עם תמונה",
+         withoutImage:"ללא תמונה",
         filters:"סינון",
         youCanGenerateImageLater: "תמיד ניתן להוסיף תמונה אחר כך",
         guest: "אורח",

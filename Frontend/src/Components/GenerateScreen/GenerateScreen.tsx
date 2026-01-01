@@ -10,7 +10,6 @@ import { recipeService } from "../../Services/RecipeService";
 import { notify } from "../../Utils/Notify";
 import { LactoseFilter } from "../Filters/LactoseFilter";
 import { SugarFilter } from "../Filters/SugarFilter";
-import { ImageSwitch } from "../Filters/ImageSwitch";
 import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
@@ -105,7 +104,7 @@ export function GenerateScreen() {
       setHasGluten(GlutenRestrictions.DEFAULT);
       setDietType(DietaryRestrictions.DEFAULT);
       setFiltersResetKey(k => k + 1);
-      reset({query: "",excludedIngredients: [""]});
+      reset({ query: "", excludedIngredients: [""] });
     } catch (err: unknown) {
       notify.error(err);
     }
@@ -129,6 +128,12 @@ export function GenerateScreen() {
               inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
               InputLabelProps={{ style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" } }}
             />
+            <IconButton
+              className={`ImageToggleBtn ${hasImage ? "on" : "off"}`}
+              onClick={() => setHasImage(image => !image)}
+            >
+              {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
+            </IconButton>
             {loading ? (
               <IconButton className="RoundedBtn large-loading" edge="end" disabled>
                 <Box><CircularProgress /></Box>
@@ -137,7 +142,7 @@ export function GenerateScreen() {
               <Button
                 className="GenerateRecipeBtn"
                 variant="contained"
-                  disableElevation
+                disableElevation
                 type="submit"
                 disabled={loading}>
                 {t("generate.go")}<AutoAwesome className="BtnIcon" />
@@ -163,82 +168,59 @@ export function GenerateScreen() {
               </h2>
             )
           }
-          <div className={`ImageSwitchSection ${isRTL ? "rtl" : "ltr"}`}>
-            <div className="ImageSwitchRow">
-              {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
-              <p>{t("filters.image.image")}</p>
-              <ImageSwitch
-                key={`img-${filtersResetKey}`}
-                onChange={setHasImage}
-                defaultHasImage={false} />
-            </div>
-          </div>
-          <div className="FiltersColumn">
 
-<div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
-  <div>
-    <TextField
-      className="ExcludeTF"
-      label={t("generate.excludeIngredient")}
-      size="small"
-      {...register("excludedIngredients.0")}
-    />
+{/* replace your current ExcludedSection + Servings + FiltersDropdown block with this */}
+
+<div className="FiltersColumn">
+  <div className={`FiltersRow ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+
+    <div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
+      <div>
+        <TextField
+          className="ExcludeTF"
+          label={t("generate.excludeIngredient")}
+          size="small"
+          {...register("excludedIngredients.0")}
+        />
+      </div>
+    </div>
+
+    <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+      <p>{t("generate.quantitySelector")}</p>
+      <select
+        className="QuantitySelector"
+        value={initialQuantity}
+        onChange={(e) => setQuantity(Number(e.target.value))}
+      >
+        {[...Array(10)].map((_, i) => (
+          <option key={i + 1} value={i + 1}>{i + 1}</option>
+        ))}
+      </select>
+    </div>
+
+    <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
+      <Button
+        className="FilterBtn"
+        onClick={() => setFiltersOpen((v) => !v)}
+        variant="contained"
+        endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      >
+        {t("generate.filters")}
+      </Button>
+
+      <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
+        <div className="FiltersDropdown__panelInner">
+          <div><DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={setDietType} /></div>
+          <div><SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={setSugarLevel} /></div>
+          <div><LactoseFilter key={`lac-${filtersResetKey}`} onChange={setHasLactose} /></div>
+          <div><GlutenFilter key={`glu-${filtersResetKey}`} onChange={setHasGluten} /></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-  <p>{t("generate.quantitySelector")}</p>
-  <select
-    className="QuantitySelector"
-    value={initialQuantity}
-    onChange={(e) => setQuantity(Number(e.target.value))}
-  >
-    {[...Array(10)].map((_, i) => (
-      <option key={i + 1} value={i + 1}>{i + 1}</option>
-    ))}
-  </select>
-</div>
-            <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
-              <Button
-                className="FilterBtn"
-
-                onClick={() => setFiltersOpen((v) => !v)}
-                fullWidth
-                variant="contained"
-                endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              >
-                {t("generate.filters")}
-              </Button>
-              <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
-                <div className="FiltersDropdown__panelInner">
-                  <div>
-                    <SugarFilter
-                      key={`sugar-${filtersResetKey}`}
-                      onSugarLevelSelect={(sl) => {
-                        setSugarLevel(sl)
-                      }} />
-                  </div>
-                  <div>
-                    <LactoseFilter
-                      key={`lac-${filtersResetKey}`}
-                      onChange={setHasLactose} />
-                  </div>
-                  <div>
-                    <GlutenFilter
-                      key={`glu-${filtersResetKey}`}
-                      onChange={setHasGluten} />
-                  </div>
-                  <div>
-                    <DietaryFilter
-                      key={`diet-${filtersResetKey}`}
-                      onDietSelect={(d) => {
-                        setDietType(d)
-                      }} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </form>
       </div>

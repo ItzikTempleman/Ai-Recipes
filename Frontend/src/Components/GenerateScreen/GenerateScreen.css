@@ -1,4 +1,3 @@
-/* ===== Layout ===== */
 .GenerateScreen{
   width:100%;
   min-height:100vh;
@@ -19,39 +18,25 @@
 }
 
 .GenerateTitle{
-  margin: 20px 0 30px;
-  display: block;
-  width: 100%;
-  text-align: center;
-
-  /* BIGGER */
-  font-size: clamp(34px, 3.2vw, 60px);
-  line-height: 1.02;
-  font-weight: 1100;
-  letter-spacing: -1.4px;
-
-  /* richer gradient */
- background: linear-gradient(180deg, #ffaf01 0%, #ff9100 100%);
-   
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-
-  /* stronger glow / depth */
-  text-shadow:
-    0 1px 0 rgba(255,255,255,.35),
-    0 14px 30px rgba(106,77,255,.45),
-    0 38px 80px rgba(106,77,255,.25);
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  margin:20px 0 30px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(34px,3.2vw,60px);
+  line-height:1.02;
+  font-weight:1100;
+  letter-spacing:-1.4px;
+  background:linear-gradient(180deg,#ffaf01 0%,#ff9100 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 1px 0 rgba(255,255,255,.35),0 14px 30px rgba(106,77,255,.45),0 38px 80px rgba(106,77,255,.25);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 
-/* RTL */
-.GenerateTitle.rtl{
-  direction: rtl;
-  letter-spacing: -0.8px;
-}
+.GenerateTitle.rtl{ direction:rtl; letter-spacing:-0.8px; }
+
+/* ===================== Top row (search) ===================== */
 
 .InputData{
   display:flex;
@@ -59,14 +44,19 @@
   gap:12px;
   margin-top:8px;
 }
+
 .InputData .SearchTF{ flex:1; min-width:0; }
 .InputData.rtl{ flex-direction:row-reverse; }
 .InputData.rtl .BtnIcon{ margin-left:0; margin-right:12px; }
 
-/* SearchTF RTL text + label + notch */
 .InputData.rtl .SearchTF input,
-.InputData.rtl .SearchTF input::placeholder{ direction:rtl; text-align:right; }
+.InputData.rtl .SearchTF input::placeholder{
+  direction:rtl;
+  text-align:right;
+}
+
 .InputData.rtl .SearchTF .MuiOutlinedInput-input{ padding-right:12px !important; }
+
 .InputData.rtl .SearchTF .MuiInputLabel-root,
 .InputData.rtl .SearchTF .MuiInputLabel-outlined{
   right:18px;
@@ -74,107 +64,80 @@
   transform-origin:top right !important;
   text-align:right;
 }
-.InputData.rtl .SearchTF .MuiOutlinedInput-notchedOutline{ text-align:right; }
 
-/* Loading sizes */
-.small-loading .MuiCircularProgress-root{ width:26px !important; height:26px !important; }
-.large-loading .MuiCircularProgress-root{ width:40px !important; height:40px !important; }
+.large-loading .MuiCircularProgress-root{ color:#6a4dff !important; }
 
-/* ===== Image switch ===== */
-/* ===== Image switch (prettier) ===== */
-.ImageSwitchSection{
-  width:100%;
-  margin:12px;
-  display:flex;
+.ImageToggleBtn{
+  border-radius:14px !important;
+  height:40px !important;
+  width:40px !important;
+  padding:0 !important;
+  background:rgba(106,77,255,.10) !important;
+  border:1px solid rgba(106,77,255,.18) !important;
 }
 
-.ImageSwitchRow{
-  width:100%;
-  max-width:520px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px;
+.ImageToggleBtn.off{
+  background:rgba(0,0,0,.06) !important;
+  border:1px solid rgba(15,23,42,.12) !important;
 }
 
-/* text */
-.ImageSwitchRow p{
-  margin:0;
-  font-weight:800;
-  letter-spacing:.2px;
+.ImageToggleBtn svg{ width:22px; height:22px; color:#6a4dff; }
+
+/* Shared MUI outlined look for ONLY the search + exclude */
+.SearchTF .MuiOutlinedInput-root,
+.ExcludeTF .MuiOutlinedInput-root{
+  border-radius:14px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 24px rgba(15,23,42,.06),inset 0 1px 0 rgba(255,255,255,.75);
+  transition:.15s ease;
 }
 
-/* icon pill */
-.ImageSwitchRow svg{
-  width:26px; height:26px;
-  padding:8px;
-  border-radius:12px;
-  background:rgba(231, 187, 248, 0.597);
-  color:#6a4dff;
+.SearchTF .MuiOutlinedInput-notchedOutline,
+.ExcludeTF .MuiOutlinedInput-notchedOutline{
+  border:1px solid rgba(148,163,184,.55);
 }
 
-/* keep toggle aligned to edge */
-.ImageSwitchRow .imageSwitch{ 
-  margin-left:auto; }
-.ImageSwitchSection.rtl .ImageSwitchRow .imageSwitch{ margin-left:0; margin-right:auto; }
-
-/* RTL layout */
-.ImageSwitchSection.rtl .ImageSwitchRow{ flex-direction:row-reverse; }
-.ImageSwitchSection.rtl .ImageSwitchRow p{ text-align:right; }
-
-/* nicer toggle shape */
-.imageSwitch .MuiToggleButtonGroup-root{
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid rgba(148,163,184,.45);
-  background:rgba(255,255,255,.55);
-}
-.imageSwitch .MuiToggleButtonGroup-root {
-  border-radius: 12px;
-  overflow: hidden;
+.SearchTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+.ExcludeTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+  border-color:rgba(106,77,255,.45);
 }
 
-/* override MUI grouped reset */
-.imageSwitch .MuiToggleButtonGroup-grouped {
-  border-radius: 0 !important; /* middle stays square */
+.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
+.ExcludeTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border-color:rgba(106,77,255,.9);
+  border-width:2px;
 }
 
-/* round the two ends */
-.imageSwitch .MuiToggleButtonGroup-grouped:first-of-type {
-  border-top-left-radius: 14px !important;
-  border-bottom-left-radius: 14px !important;
+.SearchTF .MuiOutlinedInput-root.Mui-focused,
+.ExcludeTF .MuiOutlinedInput-root.Mui-focused{
+  box-shadow:0 18px 38px rgba(106,77,255,.14),inset 0 1px 0 rgba(255,255,255,.85);
 }
 
-.imageSwitch .MuiToggleButtonGroup-grouped:last-of-type {
-  border-top-right-radius: 12px !important;
-  border-bottom-right-radius: 12px !important;
-}
+.SearchTF .MuiOutlinedInput-input{ padding:10px 12px; }
+.SearchTF .MuiInputLabel-root.Mui-focused,
+.ExcludeTF .MuiInputLabel-root.Mui-focused{ color:rgba(106,77,255,.95); }
 
-.imageSwitch .MuiToggleButton-root{
-  padding:8px 12px !important;
-  min-width:90px;
-  font-weight:800;
-}
-.imageSwitch .MuiToggleButton-root.Mui-selected{
-  border-radius:12px;
-  background:linear-gradient(180deg, #a07bff 0%, #6a4dff 100%) !important;
-  color:#fff !important;
-  box-shadow:0 12px 22px rgba(106, 77, 255, .22),
-             0 2px 0 rgba(255, 255, 255, .22) inset !important;
-}
+/* ===================== Loading / error ===================== */
 
-
-.MuiToggleButton-root:not(.Mui-selected) {
-border-radius: 12px;
-}
-/* ===== Status text ===== */
 .Loading{ text-align:center; }
-.HasImage{ display:flex; flex-direction:column; align-items:center; }
+
+.HasImage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
 .HasImage__title{ font-weight:700; }
 .HasImage__sub{ font-weight:400; font-size:16px; }
-.ErrorText{ margin-top:8px; color:#d32f2f; font-size:.9rem; }
 
-/* ===== Filters column ===== */
+.ErrorText{
+  margin-top:8px;
+  color:#d32f2f;
+  font-size:.9rem;
+}
+
+/* ===================== Filters row ===================== */
+
 .FiltersColumn{
   margin-top:4px;
   display:flex;
@@ -182,20 +145,98 @@ border-radius: 12px;
   align-items:center;
   gap:6px;
 }
-/* center the whole "Servings + select" group */
-.Servings{
+
+/* One row: Exclude | Servings | Filters button */
+.FiltersRow{
   width:100%;
-  max-width:520px;          /* match ExcludedSection width */
-  margin:6px auto 0;
-  min-height:38px;
-  padding:0;                /* remove extra padding that shifts things */
   display:flex;
   align-items:center;
-  justify-content:center;   /* ✅ this is the real center */
-  gap:10px;                 /* space between text and select */
+  gap:12px;
+  flex-wrap:wrap;
+  box-sizing:border-box;
+  padding:0 6px;
 }
 
-/* label */
+/* ---- EXCLUDE: make it MUCH less wide (desktop/tablet) ---- */
+.FiltersRow .ExcludedSection{
+  flex:0 1 240px;     /* <<< narrower */
+  max-width:240px;    /* <<< narrower */
+  min-width:180px;
+  width:auto;
+  display:flex;
+  justify-content:flex-start;
+}
+
+.FiltersRow .ExcludedSection > div{
+  width:100%;
+  max-width:none;
+}
+
+.FiltersRow .ExcludeTF{ width:100%; }
+
+/* Compact the ACTUAL exclude TextField (height/padding/label) */
+.ExcludeTF .MuiOutlinedInput-root{
+  height:34px !important;
+  min-height:34px !important;
+  border-radius:12px !important;
+}
+
+.ExcludeTF .MuiOutlinedInput-input{
+  padding:7px 10px !important;
+  font-size:14px !important;
+  line-height:1.2 !important;
+}
+
+.ExcludeTF .MuiInputLabel-root{ font-size:14px !important; }
+
+/* Label positioning (outlined) */
+.ExcludeTF .MuiInputLabel-outlined{
+  transform: translate(14px, 9px) scale(1) !important;
+}
+.ExcludeTF .MuiInputLabel-shrink{
+  transform: translate(14px, -7px) scale(0.85) !important;
+}
+
+/* RTL input + label for exclude */
+.ExcludedSection[dir="rtl"] .ExcludeTF input,
+.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{
+  direction:rtl;
+  text-align:right;
+}
+
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input{
+  text-align:right;
+  padding-right:10px !important;
+  padding-left:10px !important;
+}
+
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root,
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
+  right:14px !important;
+  left:auto !important;
+  transform-origin:top right !important;
+  text-align:right;
+}
+
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
+  transform: translate(0, 9px) scale(1) !important;
+}
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-shrink{
+  transform: translate(0, -7px) scale(0.85) !important;
+}
+
+/* ---- Servings block ---- */
+.Servings{
+  width:auto;
+  margin:0;
+  min-height:36px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+}
+
 .Servings p{
   margin:0 !important;
   font-weight:900;
@@ -204,18 +245,12 @@ border-radius: 12px;
   line-height:1;
 }
 
-/* RTL: keep centered, just reverse order */
-.Servings.rtl{
-  flex-direction:row-reverse;
-  justify-content:center;   /* ✅ keep centered in RTL too */
-}
-.Servings.rtl p{ direction:rtl; text-align:right; }
+.Servings.rtl{ flex-direction:row-reverse; }
 
-/* SELECT with ONE custom arrow inside */
 .QuantitySelector{
   height:28px;
   min-width:72px;
-  padding:0 28px 0 10px;          /* room for arrow on right */
+  padding:0 28px 0 10px;
   border:none !important;
   outline:none;
   border-radius:12px;
@@ -224,115 +259,64 @@ border-radius: 12px;
   font-weight:900;
   font-size:15px;
   color:rgba(17,24,39,.78);
-  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
   cursor:pointer;
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, rgba(17,24,39,.55) 50%),
-    linear-gradient(135deg, rgba(17,24,39,.55) 50%, transparent 50%);
-  background-size:6px 6px, 6px 6px;
+  background-image:linear-gradient(45deg,transparent 50%,rgba(17,24,39,.55) 50%),
+                   linear-gradient(135deg,rgba(17,24,39,.55) 50%,transparent 50%);
+  background-size:6px 6px,6px 6px;
   background-repeat:no-repeat;
-  background-position: calc(100% - 14px) 11px, calc(100% - 8px) 11px;
+  background-position:calc(100% - 14px) 11px,calc(100% - 8px) 11px;
 }
-
 
 .Servings.rtl .QuantitySelector{
   padding:0 10px;
   background-image:none !important;
-
   appearance:auto !important;
   -webkit-appearance:menulist !important;
   -moz-appearance:auto !important;
-
   direction:rtl;
   text-align:right;
 }
-.ExcludedSection{
-  width:100%;
+
+/* ---- Filters dropdown ---- */
+.FiltersDropdown{
+  flex:0 0 auto;
+  width:auto;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* push filter button to the far side */
+.FiltersRow.ltr .FiltersDropdown{ margin-left:auto; }
+.FiltersRow.rtl .FiltersDropdown{ margin-right:auto; }
+
+.FilterBtn.MuiButton-root{
+  gap:10px;
+  width:max-content !important;
+  min-width:0 !important;
+  padding:6px 14px !important;
+  height:36px !important;
+  font-size:16px !important;
+  border-radius:12px !important;
+  margin-top:0 !important; /* aligned in row */
+  background:linear-gradient(180deg,#a07bff 0%,#6a4dff 100%) !important;
+  box-shadow:0 12px 22px rgba(106,77,255,.22),0 2px 0 rgba(255,255,255,.22) inset !important;
+  color:#fff !important;
   display:flex;
-  justify-content:center;
 }
-
-/* your JSX has an inner wrapper div — give it width so the TF can grow */
-.ExcludedSection > div{
-  width:100%;
-  max-width:520px; /* change to 600/640 if you want wider inside the card */
-}
-
-/* Exclude TF fills its wrapper */
-.ExcludeTF{ width:60%; }
-.ExcludeTF .MuiOutlinedInput-root{ width:100%; }
-
-/* Exclude RTL text + label + notch */
-.ExcludedSection[dir="rtl"] .ExcludeTF input,
-.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{ direction:rtl; text-align:right; }
-
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input{
-  text-align:right;
-  padding-right:12px;
-  padding-left:0;
-}
-
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root,
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
-  right:18px;
-  left:auto !important;
-  transform-origin:top right !important;
-  text-align:right;
-}
-
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-notchedOutline{ text-align:right; }
-
-.ExcludeTF .MuiOutlinedInput-root,
-.SearchTF  .MuiOutlinedInput-root{
-  border-radius:14px;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(10px);
-  box-shadow:0 10px 24px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.75);
-  transition:.15s ease;
-}
-
-.ExcludeTF .MuiOutlinedInput-notchedOutline,
-.SearchTF  .MuiOutlinedInput-notchedOutline{
-  border:1px solid rgba(148,163,184,.55);
-}
-
-.ExcludeTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
-.SearchTF  .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
-  border-color:rgba(106,77,255,.45);
-}
-
-.ExcludeTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
-.SearchTF  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
-  border-color:rgba(106,77,255,.9);
-  border-width:2px;
-}
-
-.ExcludeTF .MuiOutlinedInput-root.Mui-focused,
-.SearchTF  .MuiOutlinedInput-root.Mui-focused{
-  box-shadow:0 18px 38px rgba(106,77,255,.14), inset 0 1px 0 rgba(255,255,255,.85);
-}
-
-.ExcludeTF .MuiOutlinedInput-input,
-.SearchTF  .MuiOutlinedInput-input{ padding:10px 12px; }
-
-.ExcludeTF .MuiInputLabel-root.Mui-focused,
-.SearchTF  .MuiInputLabel-root.Mui-focused{ color:rgba(106,77,255,.95); }
-
 
 .FiltersDropdown__panel{
   max-height:0;
-  margin:12px;
-  padding:12px;
-  border-radius:4px;
   transition:max-height 220ms ease;
   overflow:hidden;
   overflow-x:visible !important;
+  width:100%;
+  margin:0 !important;
 }
-.FiltersDropdown__panel.open{
-  max-height:800px;
-  border:1px solid rgba(145,184,194,.618);
-}
+
+.FiltersDropdown__panel.open{ max-height:800px; }
 
 .FiltersDropdown__panelInner{
   padding-top:12px;
@@ -342,44 +326,49 @@ border-radius: 12px;
   align-items:flex-start;
   text-align:left;
 }
+
 .FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner{
   align-items:flex-end;
   text-align:right;
 }
+
 .FiltersDropdown__panelInner > div{ width:100%; }
-.FiltersDropdown__panelInner > div + div{
-  border-top:1px solid rgba(0,0,0,.12);
-  padding-top:6px;
-}
 
 .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
-  width:100%;
-  box-sizing:border-box;
-  display:flex;
-  flex-wrap:wrap;
-  overflow:visible;
-  row-gap:8px;
+  width:max-content !important;
+  display:inline-flex !important;
+  flex-wrap:nowrap !important;
 }
+
 .FiltersDropdown__panelInner .MuiToggleButton-root{
-  min-width:0;
-  max-width:100%;
+  width:140px !important;
+  min-width:140px !important;
+  max-width:140px !important;
+  flex:0 0 140px !important;
   box-sizing:border-box;
   white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  border-color:rgba(106,77,255,.35) !important;
+  color:rgba(17,24,39,.78) !important;
 }
-.FiltersColumn .MuiToggleButton-root{ width:auto !important; min-width:100px; }
-.FiltersColumn .MuiToggleButton-root.Mui-selected{ border-radius:4px; }
 
-.FiltersDropdown[dir="ltr"] .MuiToggleButtonGroup-root{ justify-content:flex-start; }
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root{ direction:rtl; }
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped{ margin:0 !important; }
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type){
-  margin-right:-1px !important;
-  border-right:0 !important;
-  border-left:1px solid rgba(0,0,0,.12) !important;
+.FiltersDropdown__panelInner .MuiToggleButton-root:hover{
+  border-color:rgba(106,77,255,.65) !important;
+  background:rgba(106,77,255,.08) !important;
 }
+
+.FiltersDropdown__panelInner .MuiToggleButton-root.Mui-selected{
+  background:rgba(106,77,255,.18) !important;
+  border-color:#6a4dff !important;
+  color:#111827 !important;
+}
+
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type{
   border-right:1px solid rgba(0,0,0,.12) !important;
 }
+
+/* ===================== Button + card row ===================== */
 
 .GenerateRecipeBtn{
   height:40px;
@@ -387,25 +376,21 @@ border-radius: 12px;
   padding:0 14px;
   text-transform:none;
   font-weight:700;
-  background:linear-gradient(180deg,#e98c36,#cc822d);
   border:1px solid rgba(2,6,23,.16);
   display:inline-flex;
   align-items:center;
   gap:6px;
- border-radius: 14px !important;
-  box-shadow:0 6px 16px rgba(2,6,23,.16), inset 0 1px 0 rgba(255,255,255,.28);
-  transition:transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
+  border-radius:14px !important;
+  transition:transform 120ms ease,box-shadow 140ms ease,filter 140ms ease;
+  background:linear-gradient(180deg,#a07bff 0%,#6a4dff 100%);
+  box-shadow:0 12px 22px rgba(106,77,255,.22),0 2px 0 rgba(255,255,255,.22) inset;
 }
 
-.GenerateRecipeBtn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
-.GenerateRecipeBtn:active{ transform: translateY(0px); }
+.GenerateRecipeBtn:hover{ filter:brightness(1.03); transform:translateY(-1px); }
+.GenerateRecipeBtn:active{ transform:translateY(0px); }
+
 .GenerateRecipeBtn svg{ color:#fff; font-size:22px; }
 .GenerateRecipeBtn p{ margin:0; font-size:14px; font-weight:900; }
-.GenerateRecipeBtn{
-  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
-  box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
-              0 2px 0 rgba(255, 255, 255, .22) inset;
-}
 
 .GenerateRecipeBtn.Mui-disabled{
   background:#e5e7eb !important;
@@ -413,8 +398,8 @@ border-radius: 12px;
   box-shadow:none !important;
   color:rgba(17,24,39,.55) !important;
 }
-.GenerateRecipeBtn .BtnIcon{ font-size:18px; color:#ffe08a; }
 
+.GenerateRecipeBtn .BtnIcon{ font-size:18px; color:#ffe08a; }
 
 .CenterRow{
   width:100%;
@@ -424,63 +409,22 @@ border-radius: 12px;
   margin:8px 0;
   padding:0 12px;
 }
-
-.FilterBtn.MuiButton-root{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:12px auto 0;
-  border-radius:14px !important;
-  padding:8px 32px !important;
-  height:40px !important;
-  text-transform:none !important;
-  gap:12px !important;
-
-  background:linear-gradient(180deg, #a07bff 0%, #6a4dff 100%) !important;
-  box-shadow:0 12px 22px rgba(106, 77, 255, .22),
-             0 2px 0 rgba(255, 255, 255, .22) inset !important;
-
-  font-size:20px !important;
-  font-weight:900 !important;
-  letter-spacing:.3px;
-  color:#fff !important;
-  text-shadow:none !important;
-}
-
-.FilterBtn.MuiButton-root svg{
-  color:#fff !important;
-  font-size:30px !important;
-}
-
-/* hover/active feel like GenerateRecipeBtn */
-.FilterBtn.MuiButton-root:hover{
-  filter:brightness(1.03);
-  transform:translateY(-1px);
-}
-
-.FilterBtn.MuiButton-root:active{
-  transform:translateY(1px);
-}
-
-
-
 @media (max-width:600px){
-  .GenerateContainer{ border:none; box-shadow:none; }
 
-  .imageSwitch .MuiToggleButton-root{
-    width:72px !important;
-    min-width:72px !important;
-    padding:4px 6px !important;
-    font-size:.75rem !important;
+  .FiltersColumn{
+    margin-top: 14px !important;  /* tweak: -8 to -28 */
   }
 
-  .FiltersColumn .MuiToggleButton-root,
-  .FiltersDropdown__panelInner .MuiToggleButton-root{
-    min-width:72px !important;
-    padding:4px 6px !important;
-    font-size:.75rem !important;
+  /* Make the opened panel/card narrower + give it clear side margins */
+  .FiltersDropdown__panel{
+    width: calc(100vw - 56px) !important;  /* narrower than before */
+    max-width: 420px !important;           /* cap width */
+    margin: 10px auto 0 !important;
   }
 
-  .FiltersDropdown__panel{ margin:8px; padding:10px; }
+  /* Optional: also slightly reduce inner padding so it feels tighter */
+  .FiltersDropdown__panel{
+    padding: 10px 10px 12px !important;
+  }
 }
 

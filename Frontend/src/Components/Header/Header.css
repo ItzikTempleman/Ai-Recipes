@@ -63,11 +63,11 @@
 }
 
 .HomeScreenBtn svg {
-  color: #7c75e1;
+  color: #5c02e3;
 }
 
 .HomeScreenBtn p {
-  color: #7c75e1;
+  color: #5c02e3;
 }
 
 .HomeScreenBtn.active,
@@ -141,13 +141,15 @@
 }
 
 .LoginBtn.MuiButton-root {
-  background: linear-gradient(180deg, #4f8cff 0%, #3b6fff 100%) !important;
+
+  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
   color: #ffffff !important;
-  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+  box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
+              0 2px 0 rgba(255, 255, 255, .22) inset;
 }
 
 .LoginBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #5a96ff 0%, #4377ff 100%) !important;
+  background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%);
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
