@@ -40,9 +40,15 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
             ❌
           </div>
           <div className={`DrawerContent ${isLoggedIn ? "" : "LoggedOut"}`}>
+
+            <NavLink to="/about" className="AboutScreenBtn">
+              <InfoOutlinedIcon />
+              <p>{t("nav.about")}</p>
+            </NavLink>
+
             {isLoggedIn ? (
               <div>
-                <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"}/>
+                <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />
                 <h2 className="UserName">{user.firstName} {user.familyName}</h2>
                 <Button
                   className="ProfileBtn"
@@ -57,17 +63,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                   </div>
                 </Button>
               </div>
-            ) : (
-              <div>
-  
-              </div>
-            )}
-   
-      <NavLink to="/about" className="AboutScreenBtn">
-          <InfoOutlinedIcon />
-          <p>{t("nav.about")}</p>
-        </NavLink>
-            
+            ) : null}
           </div>
         </aside>
       </Drawer>

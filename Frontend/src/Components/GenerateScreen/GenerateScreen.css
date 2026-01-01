@@ -9,9 +9,6 @@
   overflow-x: hidden;
 }
 
-.GenerateScreen--hasData {
-  background-color: #fff;
-}
 
 .GenerateContainer {
   border-radius: 18px;
@@ -320,13 +317,60 @@
   justify-content: flex-start;
 }
 
-.GenerateBtn:hover {
-  cursor: pointer;
+/* More distinct color + more rounded (login-like pill) */
+.GenerateRecipeBtn.MuiButton-root {
+  height: 40px;
+  min-width: 96px;
+  padding: 0 14px;
+
+  border-radius: 14px; /* pill like login */
+  text-transform: none;
+  font-weight: 700;
+
+  /* distinct from header blue: teal/green gradient */
+  background: linear-gradient(180deg, #e98c36, #cc822d);
+  border: 1px solid rgba(2, 6, 23, 0.16);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  box-shadow:
+    0 6px 16px rgba(2, 6, 23, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+
+  transition: transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
 }
 
-.BtnIcon {
-  color: #f0b43a;
+.GenerateRecipeBtn:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 22px rgba(2, 6, 23, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
+
+.GenerateRecipeBtn:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+  box-shadow:
+    0 5px 14px rgba(2, 6, 23, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.GenerateRecipeBtn.Mui-disabled {
+  background: #e5e7eb !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  box-shadow: none !important;
+  color: rgba(17, 24, 39, 0.55) !important;
+}
+
+/* keep icon “spark” */
+.GenerateRecipeBtn .BtnIcon {
+  font-size: 18px;
+  color: #ffe08a; /* warmer, pops on green */
+}
+
 
 .ErrorText {
   margin-top: 8px;

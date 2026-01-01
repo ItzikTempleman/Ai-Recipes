@@ -135,8 +135,9 @@ export function GenerateScreen() {
               </IconButton>
             ) : (
               <Button
-                className="GenerateBtn"
+                className="GenerateRecipeBtn"
                 variant="contained"
+                  disableElevation
                 type="submit"
                 disabled={loading}>
                 {t("generate.go")}<AutoAwesome className="BtnIcon" />

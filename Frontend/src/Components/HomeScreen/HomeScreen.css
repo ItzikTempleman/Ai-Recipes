@@ -12,8 +12,24 @@
   width: 100%;
   max-width: 1080px;
   margin: 18px auto 0;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ✅ ONLY change: make the title lower by adding spacing between children */
+.HomeScreenTitleWrapper:has(.HomeScreenTitle.user) {
+  align-items: flex-start;
+  gap: 22px; /* pushes “Recently viewed” down */
+}
+
+.HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) {
+  align-items: flex-end;
+  gap: 22px; /* same spacing in rtl */
+}
+
+.HomeScreenTitleWrapper:not(:has(.HomeScreenTitle.user)) {
+  align-items: center;
+}
 
 .HomeScreenTitleContainer {
   position: relative;
@@ -21,7 +37,7 @@
   width: 100%;
 }
 
-.UserHello{
+.UserHello {
   font-size: 26px;
   font-weight: 700;
   color: rgb(100, 100, 100);
@@ -33,20 +49,18 @@
   display: block;
 }
 
-
-.GuestTitle{
-  width:100%;
-  text-align:center;
-  margin:0 0 14px;
-  font-size:56px;
-  font-weight:900;
-  line-height:1.15;
-  padding-bottom:6px;
-  display:block;
-  color:#5a4dff;
-  text-shadow:0 10px 30px rgba(90,77,255,.16);
+.GuestTitle {
+  width: 100%;
+  text-align: center;
+  margin: 0 0 14px;
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1.15;
+  padding-bottom: 6px;
+  display: block;
+  color: #5a4dff;
+  text-shadow: 0 10px 30px rgba(90, 77, 255, .16);
 }
-
 
 .HomeScreenTitle {
   margin: 14px 0 0;
@@ -56,111 +70,100 @@
 }
 
 .HomeScreenTitle.user {
-  white-space: pre-line;
-}
-.GenerateBtn.MuiButton-root{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:120px auto 0;
-  border-radius:18px!important;
-  padding:16px 32px!important;
-  min-height:60px!important;
-  text-transform:none!important;
-  gap:12px!important;
-
-  background:linear-gradient(180deg,#ffbe2e 0%,#f3a400 100%)!important;
-  box-shadow:
-    0 18px 34px rgba(243,164,0,.30),
-    0 10px 18px rgba(243,164,0,.22),
-    0 2px 0 rgba(255,255,255,.22) inset!important;
-
-  font-size:20px!important;
-  font-weight:900!important;
-  letter-spacing:.3px;
-  color:#6a6a6a!important;
-  text-shadow:none!important;
-}
-
-.GenerateBtn.MuiButton-root svg{
-  color:#6a6a6a!important;
-  font-size:30px!important;
-  filter:none!important;
-}
-
-.GenerateBtn.MuiButton-root:hover{
-  background:linear-gradient(180deg,#ffc54a 0%,#f6ac00 100%)!important;
-  transform:translateY(-1px);
-  box-shadow:
-    0 24px 44px rgba(243,164,0,.34),
-    0 12px 22px rgba(243,164,0,.26),
-    0 2px 0 rgba(255,255,255,.22) inset!important;
-}
-
-.GenerateBtn.MuiButton-root:active{
-  transform:translateY(1px);
-  box-shadow:
-    0 10px 18px rgba(243,164,0,.22),
-    0 2px 0 rgba(255,255,255,.18) inset!important;
-}
-
-.HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root{
-  margin: 24px auto 0 !important;
-}
-.HomeScreenTitle.user{
   width: 100%;
+  margin-top: 0 !important;
+  padding-top: 40px;
 }
 
-.HomeScreenTitleWrapper.ltr .HomeScreenTitle.user{
+.GenerateBtn.MuiButton-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 120px auto 0;
+  border-radius: 18px !important;
+  padding: 16px 32px !important;
+  min-height: 60px !important;
+  text-transform: none !important;
+  gap: 12px !important;
+  background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
+  box-shadow:
+    0 18px 34px rgba(243, 164, 0, .30),
+    0 10px 18px rgba(243, 164, 0, .22),
+    0 2px 0 rgba(255, 255, 255, .22) inset !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  letter-spacing: .3px;
+  color: #6a6a6a !important;
+  text-shadow: none !important;
+}
+
+.GenerateBtn.MuiButton-root svg {
+  color: #6a6a6a !important;
+  font-size: 30px !important;
+  filter: none !important;
+}
+
+.GenerateBtn.MuiButton-root:hover {
+  background: linear-gradient(180deg, #ffc54a 0%, #f6ac00 100%) !important;
+  transform: translateY(-1px);
+  box-shadow:
+    0 24px 44px rgba(243, 164, 0, .34),
+    0 12px 22px rgba(243, 164, 0, .26),
+    0 2px 0 rgba(255, 255, 255, .22) inset !important;
+}
+
+.GenerateBtn.MuiButton-root:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 10px 18px rgba(243, 164, 0, .22),
+    0 2px 0 rgba(255, 255, 255, .18) inset !important;
+}
+
+.HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
+  margin: 24px 0 0 !important;
+}
+
+.HomeScreenTitleWrapper.ltr .HomeScreenTitle.user {
   text-align: left;
 }
 
-.HomeScreenTitleWrapper.rtl .HomeScreenTitle.user{
+.HomeScreenTitleWrapper.rtl .HomeScreenTitle.user {
   text-align: right;
 }
 
-.HomeScreenTitleWrapper.rtl + .RecipeList{
+.HomeScreenTitleWrapper.rtl + .RecipeList {
   direction: rtl;
   justify-content: flex-start;
 }
 
-.HomeScreenTitleWrapper.ltr + .RecipeList{
+.HomeScreenTitleWrapper.ltr + .RecipeList {
   direction: ltr;
 }
 
-.RecipeList{
-  width:100%;
-  max-width:1080px;
-  margin:18px auto 0;
-  padding:0;
-  display:flex;
-  gap:18px;
-  justify-content:flex-start;
-
-  /* allow stuff to “escape” vertically */
+.RecipeList {
+  width: 100%;
+  max-width: 1080px;
+  margin: 18px auto 0;
+  padding: 0;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-start;
   overflow: visible !important;
 }
 
-.RecipeList:has(.RecipeListItem){
+.RecipeList:has(.RecipeListItem) {
   flex-wrap: nowrap;
   overflow-x: auto !important;
-
-  /* IMPORTANT: let the top overflow show */
   overflow-y: visible !important;
-
-  /* create space so the “floating” images have room */
   padding-top: 34px !important;
   padding-bottom: 20px !important;
-
-  /* avoid edge clipping */
   padding-left: 10px !important;
   padding-right: 10px !important;
-
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
 
-.RecipeList:has(.RecipeListItem) > *{
+.RecipeList:has(.RecipeListItem) > * {
   flex: 0 0 auto;
   scroll-snap-align: start;
 }
@@ -170,7 +173,7 @@
     padding: 18px 14px 44px;
   }
 
-    .GuestTitle {
+  .GuestTitle {
     font-size: 40px;
   }
 
@@ -182,24 +185,25 @@
   .HomeScreenTitle {
     font-size: 20px;
   }
-  .RecipeList{
+
+  .RecipeList {
     flex-wrap: wrap !important;
     overflow-x: visible !important;
     overflow-y: visible !important;
     justify-content: center !important;
   }
 
-  .RecipeList:has(.RecipeListItem){
+  .RecipeList:has(.RecipeListItem) {
     scroll-snap-type: none !important;
     padding-bottom: 0 !important;
   }
 
-  .RecipeList:has(.RecipeListItem) > *{
+  .RecipeList:has(.RecipeListItem) > * {
     width: min(92vw, 360px);
     max-width: min(92vw, 360px);
   }
 
-  .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root{
+  .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
     margin: 18px auto 0 !important;
   }
 }
