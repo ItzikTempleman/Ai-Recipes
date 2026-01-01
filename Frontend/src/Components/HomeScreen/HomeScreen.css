@@ -16,6 +16,14 @@
   flex-direction: column;
 }
 
+.HomeScreenTitleWrapper.ltr { --edge-pad: 34px; --avatar-pop: -20px; }
+.HomeScreenTitleWrapper.rtl { --edge-pad: 34px; --avatar-pop: -20px; } /* can differ if you want */
+
+.HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem) {
+  padding-inline: 10px !important;
+  padding-inline-start: var(--edge-pad) !important;
+  scroll-padding-inline-start: var(--edge-pad);
+}
 /* ✅ ONLY change: make the title lower by adding spacing between children */
 .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) {
   align-items: flex-start;
@@ -131,15 +139,16 @@
   text-align: right;
 }
 
-.HomeScreenTitleWrapper.rtl + .RecipeList {
-  direction: rtl;
-  justify-content: flex-start;
+.HomeScreenTitleWrapper.ltr + .RecipeList:has(.RecipeListItem)::before {
+  content: "";
+  flex: 0 0 34px;        /* >= the amount your avatar sticks out (20px) + some buffer */
 }
 
-.HomeScreenTitleWrapper.ltr + .RecipeList {
-  direction: ltr;
+/* RTL: spacer AFTER last item */
+.HomeScreenTitleWrapper.rtl + .RecipeList:has(.RecipeListItem)::after {
+  content: "";
+  flex: 0 0 34px;
 }
-
 .RecipeList {
   width: 100%;
   max-width: 1080px;
@@ -155,14 +164,17 @@
   flex-wrap: nowrap;
   overflow-x: auto !important;
   overflow-y: visible !important;
+
+  /* keep your existing */
   padding-top: 34px !important;
   padding-bottom: 20px !important;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+
+  /* base padding on both sides */
+  padding-inline: 10px !important;
+
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
-
 .RecipeList:has(.RecipeListItem) > * {
   flex: 0 0 auto;
   scroll-snap-align: start;
