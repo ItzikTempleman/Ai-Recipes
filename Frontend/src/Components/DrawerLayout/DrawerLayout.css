@@ -1,6 +1,8 @@
 .MuiDrawer-paper {
   width: 240px;
   height: 100vh;
+    background:  rgb(195, 194, 194)!important;
+    box-shadow: none !important;
 }
 
 .DrawerMainContainer {
@@ -9,6 +11,7 @@
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
+    background-color: transparent;
 }
 
 .DrawerContent {
@@ -54,34 +57,31 @@
   width: calc(100% - 24px);
   margin-left: 12px;
   margin-right: 12px;
-
-  /* REMOVE this line */
-  /* margin-top: 10px; */
-
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-
   padding: 12px 14px;
   border-radius: 18px;
   text-decoration: none;
   color: #fff;
-
   min-height: 46px;
   height: 46px;
   line-height: 1;
-
   box-sizing: border-box;
   transition: filter 120ms ease, transform 120ms ease;
 }
 
-/* profile spacing */
+.DrawerContent.LoggedOut .AboutScreenBtn{
+  margin-top: 12px;     /* or 0 if you want it flush */
+  margin-bottom: 0;
+}
+
 .ProfileBtn{
   margin-top: 10px;
 }
 
-/* about pinned bottom */
+
 .AboutScreenBtn{
   margin-top: auto;
   margin-bottom: 16px;

@@ -57,6 +57,9 @@ const resources = {
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe…",
       },
+      likeScreen:{
+  likedTitle:"Favorites"
+},
       filters: {
         image: {
           image:"Image",
@@ -228,7 +231,9 @@ const resources = {
         loadingWithImageLowerMessage: "זה יקח דקה",
         loadingNoImage: "...מייצר מתכון",
       },
-
+likeScreen:{
+  likedTitle:"מועדפים"
+},
       filters: {
         image: {
            image:"תמונה",

@@ -92,8 +92,6 @@ public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: stri
     store.dispatch(deleteRecipe(recipeId));
   };
 
-
-
   public async likeRecipe(recipeId: number): Promise<void> {
     try {
       await axios.post(appConfig.likeUrl + recipeId, {}, this.getAuth());
@@ -120,9 +118,7 @@ public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: stri
   public async loadMyLikes(): Promise<void> {
     const userId = store.getState().user?.id;
     if (!userId) return;
-
     const { data } = await axios.get<number[]>(appConfig.likeUrl, this.getAuth());
-
     store.dispatch(setLikes(data.map(recipeId => ({ userId, recipeId }))));
   }
 }

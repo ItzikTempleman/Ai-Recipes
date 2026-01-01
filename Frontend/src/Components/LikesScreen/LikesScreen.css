@@ -1,0 +1,102 @@
+/* LikesScreen should match HomeScreen layout */
+.LikesScreen {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 28px 16px 56px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.LikesScreenWrapper {
+  width: 100%;
+  max-width: 1080px;
+  margin: 18px auto 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.LikesScreenWrapper.ltr {
+  direction: ltr;
+  align-items: flex-start;
+}
+
+.LikesScreenWrapper.rtl {
+  direction: rtl;
+  align-items: flex-end;
+}
+
+.LikeScreenTitle {
+  margin: 14px 0 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: rgb(100, 100, 100);
+  text-align: start;
+}
+
+/* Bring HomeScreen's RecipeList look & spacing */
+.RecipeList {
+  width: 100%;
+  max-width: 1080px;
+  margin: 18px auto 0;
+  padding: 0;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-start;
+  overflow: visible !important;
+}
+
+.RecipeList:has(.RecipeListItem) {
+  flex-wrap: nowrap;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  scrollbar-width: none;
+
+  padding-top: 34px !important;
+  padding-bottom: 20px !important;
+
+  padding-inline-start: 34px !important;
+  padding-inline-end: 34px !important;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.RecipeList:has(.RecipeListItem) > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+/* add edge gutters like Home */
+.RecipeList:has(.RecipeListItem)::before,
+.RecipeList:has(.RecipeListItem)::after {
+  content: "";
+  flex: 0 0 34px;
+}
+
+@media (max-width: 600px) {
+  .LikesScreen {
+    padding: 18px 14px 44px;
+  }
+
+  .RecipeList {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    justify-content: center !important;
+    padding-inline: 34px !important;
+    box-sizing: border-box;
+  }
+
+  .RecipeList:has(.RecipeListItem) {
+    overflow-x: visible !important;
+    scroll-snap-type: none !important;
+    padding-bottom: 0 !important;
+  }
+
+  .RecipeList:has(.RecipeListItem) > * {
+    width: min(100%, 360px);
+    max-width: min(100%, 360px);
+  }
+}
