@@ -16,8 +16,8 @@
   flex-direction: column;
 }
 
-.HomeScreenTitleWrapper.ltr { --edge-pad: 34px; --avatar-pop: -20px; }
-.HomeScreenTitleWrapper.rtl { --edge-pad: 34px; --avatar-pop: -20px; } /* can differ if you want */
+.HomeScreenTitleWrapper.ltr { direction: ltr; }
+.HomeScreenTitleWrapper.rtl { direction: rtl; }
 
 .HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem) {
   padding-inline: 10px !important;
@@ -26,15 +26,15 @@
   padding-inline-end: var(--edge-pad, 34px) !important;
   scroll-padding-inline-end: var(--edge-pad, 34px);
 }
-/* ✅ ONLY change: make the title lower by adding spacing between children */
+
 .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) {
   align-items: flex-start;
-  gap: 22px; /* pushes “Recently viewed” down */
+  gap: 22px; 
 }
 
 .HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) {
   align-items: flex-end;
-  gap: 22px; /* same spacing in rtl */
+  gap: 22px; 
 }
 
 .HomeScreenTitleWrapper:not(:has(.HomeScreenTitle.user)) {
@@ -42,8 +42,7 @@
 }
 
 .HomeScreenTitleContainer {
-  position: relative;
-  padding: 18px 18px;
+ box-sizing: border-box;
   width: 100%;
 }
 
@@ -144,7 +143,7 @@
 .HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem)::before,
 .HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem)::after {
   content: "";
-  flex: 0 0 34px;        /* >= the amount your avatar sticks out (20px) + some buffer */
+  flex: 0 0 34px;        
 }
 .RecipeList {
   width: 100%;
@@ -157,7 +156,7 @@
   overflow: visible !important;
   
 }
-
+.HomeScreenTitle.user { text-align: start; }
 .RecipeList:has(.RecipeListItem) {
   flex-wrap: nowrap;
   overflow-x: auto !important;
@@ -188,7 +187,8 @@
   }
 
   .HomeScreenTitleWrapper {
-    display: block;
+      display: flex;           /* keep flex so rtl/ltr alignment works */
+    flex-direction: column;
     width: 100%;
   }
 

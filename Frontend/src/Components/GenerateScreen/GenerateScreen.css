@@ -25,19 +25,14 @@
   text-align: center;
 
   /* BIGGER */
-  font-size: clamp(30px, 3.2vw, 52px);
+  font-size: clamp(34px, 3.2vw, 60px);
   line-height: 1.02;
   font-weight: 1100;
   letter-spacing: -1.4px;
 
   /* richer gradient */
-  background: linear-gradient(
-    180deg,
-    #7c5cff 0%,
-    #6a4dff 28%,
-    #4f46e5 60%,
-    #2b1fb8 100%
-  );
+ background: linear-gradient(180deg, #ffaf01 0%, #ff9100 100%);
+   
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -113,7 +108,7 @@
 .ImageSwitchRow svg{
   width:26px; height:26px;
   padding:8px;
-  border-radius:14px;
+  border-radius:12px;
   background:rgba(231, 187, 248, 0.597);
   color:#6a4dff;
 }
@@ -129,13 +124,13 @@
 
 /* nicer toggle shape */
 .imageSwitch .MuiToggleButtonGroup-root{
-  border-radius:14px;
+  border-radius:12px;
   overflow:hidden;
   border:1px solid rgba(148,163,184,.45);
   background:rgba(255,255,255,.55);
 }
 .imageSwitch .MuiToggleButtonGroup-root {
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -151,17 +146,17 @@
 }
 
 .imageSwitch .MuiToggleButtonGroup-grouped:last-of-type {
-  border-top-right-radius: 14px !important;
-  border-bottom-right-radius: 14px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
 }
 
 .imageSwitch .MuiToggleButton-root{
-  padding:8px 14px !important;
+  padding:8px 12px !important;
   min-width:90px;
   font-weight:800;
 }
 .imageSwitch .MuiToggleButton-root.Mui-selected{
-  border-radius:14px;
+  border-radius:12px;
   background:linear-gradient(180deg, #a07bff 0%, #6a4dff 100%) !important;
   color:#fff !important;
   box-shadow:0 12px 22px rgba(106, 77, 255, .22),
@@ -170,7 +165,7 @@
 
 
 .MuiToggleButton-root:not(.Mui-selected) {
-border-radius: 14px;
+border-radius: 12px;
 }
 /* ===== Status text ===== */
 .Loading{ text-align:center; }
