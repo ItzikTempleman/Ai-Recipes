@@ -10,7 +10,7 @@ const resources = {
         likes:"Likes",
         home: "Home",
         generate: "Create",
-        about: "About",
+        about: "About this site",
         selectLanguage: "Language"
       },
       drawer: {
@@ -177,7 +177,7 @@ const resources = {
         likes:"אהבתי",
         home: "בית",
         generate:"מתכון",
-        about: "אודות",
+        about: "אודות האתר",
         selectLanguage: "שפה",
       },
 

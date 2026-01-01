@@ -1,502 +1,405 @@
-.GenerateScreen {
-  width: 100%;
-  min-height: 100vh;
-  padding: 18px;
+/* ===== Layout ===== */
+.GenerateScreen{
+  width:100%;
+  min-height:100vh;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  box-sizing:border-box;
+  overflow-x:hidden;
+}
+
+.GenerateContainer{
+  width:100%;
+  max-width:640px;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+
+  border-radius:18px;
+  border:2px solid rgb(201,201,201);
+  backdrop-filter:blur(12px);
+  box-shadow:0 10px 30px rgba(15,23,42,.06), 0 1px 0 rgba(255,255,255,.8) inset;
+}
+
+.GenerateTitle{
+  margin:10px 0 20px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  line-height:1.1;
+}
+.GenerateTitle.rtl{ flex-direction:row-reverse; }
+
+/* ===== Top input row ===== */
+.InputData{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:8px;
+}
+.InputData .SearchTF{ flex:1; min-width:0; }
+.InputData.rtl{ flex-direction:row-reverse; }
+.InputData.rtl .BtnIcon{ margin-left:0; margin-right:12px; }
+
+/* SearchTF RTL text + label + notch */
+.InputData.rtl .SearchTF input,
+.InputData.rtl .SearchTF input::placeholder{ direction:rtl; text-align:right; }
+.InputData.rtl .SearchTF .MuiOutlinedInput-input{ padding-right:12px !important; }
+.InputData.rtl .SearchTF .MuiInputLabel-root,
+.InputData.rtl .SearchTF .MuiInputLabel-outlined{
+  right:18px;
+  left:auto !important;
+  transform-origin:top right !important;
+  text-align:right;
+}
+.InputData.rtl .SearchTF .MuiOutlinedInput-notchedOutline{ text-align:right; }
+
+/* Loading sizes */
+.small-loading .MuiCircularProgress-root{ width:26px !important; height:26px !important; }
+.large-loading .MuiCircularProgress-root{ width:40px !important; height:40px !important; }
+
+/* ===== Image switch ===== */
+/* ===== Image switch (prettier) ===== */
+.ImageSwitchSection{
+  width:100%;
+  margin:26px 0 18px;
+  display:flex;
+  justify-content:center;
+  padding:0 6px;
+}
+
+.ImageSwitchRow{
+  width:100%;
+  max-width:520px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+}
+
+/* text */
+.ImageSwitchRow p{
+  margin:0;
+  font-weight:800;
+  letter-spacing:.2px;
+}
+
+/* icon pill */
+.ImageSwitchRow svg{
+  width:26px; height:26px;
+  padding:8px;
+  border-radius:14px;
+  background:rgba(171, 206, 236, 0.681);
+  color:#0585d4;
+}
+
+/* keep toggle aligned to edge */
+.ImageSwitchRow .imageSwitch{ margin-left:auto; }
+.ImageSwitchSection.rtl .ImageSwitchRow .imageSwitch{ margin-left:0; margin-right:auto; }
+
+/* RTL layout */
+.ImageSwitchSection.rtl .ImageSwitchRow{ flex-direction:row-reverse; }
+.ImageSwitchSection.rtl .ImageSwitchRow p{ text-align:right; }
+
+/* nicer toggle shape */
+.imageSwitch .MuiToggleButtonGroup-root{
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(148,163,184,.45);
+  background:rgba(255,255,255,.55);
+}
+.imageSwitch .MuiToggleButton-root{
+  padding:8px 14px !important;
+  min-width:90px;
+  font-weight:800;
+}
+.imageSwitch .MuiToggleButton-root.Mui-selected{
+  background:linear-gradient(180deg,#76bae4 0%,#0585d4 100%) !important;
+  color:#fff !important;
+}
+
+/* ===== Status text ===== */
+.Loading{ text-align:center; }
+.HasImage{ display:flex; flex-direction:column; align-items:center; }
+.HasImage__title{ font-weight:700; }
+.HasImage__sub{ font-weight:400; font-size:16px; }
+.ErrorText{ margin-top:8px; color:#d32f2f; font-size:.9rem; }
+
+/* ===== Filters column ===== */
+.FiltersColumn{
+  margin-top:4px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+
+.Servings{
+  width:100%;
+  max-width:520px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0;
+  padding:0 2px;
+}
+.Servings.ltr{ justify-content:flex-start; text-align:left; }
+.Servings.rtl{ flex-direction:row-reverse; justify-content:flex-end; text-align:right; }
+.Servings p{ margin:0; }
+
+.QuantitySelector{
+  width:56px;
+  height:32px;
+  border-radius:6px;
+  border:1px solid rgb(208,208,208);
+}
+
+/* ===== Exclude field: make it ACTUALLY stretch like SearchTF ===== */
+.ExcludedSection{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+
+/* your JSX has an inner wrapper div — give it width so the TF can grow */
+.ExcludedSection > div{
+  width:100%;
+  max-width:520px; /* change to 600/640 if you want wider inside the card */
+}
+
+/* Exclude TF fills its wrapper */
+.ExcludeTF{ width:100%; }
+.ExcludeTF .MuiOutlinedInput-root{ width:100%; }
+
+/* Exclude RTL text + label + notch */
+.ExcludedSection[dir="rtl"] .ExcludeTF input,
+.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{ direction:rtl; text-align:right; }
+
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input{
+  text-align:right;
+  padding-right:12px;
+  padding-left:0;
+}
+
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root,
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
+  right:18px;
+  left:auto !important;
+  transform-origin:top right !important;
+  text-align:right;
+}
+
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-notchedOutline{ text-align:right; }
+
+.ExcludeTF .MuiOutlinedInput-root,
+.SearchTF  .MuiOutlinedInput-root{
+  border-radius:14px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 24px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.75);
+  transition:.15s ease;
+}
+
+.ExcludeTF .MuiOutlinedInput-notchedOutline,
+.SearchTF  .MuiOutlinedInput-notchedOutline{
+  border:1px solid rgba(148,163,184,.55);
+}
+
+.ExcludeTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+.SearchTF  .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+  border-color:rgba(106,77,255,.45);
+}
+
+.ExcludeTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
+.SearchTF  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border-color:rgba(106,77,255,.9);
+  border-width:2px;
+}
+
+.ExcludeTF .MuiOutlinedInput-root.Mui-focused,
+.SearchTF  .MuiOutlinedInput-root.Mui-focused{
+  box-shadow:0 18px 38px rgba(106,77,255,.14), inset 0 1px 0 rgba(255,255,255,.85);
+}
+
+.ExcludeTF .MuiOutlinedInput-input,
+.SearchTF  .MuiOutlinedInput-input{ padding:10px 12px; }
+
+.ExcludeTF .MuiInputLabel-root.Mui-focused,
+.SearchTF  .MuiInputLabel-root.Mui-focused{ color:rgba(106,77,255,.95); }
+
+
+.FiltersDropdown__panel{
+  max-height:0;
+  margin:12px;
+  padding:12px;
+  border-radius:4px;
+  transition:max-height 220ms ease;
+  overflow:hidden;
+  overflow-x:visible !important;
+}
+.FiltersDropdown__panel.open{
+  max-height:800px;
+  border:1px solid rgba(145,184,194,.618);
+}
+
+.FiltersDropdown__panelInner{
+  padding-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+  text-align:left;
+}
+.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner{
+  align-items:flex-end;
+  text-align:right;
+}
+.FiltersDropdown__panelInner > div{ width:100%; }
+.FiltersDropdown__panelInner > div + div{
+  border-top:1px solid rgba(0,0,0,.12);
+  padding-top:6px;
+}
+
+.FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  flex-wrap:wrap;
+  overflow:visible;
+  row-gap:8px;
+}
+.FiltersDropdown__panelInner .MuiToggleButton-root{
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  white-space:nowrap;
+}
+.FiltersColumn .MuiToggleButton-root{ width:auto !important; min-width:100px; }
+.FiltersColumn .MuiToggleButton-root.Mui-selected{ border-radius:4px; }
+
+.FiltersDropdown[dir="ltr"] .MuiToggleButtonGroup-root{ justify-content:flex-start; }
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root{ direction:rtl; }
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped{ margin:0 !important; }
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type){
+  margin-right:-1px !important;
+  border-right:0 !important;
+  border-left:1px solid rgba(0,0,0,.12) !important;
+}
+.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type{
+  border-right:1px solid rgba(0,0,0,.12) !important;
+}
+
+.GenerateRecipeBtn{
+  height:40px;
+  min-width:96px;
+  padding:0 14px;
+  text-transform:none;
+  font-weight:700;
+  background:linear-gradient(180deg,#e98c36,#cc822d);
+  border:1px solid rgba(2,6,23,.16);
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+ border-radius: 14px !important;
+  box-shadow:0 6px 16px rgba(2,6,23,.16), inset 0 1px 0 rgba(255,255,255,.28);
+  transition:transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+.GenerateRecipeBtn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+.GenerateRecipeBtn:active{ transform: translateY(0px); }
+.GenerateRecipeBtn svg{ color:#fff; font-size:22px; }
+.GenerateRecipeBtn p{ margin:0; font-size:14px; font-weight:900; }
+.GenerateRecipeBtn{
+  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
+  box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
+              0 2px 0 rgba(255, 255, 255, .22) inset;
+}
+
+.GenerateRecipeBtn.Mui-disabled{
+  background:#e5e7eb !important;
+  border:1px solid rgba(15,23,42,.12) !important;
+  box-shadow:none !important;
+  color:rgba(17,24,39,.55) !important;
+}
+.GenerateRecipeBtn .BtnIcon{ font-size:18px; color:#ffe08a; }
+
+
+.CenterRow{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  box-sizing:border-box;
+  margin:8px 0;
+  padding:0 12px;
+}
+
+.FilterBtn.MuiButton-root {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
-
-
-.GenerateContainer {
-  border-radius: 18px;
-  border: 2px solid rgb(201, 201, 201);
-  backdrop-filter: blur(12px);
-  width: 100%;
-  max-width: 640px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-  display: flex;
-  flex-direction: column;
-}
-
-.InputData {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.InputData .SearchTF {
-  flex: 1;
-  min-width: 0;
-}
-
-.SearchTF .MuiOutlinedInput-root {
-  background-color: #fff;
-}
-
-.InputData.rtl {
-  flex-direction: row-reverse;
-}
-
-.InputData.rtl .BtnIcon {
-  margin-left: 0;
-  margin-right: 12px;
-}
-
-.InputData.rtl .SearchTF input {
-  direction: rtl;
-  text-align: right;
-}
-
-.InputData.rtl .SearchTF input::placeholder {
-  direction: rtl;
-  text-align: right;
-}
-
-.InputData.rtl .SearchTF .MuiOutlinedInput-input {
-  padding-right: 12px !important;
-}
-
-.InputData.rtl .SearchTF .MuiInputLabel-root {
-  right: 22px;
-  left: auto !important;
-  transform-origin: top right !important;
-  text-align: right;
-}
-
-.small-loading .MuiCircularProgress-root {
-  width: 26px !important;
-  height: 26px !important;
-}
-
-.large-loading .MuiCircularProgress-root {
-  width: 40px !important;
-  height: 40px !important;
-}
-
-.GenerateTitle {
-  margin: 10px 0 20px;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  line-height: 1.1;
-}
-
-.GenerateTitle.rtl {
-  flex-direction: row-reverse;
-}
-
-.ImageSwitchSection {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 30px 0;
-}
-
-.ImageSwitchSection.ltr {
-  align-items: flex-start;
-  text-align: left;
-  padding-left: 30px;
-  padding-right: 0;
-}
-
-.ImageSwitchSection.rtl {
-  align-items: flex-end;
-  text-align: right;
-  padding-right: 30px;
-  padding-left: 0;
-}
-
-.ImageSwitchRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-}
-
-.ImageSwitchSection.rtl .ImageSwitchRow {
-  flex-direction: row-reverse;
-}
-
-.ImageSwitchSection.rtl .imageSwitch {
-  direction: rtl;
-}
-
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped {
-  direction: rtl;
-}
-
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-groupedHorizontal {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-.HasImage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.HasImage__title {
-  font-weight: 700;
-}
-
-.HasImage__sub {
-  font-weight: 400;
-  font-size: 16px;
-}
-
-.Loading {
-  text-align: center;
-}
-
-.FiltersColumn {
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.Servings {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  padding: 0 2px;
-}
-
-.Servings.ltr {
-  flex-direction: row;
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.Servings.rtl {
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.Servings p {
-  margin: 0;
-}
-
-.QuantitySelector {
-  width: 56px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid rgb(208, 208, 208);
-}
-
-.ExcludedSection {
-  width: 100%;
-}
-
-.ExcludedSection[dir="rtl"] .ExcludeTF input {
-  direction: rtl;
-  text-align: right;
-}
-
-.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder {
-  direction: rtl;
-  text-align: right;
-}
-
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input {
-  text-align: right;
-  padding-right: 12px;
-  padding-left: 0;
-}
-
-.ExcludeTF {
-  width: 100%;
-}
-
-.ExcludeTF .MuiOutlinedInput-root {
-  width: 100%;
-  max-width: 520px;
-  background-color: #fff;
-}
-
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root {
-  right: 22px;
-  left: auto !important;
-  transform-origin: top right !important;
-  text-align: right;
-}
-
-.FiltersDropdown__panelInner {
-  padding-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner {
-  align-items: flex-end;
-  text-align: right;
-}
-
-.FiltersDropdown__panelInner > div {
-  width: 100%;
-}
-
-.FiltersDropdown__panel {
-  max-height: 0;
-  margin: 12px;
-  padding: 12px;
-  border-radius: 4px;
-  transition: max-height 220ms ease;
-  overflow-y: hidden;
-  overflow-x: visible !important;
-}
-
-.FiltersDropdown__panel.open {
-  max-height: 800px;
-  border: 1px solid rgba(145, 184, 194, 0.618);
-  overflow-x: visible !important;
-}
-
-.FiltersDropdown__panelInner > div + div {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  padding-top: 6px;
-}
-
-.FiltersDropdown__panelInner .MuiToggleButtonGroup-root .MuiToggleButton-root {
-  position: relative;
-}
-
-.FiltersDropdown__panelInner .MuiToggleButtonGroup-root {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-wrap: wrap;
-  overflow: visible;
-  row-gap: 8px;
-}
-
-.FiltersDropdown__panelInner .MuiToggleButton-root {
-  min-width: 0;
-  max-width: 100%;
-  box-sizing: border-box;
-  white-space: nowrap;
-}
-
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-.FiltersDropdown__panelInner > div {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div {
-  justify-content: flex-end;
-}
-
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-groupedHorizontal {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-.FiltersDropdown[dir="ltr"] .MuiToggleButtonGroup-root {
-  justify-content: flex-start;
-}
-
-/* More distinct color + more rounded (login-like pill) */
-.GenerateRecipeBtn.MuiButton-root {
-  height: 40px;
-  min-width: 96px;
-  padding: 0 14px;
-
-  border-radius: 14px; /* pill like login */
-  text-transform: none;
-  font-weight: 700;
-
-  /* distinct from header blue: teal/green gradient */
-  background: linear-gradient(180deg, #e98c36, #cc822d);
-  border: 1px solid rgba(2, 6, 23, 0.16);
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
+  margin: 12px auto 0;
+  border-radius: 14px !important;
+  padding: 8px 32px !important;
+  height: 40px !important;
+  text-transform: none !important;
+  gap: 12px !important;
+  background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
   box-shadow:
-    0 6px 16px rgba(2, 6, 23, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28);
-
-  transition: transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
+    0 18px 34px rgba(243, 164, 0, .30),
+    0 10px 18px rgba(243, 164, 0, .22),
+    0 2px 0 rgba(255, 255, 255, .22) inset !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  letter-spacing: .3px;
+  color: #6a6a6a !important;
+  text-shadow: none !important;
 }
 
-.GenerateRecipeBtn:hover {
-  filter: brightness(1.05);
+.FilterBtn.MuiButton-root svg {
+  color: #6a6a6a !important;
+  font-size: 30px !important;
+  filter: none !important;
+}
+
+.FilterBtn.MuiButton-root:hover {
+  background: linear-gradient(180deg, #ffc54a 0%, #f6ac00 100%) !important;
   transform: translateY(-1px);
   box-shadow:
-    0 10px 22px rgba(2, 6, 23, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    0 24px 44px rgba(243, 164, 0, .34),
+    0 12px 22px rgba(243, 164, 0, .26),
+    0 2px 0 rgba(255, 255, 255, .22) inset !important;
 }
 
-.GenerateRecipeBtn:active {
-  transform: translateY(0);
-  filter: brightness(0.98);
+.FilterBtn.MuiButton-root:active {
+  transform: translateY(1px);
   box-shadow:
-    0 5px 14px rgba(2, 6, 23, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-.GenerateRecipeBtn.Mui-disabled {
-  background: #e5e7eb !important;
-  border: 1px solid rgba(15, 23, 42, 0.12) !important;
-  box-shadow: none !important;
-  color: rgba(17, 24, 39, 0.55) !important;
-}
-
-/* keep icon “spark” */
-.GenerateRecipeBtn .BtnIcon {
-  font-size: 18px;
-  color: #ffe08a; /* warmer, pops on green */
+    0 10px 18px rgba(243, 164, 0, .22),
+    0 2px 0 rgba(255, 255, 255, .18) inset !important;
 }
 
 
-.ErrorText {
-  margin-top: 8px;
-  color: #d32f2f;
-  font-size: 0.9rem;
-}
 
-.CenterRow {
-  width: 100%;
-  display: flex;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  justify-content: center;
-  box-sizing: border-box;
-  margin: 8px 0;
-  padding: 0 12px;
-}
 
-.ImageSwitchDiv {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+@media (max-width:600px){
+  .GenerateContainer{ border:none; box-shadow:none; }
 
-.ImageSwitchIconsRow {
-  display: flex;
-  justify-content: center;
-}
-
-.imageSwitchIcon,
-.imageSwitchIcon-NoImage {
-  color: #4a4a4a;
-}
-
-.imageSwitch .MuiToggleButton-root {
-  width: 100px !important;
-}
-
-.FiltersColumn .MuiToggleButton-root {
-  width: auto !important;
-  min-width: 100px;
-}
-
-.imageSwitch .MuiToggleButton-root.Mui-selected,
-.FiltersColumn .MuiToggleButton-root.Mui-selected {
-  border-radius: 4px;
-}
-
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-root {
-  direction: rtl;
-}
-
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped {
-  margin: 0 !important;
-}
-
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-  border-right: 0 !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
-  margin-right: -1px !important;
-}
-
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:first-of-type {
-  border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
-}
-
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div {
-  justify-content: flex-start;
-  text-align: right;
-}
-
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-root {
-  direction: rtl;
-}
-
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped {
-  margin: 0 !important;
-}
-
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-  margin-right: -1px !important;
-  border-right: 0 !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
-}
-
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type {
-  border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
-}
-
-.FilterBtn {
-  gap: 12px;
-  margin-top: 40px !important;
-}
-
-@media (max-width: 600px) {
-  .GenerateContainer {
-    border: none;
-    box-shadow: none;
-  }
-
-  .ExcludeTF .MuiOutlinedInput-root {
-    max-width: 100%;
-  }
-
-  .imageSwitch .MuiToggleButton-root {
-    width: 72px !important;
-    min-width: 72px !important;
-    padding: 4px 6px !important;
-    font-size: 0.75rem !important;
+  .imageSwitch .MuiToggleButton-root{
+    width:72px !important;
+    min-width:72px !important;
+    padding:4px 6px !important;
+    font-size:.75rem !important;
   }
 
   .FiltersColumn .MuiToggleButton-root,
-  .FiltersDropdown__panelInner .MuiToggleButton-root {
-    width: auto !important;
-    min-width: 72px !important;
-    padding: 4px 6px !important;
-    font-size: 0.75rem !important;
+  .FiltersDropdown__panelInner .MuiToggleButton-root{
+    min-width:72px !important;
+    padding:4px 6px !important;
+    font-size:.75rem !important;
   }
 
-  .FiltersDropdown__panelInner .MuiToggleButtonGroup-root {
-    column-gap: 6px;
-    row-gap: 6px;
-  }
-
-  .FiltersDropdown__panel {
-    margin: 8px;
-    padding: 10px;
-  }
+  .FiltersDropdown__panel{ margin:8px; padding:10px; }
 }
+

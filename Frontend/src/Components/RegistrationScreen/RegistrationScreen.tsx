@@ -259,7 +259,7 @@ const { t, i18n } = useTranslation();
         </FormControl>
         <Button
           type="submit"
-          className="RegistrationBtn"
+          className="RegisterBtn"
           variant="contained">
           {t("auth.registration.submit")}
         </Button>

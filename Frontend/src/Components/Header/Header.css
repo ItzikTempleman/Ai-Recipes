@@ -64,18 +64,19 @@
 }
 
 .HomeScreenBtn svg {
-  color: #2f7d32;
+  color: #7c75e1;
 }
 
 .HomeScreenBtn p {
-  color: #2f7d32;
+  color: #7c75e1;
 }
 
 .HomeScreenBtn.active,
 .HomeScreenBtn:hover {
-  background: rgba(47, 125, 50, 0.12);
+  background: rgba(150, 143, 246, 0.22);
+  border-color: rgba(150, 143, 246, 0.45) !important;
   transform: translateY(-1px);
-  box-shadow: 0 14px 22px rgba(47, 125, 50, 0.16);
+  box-shadow: 0 14px 22px rgba(150, 143, 246, 0.26);
 }
 
 .HomeScreenBtn:active {
@@ -83,22 +84,19 @@
 }
 
 .LikesScreenBtn svg {
-  color: #c2185b;
+  color: #d34b86;
 }
 
 .LikesScreenBtn p {
-  color: #c2185b;
+  color: #d34b86;
 }
 
 .LikesScreenBtn.active,
 .LikesScreenBtn:hover {
-  background: rgba(194, 24, 91, 0.12);
+  background: rgba(211, 75, 134, 0.18); /* a bit stronger + matches your pink */
+  border-color: rgba(211, 75, 134, 0.45) !important;
   transform: translateY(-1px);
-  box-shadow: 0 14px 22px rgba(194, 24, 91, 0.16);
-}
-
-.LikesScreenBtn:active {
-  transform: translateY(0px);
+  box-shadow: 0 14px 22px rgba(211, 75, 134, 0.24);
 }
 
 .ReturnScreenBtn svg {
@@ -111,14 +109,13 @@
 
 .ReturnScreenBtn.active,
 .ReturnScreenBtn:hover {
-  background: rgba(217, 119, 6, 0.14);
+  background: rgba(217, 119, 6, 0.16); /* slightly stronger */
+  border-color: rgba(217, 119, 6, 0.42) !important;
   transform: translateY(-1px);
-  box-shadow: 0 14px 22px rgba(217, 119, 6, 0.16);
+  box-shadow: 0 14px 22px rgba(217, 119, 6, 0.22);
 }
 
-.ReturnScreenBtn:active {
-  transform: translateY(0px);
-}
+
 
 .HeaderRight {
   display: flex;
@@ -270,8 +267,8 @@
   .ReturnScreenBtn svg,
   .LikesScreenBtn svg,
   .HomeScreenBtn svg {
-    width: 24px !important;
-    height: 24px !important;
+    width: 36px !important;
+    height: 36px !important;
     filter: none !important;
   }
 
@@ -311,15 +308,9 @@
 
   .HomeScreenBtn:hover p,
   .HomeScreenBtn.active p {
-    color: #1f6a22 !important;
+    color: #7c75e1 !important;
   }
-
-  .HomeScreenBtn:hover::after,
-  .HomeScreenBtn.active::after {
-    background: rgba(47, 125, 50, 0.85);
-    opacity: 1;
-  }
-
+.HomeScreenBtn.active::after { background: #7c75e1; opacity: 1; }
   .LikesScreenBtn:hover svg,
   .LikesScreenBtn.active svg {
     filter: drop-shadow(0 6px 14px rgba(194, 24, 91, 0.22));
@@ -327,12 +318,12 @@
 
   .LikesScreenBtn:hover p,
   .LikesScreenBtn.active p {
-    color: #ad1457 !important;
+    color: #d34b86 !important;
   }
 
   .LikesScreenBtn:hover::after,
   .LikesScreenBtn.active::after {
-    background: rgba(194, 24, 91, 0.85);
+    background: #d34b86;
     opacity: 1;
   }
 
@@ -381,7 +372,7 @@
 
   .LogoutBtn.MuiButton-root,
   .LoginBtn.MuiButton-root {
-    min-width: 64px !important;
+    width: 90px !important;
     padding: 0 10px !important;
     min-height: 42px !important;
     height: 42px !important;

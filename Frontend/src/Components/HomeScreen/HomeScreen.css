@@ -58,7 +58,7 @@
   line-height: 1.15;
   padding-bottom: 6px;
   display: block;
-  color: #5a4dff;
+  color: #7c75e1;
   text-shadow: 0 10px 30px rgba(90, 77, 255, .16);
 }
 
@@ -80,9 +80,9 @@
   align-items: center;
   justify-content: center;
   margin: 120px auto 0;
-  border-radius: 18px !important;
-  padding: 16px 32px !important;
-  min-height: 60px !important;
+  border-radius: 14px !important;
+  padding: 8px 32px !important;
+  min-height: 50px !important;
   text-transform: none !important;
   gap: 12px !important;
   background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;

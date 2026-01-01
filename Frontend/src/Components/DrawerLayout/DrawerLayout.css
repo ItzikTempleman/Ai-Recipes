@@ -39,102 +39,79 @@
   object-fit: cover;
   display: block;
   margin: 0 auto;
+  margin-top: 50px;
 }
 
-.AboutScreenBtn{
-  margin-top: 20px;
-  margin-bottom: 12px;
-  width: calc(100% - 24px);
-  margin-left: 12px;
-  margin-right: 12px;
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 18px;
-  text-decoration: none;
-  color: #fff;
-  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
-  box-shadow: 0 12px 22px rgba(106, 77, 255, .22), 0 2px 0 rgba(255, 255, 255, .22) inset;
-}
-.AboutScreenBtn svg {
-  color: #fff;
-  font-size: 22px;
-}
-
-.AboutScreenBtn p {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.AboutScreenBtn:hover {
-  filter: brightness(1.03);
-  transform: translateY(-1px);
-}
-
-.AboutScreenBtn:active {
-  transform: translateY(0px);
-}
-
-
-.AboutScreenBtn,
-.ProfileBtn.MuiButton-root{
-  width: calc(100% - 24px) !important;
-  margin-left: 12px !important;
-  margin-right: 12px !important;
-}
 
 .UserName {
   margin: 20px 0 0;
   text-align: center;
 }
 
-.ProfileBtn.MuiButton-root{
 
-  margin:10px 12px 0 !important;
+.ProfileBtn,
+.AboutScreenBtn{
+  width: calc(100% - 24px);
+  margin-left: 12px;
+  margin-right: 12px;
 
-  border-radius:18px !important;
-  padding:12px 14px !important;
-  min-height:46px !important;
-  height:46px !important;            /* force it */
-  line-height:1 !important;
+  /* REMOVE this line */
+  /* margin-top: 10px; */
 
-  text-transform:none !important;
-  justify-content:flex-start !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
 
-  background:linear-gradient(180deg,#ff6f9c 0%,#d94672 100%) !important;
-  box-shadow:0 12px 22px rgba(217,70,114,.22),0 2px 0 rgba(255,255,255,.22) inset !important;
-  color:#fff !important;
+  padding: 12px 14px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #fff;
 
-  transition:filter 120ms ease, transform 120ms ease !important;
+  min-height: 46px;
+  height: 46px;
+  line-height: 1;
+
+  box-sizing: border-box;
+  transition: filter 120ms ease, transform 120ms ease;
 }
 
-.ProfileBtn.MuiButton-root:hover{ filter:brightness(1.03); transform:translateY(-1px); }
-.ProfileBtn.MuiButton-root:active{ transform:translateY(0px); }
-
-/* kill MUI icon spacing that makes it look "empty" and tall */
-.ProfileBtn.MuiButton-root .MuiButton-startIcon,
-.ProfileBtn.MuiButton-root .MuiButton-endIcon{
-  margin:0 !important;
+/* profile spacing */
+.ProfileBtn{
+  margin-top: 10px;
 }
 
-/* make your inner row fill the button cleanly */
-.ProfileBtn.MuiButton-root .ProfileRowInBtn{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  gap:10px;
+/* about pinned bottom */
+.AboutScreenBtn{
+  margin-top: auto;
+  margin-bottom: 16px;
+}
+.ProfileBtn:hover,
+.AboutScreenBtn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+
+.ProfileBtn:active,
+.AboutScreenBtn:active{ transform: translateY(0px); }
+
+.ProfileBtn svg,
+.AboutScreenBtn svg{ color:#fff; font-size:22px; }
+
+.ProfileBtn p,
+.AboutScreenBtn p{ margin:0; font-size:14px; font-weight:900; }
+
+
+/* keep About colors as now */
+.AboutScreenBtn{
+  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
+  box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
+              0 2px 0 rgba(255, 255, 255, .22) inset;
 }
 
-.ProfileBtn.MuiButton-root .ProfileRowInBtn svg{ color:#fff; font-size:22px; }
-.ProfileBtn.MuiButton-root .ProfileRowInBtn p{ margin:0; font-size:14px; font-weight:900; }
-
-
-
-
+/* keep Profile colors as your profile/pink */
+.ProfileBtn{
+  background: linear-gradient(180deg,#ff6f9c 0%,#d94672 100%);
+  box-shadow: 0 12px 22px rgba(217,70,114,.22),
+              0 2px 0 rgba(255,255,255,.22) inset;
+}
 
 
 

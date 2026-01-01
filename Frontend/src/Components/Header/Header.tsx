@@ -1,17 +1,19 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useState } from "react";
-import HomeIcon from '@mui/icons-material/Home';
 import { DrawerLayout, Language } from "../DrawerLayout/DrawerLayout";
 import { useTranslation } from "react-i18next";
-import LanguageIcon from '@mui/icons-material/Language';
+import LanguageIcon from "@mui/icons-material/Language";
 import { useLanguage } from "../../Utils/SetLanguage";
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import UndoIcon from '@mui/icons-material/Undo';
+import UndoIcon from "@mui/icons-material/Undo";
 import { Button } from "@mui/material";
 import { userService } from "../../Services/UserService";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import HomeIcon from "@mui/icons-material/Home";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -21,7 +23,8 @@ export function Header() {
   const currentRecipe = useSelector((state: AppState) => state.recipes.current);
   const isGuest = !user;
   const location = useLocation();
-  const isOnGenerateScreen = location.pathname === "/generate" || location.pathname.startsWith("/generate/");
+  const isOnGenerateScreen =
+    location.pathname === "/generate" || location.pathname.startsWith("/generate/");
   const hasGeneratedRecipe = Boolean(currentRecipe?.title);
   const showUndo = isGuest && hasGeneratedRecipe && !isOnGenerateScreen;
   const navigate = useNavigate();
@@ -36,60 +39,71 @@ export function Header() {
           </NavLink>
         )}
 
-        <NavLink to="/home" className="HomeScreenBtn">
-          <HomeIcon />
-          <p>{t("nav.home")}</p>
+        <NavLink
+          to="/home"
+          className={({ isActive }) => `HomeScreenBtn ${isActive ? "active" : ""}`}
+        >
+          {({ isActive }) => (
+            <>
+              {isActive ? <HomeIcon /> : <HomeOutlinedIcon />}
+              <p>{t("nav.home")}</p>
+            </>
+          )}
         </NavLink>
+
         {user && (
-          <NavLink to="/likes" className="LikesScreenBtn">
-            <FavoriteIcon />
-            <p>{t("nav.likes")}</p>
+          <NavLink
+            to="/likes"
+            className={({ isActive }) => `LikesScreenBtn ${isActive ? "active" : ""}`}
+          >
+            {({ isActive }) => (
+              <>
+                {isActive ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                <p>{t("nav.likes")}</p>
+              </>
+            )}
           </NavLink>
         )}
-
       </div>
 
       <div className="HeaderRight">
-
         {!isGuest ? (
           <Button
             variant="contained"
             className="LogoutBtn"
             onClick={() => {
-              navigate("/home")
-              userService.logout()
-            }
-            }>
+              navigate("/home");
+              userService.logout();
+            }}
+          >
             {t("drawer.logout")}
           </Button>
-        ) :
-
+        ) : (
           <Button
             className="LoginBtn"
             variant="contained"
-            onClick={() =>
-              navigate("/login")
-            }>
+            onClick={() => navigate("/login")}
+          >
             {t("drawer.login")}
           </Button>
-
-        }
-
+        )}
 
         <div className="LanguageLink">
           <LanguageIcon />
           <select
             className="LanguageSelector"
             value={initialLanguage}
-            onChange={(e) => setLang(e.target.value as Language)}>
+            onChange={(e) => setLang(e.target.value as Language)}
+          >
             <option value="en">{t("drawer.english")}</option>
             <option value="he">{t("drawer.hebrew")}</option>
           </select>
         </div>
+
         <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
         </div>
       </div>
     </div>
-  )
+  );
 }

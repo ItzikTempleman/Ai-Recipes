@@ -2,7 +2,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Person from "@mui/icons-material/Person";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../Redux/Store";
 
@@ -10,7 +10,6 @@ import "./DrawerLayout.css";
 import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import { Button } from "@mui/material";
 
 type DrawerState = {
   open: boolean;
@@ -23,7 +22,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
   const { t } = useTranslation();
   const user = useSelector((state: AppState) => state.user);
   const isLoggedIn = !!(user && localStorage.getItem("token"));
-  const navigate = useNavigate();
+
 
   return (
     <div>
@@ -41,29 +40,27 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
           </div>
           <div className={`DrawerContent ${isLoggedIn ? "" : "LoggedOut"}`}>
 
-            <NavLink to="/about" className="AboutScreenBtn">
-              <InfoOutlinedIcon />
-              <p>{t("nav.about")}</p>
-            </NavLink>
-
             {isLoggedIn ? (
               <div>
                 <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />
                 <h2 className="UserName">{user.firstName} {user.familyName}</h2>
-                <Button
-                  className="ProfileBtn"
-                  variant="contained"
-                  onClick={() => {
-                    navigate("/profile");
-                    setOpen(false);
-                  }}>
-                  <div className="ProfileRowInBtn">
-                    <Person />
-                    <p>{t("drawer.profile")}</p>
-                  </div>
-                </Button>
+
+                <NavLink onClickCapture={() => setOpen(false)}
+                  to="/profile" className="ProfileBtn"
+
+                >
+                  <Person />
+                  <p>{t("drawer.profile")}</p>
+
+                </NavLink>
               </div>
             ) : null}
+            <NavLink onClickCapture={() => setOpen(false)} to="/about" className="AboutScreenBtn" >
+
+              <InfoOutlinedIcon />
+              <p>{t("nav.about")}</p>
+            </NavLink>
+
           </div>
         </aside>
       </Drawer>

@@ -139,7 +139,7 @@ InputProps={{
         </TextField>
 
         <Button type="submit"
-          className="LoginButton"
+          className="LoginScreenBtn"
           variant="contained">
           {t("auth.login.submit")}
         </Button>
