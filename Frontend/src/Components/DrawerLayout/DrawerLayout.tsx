@@ -5,11 +5,11 @@ import Person from "@mui/icons-material/Person";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../Redux/Store";
-import { userService } from "../../Services/UserService";
+
 import "./DrawerLayout.css";
 import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import LogoutIcon from "@mui/icons-material/Logout";
+
 import { Button } from "@mui/material";
 
 type DrawerState = {
@@ -62,17 +62,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
   
               </div>
             )}
-            {isLoggedIn ? (
-                <NavLink
-                to="/home"
-                className="LogoutLink"
-                onClick={() => {userService.logout(); setOpen(false);}}>
-                <div className="LogoutRow">
-                  <LogoutIcon />
-                  <p>{t("drawer.logout")}</p>
-                </div>
-                </NavLink>
-            ) : null}
+   
       <NavLink to="/about" className="AboutScreenBtn">
           <InfoOutlinedIcon />
           <p>{t("nav.about")}</p>

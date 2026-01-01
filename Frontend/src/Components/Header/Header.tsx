@@ -4,7 +4,6 @@ import { useState } from "react";
 import HomeIcon from '@mui/icons-material/Home';
 import { DrawerLayout, Language } from "../DrawerLayout/DrawerLayout";
 import { useTranslation } from "react-i18next";
-
 import LanguageIcon from '@mui/icons-material/Language';
 import { useLanguage } from "../../Utils/SetLanguage";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -12,6 +11,7 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 import UndoIcon from '@mui/icons-material/Undo';
 import { Button } from "@mui/material";
+import { userService } from "../../Services/UserService";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -24,14 +24,14 @@ export function Header() {
   const isOnGenerateScreen = location.pathname === "/generate" || location.pathname.startsWith("/generate/");
   const hasGeneratedRecipe = Boolean(currentRecipe?.title);
   const showUndo = isGuest && hasGeneratedRecipe && !isOnGenerateScreen;
- const navigate = useNavigate();
- 
+  const navigate = useNavigate();
+
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
         {showUndo && (
           <NavLink to="/generate" className="ReturnScreenBtn">
-            <UndoIcon className= {`ReturnSvg ${isRtl ? "rtl" : ""}`}/>         
+            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : ""}`} />
             <p>{t("nav.return")}</p>
           </NavLink>
         )}
@@ -50,14 +50,32 @@ export function Header() {
       </div>
 
       <div className="HeaderRight">
-        <Button className="LoginBtn"
-        variant="contained"
-onClick={
-  () => navigate("/login")
-}
-        >
-{t("drawer.login")}
-        </Button>
+
+        {!isGuest ? (
+          <Button
+            variant="contained"
+            className="LogoutBtn"
+            onClick={() => {
+              navigate("/home")
+              userService.logout()
+            }
+            }>
+            {t("drawer.logout")}
+          </Button>
+        ) :
+
+          <Button
+            className="LoginBtn"
+            variant="contained"
+            onClick={() =>
+              navigate("/login")
+            }>
+            {t("drawer.login")}
+          </Button>
+
+        }
+
+
         <div className="LanguageLink">
           <LanguageIcon />
           <select

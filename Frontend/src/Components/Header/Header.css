@@ -16,99 +16,109 @@
 .GeneralNavigation {
   display: flex;
   align-items: center;
-  gap: 6px;              
-  margin-top: 8px;       
+  gap: 10px;
+  margin-top: 0;
 }
-
 
 .Header.rtl .GeneralNavigation {
   flex-direction: row-reverse;
 }
 
-.ReturnSvg.rtl{
+.ReturnSvg.rtl {
   transform: scaleX(-1);
 }
 
 .ReturnScreenBtn,
-.AboutScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
-  padding: 4px 8px !important;
-  border-radius: 12px !important;
+  padding: 6px 10px !important;
+  border-radius: 18px !important;
   border: 1px solid rgba(202, 204, 207, 0.65) !important;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 18px rgba(57, 59, 63, 0.14);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  margin: 0;           
-  font-size: 16px;
-  width: 50px;
-transition: transform 120ms ease, box-shadow 120ms ease;
-}
-
-.Header:not(.rtl) .GeneralNavigation {
-  margin-left: 0;
-}
-
-.Header.rtl .GeneralNavigation {
-  margin-right: 0;
+  margin: 0;
+  width: 58px;
+  height: 50px !important;
+  justify-content: center;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
 
 .ReturnScreenBtn svg,
-.AboutScreenBtn svg,
 .LikesScreenBtn svg,
-.HomeScreenBtn svg{
-  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.10));
-  height: 24px;
-  width: 24px;
+.HomeScreenBtn svg {
+  height: 26px;
+  width: 26px;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.08));
 }
 
-.ReturnScreenBtn svg {
-  color: #f48720;
-}
-
-.ReturnScreenBtn p {
-  color: #f48720;
+.ReturnScreenBtn p,
+.LikesScreenBtn p,
+.HomeScreenBtn p {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
 }
 
 .HomeScreenBtn svg {
-  color: #3c82d2;
+  color: #2f7d32;
 }
 
 .HomeScreenBtn p {
-  color: #3c82d2;
+  color: #2f7d32;
 }
 
-.HomeScreenBtn svg {
-  color: #3c82d2;
+.HomeScreenBtn.active,
+.HomeScreenBtn:hover {
+  background: rgba(47, 125, 50, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(47, 125, 50, 0.16);
 }
 
-.HomeScreenBtn p {
-  color: #3c82d2;
-}
-
-.LikesScreenBtn p {
-  color: #fb1d5c; 
-}
-
-.AboutScreenBtn p {
-  color: #10a245; 
+.HomeScreenBtn:active {
+  transform: translateY(0px);
 }
 
 .LikesScreenBtn svg {
-  color: #fb1d5c; 
+  color: #c2185b;
 }
 
-.AboutScreenBtn svg {
-  color: #10a245; 
+.LikesScreenBtn p {
+  color: #c2185b;
 }
 
- .HomeScreenBtn.active, .HomeScreenBtn:hover{ background: rgba(171, 216, 235, 0.79); } 
-.LikesScreenBtn.active ,.LikesScreenBtn:hover { background: #f0b0c27c; }
-.AboutScreenBtn.active , .AboutScreenBtn:hover{ background: rgba(199, 243, 210, 0.675); }
-.ReturnScreenBtn.active ,.ReturnScreenBtn:hover { background: #faccb2b5; }
+.LikesScreenBtn.active,
+.LikesScreenBtn:hover {
+  background: rgba(194, 24, 91, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(194, 24, 91, 0.16);
+}
+
+.LikesScreenBtn:active {
+  transform: translateY(0px);
+}
+
+.ReturnScreenBtn svg {
+  color: #d97706;
+}
+
+.ReturnScreenBtn p {
+  color: #d97706;
+}
+
+.ReturnScreenBtn.active,
+.ReturnScreenBtn:hover {
+  background: rgba(217, 119, 6, 0.14);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(217, 119, 6, 0.16);
+}
+
+.ReturnScreenBtn:active {
+  transform: translateY(0px);
+}
 
 .HeaderRight {
   display: flex;
@@ -120,24 +130,90 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   flex-direction: row-reverse;
 }
 
+.LoginBtn.MuiButton-root,
+.LogoutBtn.MuiButton-root {
+  min-width: 116px !important;
+  border-radius: 18px !important;
+  padding: 0 20px !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.2px !important;
+}
+
+.LoginBtn.MuiButton-root {
+  background: linear-gradient(180deg, #4f8cff 0%, #3b6fff 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+}
+
+.LoginBtn.MuiButton-root:hover {
+  background: linear-gradient(180deg, #5a96ff 0%, #4377ff 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+}
+
+.LoginBtn.MuiButton-root:active {
+  transform: translateY(0px);
+  box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+}
+
+.LogoutBtn.MuiButton-root {
+  background: linear-gradient(180deg, rgba(203, 14, 14, 0.95) 0%, rgba(203, 14, 14, 0.85) 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 18px rgba(203, 14, 14, 0.22), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+}
+
+.LogoutBtn.MuiButton-root:hover {
+  background: linear-gradient(180deg, rgba(203, 14, 14, 0.98) 0%, rgba(203, 14, 14, 0.88) 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(203, 14, 14, 0.26), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+}
+
+.LogoutBtn.MuiButton-root:active {
+  transform: translateY(0px);
+  box-shadow: 0 8px 14px rgba(203, 14, 14, 0.2), 0 2px 0 rgba(255, 255, 255, 0.14) inset !important;
+}
+
 .LanguageLink {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: #636262;
-  position: relative;
+  gap: 8px;
+  height: 50px;
+  padding: 0 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(202, 204, 207, 0.65);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 18px rgba(57, 59, 63, 0.1);
+  color: #5f6368;
+}
+
+.LanguageLink svg {
+  color: #5f6368;
+}
+
+.LanguageSelector {
+  height: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-weight: 800;
+  font-size: 14px;
+  color: #5f6368;
+  cursor: pointer;
+  padding: 0 6px;
+  border-radius: 10px;
+}
+
+.LanguageSelector:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .Header.rtl .LanguageSelector {
-  padding-right: 0;
-  padding-left: 14px;
-}
-
-.AboutScreenBtn,
-.GenerateScreenBtn,
-.HomeScreenBtn {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  padding-right: 6px;
+  padding-left: 6px;
 }
 
 .MenuBtn {
@@ -145,8 +221,9 @@ transition: transform 120ms ease, box-shadow 120ms ease;
   align-items: center;
   justify-content: center;
   width: 50px;
-  height: 50px;               
-  color: #636262;
+  height: 50px;
+  border-radius: 18px;
+  color: #5f6368;
   cursor: pointer;
 }
 
@@ -161,24 +238,150 @@ transition: transform 120ms ease, box-shadow 120ms ease;
 
 @media (max-width: 600px) {
   .Header {
-    padding: 0 12px;
+    padding: 0 10px;
   }
 
   .GeneralNavigation {
-    gap: 6px;  
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .HeaderRight {
+    gap: 6px;
+  }
+
+  .ReturnScreenBtn,
+  .LikesScreenBtn,
+  .HomeScreenBtn {
+    width: 46px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-radius: 0 !important;
+    height: auto !important;
+    justify-content: flex-start;
+    transition: transform 120ms ease, filter 120ms ease;
+  }
+
+  .ReturnScreenBtn svg,
+  .LikesScreenBtn svg,
+  .HomeScreenBtn svg {
+    width: 24px !important;
+    height: 24px !important;
+    filter: none !important;
+  }
+
+  .ReturnScreenBtn p,
+  .LikesScreenBtn p,
+  .HomeScreenBtn p {
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.1px !important;
+    margin-top: 2px !important;
+  }
+
+  .HomeScreenBtn,
+  .LikesScreenBtn,
+  .ReturnScreenBtn {
+    position: relative;
+  }
+
+  .HomeScreenBtn::after,
+  .LikesScreenBtn::after,
+  .ReturnScreenBtn::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -4px;
+    width: 18px;
+    height: 3px;
+    border-radius: 99px;
+    opacity: 0;
+  }
+
+  .HomeScreenBtn:hover svg,
+  .HomeScreenBtn.active svg {
+    filter: drop-shadow(0 6px 14px rgba(47, 125, 50, 0.22));
+  }
+
+  .HomeScreenBtn:hover p,
+  .HomeScreenBtn.active p {
+    color: #1f6a22 !important;
+  }
+
+  .HomeScreenBtn:hover::after,
+  .HomeScreenBtn.active::after {
+    background: rgba(47, 125, 50, 0.85);
+    opacity: 1;
+  }
+
+  .LikesScreenBtn:hover svg,
+  .LikesScreenBtn.active svg {
+    filter: drop-shadow(0 6px 14px rgba(194, 24, 91, 0.22));
+  }
+
+  .LikesScreenBtn:hover p,
+  .LikesScreenBtn.active p {
+    color: #ad1457 !important;
+  }
+
+  .LikesScreenBtn:hover::after,
+  .LikesScreenBtn.active::after {
+    background: rgba(194, 24, 91, 0.85);
+    opacity: 1;
+  }
+
+  .ReturnScreenBtn:hover svg,
+  .ReturnScreenBtn.active svg {
+    filter: drop-shadow(0 6px 14px rgba(217, 119, 6, 0.22));
+  }
+
+  .ReturnScreenBtn:hover p,
+  .ReturnScreenBtn.active p {
+    color: #b45309 !important;
+  }
+
+  .ReturnScreenBtn:hover::after,
+  .ReturnScreenBtn.active::after {
+    background: rgba(217, 119, 6, 0.85);
+    opacity: 1;
+  }
+
+  .LanguageLink {
+    height: 42px;
+    padding: 0 8px !important;
+    gap: 6px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 14px rgba(57, 59, 63, 0.1) !important;
+  }
+
+  .LanguageLink svg {
+    width: 18px;
+    height: 18px;
   }
 
   .LanguageSelector {
-    font-size: 12px;
-    padding-right: 14px;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    padding: 0 4px !important;
   }
 
-  .Header.rtl .LanguageSelector {
-    padding-left: 14px;
-    padding-right: 0;
+  .MenuBtn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .LogoutBtn.MuiButton-root,
+  .LoginBtn.MuiButton-root {
+    min-width: 92px !important;
+    padding: 0 14px !important;
+    min-height: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
+    font-weight: 900 !important;
   }
 }
-
-
-
-

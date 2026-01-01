@@ -14,13 +14,6 @@
   margin: 18px auto 0;
 }
 
-.HomeScreenTitleWrapper.ltr {
-  text-align: left;
-}
-
-.HomeScreenTitleWrapper.rtl {
-  text-align: right;
-}
 
 .HomeScreenTitleContainer {
   position: relative;
@@ -28,18 +21,7 @@
   width: 100%;
 }
 
-.HomeScreenTitleWrapper.rtl  {
-  align-items: flex-end;
-}
-
-.HomeScreenTitleWrapper.rtl {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-
-.UserHello,
-.GuestTitle {
+.UserHello{
   font-size: 26px;
   font-weight: 700;
   color: rgb(100, 100, 100);
@@ -51,6 +33,21 @@
   display: block;
 }
 
+
+.GuestTitle{
+  width:100%;
+  text-align:center;
+  margin:0 0 14px;
+  font-size:56px;
+  font-weight:900;
+  line-height:1.15;
+  padding-bottom:6px;
+  display:block;
+  color:#5a4dff;
+  text-shadow:0 10px 30px rgba(90,77,255,.16);
+}
+
+
 .HomeScreenTitle {
   margin: 14px 0 0;
   font-size: 22px;
@@ -61,209 +58,148 @@
 .HomeScreenTitle.user {
   white-space: pre-line;
 }
+.GenerateBtn.MuiButton-root{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:120px auto 0;
+  border-radius:18px!important;
+  padding:16px 32px!important;
+  min-height:60px!important;
+  text-transform:none!important;
+  gap:12px!important;
 
-.GuestNotice {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  background:linear-gradient(180deg,#ffbe2e 0%,#f3a400 100%)!important;
+  box-shadow:
+    0 18px 34px rgba(243,164,0,.30),
+    0 10px 18px rgba(243,164,0,.22),
+    0 2px 0 rgba(255,255,255,.22) inset!important;
+
+  font-size:20px!important;
+  font-weight:900!important;
+  letter-spacing:.3px;
+  color:#6a6a6a!important;
+  text-shadow:none!important;
 }
 
-.HomeScreenTitleWrapper.ltr .GuestInstructions {
-  margin-left: 0;
-  margin-right: auto;
-  text-align: left;
+.GenerateBtn.MuiButton-root svg{
+  color:#6a6a6a!important;
+  font-size:30px!important;
+  filter:none!important;
 }
 
-.HomeScreenTitleWrapper.rtl .GuestInstructions {
-  margin-left: auto;
-  margin-right: 0;
-  text-align: right;
+.GenerateBtn.MuiButton-root:hover{
+  background:linear-gradient(180deg,#ffc54a 0%,#f6ac00 100%)!important;
+  transform:translateY(-1px);
+  box-shadow:
+    0 24px 44px rgba(243,164,0,.34),
+    0 12px 22px rgba(243,164,0,.26),
+    0 2px 0 rgba(255,255,255,.22) inset!important;
 }
 
-.GenerateBtn {
-  margin-top: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: white;
-  color: #f48720;
-  border: 2px solid #f48720;
-  box-shadow: 0 10px 18px rgba(8, 63, 114, 0.2),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-  user-select: none;
-  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+.GenerateBtn.MuiButton-root:active{
+  transform:translateY(1px);
+  box-shadow:
+    0 10px 18px rgba(243,164,0,.22),
+    0 2px 0 rgba(255,255,255,.18) inset!important;
 }
 
-.GuestInstructions:active,.GuestInstructions:hover {
-background: #f0d4bacf;
+.HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root{
+  margin: 24px auto 0 !important;
 }
-
-.GuestLoginContainer:active,.GuestLoginContainer:hover {
-background: rgba(198, 220, 241, 0.869);;
-}
-
-.GuestGenerate {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: inherit;
-}
-
-.GuestGenerate,
-.GuestInstructions {
-  flex-direction: row;
-}
-
-.GuestInstructions,
-.GuestLoginContainer {
-  min-width: 320px;
-  min-height: 50px;
-  padding: 12px 14px;
-  box-sizing: border-box;
-}
-
-.GuestLoginContainer,
-.GuestInstructions {
-  min-width: 260px;
-}
-
-.GuestInstructions:hover {
-  cursor: pointer;
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-  box-shadow: 0 14px 26px rgba(8, 63, 114, 0.24),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
-
-.GuestInstructions:active {
-  transform: translateY(0px);
-  box-shadow: 0 10px 18px rgba(8, 63, 114, 0.2),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
-
-.HomeScreenTitleWrapper.ltr .GuestLoginContainer {
-  margin-left: 0;
-  margin-right: auto;
-  text-align: left;
-}
-
-.HomeScreenTitleWrapper.rtl .GuestLoginContainer {
-  margin-left: auto;
-  margin-right: 0;
-  text-align: right;
-}
-
-.GuestLoginContainer {
-  margin-top: 80px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background-color: white;
-  border: 2px solid rgba(39, 126, 207, 0.95);
-  color:  rgba(39, 126, 207, 0.95);
-  box-shadow: 0 10px 18px rgba(8, 63, 114, 0.2),0 2px 0 rgba(255, 255, 255, 0.18) inset;
-  user-select: none;
-  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
-}
-
-.GuestLoginTitle {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: inherit;
-}
-
-.GuestLoginTitle,
-.GuestLoginContainer {
-  flex-direction: row;
-}
-
-.GuestLoginContainer:hover {
-  cursor: pointer;
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-  box-shadow: 0 14px 26px rgba(8, 63, 114, 0.24),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
-
-
-.RecipeList {
+.HomeScreenTitle.user{
   width: 100%;
-  max-width: 1080px;
-  margin: 18px auto 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
+}
+
+.HomeScreenTitleWrapper.ltr .HomeScreenTitle.user{
+  text-align: left;
+}
+
+.HomeScreenTitleWrapper.rtl .HomeScreenTitle.user{
+  text-align: right;
+}
+
+.HomeScreenTitleWrapper.rtl + .RecipeList{
+  direction: rtl;
   justify-content: flex-start;
 }
 
-@media (max-width: 600px) {
-  .HomeScreenTitleWrapper.ltr .GuestInstructions,
-  .HomeScreenTitleWrapper.rtl .GuestInstructions,
-  .HomeScreenTitleWrapper.ltr .GuestLoginContainer,
-  .HomeScreenTitleWrapper.rtl .GuestLoginContainer {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-  }
+.HomeScreenTitleWrapper.ltr + .RecipeList{
+  direction: ltr;
+}
 
+.RecipeList{
+  width:100%;
+  max-width:1080px;
+  margin:18px auto 0;
+  padding:0;
+  display:flex;
+  gap:18px;
+  justify-content:flex-start;
+
+  /* allow stuff to “escape” vertically */
+  overflow: visible !important;
+}
+
+.RecipeList:has(.RecipeListItem){
+  flex-wrap: nowrap;
+  overflow-x: auto !important;
+
+  /* IMPORTANT: let the top overflow show */
+  overflow-y: visible !important;
+
+  /* create space so the “floating” images have room */
+  padding-top: 34px !important;
+  padding-bottom: 20px !important;
+
+  /* avoid edge clipping */
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.RecipeList:has(.RecipeListItem) > *{
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 44px;
   }
 
+    .GuestTitle {
+    font-size: 40px;
+  }
+
   .HomeScreenTitleWrapper {
-    display: block;   
+    display: block;
     width: 100%;
   }
 
   .HomeScreenTitle {
     font-size: 20px;
   }
-
-  .RecipeList {
-    gap: 14px;
+  .RecipeList{
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    justify-content: center !important;
   }
 
-  .GuestInstructions,
-  .GuestLoginContainer {
-    width: min(70%, 360px); 
-    max-width: 70%;
-    min-width: 0 !important;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 16px;
-    display: inline-flex; 
-    justify-content: center;
-    margin: 12px auto 0;
-    align-self: center; 
-    box-sizing: border-box;
+  .RecipeList:has(.RecipeListItem){
+    scroll-snap-type: none !important;
+    padding-bottom: 0 !important;
   }
 
-  .GuestLoginContainer{
-    margin-top: 80px !important;
+  .RecipeList:has(.RecipeListItem) > *{
+    width: min(92vw, 360px);
+    max-width: min(92vw, 360px);
   }
 
-  .GuestGenerate,
-  .GuestLoginTitle {
-    font-size: 16px;
-    white-space: nowrap;
+  .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root{
+    margin: 18px auto 0 !important;
   }
-
-  .HomeScreenTitleContainer.guest {
-    width: 100% !important;
-    max-width: 100%;
-    display: block !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box;
-  }
-
-
 }

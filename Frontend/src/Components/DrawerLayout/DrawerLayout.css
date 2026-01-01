@@ -22,9 +22,8 @@
   box-sizing: border-box;
 }
 
-.DrawerContent > div {
-
-   width: 100%;
+.DrawerContent>div {
+  width: 100%;
 }
 
 .CloseButton {
@@ -42,107 +41,105 @@
   margin: 0 auto;
 }
 
+.AboutScreenBtn {
+ 
+  margin-top: auto;
+  margin-bottom: 12px;
+  width: calc(100% - 24px);
+  margin-left: 12px;
+  margin-right: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
+  box-shadow: 0 12px 22px rgba(106, 77, 255, .22), 0 2px 0 rgba(255, 255, 255, .22) inset;
+}
+
+.AboutScreenBtn svg {
+  color: #fff;
+  font-size: 22px;
+}
+
+.AboutScreenBtn p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.AboutScreenBtn:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+
+.AboutScreenBtn:active {
+  transform: translateY(0px);
+}
+
+.AboutScreenBtn,
+.ProfileBtn.MuiButton-root{
+  width: calc(100% - 24px) !important;
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+}
+
 .UserName {
   margin: 20px 0 0;
   text-align: center;
 }
 
-.ProfileBtn {
-  width: 100% !important;
-  min-height: 44px !important;
-  height: auto !important;
-  margin: 8px 0 0 !important;
-  border-radius: 2px !important;
-  background-color: rgb(175, 187, 198) !important;
-  color: #232323 !important;
-  padding: 10px 16px !important;
+.ProfileBtn.MuiButton-root{
+
+  margin:10px 12px 0 !important;
+
+  border-radius:18px !important;
+  padding:12px 14px !important;
+  min-height:46px !important;
+  height:46px !important;            /* force it */
+  line-height:1 !important;
+
+  text-transform:none !important;
+  justify-content:flex-start !important;
+
+  background:linear-gradient(180deg,#ff6f9c 0%,#d94672 100%) !important;
+  box-shadow:0 12px 22px rgba(217,70,114,.22),0 2px 0 rgba(255,255,255,.22) inset !important;
+  color:#fff !important;
+
+  transition:filter 120ms ease, transform 120ms ease !important;
 }
 
-.ProfileRowInBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
+.ProfileBtn.MuiButton-root:hover{ filter:brightness(1.03); transform:translateY(-1px); }
+.ProfileBtn.MuiButton-root:active{ transform:translateY(0px); }
+
+/* kill MUI icon spacing that makes it look "empty" and tall */
+.ProfileBtn.MuiButton-root .MuiButton-startIcon,
+.ProfileBtn.MuiButton-root .MuiButton-endIcon{
+  margin:0 !important;
 }
 
-.ProfileRowInBtn p {
-  margin: 0;
-  font-size: 14px;
- font-weight: bold;
+/* make your inner row fill the button cleanly */
+.ProfileBtn.MuiButton-root .ProfileRowInBtn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
 }
 
+.ProfileBtn.MuiButton-root .ProfileRowInBtn svg{ color:#fff; font-size:22px; }
+.ProfileBtn.MuiButton-root .ProfileRowInBtn p{ margin:0; font-size:14px; font-weight:900; }
 
 
-.LoginLink,
-.LogoutLink {
-  margin-top: auto;
-  width: 100%;
-  text-decoration: none;
-}
 
 
- .LoginRow,
-.LogoutRow {
-  margin: 8px 0 ;
- display: flex;
-  width: 100%;
-  height: 40px !important;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 14px;
-  box-sizing: border-box;
-  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
-}
 
 
-/* LOGIN = same CTA styling as GuestInstructions */
-.LoginRow {
-  color: #ffffff !important;
-margin-top: 16px !important;
-  background: linear-gradient(180deg, rgba(8, 63, 114, 0.95), rgba(8, 63, 114, 0.86));
-  border: 1px solid rgba(255, 255, 255, 0.20);
 
-  box-shadow:
-    0 10px 18px rgba(8, 63, 114, 0.20),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
 
-/* LOGOUT = keep red colors, but same shape/interaction */
-.LogoutRow {
-  color: #ffffff !important;
 
-  background: linear-gradient(180deg, rgba(203, 14, 14, 0.95), rgba(203, 14, 14, 0.85));
-  border: 1px solid rgba(255, 255, 255, 0.20);
 
-  box-shadow:
-    0 10px 18px rgba(203, 14, 14, 0.22),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
 
-/* hover/active (same feel as GuestInstructions) */
-.LoginRow:hover,
-.LogoutRow:hover {
-  cursor: pointer;
-  transform: translateY(-1px);
-  filter: brightness(1.03);
-}
-
-.LoginRow:hover {
-  box-shadow:
-    0 14px 26px rgba(8, 63, 114, 0.24),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
-
-.LogoutRow:hover {
-  box-shadow:
-    0 14px 26px rgba(203, 14, 14, 0.26),
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
-}
-
-.LoginRow:active,
-.LogoutRow:active {
-  transform: translateY(0px);
-  filter: brightness(0.99);
-}

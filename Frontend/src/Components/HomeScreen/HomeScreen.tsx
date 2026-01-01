@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import LoginIcon from "@mui/icons-material/Login";
+
 import "./HomeScreen.css";
 import { useTitle } from "../../Utils/Utils";
 import { AppState } from "../../Redux/Store";
@@ -28,18 +28,19 @@ export function HomeScreen() {
   }, [user?.id]);
 
   const list = Array.isArray(items) ? items : [];
-
   return (
     <div className="HomeScreen">
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
         {user ? (
           <>
-            <div
-              className="GuestInstructions"
-              onClick={() => navigate("/generate")}>
+            <Button
+              className="GenerateBtn"
+              onClick={() => navigate("/generate")}
+              variant="contained"
+            >
               <AddIcon />
-              <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
-            </div>
+              {t("homeScreen.generate")}
+            </Button>
             {list.length === 0 ? (
               <div className="HomeScreenTitleContainer ">
                 <div className="UserHello">
@@ -62,7 +63,7 @@ export function HomeScreen() {
               variant="contained"
             >
               <AddIcon />
-              <h4 className="GuestGenerate">{t("homeScreen.generate")}</h4>
+              {t("homeScreen.generate")}
             </Button>
           </div>
         )}

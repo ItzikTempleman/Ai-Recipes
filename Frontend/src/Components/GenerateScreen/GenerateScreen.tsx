@@ -4,7 +4,6 @@ import "./GenerateScreen.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
-import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import { useTranslation } from "react-i18next";
 import { useTitle } from "../../Utils/Utils";
 import { recipeService } from "../../Services/RecipeService";
@@ -43,34 +42,26 @@ export function GenerateScreen() {
       },
     }
   );
-
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
     hasLactose: LactoseRestrictions.DEFAULT,
     hasGluten: GlutenRestrictions.DEFAULT,
     dietType: DietaryRestrictions.DEFAULT,
   });
-
   const { t, i18n } = useTranslation();
-
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
   const dispatch = useDispatch();
   const user = useSelector((state: AppState) => state.user);
-
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
     i18n.on("languageChanged", onLangChange);
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
-
   const [filtersOpen, setFiltersOpen] = useState(false);
-
   const [initialQuantity, setQuantity] = useState(1);
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
   const recipeHasData = Boolean(recipe?.title);
-
-
   const didResetOnEnterRef = useRef(false);
 
   useEffect(() => {
@@ -85,12 +76,10 @@ export function GenerateScreen() {
   }, [dispatch, user, loading]);
 
   async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
-
     if (recipe.id) {
       const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
       return updated;
     }
-
     const preview = await recipeService.generateImagePreview(recipe);
 
     return {
@@ -99,15 +88,13 @@ export function GenerateScreen() {
       imageName: preview.imageName ?? recipe.imageName ?? null,
     };
   }
+
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
       dispatch(resetGenerated())
       const raw = recipeTitle.excludedIngredients?.[0] ?? "";
-      const excludedList = raw
-        .split(/[\n,]+/g)
-        .map(s => s.trim())
-        .filter(Boolean);
+      const excludedList = raw.split(/[\n,]+/g).map(s => s.trim()).filter(Boolean);
       const used = { sugarLevel, hasLactose, hasGluten, dietType };
       setAppliedFilters(used);
       await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, excludedList);
@@ -118,28 +105,17 @@ export function GenerateScreen() {
       setHasGluten(GlutenRestrictions.DEFAULT);
       setDietType(DietaryRestrictions.DEFAULT);
       setFiltersResetKey(k => k + 1);
-      reset({
-        query: "",
-        excludedIngredients: [""]
-      });
+      reset({query: "",excludedIngredients: [""]});
     } catch (err: unknown) {
       notify.error(err);
     }
   }
+
   return (
     <div className={`GenerateScreen ${recipeHasData ? "GenerateScreen--hasData" : ""}`}>
       <div className="GenerateContainer">
         <div>
-          {
-            !user && (
-              <div className={`GuestBadge ${isRTL ? "GuestBadge--rtl" : ""}`}>
-                <h4>{t("generate.guest")}</h4></div>
-            )
-          }
-          <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>
-            <RestaurantMenuIcon className="TitleIcon" />
-            <span>{t("generate.title")}</span>
-          </h2>
+          <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
         </div>
         <form onSubmit={handleSubmit(send)}>
           <div className={`InputData ${isRTL ? "rtl" : ""}`}>
@@ -190,24 +166,10 @@ export function GenerateScreen() {
             <div className="ImageSwitchRow">
               {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
               <p>{t("filters.image.image")}</p>
-
-              {isRTL && !hasImage && (
-                <span className="AddImageLaterNotice inline">
-                  {t("generate.youCanGenerateImageLater")}
-                </span>
-              )}
-
               <ImageSwitch
                 key={`img-${filtersResetKey}`}
                 onChange={setHasImage}
-                defaultHasImage={false}
-              />
-
-              {!isRTL && !hasImage && (
-                <span className="AddImageLaterNotice inline">
-                  {t("generate.youCanGenerateImageLater")}
-                </span>
-              )}
+                defaultHasImage={false} />
             </div>
           </div>
           <div className="FiltersColumn">
@@ -223,8 +185,6 @@ export function GenerateScreen() {
                 }
               </select>
             </div>
-
-
             <div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
               <div>
                 <TextField
@@ -235,8 +195,6 @@ export function GenerateScreen() {
                 />
               </div>
             </div>
-<div className="PrettyDivider" aria-hidden="true" />
-
             <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
               <Button
                 className="FilterBtn"
@@ -248,9 +206,7 @@ export function GenerateScreen() {
               >
                 {t("generate.filters")}
               </Button>
-
               <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
-
                 <div className="FiltersDropdown__panelInner">
                   <div>
                     <SugarFilter

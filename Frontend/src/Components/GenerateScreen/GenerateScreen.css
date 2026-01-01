@@ -6,11 +6,11 @@
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  overflow-x: hidden
+  overflow-x: hidden;
 }
 
 .GenerateScreen--hasData {
-  background-color: #fff
+  background-color: #fff;
 }
 
 .GenerateContainer {
@@ -20,74 +20,65 @@
   width: 100%;
   max-width: 640px;
   padding: 24px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, .06), 0 1px 0 rgba(255, 255, 255, .8) inset;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 
 .InputData {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 8px
+  margin-top: 8px;
 }
 
 .InputData .SearchTF {
   flex: 1;
-  min-width: 0
+  min-width: 0;
 }
 
 .SearchTF .MuiOutlinedInput-root {
-  background-color: #fff
+  background-color: #fff;
 }
 
 .InputData.rtl {
-  flex-direction: row-reverse
+  flex-direction: row-reverse;
 }
 
 .InputData.rtl .BtnIcon {
   margin-left: 0;
-  margin-right: 12px
+  margin-right: 12px;
 }
 
 .InputData.rtl .SearchTF input {
   direction: rtl;
-  text-align: right
+  text-align: right;
 }
 
 .InputData.rtl .SearchTF input::placeholder {
   direction: rtl;
-  text-align: right
+  text-align: right;
 }
 
 .InputData.rtl .SearchTF .MuiOutlinedInput-input {
-  padding-right: 12px !important
+  padding-right: 12px !important;
 }
 
 .InputData.rtl .SearchTF .MuiInputLabel-root {
   right: 22px;
   left: auto !important;
   transform-origin: top right !important;
-  text-align: right
+  text-align: right;
 }
 
 .small-loading .MuiCircularProgress-root {
   width: 26px !important;
-  height: 26px !important
+  height: 26px !important;
 }
 
 .large-loading .MuiCircularProgress-root {
   width: 40px !important;
-  height: 40px !important
-}
-
-.ClearPromptIcon:hover {
-  cursor: pointer
-}
-
-.ClearPromptIcon:active {
-  transform: scale(1.2) translateY(1px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .25)
+  height: 40px !important;
 }
 
 .GenerateTitle {
@@ -96,24 +87,11 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  line-height: 1.1
+  line-height: 1.1;
 }
 
 .GenerateTitle.rtl {
-  flex-direction: row-reverse
-}
-
-.TitleIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  flex: 0 0 auto;
-  padding: 8px;
-  border-radius: 180px;
-  background: rgba(255, 255, 255, .85);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, .6);
-  color: #f0b43a
+  flex-direction: row-reverse;
 }
 
 .ImageSwitchSection {
@@ -121,100 +99,64 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin: 30px 0
+  margin: 30px 0;
 }
 
 .ImageSwitchSection.ltr {
   align-items: flex-start;
   text-align: left;
   padding-left: 30px;
-  padding-right: 0
+  padding-right: 0;
 }
 
 .ImageSwitchSection.rtl {
   align-items: flex-end;
   text-align: right;
   padding-right: 30px;
-  padding-left: 0
+  padding-left: 0;
 }
 
 .ImageSwitchRow {
   display: flex;
   align-items: center;
-  gap: 6px;
-  width: fit-content
+  gap: 8px;
+  width: fit-content;
 }
 
 .ImageSwitchSection.rtl .ImageSwitchRow {
-  flex-direction: row-reverse
+  flex-direction: row-reverse;
 }
 
 .ImageSwitchSection.rtl .imageSwitch {
-  direction: rtl
+  direction: rtl;
 }
 
 .ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped {
-  direction: rtl
+  direction: rtl;
 }
 
 .ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-groupedHorizontal {
   margin-left: 0 !important;
-  margin-right: 0 !important
-}
-.ImageSwitchRow{
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-right: 0 !important;
 }
 
-.ImageSwitchSection.rtl .AddImageLaterNotice.inline{
-  order: 99;            /* make it come after the toggle in the flex row */
-  margin-right: 0;
-  margin-left: 10px;    /* spacing from the toggle */
-}
-
-.AddImageLaterNotice.inline{
-  font-size: 0.82rem;
-  color: #6b6a69;
-  opacity: 0.9;
-  white-space: nowrap;
-}
-
-/* spacing: in LTR it sits to the right of the toggle */
-.ImageSwitchSection.ltr .AddImageLaterNotice.inline{
-  margin-left: 10px;
-}
-
-/* spacing: in RTL it sits to the left of the toggle */
-.ImageSwitchSection.rtl .AddImageLaterNotice.inline{
-  margin-right: 10px;
-}
-/* keep column aligned nicely in RTL */
-.ImageSwitchSection.rtl .ImageSwitchLabelCol{
-  align-items: flex-end;
-  text-align: right;
-}
-.ImageSwitchSection.ltr .ImageSwitchLabelCol{
-  align-items: flex-start;
-  text-align: left;
-}
 .HasImage {
   display: flex;
   flex-direction: column;
-  align-items: center
+  align-items: center;
 }
 
 .HasImage__title {
-  font-weight: 700
+  font-weight: 700;
 }
 
 .HasImage__sub {
   font-weight: 400;
-  font-size: 16px
+  font-size: 16px;
 }
 
 .Loading {
-  text-align: center
+  text-align: center;
 }
 
 .FiltersColumn {
@@ -222,9 +164,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px
+  gap: 6px;
 }
-.Servings{
+
+.Servings {
   width: 100%;
   max-width: 520px;
   display: flex;
@@ -234,94 +177,82 @@
   padding: 0 2px;
 }
 
-.Servings.ltr{
-  flex-direction: row;          /* label -> select */
+.Servings.ltr {
+  flex-direction: row;
   justify-content: flex-start;
   text-align: left;
 }
 
-.Servings.rtl{
-  flex-direction: row-reverse;  /* select -> label */
+.Servings.rtl {
+  flex-direction: row-reverse;
   justify-content: flex-end;
   text-align: right;
 }
 
-.Servings p{
+.Servings p {
   margin: 0;
 }
 
-/* responsive select sizing */
-.QuantitySelector{
+.QuantitySelector {
   width: 56px;
   height: 32px;
   border-radius: 6px;
   border: 1px solid rgb(208, 208, 208);
 }
-.GenerateAmountDiv {
-  display: flex;
-  align-items: center
+
+.ExcludedSection {
+  width: 100%;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF input{
+.ExcludedSection[dir="rtl"] .ExcludeTF input {
   direction: rtl;
   text-align: right;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{
+.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder {
   direction: rtl;
   text-align: right;
 }
 
-/* MUI input element padding feels better in RTL */
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input{
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input {
   text-align: right;
   padding-right: 12px;
   padding-left: 0;
 }
 
-.ExcludedSection{
+.ExcludeTF {
   width: 100%;
 }
 
-.ExcludeTF{
+.ExcludeTF .MuiOutlinedInput-root {
   width: 100%;
-}
-
-.ExcludeTF .MuiOutlinedInput-root{
-  width: 420px; /* pick your size */
-  max-width: 100%;
+  max-width: 520px;
   background-color: #fff;
 }
 
-.ExcludeTF .MuiOutlinedInput-root{
-  width: 100%;
-  max-width: 520px; /* cap so it doesn't get ridiculous */
-  background-color: #fff;
-}
-
-/* Label to the right (same trick you used elsewhere) */
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root{
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root {
   right: 22px;
   left: auto !important;
   transform-origin: top right !important;
   text-align: right;
 }
+
 .FiltersDropdown__panelInner {
   padding-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: flex-start;
-  text-align: left
+  text-align: left;
 }
 
 .FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner {
   align-items: flex-end;
-  text-align: right
+  text-align: right;
 }
 
-.FiltersDropdown__panelInner>div {
-  width: 100%
+.FiltersDropdown__panelInner > div {
+  width: 100%;
 }
 
 .FiltersDropdown__panel {
@@ -331,22 +262,22 @@
   border-radius: 4px;
   transition: max-height 220ms ease;
   overflow-y: hidden;
-  overflow-x: visible !important
+  overflow-x: visible !important;
 }
 
 .FiltersDropdown__panel.open {
   max-height: 800px;
-  border: 1px solid rgba(145, 184, 194, .618);
-  overflow-x: visible !important
+  border: 1px solid rgba(145, 184, 194, 0.618);
+  overflow-x: visible !important;
 }
 
-.FiltersDropdown__panelInner>div+div {
-  border-top: 1px solid rgba(0, 0, 0, .12);
-  padding-top: 6px
+.FiltersDropdown__panelInner > div + div {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  padding-top: 6px;
 }
 
 .FiltersDropdown__panelInner .MuiToggleButtonGroup-root .MuiToggleButton-root {
-  position: relative
+  position: relative;
 }
 
 .FiltersDropdown__panelInner .MuiToggleButtonGroup-root {
@@ -356,61 +287,51 @@
   display: flex;
   flex-wrap: wrap;
   overflow: visible;
-  row-gap: 8px
+  row-gap: 8px;
 }
 
 .FiltersDropdown__panelInner .MuiToggleButton-root {
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped {
   margin-left: 0 !important;
-  margin-right: 0 !important
+  margin-right: 0 !important;
 }
 
-.FiltersDropdown__panelInner>div {
+.FiltersDropdown__panelInner > div {
   display: flex;
-  justify-content: flex-start
+  justify-content: flex-start;
 }
 
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner>div {
-  justify-content: flex-end
+.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div {
+  justify-content: flex-end;
 }
 
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-groupedHorizontal {
   margin-left: 0 !important;
-  margin-right: 0 !important
+  margin-right: 0 !important;
 }
 
 .FiltersDropdown[dir="ltr"] .MuiToggleButtonGroup-root {
-  justify-content: flex-start
+  justify-content: flex-start;
 }
-
-.FiltersSelectorRow {
-  display: flex;
-  gap: 12px
-}
-
-.FiltersSelector {
-  padding: 6px 10px
-}
-
 
 .GenerateBtn:hover {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .BtnIcon {
-  color: #f0b43a
+  color: #f0b43a;
 }
 
 .ErrorText {
   margin-top: 8px;
   color: #d32f2f;
-  font-size: .9rem
+  font-size: 0.9rem;
 }
 
 .CenterRow {
@@ -421,64 +342,39 @@
   justify-content: center;
   box-sizing: border-box;
   margin: 8px 0;
-  padding: 0 12px
+  padding: 0 12px;
 }
 
-.GuestBadge {
-  box-shadow: 0 4px 12px rgba(15, 23, 42, .25);
-  width: 70px;
-  height: 35px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  background-color: #E07A12;
-  justify-content: center
-}
-
-.GuestBadge--rtl {
-  margin-left: auto
-}
-
-.GuestBadge h4 {
-  margin: 0;
-  color: rgb(255, 255, 255)
-}
-
-.NewScreenTitle {
-  margin-bottom: 12px;
-  text-align: center
-}
-
-.ImageSwitchDiv{
+.ImageSwitchDiv {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.ImageSwitchIconsRow{
+.ImageSwitchIconsRow {
   display: flex;
   justify-content: center;
 }
 
-.imageSwitchIcon,.imageSwitchIcon-NoImage {
+.imageSwitchIcon,
+.imageSwitchIcon-NoImage {
   color: #4a4a4a;
 }
 
-.imageSwitch .MuiToggleButton-root{
+.imageSwitch .MuiToggleButton-root {
   width: 100px !important;
 }
 
-.FiltersColumn .MuiToggleButton-root{
+.FiltersColumn .MuiToggleButton-root {
   width: auto !important;
   min-width: 100px;
 }
 
-
 .imageSwitch .MuiToggleButton-root.Mui-selected,
-.FiltersColumn .MuiToggleButton-root.Mui-selected{
+.FiltersColumn .MuiToggleButton-root.Mui-selected {
   border-radius: 4px;
 }
-/* ImageSwitch ToggleButtonGroup borders in RTL (missing outer edge) */
+
 .ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-root {
   direction: rtl;
 }
@@ -487,23 +383,17 @@
   margin: 0 !important;
 }
 
-/* inner seam in RTL should remove RIGHT border, keep LEFT */
 .ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:not(:first-of-type) {
   border-right: 0 !important;
   border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
+  margin-right: -1px !important;
 }
 
-/* ensure the outer edge exists */
 .ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:first-of-type {
   border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
-/* optional: eliminate 1px “gap” if you still see one */
-.ImageSwitchSection.rtl .imageSwitch .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-  margin-right: -1px !important;
-}
-
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div{
+.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner > div {
   justify-content: flex-start;
   text-align: right;
 }
@@ -512,54 +402,35 @@
   direction: rtl;
 }
 
-/* MUI removes border-left on grouped buttons; in RTL we want the opposite logic */
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped {
   margin: 0 !important;
 }
 
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type) {
   margin-right: -1px !important;
+  border-right: 0 !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
-/* For every button AFTER the first, remove RIGHT border (inner seam), keep LEFT border */
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-  border-right: 0 !important; /* inner seam */
-  border-left: 1px solid rgba(0, 0, 0, 0.12) !important; /* keep edge visible */
-}
-
-/* Make sure the very first button (the rightmost visually in RTL) has its outer border */
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type {
   border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
-.FilterBtn{
+.FilterBtn {
   gap: 12px;
-    margin-top: 40px !important;
+  margin-top: 40px !important;
 }
 
-.PrettyDivider{
-  width: 100%;
-  max-width: 520px;        
-  height: 2px;
-  margin: 10px auto 2px;    
-  background: linear-gradient(
-    90deg,
-    rgb(255, 136, 0),
-    rgb(0, 204, 255)
-  );
-  border-radius: 999px;
-
-}
-
-@media (max-width:600px) {
+@media (max-width: 600px) {
   .GenerateContainer {
     border: none;
-    box-shadow: none
+    box-shadow: none;
   }
-    .ExcludeTF .MuiOutlinedInput-root{
+
+  .ExcludeTF .MuiOutlinedInput-root {
     max-width: 100%;
   }
-  /* Keep the image switch compact but readable */
+
   .imageSwitch .MuiToggleButton-root {
     width: 72px !important;
     min-width: 72px !important;
@@ -567,25 +438,21 @@
     font-size: 0.75rem !important;
   }
 
-  /* Make ALL filter toggles (inside the dropdown) narrower */
   .FiltersColumn .MuiToggleButton-root,
   .FiltersDropdown__panelInner .MuiToggleButton-root {
-    width: auto !important;          /* don't force fixed width */
-    min-width: 72px !important;      /* narrower than your current 100px */
-    padding: 4px 6px !important;     /* tighter */
-    font-size: 0.75rem !important;   /* smaller text */
+    width: auto !important;
+    min-width: 72px !important;
+    padding: 4px 6px !important;
+    font-size: 0.75rem !important;
   }
 
-  /* Allow the group to pack tighter */
   .FiltersDropdown__panelInner .MuiToggleButtonGroup-root {
     column-gap: 6px;
     row-gap: 6px;
   }
 
-  /* Optional: make the dropdown panel feel less “wide” on mobile */
   .FiltersDropdown__panel {
     margin: 8px;
     padding: 10px;
   }
-
 }
