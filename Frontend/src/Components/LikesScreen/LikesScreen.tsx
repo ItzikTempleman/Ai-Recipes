@@ -3,8 +3,7 @@ import { useTitle } from "../../Utils/Utils";
 import "./LikesScreen.css";
 import { AppState } from "../../Redux/Store";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-import { recipeService } from "../../Services/RecipeService";
+
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 
 export function LikesScreen() {
