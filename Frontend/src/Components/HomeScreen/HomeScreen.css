@@ -21,8 +21,10 @@
 
 .HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem) {
   padding-inline: 10px !important;
-  padding-inline-start: var(--edge-pad) !important;
-  scroll-padding-inline-start: var(--edge-pad);
+  padding-inline-start: var(--edge-pad, 34px) !important;
+  scroll-padding-inline-start: var(--edge-pad, 34px);
+  padding-inline-end: var(--edge-pad, 34px) !important;
+  scroll-padding-inline-end: var(--edge-pad, 34px);
 }
 /* ✅ ONLY change: make the title lower by adding spacing between children */
 .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) {
@@ -139,15 +141,10 @@
   text-align: right;
 }
 
-.HomeScreenTitleWrapper.ltr + .RecipeList:has(.RecipeListItem)::before {
+.HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem)::before,
+.HomeScreenTitleWrapper + .RecipeList:has(.RecipeListItem)::after {
   content: "";
   flex: 0 0 34px;        /* >= the amount your avatar sticks out (20px) + some buffer */
-}
-
-/* RTL: spacer AFTER last item */
-.HomeScreenTitleWrapper.rtl + .RecipeList:has(.RecipeListItem)::after {
-  content: "";
-  flex: 0 0 34px;
 }
 .RecipeList {
   width: 100%;
@@ -158,19 +155,20 @@
   gap: 18px;
   justify-content: flex-start;
   overflow: visible !important;
+  
 }
 
 .RecipeList:has(.RecipeListItem) {
   flex-wrap: nowrap;
   overflow-x: auto !important;
   overflow-y: visible !important;
+  scrollbar-width: none; 
 
-  /* keep your existing */
   padding-top: 34px !important;
   padding-bottom: 20px !important;
 
-  /* base padding on both sides */
-  padding-inline: 10px !important;
+ padding-inline-start: var(--edge-pad, 34px) !important;
+ padding-inline-end: var(--edge-pad, 34px) !important;
 
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -198,21 +196,24 @@
     font-size: 20px;
   }
 
-  .RecipeList {
-    flex-wrap: wrap !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
-    justify-content: center !important;
-  }
+  .RecipeList{
+     flex-wrap: wrap !important;
+     overflow-x: visible !important;
+     overflow-y: visible !important;
+     justify-content: center !important;
+    padding-inline: 34px !important;
+    box-sizing: border-box;
+   }
 
-  .RecipeList:has(.RecipeListItem) {
+  .RecipeList:has(.RecipeListItem){
+     overflow-x: visible !important; 
     scroll-snap-type: none !important;
     padding-bottom: 0 !important;
   }
 
-  .RecipeList:has(.RecipeListItem) > * {
-    width: min(92vw, 360px);
-    max-width: min(92vw, 360px);
+  .RecipeList:has(.RecipeListItem) > *{
+    width: min(100%, 360px);
+    max-width: min(100%, 360px);
   }
 
   .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
