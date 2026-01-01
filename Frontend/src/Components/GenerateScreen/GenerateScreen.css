@@ -260,7 +260,7 @@ border-radius: 12px;
 }
 
 /* Exclude TF fills its wrapper */
-.ExcludeTF{ width:50%; }
+.ExcludeTF{ width:60%; }
 .ExcludeTF .MuiOutlinedInput-root{ width:100%; }
 
 /* Exclude RTL text + label + notch */
