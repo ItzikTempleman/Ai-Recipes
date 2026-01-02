@@ -25,18 +25,18 @@
   line-height:1.02;
   font-weight:1100;
   letter-spacing:-1.4px;
-  background:linear-gradient(180deg,#ffaf01 0%,#ff9100 100%);
+  background:linear-gradient(180deg,#ffaf01 0%,#eea23e 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  text-shadow:0 1px 0 rgba(255,255,255,.35),0 14px 30px rgba(106,77,255,.45),0 38px 80px rgba(106,77,255,.25);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
 
-.GenerateTitle.rtl{ direction:rtl; letter-spacing:-0.8px; }
-
-/* ===================== Top row (search) ===================== */
+.GenerateTitle.rtl{
+  direction:rtl;
+  letter-spacing:-0.8px;
+}
 
 .InputData{
   display:flex;
@@ -45,9 +45,19 @@
   margin-top:8px;
 }
 
-.InputData .SearchTF{ flex:1; min-width:0; }
-.InputData.rtl{ flex-direction:row-reverse; }
-.InputData.rtl .BtnIcon{ margin-left:0; margin-right:12px; }
+.InputData .SearchTF{
+  flex:1;
+  min-width:0;
+}
+
+.InputData.rtl{
+  flex-direction:row-reverse;
+}
+
+.InputData.rtl .BtnIcon{
+  margin-left:0;
+  margin-right:12px;
+}
 
 .InputData.rtl .SearchTF input,
 .InputData.rtl .SearchTF input::placeholder{
@@ -55,7 +65,9 @@
   text-align:right;
 }
 
-.InputData.rtl .SearchTF .MuiOutlinedInput-input{ padding-right:12px !important; }
+.InputData.rtl .SearchTF .MuiOutlinedInput-input{
+  padding-right:12px !important;
+}
 
 .InputData.rtl .SearchTF .MuiInputLabel-root,
 .InputData.rtl .SearchTF .MuiInputLabel-outlined{
@@ -65,7 +77,9 @@
   text-align:right;
 }
 
-.large-loading .MuiCircularProgress-root{ color:#6a4dff !important; }
+.large-loading .MuiCircularProgress-root{
+  color:#6a4dff !important;
+}
 
 .ImageToggleBtn{
   border-radius:14px !important;
@@ -81,9 +95,12 @@
   border:1px solid rgba(15,23,42,.12) !important;
 }
 
-.ImageToggleBtn svg{ width:22px; height:22px; color:#6a4dff; }
+.ImageToggleBtn svg{
+  width:22px;
+  height:22px;
+  color:#6a4dff;
+}
 
-/* Shared MUI outlined look for ONLY the search + exclude */
 .SearchTF .MuiOutlinedInput-root,
 .ExcludeTF .MuiOutlinedInput-root{
   border-radius:14px;
@@ -114,21 +131,33 @@
   box-shadow:0 18px 38px rgba(106,77,255,.14),inset 0 1px 0 rgba(255,255,255,.85);
 }
 
-.SearchTF .MuiOutlinedInput-input{ padding:10px 12px; }
+.SearchTF .MuiOutlinedInput-input{
+  padding:10px 12px;
+}
+
 .SearchTF .MuiInputLabel-root.Mui-focused,
-.ExcludeTF .MuiInputLabel-root.Mui-focused{ color:rgba(106,77,255,.95); }
+.ExcludeTF .MuiInputLabel-root.Mui-focused{
+  color:rgba(106,77,255,.95);
+}
 
-/* ===================== Loading / error ===================== */
-
-.Loading{ text-align:center; }
+.Loading{
+  text-align:center;
+}
 
 .HasImage{
   display:flex;
   flex-direction:column;
   align-items:center;
 }
-.HasImage__title{ font-weight:700; }
-.HasImage__sub{ font-weight:400; font-size:16px; }
+
+.HasImage__title{
+  font-weight:700;
+}
+
+.HasImage__sub{
+  font-weight:400;
+  font-size:16px;
+}
 
 .ErrorText{
   margin-top:8px;
@@ -136,35 +165,35 @@
   font-size:.9rem;
 }
 
-/* ===================== Filters row ===================== */
-
 .FiltersColumn{
   margin-top:4px;
   display:flex;
   flex-direction:column;
   align-items:center;
   gap:6px;
+  overflow: visible;
 }
 
-/* One row: Exclude | Servings | Filters button */
 .FiltersRow{
   width:100%;
   display:flex;
   align-items:center;
   gap:12px;
-  flex-wrap:wrap;
+   position: relative;   /* <-- panel will center relative to the full row */
+  overflow: visible;    /* <-- don't clip the panel */
+  justify-content: center; 
+  flex-wrap:nowrap !important;
   box-sizing:border-box;
   padding:0 6px;
+
+  /* CENTER ALWAYS */
+  justify-content:center;
 }
 
-/* ---- EXCLUDE: make it MUCH less wide (desktop/tablet) ---- */
 .FiltersRow .ExcludedSection{
-  flex:0 1 240px;     /* <<< narrower */
-  max-width:240px;    /* <<< narrower */
-  min-width:180px;
-  width:auto;
-  display:flex;
-  justify-content:flex-start;
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  max-width:none !important;
 }
 
 .FiltersRow .ExcludedSection > div{
@@ -172,9 +201,11 @@
   max-width:none;
 }
 
-.FiltersRow .ExcludeTF{ width:100%; }
+.FiltersRow .ExcludeTF{
+  width:100%;
+  min-width:0 !important;
+}
 
-/* Compact the ACTUAL exclude TextField (height/padding/label) */
 .ExcludeTF .MuiOutlinedInput-root{
   height:34px !important;
   min-height:34px !important;
@@ -187,17 +218,18 @@
   line-height:1.2 !important;
 }
 
-.ExcludeTF .MuiInputLabel-root{ font-size:14px !important; }
+.ExcludeTF .MuiInputLabel-root{
+  font-size:14px !important;
+}
 
-/* Label positioning (outlined) */
 .ExcludeTF .MuiInputLabel-outlined{
   transform: translate(14px, 9px) scale(1) !important;
 }
+
 .ExcludeTF .MuiInputLabel-shrink{
   transform: translate(14px, -7px) scale(0.85) !important;
 }
 
-/* RTL input + label for exclude */
 .ExcludedSection[dir="rtl"] .ExcludeTF input,
 .ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{
   direction:rtl;
@@ -221,11 +253,11 @@
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
   transform: translate(0, 9px) scale(1) !important;
 }
+
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-shrink{
   transform: translate(0, -7px) scale(0.85) !important;
 }
 
-/* ---- Servings block ---- */
 .Servings{
   width:auto;
   margin:0;
@@ -235,6 +267,8 @@
   align-items:center;
   justify-content:flex-start;
   gap:10px;
+  flex:0 0 auto !important;
+  white-space:nowrap;
 }
 
 .Servings p{
@@ -245,7 +279,9 @@
   line-height:1;
 }
 
-.Servings.rtl{ flex-direction:row-reverse; }
+.Servings.rtl{
+  flex-direction:row-reverse;
+}
 
 .QuantitySelector{
   height:28px;
@@ -280,17 +316,20 @@
   text-align:right;
 }
 
-/* ---- Filters dropdown ---- */
 .FiltersDropdown{
-  flex:0 0 auto;
+    position: static !important; /* <-- was relative; that’s why it stayed left */
+  overflow: visible;
+  flex:0 0 auto !important;
+  white-space:nowrap;
   width:auto;
   padding:0;
   box-sizing:border-box;
+  position:relative;
+  z-index:2;
+  margin:0;
 }
 
-/* push filter button to the far side */
-.FiltersRow.ltr .FiltersDropdown{ margin-left:auto; }
-.FiltersRow.rtl .FiltersDropdown{ margin-right:auto; }
+
 
 .FilterBtn.MuiButton-root{
   gap:10px;
@@ -300,26 +339,49 @@
   height:36px !important;
   font-size:16px !important;
   border-radius:12px !important;
-  margin-top:0 !important; /* aligned in row */
-  background:linear-gradient(180deg,#a07bff 0%,#6a4dff 100%) !important;
-  box-shadow:0 12px 22px rgba(106,77,255,.22),0 2px 0 rgba(255,255,255,.22) inset !important;
+  margin-top:0 !important;
+background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
+  box-shadow:0 12px 22px rgba(253, 209, 33, 0.22),0 2px 0 rgba(255, 196, 0, 0.22) inset !important;
   color:#fff !important;
   display:flex;
 }
 
 .FiltersDropdown__panel{
-  max-height:0;
-  transition:max-height 220ms ease;
-  overflow:hidden;
-  overflow-x:visible !important;
-  width:100%;
+  position:absolute;
+  top:calc(100% + 10px);
+
+  left:50%;
+  right:auto;
+  transform:translateX(-50%) translateY(-6px);
+
+  width:max-content;
+  max-width:min(92vw, 560px);
+
   margin:0 !important;
+  padding:0;
+  border-radius:16px;
+  background:rgba(255,255,255,.90);
+  backdrop-filter:blur(12px);
+  box-shadow:0 18px 40px rgba(15,23,42,.12),inset 0 1px 0 rgba(255,255,255,.70);
+  overflow:hidden;
+
+  max-height:0;
+  opacity:0;
+  transition:max-height 220ms ease, opacity 160ms ease, transform 160ms ease, padding 160ms ease;
+  pointer-events:none;
+  z-index:5;
 }
 
-.FiltersDropdown__panel.open{ max-height:800px; }
+.FiltersDropdown__panel.open{
+  max-height:900px;
+  opacity:1;
+  padding:12px;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
 
 .FiltersDropdown__panelInner{
-  padding-top:12px;
+  padding-top:0;
   display:flex;
   flex-direction:column;
   gap:12px;
@@ -332,12 +394,15 @@
   text-align:right;
 }
 
-.FiltersDropdown__panelInner > div{ width:100%; }
+.FiltersDropdown__panelInner > div{
+  width:100%;
+}
 
 .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
-  width:max-content !important;
-  display:inline-flex !important;
-  flex-wrap:nowrap !important;
+  width:100% !important;
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:10px !important;
 }
 
 .FiltersDropdown__panelInner .MuiToggleButton-root{
@@ -348,9 +413,11 @@
   box-sizing:border-box;
   white-space:nowrap;
   overflow:hidden;
-  text-overflow:ellipsis;
-  border-color:rgba(106,77,255,.35) !important;
-  color:rgba(17,24,39,.78) !important;
+   
+
+     border: 1px solid;
+  border-color:#ffa200 !important;
+
 }
 
 .FiltersDropdown__panelInner .MuiToggleButton-root:hover{
@@ -359,16 +426,17 @@
 }
 
 .FiltersDropdown__panelInner .MuiToggleButton-root.Mui-selected{
-  background:rgba(106,77,255,.18) !important;
-  border-color:#6a4dff !important;
+ background:rgba(255, 255, 255, 0.08) !important;
+ border: 4px solid;
+
+border-radius: 14px;
+  border-color:#ffa200 !important;
   color:#111827 !important;
 }
 
 .FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type{
   border-right:1px solid rgba(0,0,0,.12) !important;
 }
-
-/* ===================== Button + card row ===================== */
 
 .GenerateRecipeBtn{
   height:40px;
@@ -386,11 +454,25 @@
   box-shadow:0 12px 22px rgba(106,77,255,.22),0 2px 0 rgba(255,255,255,.22) inset;
 }
 
-.GenerateRecipeBtn:hover{ filter:brightness(1.03); transform:translateY(-1px); }
-.GenerateRecipeBtn:active{ transform:translateY(0px); }
+.GenerateRecipeBtn:hover{
+  filter:brightness(1.03);
+  transform:translateY(-1px);
+}
 
-.GenerateRecipeBtn svg{ color:#fff; font-size:22px; }
-.GenerateRecipeBtn p{ margin:0; font-size:14px; font-weight:900; }
+.GenerateRecipeBtn:active{
+  transform:translateY(0px);
+}
+
+.GenerateRecipeBtn svg{
+  color:#fff;
+  font-size:22px;
+}
+
+.GenerateRecipeBtn p{
+  margin:0;
+  font-size:14px;
+  font-weight:900;
+}
 
 .GenerateRecipeBtn.Mui-disabled{
   background:#e5e7eb !important;
@@ -399,7 +481,10 @@
   color:rgba(17,24,39,.55) !important;
 }
 
-.GenerateRecipeBtn .BtnIcon{ font-size:18px; color:#ffe08a; }
+.GenerateRecipeBtn .BtnIcon{
+  font-size:18px;
+  color:#ffe08a;
+}
 
 .CenterRow{
   width:100%;
@@ -409,22 +494,68 @@
   margin:8px 0;
   padding:0 12px;
 }
+
 @media (max-width:600px){
 
   .FiltersColumn{
-    margin-top: 14px !important;  /* tweak: -8 to -28 */
+    margin-top:14px !important;
   }
 
-  /* Make the opened panel/card narrower + give it clear side margins */
-  .FiltersDropdown__panel{
-    width: calc(100vw - 56px) !important;  /* narrower than before */
-    max-width: 420px !important;           /* cap width */
-    margin: 10px auto 0 !important;
+  .FiltersRow{
+    gap:10px;
+    padding:0 2px;
+    justify-content:center;
   }
 
-  /* Optional: also slightly reduce inner padding so it feels tighter */
+  .Servings p{
+    font-size:14px;
+  }
+
+  .QuantitySelector{
+    min-width:64px;
+  }
+
+  .FilterBtn.MuiButton-root{
+    padding:6px 12px !important;
+    font-size:15px !important;
+  }
+
+  .FiltersDropdown{
+    width:auto !important;
+    display:flex !important;
+    justify-content:center !important;
+  }
+
   .FiltersDropdown__panel{
-    padding: 10px 10px 12px !important;
+  width: calc(100vw - 28px) !important;
+    max-width: 420px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) translateY(-6px) !important;
+  }
+
+  .FiltersDropdown__panel.open{
+    transform:translateX(-50%) translateY(0);
+    padding:12px;
+  }
+    .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;          /* <-- no wrapping */
+    overflow-x: auto !important;           /* <-- scroll if needed */
+    -webkit-overflow-scrolling: touch;
+    gap: 10px !important;
+    padding-bottom: 6px;                   /* space for scrollbar */
+  }
+
+  /* make buttons consistent and not break the row */
+  .FiltersDropdown__panelInner .MuiToggleButton-root{
+    flex: 0 0 auto !important;             /* keep natural width */
+    white-space: nowrap !important;
+  }
+
+  /* optional: hide ugly scrollbar on iOS/Chrome (keeps scroll working) */
+  .FiltersDropdown__panelInner .MuiToggleButtonGroup-root::-webkit-scrollbar{
+    height: 6px;
   }
 }
-

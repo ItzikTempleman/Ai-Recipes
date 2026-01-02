@@ -8,7 +8,6 @@ import { recipeService } from "../../Services/RecipeService";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import { ArrowForwardIos } from "@mui/icons-material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 type RecipeProps = {
@@ -60,7 +59,7 @@ const { t } = useTranslation();
                 onClick={moveToInfo}
                 variant="contained">
                 {t("recipeUi.showRecipe")}
-                <ArrowForwardIos />
+          
             </Button>
         </div>
     );

@@ -31,7 +31,7 @@
 .ReturnScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
-  padding: 6px 10px !important;
+  padding: 6px !important;
   border-radius: 18px !important;
   border: 1px solid rgba(202, 204, 207, 0.65) !important;
   backdrop-filter: blur(8px);
@@ -41,8 +41,8 @@
   align-items: center;
   text-decoration: none;
   margin: 0;
-  width: 58px;
-  height: 50px !important;
+  width: 40px;
+  height: 40px !important;
   justify-content: center;
   transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
@@ -50,8 +50,8 @@
 .ReturnScreenBtn svg,
 .LikesScreenBtn svg,
 .HomeScreenBtn svg {
-  height: 26px;
-  width: 26px;
+  height: 30px;
+  width: 30px;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.08));
 }
 
@@ -99,11 +99,11 @@
 }
 
 .ReturnScreenBtn svg {
-  color: #d97706;
+  color: #ffbe2e;
 }
 
 .ReturnScreenBtn p {
-  color: #d97706;
+  color: #ffbe2e;
 }
 
 .ReturnScreenBtn.active,
@@ -131,8 +131,8 @@
   min-width: 116px !important;
   border-radius: 18px !important;
   padding: 0 20px !important;
-  min-height: 50px !important;
-  height: 50px !important;
+  min-height: 40px !important;
+  height: 40px !important;
   text-transform: none !important;
   font-weight: 800 !important;
   letter-spacing: 0.2px !important;
@@ -180,7 +180,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 50px;
+  height: 40px;
   padding: 0 12px;
   border-radius: 18px;
   border: 1px solid rgba(202, 204, 207, 0.65);
@@ -220,8 +220,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 18px;
   color: #5f6368;
   cursor: pointer;
@@ -275,7 +275,7 @@
 
 
   .LanguageLink {
-    height: 42px;
+    height: 40px;
     padding: 0 8px !important;
     gap: 6px !important;
     border-radius: 14px !important;
@@ -295,8 +295,8 @@
   }
 
   .MenuBtn {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 14px;
     margin-top: 6px;
   }
@@ -305,8 +305,8 @@
   .LoginBtn.MuiButton-root {
     width: 90px !important;
     padding: 0 10px !important;
-    min-height: 42px !important;
-    height: 42px !important;
+    min-height: 40px !important;
+    height: 40px !important;
     border-radius: 14px !important;
     font-weight: 900 !important;
     margin-left: 0;

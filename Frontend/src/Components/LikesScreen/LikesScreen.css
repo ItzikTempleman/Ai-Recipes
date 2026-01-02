@@ -1,4 +1,3 @@
-/* LikesScreen should match HomeScreen layout */
 .LikesScreen {
   width: 100%;
   min-height: 100vh;
@@ -11,8 +10,8 @@
 
 .LikesScreenWrapper {
   width: 100%;
-  max-width: 1080px;
-  margin: 18px auto 0;
+  max-width: 1480px;
+  margin: 48px auto 0;
   display: flex;
   flex-direction: column;
 }
@@ -35,44 +34,20 @@
   text-align: start;
 }
 
-/* Bring HomeScreen's RecipeList look & spacing */
-.RecipeList {
+.LikesScreen .RecipeList {
   width: 100%;
-  max-width: 1080px;
-  margin: 18px auto 0;
-  padding: 0;
-  display: flex;
-  gap: 18px;
-  justify-content: flex-start;
+  max-width: 1480px;
+  margin: 34px auto 0;
+  padding: 34px var(--edge-pad, 34px) 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
   overflow: visible !important;
 }
 
-.RecipeList:has(.RecipeListItem) {
-  flex-wrap: nowrap;
-  overflow-x: auto !important;
-  overflow-y: visible !important;
-  scrollbar-width: none;
-
-  padding-top: 34px !important;
-  padding-bottom: 20px !important;
-
-  padding-inline-start: 34px !important;
-  padding-inline-end: 34px !important;
-
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.RecipeList:has(.RecipeListItem) > * {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-}
-
-/* add edge gutters like Home */
-.RecipeList:has(.RecipeListItem)::before,
-.RecipeList:has(.RecipeListItem)::after {
-  content: "";
-  flex: 0 0 34px;
+.LikesScreen .RecipeList > * {
+  min-width: 0;
 }
 
 @media (max-width: 600px) {
@@ -80,22 +55,15 @@
     padding: 18px 14px 44px;
   }
 
-  .RecipeList {
-    flex-wrap: wrap !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
-    justify-content: center !important;
-    padding-inline: 34px !important;
-    box-sizing: border-box;
+  .LikesScreen .RecipeList {
+    margin: 16px auto 0;
+    padding: 18px var(--edge-pad, 18px) 0;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 18px;
   }
 
-  .RecipeList:has(.RecipeListItem) {
-    overflow-x: visible !important;
-    scroll-snap-type: none !important;
-    padding-bottom: 0 !important;
-  }
-
-  .RecipeList:has(.RecipeListItem) > * {
+  .LikesScreen .RecipeList > * {
     width: min(100%, 360px);
     max-width: min(100%, 360px);
   }

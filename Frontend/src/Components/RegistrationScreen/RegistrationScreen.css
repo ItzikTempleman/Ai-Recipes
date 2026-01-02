@@ -11,7 +11,7 @@
 
 .RegistrationForm {
    background-color: white;
-  border-radius: 10px;
+  border-radius: 18px;
   padding: 60px;
   width: 310px;
   margin: 40px;
@@ -68,13 +68,13 @@ html[dir="rtl"] .NameRow {
 }
 
 .BackBtn.MuiButton-root {
-  background: linear-gradient(180deg, #4f8cff 0%, #3b6fff 100%) !important;
+background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .BackBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #5a96ff 0%, #4377ff 100%) !important;
+background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
@@ -86,28 +86,23 @@ html[dir="rtl"] .NameRow {
 
 
 .RegisterBtn.MuiButton-root {
-  min-width: 116px !important;
+   width: 100% !important;
   border-radius: 18px !important;
   padding: 0 20px !important;
-  min-height: 45px !important;
-  height: 45px !important;
-  text-transform: none !important;
+  height: 50px !important;
   font-weight: 800 !important;
-  letter-spacing: 0.2px !important;
-  margin-left: 6px;
-  margin-right: 6px;
   margin-top: 30px;
-  gap:10px;
 }
 
+
 .RegisterBtn.MuiButton-root {
-  background: linear-gradient(180deg, #4f8cff 0%, #3b6fff 100%) !important;
+background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .RegisterBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #5a96ff 0%, #4377ff 100%) !important;
+  background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
