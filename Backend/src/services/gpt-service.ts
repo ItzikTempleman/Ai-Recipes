@@ -1,6 +1,6 @@
 import axios from "axios";
-import { appConfig } from "../2-utils/app-config";
-import { GeneratedRecipeData, Query } from "../3-models/recipe-model";
+import { appConfig } from "../utils/app-config";
+import { GeneratedRecipeData, Query } from "../models/recipe-model";
 
 class GptService {
   public async getInstructions(query: Query, isWithImage: boolean): Promise<GeneratedRecipeData> {

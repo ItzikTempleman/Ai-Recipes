@@ -28,7 +28,7 @@
   transform: scaleX(-1);
 }
 
-.ReturnScreenBtn,
+
 .LikesScreenBtn,
 .HomeScreenBtn {
   padding: 6px !important;
@@ -45,6 +45,10 @@
   height: 40px !important;
   justify-content: center;
   transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.ReturnScreenBtn{
+text-decoration: none;
 }
 
 .ReturnScreenBtn svg,
@@ -99,20 +103,14 @@
 }
 
 .ReturnScreenBtn svg {
-  color: #ffbe2e;
+  color: #575656;
 }
 
 .ReturnScreenBtn p {
-  color: #ffbe2e;
+  color: #575656;
 }
 
-.ReturnScreenBtn.active,
-.ReturnScreenBtn:hover {
-  background: rgba(217, 119, 6, 0.16); /* slightly stronger */
-  border-color: rgba(217, 119, 6, 0.42) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 14px 22px rgba(217, 119, 6, 0.22);
-}
+
 
 
 
@@ -126,54 +124,30 @@
   flex-direction: row-reverse;
 }
 
-.LoginBtn.MuiButton-root,
-.LogoutBtn.MuiButton-root {
-  min-width: 116px !important;
-  border-radius: 18px !important;
+.LoginBtn,
+.LogoutBtn {
+  cursor: pointer;
   padding: 0 20px !important;
-  min-height: 40px !important;
-  height: 40px !important;
-  text-transform: none !important;
   font-weight: 800 !important;
-  letter-spacing: 0.2px !important;
   margin-left: 6px;
   margin-right: 6px;
 }
 
-.LoginBtn.MuiButton-root {
-
-  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
-  color: #ffffff !important;
-  box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
-              0 2px 0 rgba(255, 255, 255, .22) inset;
+.LoginBtn {
+  color: #6a4dff !important;
+  
 }
 
-.LoginBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%);
+.LoginBtn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
-.LoginBtn.MuiButton-root:active {
-  transform: translateY(0px);
-  box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+.LogoutBtn {
+  color: rgba(203, 14, 14, 0.95)  !important;
 }
 
-.LogoutBtn.MuiButton-root {
-  background: linear-gradient(180deg, rgba(203, 14, 14, 0.95) 0%, rgba(203, 14, 14, 0.85) 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 10px 18px rgba(203, 14, 14, 0.22), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
-}
-
-.LogoutBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, rgba(203, 14, 14, 0.98) 0%, rgba(203, 14, 14, 0.88) 100%) !important;
+.LogoutBtn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(203, 14, 14, 0.26), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
-}
-
-.LogoutBtn.MuiButton-root:active {
-  transform: translateY(0px);
-  box-shadow: 0 8px 14px rgba(203, 14, 14, 0.2), 0 2px 0 rgba(255, 255, 255, 0.14) inset !important;
 }
 
 .LanguageLink {
@@ -270,10 +244,6 @@
  font-size: 10px;
 }
 
-
-
-
-
   .LanguageLink {
     height: 40px;
     padding: 0 8px !important;
@@ -307,7 +277,6 @@
     padding: 0 10px !important;
     min-height: 40px !important;
     height: 40px !important;
-    border-radius: 14px !important;
     font-weight: 900 !important;
     margin-left: 0;
     margin-right: 0;

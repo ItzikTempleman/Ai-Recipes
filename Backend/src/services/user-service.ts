@@ -1,10 +1,10 @@
 import { OkPacketParams } from "mysql2";
-import { cyber } from "../2-utils/cyber";
-import { dal } from "../2-utils/dal";
-import { AuthorizationError, ResourceNotFound, ValidationError } from "../3-models/client-errors";
-import { CredentialsModel, UserModel } from "../3-models/user-model";
+import { cyber } from "../utils/cyber";
+import { dal } from "../utils/dal";
+import { AuthorizationError, ResourceNotFound, ValidationError } from "../models/client-errors";
+import { CredentialsModel, UserModel } from "../models/user-model";
 import { fileSaver } from "uploaded-file-saver";
-import { appConfig } from "../2-utils/app-config";
+import { appConfig } from "../utils/app-config";
 import path from "path";
 import { randomUUID } from "crypto";
 import { UploadedFile } from "express-fileupload";

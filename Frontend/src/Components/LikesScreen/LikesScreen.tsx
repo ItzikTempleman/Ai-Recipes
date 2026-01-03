@@ -7,6 +7,8 @@ import { AppState } from "../../Redux/Store";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 
 import "./LikesScreen.css";
+import { recipeService } from "../../Services/RecipeService";
+import { useEffect } from "react";
 
 export function LikesScreen() {
   useTitle("Liked");
@@ -18,6 +20,15 @@ export function LikesScreen() {
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || !user?.id) return;
+    if (!Array.isArray(items) || items.length === 0) {
+      recipeService.getAllRecipes().catch(() => {});
+    }
+    recipeService.loadMyLikes().catch(() => {});
+  }, [user?.id]);
+  
   const list = Array.isArray(items) ? items : [];
   const userId = user?.id;
 

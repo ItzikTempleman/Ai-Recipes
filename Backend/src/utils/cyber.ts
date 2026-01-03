@@ -1,4 +1,4 @@
-import { UserModel } from "../3-models/user-model";
+import { UserModel } from "../models/user-model";
 import jwt, { SignOptions } from "jsonwebtoken";
 
 import crypto from "crypto";

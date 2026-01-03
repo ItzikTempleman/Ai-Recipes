@@ -23,7 +23,7 @@
 
 .LikesScreenWrapper.rtl {
   direction: rtl;
-  align-items: flex-end;
+  
 }
 
 .LikeScreenTitle {
@@ -46,7 +46,7 @@
   overflow: visible !important;
 }
 
-.LikesScreen .RecipeList > * {
+.LikesScreen .RecipeList>* {
   min-width: 0;
 }
 
@@ -63,8 +63,12 @@
     gap: 18px;
   }
 
-  .LikesScreen .RecipeList > * {
+  .LikesScreen .RecipeList>* {
     width: min(100%, 360px);
     max-width: min(100%, 360px);
+  }
+
+  .LikesScreenWrapper {
+    margin: 18px auto 0 !important;
   }
 }

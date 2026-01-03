@@ -8,7 +8,6 @@ import { useLanguage } from "../../Utils/SetLanguage";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 import UndoIcon from "@mui/icons-material/Undo";
-import { Button } from "@mui/material";
 import { userService } from "../../Services/UserService";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
@@ -32,13 +31,6 @@ export function Header() {
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
-        {showUndo && (
-          <NavLink to="/generate" className="ReturnScreenBtn">
-            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : ""}`} />
-            <p>{t("nav.return")}</p>
-          </NavLink>
-        )}
-
         <NavLink
           to="/home"
           className={({ isActive }) => `HomeScreenBtn ${isActive ? "active" : ""}`}
@@ -50,6 +42,13 @@ export function Header() {
             </>
           )}
         </NavLink>
+
+        {showUndo && (
+          <NavLink to="/generate" className="ReturnScreenBtn">
+            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : ""}`} />
+            <p>{t("nav.return")}</p>
+          </NavLink>
+        )}
 
         {user && (
           <NavLink
@@ -82,24 +81,22 @@ export function Header() {
         </div>
 
         {!isGuest ? (
-          <Button
-            variant="contained"
+          <div
             className="LogoutBtn"
             onClick={() => {
               navigate("/home");
               userService.logout();
             }}
           >
-            {t("drawer.logout")}
-          </Button>
+           <h3>{t("drawer.logout")}</h3> 
+          </div>
         ) : (
-          <Button
+          <div
             className="LoginBtn"
-            variant="contained"
             onClick={() => navigate("/login")}
           >
-            {t("drawer.login")}
-          </Button>
+            <h3>{t("drawer.login")}</h3>
+          </div>
         )}
         <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />

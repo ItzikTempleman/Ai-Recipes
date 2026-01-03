@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import { ClientErrors, RouteNotFound } from "../3-models/client-errors";
-import { appConfig } from "../2-utils/app-config";
-import { StatusCode } from "../3-models/status-code";
+import { ClientErrors, RouteNotFound } from "../models/client-errors";
+import { appConfig } from "../utils/app-config";
+import { StatusCode } from "../models/status-code";
 
 
 class ErrorMiddleware {

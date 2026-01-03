@@ -2,11 +2,11 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import fs from "fs/promises";
-import { appConfig } from "./2-utils/app-config";
-import { recipeController } from "./5-controllers/recipe-controller";
-import { errorMiddleware } from "./6-middleware/error-middleware";
-import { userController } from "./5-controllers/user-controller";
-import { healthController } from "./2-utils/health-controller";
+import { appConfig } from "./utils/app-config";
+import { recipeController } from "./controllers/recipe-controller";
+import { errorMiddleware } from "./middleware/error-middleware";
+import { userController } from "./controllers/user-controller";
+import { healthController } from "./utils/health-controller";
 import fileUpload from "express-fileupload";
 
 export class App {

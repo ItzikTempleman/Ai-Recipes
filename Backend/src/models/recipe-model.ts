@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { ValidationError } from "./client-errors";
 import { UploadedFile } from "express-fileupload";
-import { appConfig } from "../2-utils/app-config";
+import { appConfig } from "../utils/app-config";
 import OpenAI from "openai";
 import { CaloryRestrictions, DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, QueryRestrictions, SugarRestriction } from "./filters";
 

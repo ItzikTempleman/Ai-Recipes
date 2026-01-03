@@ -1,6 +1,6 @@
 import { appConfig } from "./app-config";
-import {DbRecipeRow, DifficultyLevel,FullRecipeModel,GeneratedRecipeData,} from "../3-models/recipe-model";
-import { CaloryRestrictions,DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction} from "../3-models/filters";
+import {DbRecipeRow, DifficultyLevel,FullRecipeModel,GeneratedRecipeData,} from "../models/recipe-model";
+import { CaloryRestrictions,DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction} from "../models/filters";
 
 const parseAmounts = (s?: string | null): (string | null)[] => {
   if (!s) return [];

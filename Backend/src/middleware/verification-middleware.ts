@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { AuthorizationError } from "../3-models/client-errors";
-import { appConfig } from "../2-utils/app-config";
-import { UserModel } from "../3-models/user-model";
+import { AuthorizationError } from "../models/client-errors";
+import { appConfig } from "../utils/app-config";
+import { UserModel } from "../models/user-model";
 import jwt from "jsonwebtoken";
-import { StatusCode } from "../3-models/status-code";
+import { StatusCode } from "../models/status-code";
 
 class VerificationMiddleware {
     public readonly verifyLoggedIn = (request: Request, response: Response, next: NextFunction):void => {

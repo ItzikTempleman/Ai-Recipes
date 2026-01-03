@@ -32,8 +32,8 @@
 }
 
 .ShareBtnContainer{
-  background: linear-gradient(180deg, #ffc54a 0%, #f6ac00 100%) !important;
-  color: #414141 !important;
+  background: linear-gradient(180deg, #f7b147 0%, #f6a000 100%) !important;
+  color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
   gap: 10px;
   padding: 0 20px;
@@ -259,6 +259,10 @@ html[dir="rtl"] .FiltersRow {
   list-style-position: inside;
 }
 
+.IngredientsTitle, .InstructionsTitle{
+color: rgb(255, 140, 0) !important;
+}
+
 .InstructionsTitle.ltr,
 .IngredientsTitle.ltr,
 .Description.ltr,
@@ -273,12 +277,6 @@ html[dir="rtl"] .FiltersRow {
   text-align: right !important;
 }
 
-.InstructionsTitle.rtl,
-.InstructionsTitle.ltr,
-.IngredientsTitle.rtl,
-.IngredientsTitle.ltr {
-  color: #303030;
-}
 
 .ExtraDataFlag {
   font-size: 1.2rem;
@@ -403,15 +401,76 @@ html[dir="rtl"] .FiltersRow {
 
   .RecipeImage {
     max-width: 100%;
+    border-radius: 18px;
   }
 
   .IngredientRow {
     flex-direction: row;
-    font-size: 0.9rem;
+    
+  }
+  .RecipeExtraDataContainer,
+  .RecipeBottomExtraDataContainer {
+    margin-top: 0 !important;
+    gap: 0 !important;
+    height: auto !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+
+    position: relative;            /* needed for divider pseudo-elements */
+    border: 0 !important;
   }
 
-  .SugarAmountInnerDiv > p:last-child,
-  .ProteinInnerDiv > p:last-child {
-    font-size: 10px !important;
+  /* ONE horizontal divider between the two blocks */
+  .RecipeBottomExtraDataContainer {
+    border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
   }
+
+  /* cards: flat */
+  .AmountParent,
+  .PrepTimeParent,
+  .CountryNameParent,
+  .DifficultyParent,
+  .CaloryParent,
+  .SugarParent,
+  .ProteinParent,
+  .HealthParent {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 10px 6px !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  /* VERTICAL divider inside each container */
+  .RecipeExtraDataContainer::before,
+  .RecipeBottomExtraDataContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 50%;       /* works for RTL/LTR */
+    width: 1px;
+    background: rgba(0, 0, 0, 0.25);
+    transform: translateX(-0.5px);
+    pointer-events: none;
+  }
+
+  /* HORIZONTAL divider inside each container (between row 1 and row 2) */
+  .RecipeExtraDataContainer::after,
+  .RecipeBottomExtraDataContainer::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.25);
+    transform: translateY(-0.5px);
+    pointer-events: none;
+  }
+
+
 }

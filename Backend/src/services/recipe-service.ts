@@ -1,16 +1,16 @@
-import { FullRecipeModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages, DifficultyLevel } from "../3-models/recipe-model";
+import { FullRecipeModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages, DifficultyLevel } from "../models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
-import { appConfig } from "../2-utils/app-config";
+import { appConfig } from "../utils/app-config";
 import fs from "fs/promises";
 import { fileSaver } from "uploaded-file-saver";
 import { OkPacketParams } from "mysql2";
-import { dal } from "../2-utils/dal";
-import { mapDbRowToFullRecipe } from "../2-utils/map-recipe";
-import { DangerousRequestError, ResourceNotFound, ValidationError } from "../3-models/client-errors";
-import { InputModel } from "../3-models/InputModel";
-import { isLethalQuery } from "../2-utils/banned-filter";
+import { dal } from "../utils/dal";
+import { mapDbRowToFullRecipe } from "../utils/map-recipe";
+import { DangerousRequestError, ResourceNotFound, ValidationError } from "../models/client-errors";
+import { InputModel } from "../models/InputModel";
+import { isLethalQuery } from "../utils/banned-filter";
 
 class RecipeService {
 

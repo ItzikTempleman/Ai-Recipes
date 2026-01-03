@@ -1,5 +1,5 @@
 export function getTopSectionEn(): string {
-    return `Welcome, I’m Itzik, a full-stack developer with a passion for combining creativity and technology.
+    return `Welcome, I’m Isaak, a full-stack developer with a passion for combining creativity and technology.
      I built this platform to make recipe creation smarter, simpler, and more inspiring`
 }
 

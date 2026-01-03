@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ClientErrors } from "../3-models/client-errors";
-import { StatusCode } from "../3-models/status-code";
+import { ClientErrors } from "../models/client-errors";
+import { StatusCode } from "../models/status-code";
 
 export function handleOpenAIError(error: any): void {
     if (axios.isAxiosError(error)) {

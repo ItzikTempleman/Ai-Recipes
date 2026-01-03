@@ -1,13 +1,13 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { StatusCode } from "../3-models/status-code";
-import { FullRecipeModel } from "../3-models/recipe-model";
-import { recipeService } from "../4-services/recipe-service";
-import { InputModel } from "../3-models/InputModel";
-import { verificationMiddleware } from "../6-middleware/verification-middleware";
-import { UserModel } from "../3-models/user-model";
-import { generateImage } from "../4-services/image-service";
-import { appConfig } from "../2-utils/app-config";
-import { sharePdfService } from "../4-services/share-pdf-service";
+import { StatusCode } from "../models/status-code";
+import { FullRecipeModel } from "../models/recipe-model";
+import { recipeService } from "../services/recipe-service";
+import { InputModel } from "../models/InputModel";
+import { verificationMiddleware } from "../middleware/verification-middleware";
+import { UserModel } from "../models/user-model";
+import { generateImage } from "../services/image-service";
+import { appConfig } from "../utils/app-config";
+import { sharePdfService } from "../services/share-pdf-service";
 import zlib from "zlib";
 
 class RecipeController {

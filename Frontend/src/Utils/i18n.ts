@@ -49,7 +49,7 @@ const resources = {
         filters:"Filters",
         youCanGenerateImageLater: "You can add an image later",
         guest: "Guest",
-        title: "Generate recipe with AI",
+        title: "Generate recipes with AI",
         labelGenerate: "Generate recipe",
         quantitySelector: "Servings",
         requiredTitle: "title is required",

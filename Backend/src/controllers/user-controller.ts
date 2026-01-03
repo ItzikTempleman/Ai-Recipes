@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
-import { userService } from "../4-services/user-service";
-import { CredentialsModel, UserModel } from "../3-models/user-model";
-import { StatusCode } from "../3-models/status-code";
+import { userService } from "../services/user-service";
+import { CredentialsModel, UserModel } from "../models/user-model";
+import { StatusCode } from "../models/status-code";
 import { fileSaver } from "uploaded-file-saver";
 
 class UserController {

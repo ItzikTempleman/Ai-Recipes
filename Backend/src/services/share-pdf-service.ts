@@ -1,5 +1,5 @@
 import { chromium, Browser } from "playwright";
-import { appConfig } from "../2-utils/app-config";
+import { appConfig } from "../utils/app-config";
 
 type ShareStore = Map<string, any>;
 

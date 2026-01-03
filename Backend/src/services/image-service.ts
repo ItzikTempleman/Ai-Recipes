@@ -1,9 +1,9 @@
-import { InputModel } from "../3-models/InputModel";
-import { GPTImage, openaiImages } from "../3-models/recipe-model";
+import { InputModel } from "../models/InputModel";
+import { GPTImage, openaiImages } from "../models/recipe-model";
 import fs from "fs/promises";
 import path from "path";
-import { appConfig } from "../2-utils/app-config";
-import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions } from "../3-models/filters";
+import { appConfig } from "../utils/app-config";
+import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions } from "../models/filters";
 
 export async function generateImage(recipe: any): Promise<GPTImage> {
   const lowerQuery = String(recipe.query ?? "").toLowerCase();
