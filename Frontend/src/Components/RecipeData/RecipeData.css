@@ -449,7 +449,7 @@ color: rgb(255, 140, 0) !important;
   .RecipeBottomExtraDataContainer::before {
     content: "";
     position: absolute;
-    top: 0;
+    top: 10px;
     bottom: 0;
     inset-inline-start: 50%;       /* works for RTL/LTR */
     width: 1px;

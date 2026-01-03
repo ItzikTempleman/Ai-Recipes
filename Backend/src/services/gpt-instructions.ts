@@ -528,6 +528,21 @@ CRITICAL SANITY & SAFETY RULES (MUST FOLLOW):
        • Do NOT include multi-hour fermentation, long rises, overnight rests, or long chilling steps for pizza dough.
        • Keep any rest time short (up to ~10 minutes) and count it inside the 20–30 minutes.
 
+         VEGAN BURGER "VEGAN BEEF" BUG FIX (CRITICAL):
+   - If DietaryRestrictions = 1 (VEGAN) AND the dish is a burger/hamburger
+     (query or cleaned title contains "burger" / "hamburger" / "המבורגר"):
+       - Do NOT use any ingredient names like:
+         "vegan beef", "vegan ground beef", "plant-based beef", "Impossible beef",
+         "Beyond beef", "vegan meat", "mock beef", "vegan burger patty"
+         or any equivalent wording that implies a pre-made beef substitute.
+       - The patty MUST be made from whole, real ingredients (e.g., cooked lentils/beans,
+         mushrooms, onion, breadcrumbs or gluten-free binder if needed, spices, etc.).
+       - The ingredient list must name those real components explicitly.
+       - The instructions must explicitly describe forming the mixture into patties
+         (with diameter, thickness, gentle handling, and dimple rule).
+       - Exception: ONLY if the user explicitly asks for store-bought vegan beef/patty
+         (e.g., "with Beyond", "Impossible", "store-bought vegan beef") THEN it is allowed.
+
 PIZZA COMPOSITION RULE (CRITICAL):
 - If the dish is a pizza (query or cleaned title contains "pizza" / "piza" / "pitsa" / "פיצה"):
   - The recipe MUST include these core components unless explicitly forbidden by restrictions:

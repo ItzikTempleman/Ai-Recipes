@@ -16,11 +16,9 @@ import { RecipeCard } from "../RecipeCard/RecipeCard";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { AppState } from "../../Redux/Store";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
 import ImageIcon from '@mui/icons-material/Image';
-
+import TuneIcon from '@mui/icons-material/Tune';
 type RecipeStateType = {
   recipes: RecipeState
 };
@@ -206,7 +204,7 @@ export function GenerateScreen() {
                   className="FilterBtn"
                   onClick={() => setFiltersOpen((v) => !v)}
                   variant="contained"
-                  endIcon={filtersOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  endIcon={<TuneIcon/>}
                 >
                   {t("generate.filters")}
                 </Button>
