@@ -209,6 +209,15 @@ export function GenerateScreen() {
                   {t("generate.filters")}
                 </Button>
 
+
+  {filtersOpen && (
+    <div
+      className="FiltersBackdrop"
+      onClick={() => setFiltersOpen(false)}
+      aria-hidden="true"
+    />
+  )}
+  
                 <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
                   <div className="FiltersDropdown__panelInner">
                     <div><DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={setDietType} /></div>

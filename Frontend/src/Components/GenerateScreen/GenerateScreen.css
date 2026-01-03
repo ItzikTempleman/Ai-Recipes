@@ -7,6 +7,8 @@
   align-items:center;
   box-sizing:border-box;
   overflow-x:hidden;
+    position: relative;
+  isolation: isolate;
 }
 
 .GenerateContainer{
@@ -120,6 +122,23 @@
   width:22px;
   height:22px;
   color:#6a4dff;
+}
+
+.FiltersBackdrop{
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(2px);
+}
+.FiltersDropdown__panel{
+  z-index: 1300 !important;
+  background: #fff;              /* fully opaque */
+  opacity: 0;                    /* you already animate this */
+}
+.FiltersDropdown__panel.open{
+  pointer-events: auto;
+  opacity: 1;
 }
 
 .SearchTF .MuiOutlinedInput-root,
@@ -568,5 +587,15 @@ background-color: white;
 
   .FiltersDropdown__panelInner .MuiToggleButtonGroup-root::-webkit-scrollbar{
     height: 6px;
+  }
+    .FiltersDropdown__panel{
+    position: fixed !important;
+    left: 50% !important;
+    top: 140px !important;              /* adjust if you want it lower/higher */
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 28px) !important;
+    max-width: 420px !important;
+    z-index: 1300 !important;
+    background: #fff !important;
   }
 }
