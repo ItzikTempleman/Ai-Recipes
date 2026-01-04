@@ -167,14 +167,22 @@ font-size: 20px;
   border:1px solid rgba(148,163,184,.55);
 }
 
-.SearchTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
-.ExcludeTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+.SearchTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
   border-color:rgba(106,77,255,.45);
 }
 
-.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
-.ExcludeTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+
+.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
   border-color:rgba(106,77,255,.9);
+  border-width:2px;
+}
+
+.ExcludeTF .MuiInputLabel-root.Mui-focused,
+.ExcludeTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+  border-color: #ff9d00;
+}
+.ExcludeTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border-color: #ff9d00;
   border-width:2px;
 }
 
@@ -183,12 +191,15 @@ font-size: 20px;
   box-shadow:0 18px 38px rgba(106,77,255,.14),inset 0 1px 0 rgba(255,255,255,.85);
 }
 
+.ExcludeTF .MuiInputLabel-root.MuiInputLabel-shrink{
+  color:#ff9d00 !important;
+}
+
 .SearchTF .MuiOutlinedInput-input{
   padding:10px 12px;
 }
 
-.SearchTF .MuiInputLabel-root.Mui-focused,
-.ExcludeTF .MuiInputLabel-root.Mui-focused{
+.SearchTF .MuiInputLabel-root.Mui-focused{
   color:rgba(106,77,255,.95);
 }
 
@@ -255,9 +266,6 @@ font-size: 20px;
   transform:translate(14px, 9px) scale(1) !important;
 }
 
-.ExcludeTF .MuiInputLabel-shrink{
-  transform:translate(14px, -7px) scale(0.85) !important;
-}
 
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-root{
   direction:rtl;
@@ -316,8 +324,7 @@ font-size: 20px;
   margin:0 !important;
   font-weight:900;
   font-size:15px;
-  color:rgba(17,24,39,.82);
-  line-height:1;
+  color: #ff9d00;
 }
 
 .Servings.rtl{
@@ -335,7 +342,7 @@ font-size: 20px;
   box-shadow:0 5px 10px rgba(2,6,23,.10);
   font-weight:900;
   font-size:15px;
-  color:rgba(17,24,39,.78);
+  color: #ff9d00;
   appearance:none;
   -webkit-appearance:none;
   -moz-appearance:none;
@@ -415,7 +422,8 @@ font-size: 20px;
 }
 
 .Divider{
-  border:0.5px solid rgba(106, 77, 255, 0.65);
+  border:1px solid rgba(65, 65, 65, 0.65);
+  border-radius: 999px;
   margin:30px 0 0 0;
   width:100%;
 }

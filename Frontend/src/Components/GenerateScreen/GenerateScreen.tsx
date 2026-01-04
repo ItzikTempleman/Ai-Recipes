@@ -119,17 +119,17 @@ export function GenerateScreen() {
         </div>
         <form onSubmit={handleSubmit(send)}>
           <div className={`InputData ${isRTL ? "rtl" : ""}`}>
- <TextField
-  dir={isRTL ? "rtl" : "ltr"}  
-  className="SearchTF"
-  size="small"
-  label={t("generate.labelGenerate")}
-  {...register("query", { required: `${t("generate.requiredTitle")}` })}
-  disabled={loading}
-  InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
-  inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
-  InputLabelProps={{ style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" } }}
-/>
+            <TextField
+              dir={isRTL ? "rtl" : "ltr"}
+              className="SearchTF"
+              size="small"
+              label={t("generate.labelGenerate")}
+              {...register("query", { required: `${t("generate.requiredTitle")}` })}
+              disabled={loading}
+              InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
+              inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
+              InputLabelProps={{ style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" } }}
+            />
             <IconButton
               className={`ImageToggleBtn ${hasImage ? "on" : "off"}`}
               onClick={() => setHasImage(image => !image)}
@@ -140,7 +140,7 @@ export function GenerateScreen() {
               <IconButton className="RoundedBtn large-loading" edge="end" disabled>
                 <Box><CircularProgress /></Box>
               </IconButton>
-            ) : ( 
+            ) : (
               <Button
                 className="GenerateRecipeBtn"
                 variant="contained"
@@ -158,7 +158,7 @@ export function GenerateScreen() {
             loading && (
               <div>
                 {hasImage ? (
-                    <h2 className="LoadingImage">{t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}</h2>
+                  <h2 className="LoadingImage">{t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}</h2>
                 ) : (
                   <h2 className="LoadingWithoutImage">
                     {t("generate.loadingNoImage")}
@@ -168,7 +168,7 @@ export function GenerateScreen() {
             )
           }
 
-<div className="Divider"></div>
+          <div className="Divider"></div>
           <div className="FiltersColumn">
             <div className={`FiltersRow ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
 
@@ -201,12 +201,12 @@ export function GenerateScreen() {
                   className="FilterBtn"
                   onClick={() => setFiltersOpen((v) => !v)}
                   variant="contained"
-                  endIcon={<TuneIcon/>}
+                  endIcon={<TuneIcon />}
                 >
                   {t("generate.filters")}
                 </Button>
 
-  
+
                 <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
                   <div className="FiltersDropdown__panelInner">
                     <div><DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={setDietType} /></div>
