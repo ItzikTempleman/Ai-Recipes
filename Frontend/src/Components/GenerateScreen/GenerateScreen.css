@@ -194,7 +194,6 @@ font-size: 20px;
 .ExcludeTF .MuiInputLabel-root.MuiInputLabel-shrink{
   color:#ff9d00 !important;
 }
-
 .SearchTF .MuiOutlinedInput-input{
   padding:10px 12px;
 }
@@ -262,10 +261,13 @@ font-size: 20px;
   font-size:14px !important;
 }
 
-.ExcludeTF .MuiInputLabel-outlined{
+/* FIX: LTR label transform should NOT override shrink state */
+.ExcludeTF .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
   transform:translate(14px, 9px) scale(1) !important;
 }
-
+.ExcludeTF .MuiInputLabel-outlined.MuiInputLabel-shrink{
+  transform:translate(14px, -7px) scale(0.85) !important;
+}
 
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-root{
   direction:rtl;
@@ -299,10 +301,10 @@ font-size: 20px;
   text-align:right !important;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
+/* FIX: RTL label transform should NOT override shrink state */
+.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
   transform:translate(-14px, 9px) scale(1) !important;
 }
-
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-shrink{
   transform:translate(-14px, -7px) scale(0.85) !important;
 }

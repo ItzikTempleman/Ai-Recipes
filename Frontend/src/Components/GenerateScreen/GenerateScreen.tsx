@@ -13,76 +13,115 @@ import { SugarFilter } from "../Filters/SugarFilter";
 import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
-import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction } from "../../Models/RecipeModel";
+import {
+  DietaryRestrictions,
+  GlutenRestrictions,
+  InputModel,
+  LactoseRestrictions,
+  RecipeModel,
+  RecipeState,
+  SugarRestriction
+} from "../../Models/RecipeModel";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { AppState } from "../../Redux/Store";
-import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
-import ImageIcon from '@mui/icons-material/Image';
-import TuneIcon from '@mui/icons-material/Tune';
+import HideImageOutlinedIcon from "@mui/icons-material/HideImageOutlined";
+import ImageIcon from "@mui/icons-material/Image";
+import TuneIcon from "@mui/icons-material/Tune";
+
 type RecipeStateType = {
-  recipes: RecipeState
+  recipes: RecipeState;
 };
 
 export function GenerateScreen() {
   useTitle("Generate");
+
+  const dispatch = useDispatch();
+  const user = useSelector((state: AppState) => state.user);
+
+  const { register, handleSubmit, reset } = useForm<InputModel>({
+    defaultValues: {
+      query: "",
+      excludedIngredients: [""],
+    },
+  });
+
   const [filtersResetKey, setFiltersResetKey] = useState(0);
   const [sugarLevel, setSugarLevel] = useState<SugarRestriction>(SugarRestriction.DEFAULT);
   const [hasImage, setHasImage] = useState(false);
   const [hasLactose, setHasLactose] = useState(LactoseRestrictions.DEFAULT);
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
-  const { register, handleSubmit, reset } = useForm<InputModel>(
-    {
-      defaultValues: {
-        query: "",
-        excludedIngredients: [""]
-      },
-    }
-  );
+
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
     hasLactose: LactoseRestrictions.DEFAULT,
     hasGluten: GlutenRestrictions.DEFAULT,
     dietType: DietaryRestrictions.DEFAULT,
   });
+
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
-  const dispatch = useDispatch();
-  const user = useSelector((state: AppState) => state.user);
+
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [initialQuantity, setQuantity] = useState(1);
+
+  const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
+  const recipe = current;
+  const recipeHasData = Boolean(recipe?.title);
+
+  const didResetOnEnterRef = useRef(false);
+  const didResetAfterGenerateRef = useRef(false);
+
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
     i18n.on("languageChanged", onLangChange);
     return () => i18n.off("languageChanged", onLangChange);
   }, [i18n]);
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const [initialQuantity, setQuantity] = useState(1);
-  const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
-  const recipe = current;
-  const recipeHasData = Boolean(recipe?.title);
-  const didResetOnEnterRef = useRef(false);
 
+  // Reset generated recipe once when entering the screen (after user is known)
   useEffect(() => {
-    if (
-      user &&
-      !loading &&
-      !didResetOnEnterRef.current
-    ) {
+    if (user && !loading && !didResetOnEnterRef.current) {
       dispatch(resetGenerated());
       didResetOnEnterRef.current = true;
     }
   }, [dispatch, user, loading]);
 
-  async function loadImage(recipe: RecipeModel): Promise<RecipeModel> {
-    if (recipe.id) {
-      const updated = await recipeService.generateImageForSavedRecipe(recipe.id);
+  // Reset the UI once AFTER generation finishes and a recipe is loaded
+  useEffect(() => {
+    if (loading) {
+      // generation started -> allow a reset when it finishes
+      didResetAfterGenerateRef.current = false;
+      return;
+    }
+
+    if (!loading && recipeHasData && !didResetAfterGenerateRef.current) {
+      setFiltersOpen(false);
+      setQuantity(1);
+      setHasImage(false);
+
+      setSugarLevel(SugarRestriction.DEFAULT);
+      setHasLactose(LactoseRestrictions.DEFAULT);
+      setHasGluten(GlutenRestrictions.DEFAULT);
+      setDietType(DietaryRestrictions.DEFAULT);
+
+      setFiltersResetKey((k) => k + 1);
+      reset({ query: "", excludedIngredients: [""] });
+
+      didResetAfterGenerateRef.current = true;
+    }
+  }, [loading, recipeHasData, reset]);
+
+  async function loadImage(recipeToLoad: RecipeModel): Promise<RecipeModel> {
+    if (recipeToLoad.id) {
+      const updated = await recipeService.generateImageForSavedRecipe(recipeToLoad.id);
       return updated;
     }
-    const preview = await recipeService.generateImagePreview(recipe);
+    const preview = await recipeService.generateImagePreview(recipeToLoad);
 
     return {
-      ...recipe,
+      ...recipeToLoad,
       imageUrl: preview.imageUrl,
-      imageName: preview.imageName ?? recipe.imageName ?? null,
+      imageName: preview.imageName ?? recipeToLoad.imageName ?? null,
     };
   }
 
@@ -90,22 +129,32 @@ export function GenerateScreen() {
     try {
       if (loading) return;
 
-      dispatch(resetGenerated())
+      // clear previous generated recipe immediately when user starts a new generation
+      dispatch(resetGenerated());
       setFiltersOpen(false);
+
       const raw = recipeTitle.excludedIngredients?.[0] ?? "";
-      const excludedList = raw.split(/[\n,]+/g).map(s => s.trim()).filter(Boolean);
+      const excludedList = raw
+        .split(/[\n,]+/g)
+        .map((s) => s.trim())
+        .filter(Boolean);
+
       const used = { sugarLevel, hasLactose, hasGluten, dietType };
       setAppliedFilters(used);
-      await recipeService.generateRecipe(recipeTitle, hasImage, initialQuantity, sugarLevel, hasLactose, hasGluten, dietType, excludedList);
-      setQuantity(1);
-      setHasImage(false);
-      setSugarLevel(SugarRestriction.DEFAULT);
-      setHasLactose(LactoseRestrictions.DEFAULT);
-      setHasGluten(GlutenRestrictions.DEFAULT);
-      setDietType(DietaryRestrictions.DEFAULT);
-      setFiltersResetKey(k => k + 1);
 
-      reset({ query: "", excludedIngredients: [""] });
+      await recipeService.generateRecipe(
+        recipeTitle,
+        hasImage,
+        initialQuantity,
+        sugarLevel,
+        hasLactose,
+        hasGluten,
+        dietType,
+        excludedList
+      );
+
+      // DO NOT reset here.
+      // The effect above resets AFTER redux gets the loaded recipe.
     } catch (err: unknown) {
       notify.error(err);
     }
@@ -117,6 +166,7 @@ export function GenerateScreen() {
         <div>
           <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
         </div>
+
         <form onSubmit={handleSubmit(send)}>
           <div className={`InputData ${isRTL ? "rtl" : ""}`}>
             <TextField
@@ -130,48 +180,46 @@ export function GenerateScreen() {
               inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
               InputLabelProps={{ style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" } }}
             />
+
             <IconButton
               className={`ImageToggleBtn ${hasImage ? "on" : "off"}`}
-              onClick={() => setHasImage(image => !image)}
+              onClick={() => setHasImage((v) => !v)}
             >
               {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
             </IconButton>
+
             {loading ? (
               <IconButton className="RoundedBtn large-loading" edge="end" disabled>
-                <Box><CircularProgress /></Box>
+                <Box>
+                  <CircularProgress />
+                </Box>
               </IconButton>
             ) : (
-              <Button
-                className="GenerateRecipeBtn"
-                variant="contained"
-                disableElevation
-                type="submit"
-                disabled={loading}>
-                {t("generate.go")}<AutoAwesome className="BtnIcon" />
+              <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
+                {t("generate.go")}
+                <AutoAwesome className="BtnIcon" />
               </Button>
             )}
           </div>
-          {
-            error && <div className="ErrorText">{error}</div>
-          }
-          {
-            loading && (
-              <div>
-                {hasImage ? (
-                  <h2 className="LoadingImage">{t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}</h2>
-                ) : (
-                  <h2 className="LoadingWithoutImage">
-                    {t("generate.loadingNoImage")}
-                  </h2>
-                )}
-              </div>
-            )
-          }
+
+          {error && <div className="ErrorText">{error}</div>}
+
+          {loading && (
+            <div>
+              {hasImage ? (
+                <h2 className="LoadingImage">
+                  {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                </h2>
+              ) : (
+                <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
+              )}
+            </div>
+          )}
 
           <div className="Divider"></div>
+
           <div className="FiltersColumn">
             <div className={`FiltersRow ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-
               <div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
                 <div>
                   <TextField
@@ -185,13 +233,11 @@ export function GenerateScreen() {
 
               <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
                 <p>{t("generate.quantitySelector")}</p>
-                <select
-                  className="QuantitySelector"
-                  value={initialQuantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                >
+                <select className="QuantitySelector" value={initialQuantity} onChange={(e) => setQuantity(Number(e.target.value))}>
                   {[...Array(10)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -206,32 +252,33 @@ export function GenerateScreen() {
                   {t("generate.filters")}
                 </Button>
 
-
                 <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
                   <div className="FiltersDropdown__panelInner">
-                    <div><DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={setDietType} /></div>
-                    <div><SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={setSugarLevel} /></div>
-                    <div><LactoseFilter key={`lac-${filtersResetKey}`} onChange={setHasLactose} /></div>
-                    <div><GlutenFilter key={`glu-${filtersResetKey}`} onChange={setHasGluten} /></div>
+                    <div>
+                      <DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={setDietType} />
+                    </div>
+                    <div>
+                      <SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={setSugarLevel} />
+                    </div>
+                    <div>
+                      <LactoseFilter key={`lac-${filtersResetKey}`} onChange={setHasLactose} />
+                    </div>
+                    <div>
+                      <GlutenFilter key={`glu-${filtersResetKey}`} onChange={setHasGluten} />
+                    </div>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </form>
       </div>
-      {
-        recipe && (
-          <div className="CenterRow">
-            <RecipeCard
-              recipe={recipe}
-              filters={appliedFilters}
-              loadImage={loadImage}
-            />
-          </div>
-        )
-      }
+
+      {recipe && (
+        <div className="CenterRow">
+          <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
+        </div>
+      )}
     </div>
   );
 }
