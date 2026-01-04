@@ -232,7 +232,7 @@ const resources = {
         go: "למתכון",
         excludeIngredient: "הסר רכיבים שאת/ה לא רוצה",
         loadingWithImage: "...מייצר תמונה",
-        loadingWithImageLowerMessage: "זה יקח דקה",
+        loadingWithImageLowerMessage: " ,זה יקח דקה ",
         loadingNoImage: "...מייצר מתכון",
       },
 likeScreen:{

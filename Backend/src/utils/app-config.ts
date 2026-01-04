@@ -20,7 +20,7 @@ public readonly frontendBaseUrl = this.normalizeFrontendBaseUrl();
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";
   public readonly apiKey = process.env.API_KEY;
   public readonly freeNoImageApiKey = process.env.NO_IMAGE_API_KEY;
-  public readonly modelNumber = "gpt-5.2";
+  public readonly modelNumber = "gpt-5-nano";
   public readonly freeNoImageModelNumber = "gpt-image-1.5";
 
   public readonly baseImageUrl = this.normalizeBaseImageUrl();

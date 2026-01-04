@@ -156,18 +156,15 @@ export function GenerateScreen() {
           }
           {
             loading && (
-              <h2 className="Loading">
+              <div>
                 {hasImage ? (
-                  <div className="HasImage">
-                    <span className="HasImage__title">{t("generate.loadingWithImage")}</span>
-                    <span className="HasImage__sub">{t("generate.loadingWithImageLowerMessage")}</span>
-                  </div>
+                    <h2 className="LoadingImage">{t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}</h2>
                 ) : (
-                  <div>
+                  <h2 className="LoadingWithoutImage">
                     {t("generate.loadingNoImage")}
-                  </div>
+                  </h2>
                 )}
-              </h2>
+              </div>
             )
           }
 
@@ -209,14 +206,6 @@ export function GenerateScreen() {
                   {t("generate.filters")}
                 </Button>
 
-
-  {filtersOpen && (
-    <div
-      className="FiltersBackdrop"
-      onClick={() => setFiltersOpen(false)}
-      aria-hidden="true"
-    />
-  )}
   
                 <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
                   <div className="FiltersDropdown__panelInner">

@@ -7,8 +7,8 @@
   align-items:center;
   box-sizing:border-box;
   overflow-x:hidden;
-    position: relative;
-  isolation: isolate;
+  position:relative;
+  isolation:isolate;
 }
 
 .GenerateContainer{
@@ -35,6 +35,11 @@
   text-rendering:optimizeLegibility;
 }
 
+.LoadingWithoutImage, 
+.LoadingImage{
+color:#6a4dff !important;
+font-size: 20px;
+}
 .GenerateTitle.rtl{
   direction:rtl;
   letter-spacing:-0.8px;
@@ -61,7 +66,6 @@
   margin-right:12px;
 }
 
-/* ✅ SearchTF RTL notch fix */
 .InputData.rtl .SearchTF .MuiOutlinedInput-root{
   direction:rtl;
 }
@@ -83,11 +87,11 @@
 }
 
 .InputData.rtl .SearchTF .MuiInputLabel-outlined{
-  transform: translate(-14px, 9px) scale(1) !important;
+  transform:translate(-14px, 9px) scale(1) !important;
 }
 
 .InputData.rtl .SearchTF .MuiInputLabel-shrink{
-  transform: translate(-14px, -7px) scale(0.85) !important;
+  transform:translate(-14px, -7px) scale(0.85) !important;
 }
 
 .InputData.rtl .SearchTF input,
@@ -124,21 +128,31 @@
   color:#6a4dff;
 }
 
-.FiltersBackdrop{
-  position: fixed;
-  inset: 0;
-  z-index: 1200;
-  background: rgba(0,0,0,.18);
-  backdrop-filter: blur(2px);
-}
+/* ✅ Dropdown panel: IMPORTANT FIX
+   When closed it must not capture clicks/touches (mobile was blocked by an invisible fixed panel). */
 .FiltersDropdown__panel{
-  z-index: 1300 !important;
-  background: #fff;              /* fully opaque */
-  opacity: 0;                    /* you already animate this */
+  position:absolute;
+  top:calc(100% + 10px);
+  left:50%;
+  right:auto;
+  transform:translateX(-50%) translateY(-6px);
+  width:max-content;
+  max-width:min(92vw, 560px);
+  border:1px solid gray;
+  backdrop-filter:blur(12px);
+  max-height:0;
+  opacity:0;
+  transition:max-height 220ms ease, opacity 160ms ease, transform 160ms ease, padding 160ms ease;
+  background-color:white;
+  z-index:1300 !important;
+  pointer-events:none; /* ✅ this is the only functional change needed */
 }
+
 .FiltersDropdown__panel.open{
-  pointer-events: auto;
-  opacity: 1;
+  max-height:900px;
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
 }
 
 .SearchTF .MuiOutlinedInput-root,
@@ -180,25 +194,6 @@
   color:rgba(106,77,255,.95);
 }
 
-.Loading{
-  text-align:center;
-}
-
-.HasImage{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-.HasImage__title{
-  font-weight:700;
-}
-
-.HasImage__sub{
-  font-weight:400;
-  font-size:16px;
-}
-
 .ErrorText{
   margin-top:8px;
   color:#d32f2f;
@@ -211,7 +206,7 @@
   flex-direction:column;
   align-items:center;
   gap:6px;
-  overflow: visible;
+  overflow:visible;
 }
 
 .FiltersRow{
@@ -219,13 +214,12 @@
   display:flex;
   align-items:center;
   gap:12px;
-  position: relative;
-  overflow: visible;
-  justify-content: center;
+  position:relative;
+  overflow:visible;
+  justify-content:center;
   flex-wrap:nowrap !important;
   box-sizing:border-box;
   padding:0 6px;
-  justify-content:center;
 }
 
 .FiltersRow .ExcludedSection{
@@ -261,24 +255,23 @@
 }
 
 .ExcludeTF .MuiInputLabel-outlined{
-  transform: translate(14px, 9px) scale(1) !important;
+  transform:translate(14px, 9px) scale(1) !important;
 }
 
 .ExcludeTF .MuiInputLabel-shrink{
-  transform: translate(14px, -7px) scale(0.85) !important;
+  transform:translate(14px, -7px) scale(0.85) !important;
 }
 
-/* ✅ FIX BOTTOM TF (ExcludeTF) RTL notch/cutout */
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-root{
-  direction: rtl;                 /* makes fieldset/legend notch RTL */
+  direction:rtl;
 }
 
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-notchedOutline{
-  text-align: right;
+  text-align:right;
 }
 
 .ExcludedSection[dir="rtl"] .ExcludeTF fieldset legend{
-  text-align: right;
+  text-align:right;
 }
 
 .ExcludedSection[dir="rtl"] .ExcludeTF input,
@@ -301,13 +294,12 @@
   text-align:right !important;
 }
 
-/* mirror MUI default translate(14px, …) but from the right side */
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
-  transform: translate(-14px, 9px) scale(1) !important;
+  transform:translate(-14px, 9px) scale(1) !important;
 }
 
 .ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-shrink{
-  transform: translate(-14px, -7px) scale(0.85) !important;
+  transform:translate(-14px, -7px) scale(0.85) !important;
 }
 
 .Servings{
@@ -351,8 +343,9 @@
   -webkit-appearance:none;
   -moz-appearance:none;
   cursor:pointer;
-  background-image:linear-gradient(45deg,transparent 50%,rgba(17,24,39,.55) 50%),
-                   linear-gradient(135deg,rgba(17,24,39,.55) 50%,transparent 50%);
+  background-image:
+    linear-gradient(45deg,transparent 50%,rgba(17,24,39,.55) 50%),
+    linear-gradient(135deg,rgba(17,24,39,.55) 50%,transparent 50%);
   background-size:6px 6px,6px 6px;
   background-repeat:no-repeat;
   background-position:calc(100% - 14px) 11px,calc(100% - 8px) 11px;
@@ -369,14 +362,13 @@
 }
 
 .FiltersDropdown{
-  position: static !important;
-  overflow: visible;
+  position:relative;
+  overflow:visible;
   flex:0 0 auto !important;
   white-space:nowrap;
   width:auto;
   padding:0;
   box-sizing:border-box;
-  position:relative;
   z-index:2;
   margin:0;
 }
@@ -390,34 +382,10 @@
   font-size:16px !important;
   border-radius:12px !important;
   margin-top:0 !important;
-  background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
+  background:linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
   box-shadow:0 12px 22px rgba(253, 209, 33, 0.22),0 2px 0 rgba(255, 196, 0, 0.22) inset !important;
   color:#fff !important;
   display:flex;
-}
-
-.FiltersDropdown__panel{
-  position:absolute;
-  top:calc(100% + 10px);
-  left:50%;
-  right:auto;
-  transform:translateX(-50%) translateY(-6px);
-  width:max-content;
-  max-width:min(92vw, 560px);
-  border: 1px solid gray;
-  backdrop-filter:blur(12px);
-  max-height:0;
-  opacity:0;
-  transition:max-height 220ms ease, opacity 160ms ease, transform 160ms ease, padding 160ms ease;
-background-color: white;
-  z-index:5;
-}
-
-.FiltersDropdown__panel.open{
-  max-height:900px;
-  opacity:1;
-  pointer-events:auto;
-  transform:translateX(-50%) translateY(0);
 }
 
 .FiltersDropdown__panelInner{
@@ -445,14 +413,14 @@ background-color: white;
 
 .FiltersDropdown__panelInner .MuiToggleButton-root{
   width:140px;
-  border: 1px solid;
+  border:1px solid;
   border-color:#6f6f6f;
 }
 
 .Divider{
-  border: 0.5px solid rgba(106, 77, 255, 0.65);
-  margin: 30px 0 0 0;
-  width: 100%;
+  border:0.5px solid rgba(106, 77, 255, 0.65);
+  margin:30px 0 0 0;
+  width:100%;
 }
 
 .FiltersDropdown__panelInner .MuiToggleButton-root:hover{
@@ -558,11 +526,14 @@ background-color: white;
   }
 
   .FiltersDropdown__panel{
-    width: calc(100vw - 28px) !important;
-    max-width: 420px !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) translateY(-6px) !important;
+    width:calc(100vw - 28px) !important;
+    max-width:420px !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) translateY(-6px) !important;
+    position:fixed !important;
+    top:140px !important;
+    background:#fff !important;
   }
 
   .FiltersDropdown__panel.open{
@@ -571,31 +542,21 @@ background-color: white;
   }
 
   .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
-    width: 100% !important;
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    gap: 10px !important;
-    padding-bottom: 6px;
+    width:100% !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+    gap:10px !important;
+    padding-bottom:6px;
   }
 
   .FiltersDropdown__panelInner .MuiToggleButton-root{
-    flex: 0 0 auto !important;
-    white-space: nowrap !important;
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
   }
 
   .FiltersDropdown__panelInner .MuiToggleButtonGroup-root::-webkit-scrollbar{
-    height: 6px;
-  }
-    .FiltersDropdown__panel{
-    position: fixed !important;
-    left: 50% !important;
-    top: 140px !important;              /* adjust if you want it lower/higher */
-    transform: translateX(-50%) !important;
-    width: calc(100vw - 28px) !important;
-    max-width: 420px !important;
-    z-index: 1300 !important;
-    background: #fff !important;
+    height:6px;
   }
 }

@@ -21,9 +21,8 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
     (recipe as any).instructions?.slice(0, 4).join(" ").replace(/\s+/g, " ").slice(0, 700) ?? "";
 
   const promptParts: string[] = [
-    `High-resolution, super-realistic food photo of the finished cooked dish for this recipe.`,
+    `fhd quality realistic food photo of the finished cooked dish for this recipe.`,
 
-    // Keep the original label present, but do NOT anchor generation to "real-world reference photos"
     `Dish label (do not render text): "${title || query}".`,
 
     `RENDER SPEC (CRITICAL):
@@ -125,7 +124,6 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
         "CRITICAL: The image is invalid if it looks like a generic substitute dish rather than the dish described by the recipe; it must match the recipe composition and method cues."
       );
 
-      // Keep your pizza-specific emphasis, but make it composition-based (not identity-based)
       if (lowerQuery.includes("pizza") || lowerQuery.includes("piza") || lowerQuery.includes("pitsa") || query.includes("פיצה") || title.includes("פיצה")) {
         attemptPromptParts.push(
           "CRITICAL: For pizza, the image must look hot, melty, and moist with visible sauce coverage and realistic cheese sheen (not dry or dusty)."
@@ -139,7 +137,8 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
       const result = await openaiImages.images.generate({
         model: "gpt-image-1.5",
         prompt: promptText,
-        size: "1024x1024"
+        size: "1024x1024",
+        quality: "medium"
       });
 
       if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
