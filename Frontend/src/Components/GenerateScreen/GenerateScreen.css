@@ -217,7 +217,7 @@ font-size: 20px;
   justify-content:center;
   flex-wrap:nowrap !important;
   box-sizing:border-box;
-  padding:0 6px;
+  padding:0;  
 }
 
 .FiltersRow .ExcludedSection{
