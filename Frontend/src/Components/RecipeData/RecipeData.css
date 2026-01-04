@@ -40,10 +40,6 @@
   border-radius: 14px !important;
 }
 
-.PrintExtraDataBlock {
-  break-inside: auto !important;
-  page-break-inside: auto !important;
-}
 
 .RecipeStepsGrid,
 .IngredientsList,
@@ -67,65 +63,6 @@
   min-width: 0;
 }
 
-.AmountParent,
-.PrepTimeParent,
-.CountryNameParent,
-.DifficultyParent,
-.CaloryParent,
-.SugarParent,
-.ProteinParent,
-.HealthParent {
-  display: flex;
-  border: none !important;
-  background: #fff !important;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  flex: 1 1 0;
-  margin: 0;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  border-radius: 14px;
-  padding: 4px;
-}
-
-.CaloriesDiv,
-.SugarAmountDiv,
-.ProteinAmountDiv,
-.HealthLevelDiv {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.ServingsIcon,
-.SugarIcon,
-.CaloriesIcon,
-.ProteinIcon,
-.HealthIcon {
-  width: 30px;
-  height: 30px;
-}
-
-.CaloriesInnerDiv,
-.SugarAmountInnerDiv,
-.HealthLevelInnerDiv,
-.ProteinInnerDiv,
-.ProteinInnerDiv > * {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-}
-
-.CaloriesInnerDiv > p:first-child,
-.SugarAmountInnerDiv > p:first-child,
-.HealthLevelInnerDiv > p:first-child,
-.ProteinInnerDiv > p:first-child {
-  font-size: 16px;
-  padding-right: 4px;
-}
 
 .ExtraDataImg {
   width: 20px;
@@ -407,69 +344,6 @@ color: rgb(255, 140, 0) !important;
   .IngredientRow {
     flex-direction: row;
     
-  }
-  .RecipeExtraDataContainer,
-  .RecipeBottomExtraDataContainer {
-    margin-top: 0 !important;
-    gap: 0 !important;
-    height: auto !important;
-
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-
-    position: relative;            /* needed for divider pseudo-elements */
-    border: 0 !important;
-  }
-
-  /* ONE horizontal divider between the two blocks */
-  .RecipeBottomExtraDataContainer {
-    border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
-  }
-
-  /* cards: flat */
-  .AmountParent,
-  .PrepTimeParent,
-  .CountryNameParent,
-  .DifficultyParent,
-  .CaloryParent,
-  .SugarParent,
-  .ProteinParent,
-  .HealthParent {
-    margin: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 10px 6px !important;
-    background: transparent !important;
-    border: 0 !important;
-  }
-
-  /* VERTICAL divider inside each container */
-  .RecipeExtraDataContainer::before,
-  .RecipeBottomExtraDataContainer::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    bottom: 0;
-    inset-inline-start: 50%;       /* works for RTL/LTR */
-    width: 1px;
-    background: rgba(0, 0, 0, 0.25);
-    transform: translateX(-0.5px);
-    pointer-events: none;
-  }
-
-  /* HORIZONTAL divider inside each container (between row 1 and row 2) */
-  .RecipeExtraDataContainer::after,
-  .RecipeBottomExtraDataContainer::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    height: 1px;
-    background: rgba(0, 0, 0, 0.25);
-    transform: translateY(-0.5px);
-    pointer-events: none;
   }
 
 

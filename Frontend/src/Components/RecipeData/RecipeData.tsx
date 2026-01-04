@@ -62,7 +62,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
       }, 2500);
     }
   };
-  const difficulty = getDifficultyLevel(recipe.difficultyLevel);
+
 
   useEffect(() => {
     const url = (imageSrc ?? "").trim();
@@ -166,10 +166,9 @@ return () => cancelAnimationFrame(raf);
                 <CircularProgress />
               </Box>
             </IconButton>
-            <div className="HasImage">
-              <span className="HasImage__title">{t("generate.loadingWithImage")}</span>
-              <span className="HasImage__sub">{t("generate.loadingWithImageLowerMessage")}</span>
-            </div>
+                      <h2 className="LoadingImage">
+                  {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                </h2>
           </>
         ) : (
           !shareMode && (
@@ -183,90 +182,65 @@ return () => cancelAnimationFrame(raf);
 
       <FilterBadges filters={filters} isRTL={isRTL} />
 
-      <div className="PrintExtraDataBlock">
+   
         <div className="RecipeExtraDataContainer">
+
           <div className="CaloryParent">
             <p>{t("recipeUi.calories")}</p>
-            <div className="CaloriesDiv">
-              <img className="CaloriesIcon" src="/calories.png" />
-              <div className="CaloriesInnerDiv">
                 <p>{recipe.calories}</p>
                 <p>{t("recipeUi.kcal")}</p>
-              </div>
-            </div>
           </div>
 
           <div className="SugarParent">
             <p>{t("recipeUi.sugar")}</p>
-            <div className="SugarAmountDiv">
-              <img className="SugarIcon" src="/sugar.png" />
-              <div className="SugarAmountInnerDiv">
+    
+      
                 {Number(recipe.totalSugar) === 0 ? (
                   <p>None</p>
                 ) : isRTL ? (
-                  <div className="StatValueRowRtl">
-                    <span>{t("units.gramShort")}</span>
-                    <bdi dir="ltr">100</bdi>
-                    <span>|</span>
-                    <span>{t("units.tbspShort")}</span>
-                    <bdi dir="ltr">{recipe.totalSugar}</bdi>
-                  </div>
-                ) : (
-                  <div className="StatValueRowLtr">
-                    <bdi dir="ltr">{recipe.totalSugar}</bdi>
-                    <span>{t("units.tbspShort")}</span>
-                    <span>|</span>
-                    <bdi dir="ltr">100</bdi>
-                    <span>{t("units.gramShort")}</span>
-                  </div>
+            <>
+                    <p>{t("units.gramShort")}</p>
+                    <p>100</p>
+                    <p>{t("units.tbspShort")}</p>
+                    <p >{recipe.totalSugar}</p>
+             </>
+                )
+                : (
+              <>
+                    <p>{recipe.totalSugar}</p>
+                    <p>{t("units.tbspShort")}</p>
+                    <p>100</p>
+                    <p>{t("units.gramShort")}</p>
+           </>
                 )}
-              </div>
-            </div>
+      
           </div>
 
           <div className="ProteinParent">
             <p>{t("recipeUi.protein")}</p>
-            <div className="ProteinAmountDiv">
-              <img className="ProteinIcon" src="/protein.png" />
-              <div className="ProteinInnerDiv">
+
                 {isRTL ? (
-                  <div className="StatValueRowRtl">
-                    <span>{t("units.gramShort")}</span>
-                    <bdi dir="ltr">100</bdi>
-                    <span>|</span>
-                    <span>{t("units.gramShort")}</span>
-                    <bdi dir="ltr">{recipe.totalProtein}</bdi>
-                  </div>
+                  <>
+                    <p>{t("units.gramShort")}</p>
+                    <p >100</p>
+                    <p>{t("units.gramShort")}</p>
+                    <p>{recipe.totalProtein}</p>
+                  </>
                 ) : (
-                  <div className="StatValueRowLtr">
-                    <bdi dir="ltr">{recipe.totalProtein}</bdi>
-                    <span>{t("units.gramShort")}</span>
-                    <span>|</span>
-                    <bdi dir="ltr">100</bdi>
-                    <span>{t("units.gramShort")}</span>
-                  </div>
+                  <>
+                    <p>{recipe.totalProtein}</p>
+                    <p>{t("units.gramShort")}</p>
+                    <p>100</p> 
+                    <p>{t("units.gramShort")}</p>
+                  </>
                 )}
               </div>
-            </div>
-          </div>
+  
+        
 
-          <div className="HealthParent">
-            <p>{t("recipeUi.health")}</p>
-            <div className="HealthLevelDiv">
-              <img className="HealthIcon" src="/health.png" />
-            </div>
-            <p className="BidiLtr">{recipe.healthLevel} / 10</p>
-          </div>
-        </div>
-
-        <div className="RecipeBottomExtraDataContainer">
+     
           <div className="AmountParent">
-            <RestaurantIcon fontSize="small" />
-            <p>x {recipe.amountOfServings}</p>
-          </div>
-
-          <div className="PrepTimeParent">
-            <img className="ExtraDataImg" src={"/clock.png"} />
+  
             <p>
               {recipe.prepTime} {t("units.minuteShort")}{" "}
             </p>
@@ -280,13 +254,8 @@ return () => cancelAnimationFrame(raf);
             )}
             <p>{recipe.countryOfOrigin}</p>
           </div>
-
-          <div className="DifficultyParent">
-            <img className="ExtraDataImg" src={difficulty.icon} />
-            <p>{t(difficulty.labelKey)}</p>
-          </div>
-        </div>
-      </div>
+     
+</div>
 
       <div className="RecipeStepsWide">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
