@@ -93,7 +93,7 @@ class UserService {
     }
 
     private getImageDir(): string {
-        return process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
+        return process.env.IMAGE_DIR || path.join(__dirname, "..", "assets", "images");
     }
 
     private getUserImageDir(): string {

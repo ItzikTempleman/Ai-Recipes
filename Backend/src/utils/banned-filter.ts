@@ -1,7 +1,6 @@
 export function isLethalQuery(rawString: string): boolean {
   const query = rawString.toLowerCase();
-
-  // 1) Clearly lethal / poison-related terms (non-alcohol)
+  
   const lethalKeyWords = [
     "poison",
     "poisonous",
@@ -18,8 +17,8 @@ export function isLethalQuery(rawString: string): boolean {
     "drain cleaner",
     "draino",
     "acetone",
-    "אציטון",  // Hebrew transliteration with י
-    "אצטון",  // Hebrew transliteration without י (other common spelling)
+    "אציטון",  
+    "אצטון",  
     "רעל",
     "להרוג",
   ];
@@ -28,7 +27,6 @@ export function isLethalQuery(rawString: string): boolean {
     return true;
   }
 
-  // 2) Non-drinking alcohols / typical lethal-use alcohol terms
   const lethalAlcoholKeyWords = [
     "isopropyl alcohol",
     "rubbing alcohol",
@@ -47,7 +45,6 @@ export function isLethalQuery(rawString: string): boolean {
     return true;
   }
 
-  // 3) High-percentage alcohol patterns like "alcohol 70%" (likely not a drink)
   const percentPattern = /\b(alcohol|אלכוהול)\s*(\d{2,3})\s*%/i;
   const percentMatch = rawString.match(percentPattern);
   if (percentMatch) {
@@ -57,13 +54,11 @@ export function isLethalQuery(rawString: string): boolean {
     }
   }
 
-  // 4) Generic "alcohol" presence
   const genericAlcoholWords = ["alcohol", "אלכוהול", "אתנול"];
   const mentionsGenericAlcohol = genericAlcoholWords.some((word) =>
     query.includes(word)
   );
 
-  // 5) Obvious food/drink context that makes it "normal drinking alcohol"
   const foodOrDrinkContextWords = [
     "wine",
     "beer",
@@ -100,7 +95,6 @@ export function isLethalQuery(rawString: string): boolean {
     query.includes(word)
   );
 
-  // 6) Generic alcohol + lethal intent together → always block
   const intentWords = [
     "poison",
     "poisonous",
@@ -118,11 +112,9 @@ export function isLethalQuery(rawString: string): boolean {
     return true;
   }
 
-  // 7) Generic alcohol with NO clear food/drink context → treat as dangerous
   if (mentionsGenericAlcohol && !hasFoodOrDrinkContext) {
     return true;
   }
 
-  // If none of the lethal patterns matched, allow it.
   return false;
 }

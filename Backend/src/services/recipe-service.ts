@@ -153,7 +153,7 @@ class RecipeService {
   }
 
   public async getImageFilePath(fileName: string): Promise<string> {
-    const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
+    const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "assets", "images");
     const imagePath = path.join(imagesDir, fileName);
     try {
       await fs.access(imagePath);

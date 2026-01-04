@@ -87,7 +87,6 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
     }
   }
 
-
   const isLactoseFree = Number(recipe.lactoseRestrictions) === 1;
   if (isLactoseFree) {
     promptParts.push(
@@ -124,7 +123,13 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
         "CRITICAL: The image is invalid if it looks like a generic substitute dish rather than the dish described by the recipe; it must match the recipe composition and method cues."
       );
 
-      if (lowerQuery.includes("pizza") || lowerQuery.includes("piza") || lowerQuery.includes("pitsa") || query.includes("פיצה") || title.includes("פיצה")) {
+      if (
+        lowerQuery.includes("pizza") ||
+        lowerQuery.includes("piza") ||
+        lowerQuery.includes("pitsa") ||
+        query.includes("פיצה") ||
+        title.includes("פיצה")
+      ) {
         attemptPromptParts.push(
           "CRITICAL: For pizza, the image must look hot, melty, and moist with visible sauce coverage and realistic cheese sheen (not dry or dusty)."
         );
@@ -145,10 +150,11 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
 
       const imageBase64 = result.data[0].b64_json;
 
-      const imagesDir =
-        process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
+      const imageRoot =
+        process.env.IMAGE_DIR || path.join(__dirname, "..", "assets", "images");
+      const recipesDir = path.join(imageRoot, "recipes");
 
-      await fs.mkdir(imagesDir, { recursive: true });
+      await fs.mkdir(recipesDir, { recursive: true });
 
       const safeTitle = String(recipe.query ?? "")
         .toLowerCase()
@@ -158,7 +164,7 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
       const fileName = `${safeTitle}-recipe.png`;
 
       await fs.writeFile(
-        path.join(imagesDir, fileName),
+        path.join(recipesDir, fileName),
         Buffer.from(imageBase64, "base64")
       );
 

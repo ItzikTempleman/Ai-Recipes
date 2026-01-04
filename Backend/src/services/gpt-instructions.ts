@@ -106,7 +106,7 @@ You will receive the following RESTRICTION FLAGS (numeric enums):
 - SugarRestriction: 0 = DEFAULT, 1 = LOW, 2 = NONE
 - LactoseRestrictions: 0 = DEFAULT, 1 = NONE (lactose free)
 - GlutenRestrictions: 0 = DEFAULT, 1 = NONE (gluten free)
-- DietaryRestrictions: 0 = DEFAULT, 1 = VEGAN, 2 = KOSHER, 3 = HALAL
+- DietaryRestrictions: 0 = DEFAULT, 1 = VEGAN, 2 = KOSHER
 - CaloryRestrictions: 0 = DEFAULT, 1 = LOW
 
 
@@ -274,10 +274,7 @@ YOU MUST:
            - Do NOT claim that the patty is "meatless" or "vegan" if the ingredients list contains meat.
        - Use only fish that are commonly known to be kosher (e.g., salmon, tuna, cod, halibut, carp, herring, sardines), and do not guess about fish that might not be kosher.
        - IMPORTANT: Do NOT use the term "kosher salt". Use "salt" instead.
-   - If DietaryRestrictions = 3 (HALAL):
-       - No pork or pork derivatives.
-       - No alcohol.
-       - Use halal-compliant meats if meat is used.
+
 
   KOSHER-SPECIFIC PREPARATION (VERY IMPORTANT):
 

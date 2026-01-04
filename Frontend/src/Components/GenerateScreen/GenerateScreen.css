@@ -128,8 +128,6 @@ font-size: 20px;
   color:#6a4dff;
 }
 
-/* ✅ Dropdown panel: IMPORTANT FIX
-   When closed it must not capture clicks/touches (mobile was blocked by an invisible fixed panel). */
 .FiltersDropdown__panel{
   position:absolute;
   top:calc(100% + 10px);
@@ -145,7 +143,7 @@ font-size: 20px;
   transition:max-height 220ms ease, opacity 160ms ease, transform 160ms ease, padding 160ms ease;
   background-color:white;
   z-index:1300 !important;
-  pointer-events:none; /* ✅ this is the only functional change needed */
+  pointer-events:none; 
 }
 
 .FiltersDropdown__panel.open{
@@ -239,15 +237,14 @@ font-size: 20px;
 }
 
 .ExcludeTF .MuiOutlinedInput-root{
-  height:34px !important;
-  min-height:34px !important;
-  border-radius:12px !important;
+  height:40px !important;
+  min-height:40px !important;
+  border-radius:14px !important;
 }
 
 .ExcludeTF .MuiOutlinedInput-input{
-  padding:7px 10px !important;
-  font-size:14px !important;
-  line-height:1.2 !important;
+  padding:10px 12px !important;  
+  font-size:16px !important;    
 }
 
 .ExcludeTF .MuiInputLabel-root{
