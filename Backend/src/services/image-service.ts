@@ -183,5 +183,3 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
 
   throw lastErr;
 }
-
-
