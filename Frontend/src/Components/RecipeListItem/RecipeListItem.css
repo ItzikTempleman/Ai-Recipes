@@ -8,9 +8,10 @@
   display: flex;
   flex-direction: column;
   overflow: visible;
+  background-color: rgba(255, 255, 255, 0.67);
   border: 1px solid rgb(196, 162, 251);
   border-radius: 18px;
-  background: transparent;
+
   transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 

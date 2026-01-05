@@ -1,8 +1,8 @@
 import "./RecipeData.css";
-import { formatAmount, getDifficultyLevel } from "../../Utils/Utils";
+import { formatAmount } from "../../Utils/Utils";
 import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
+
 import { FilterBadges } from "../../Utils/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
@@ -30,7 +30,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
   const ingredients = recipe.data?.ingredients ?? [];
   const instructions = recipe.data?.instructions ?? [];
-  const recipeIsHebrew =hasHebrew(recipe.title) || hasHebrew(recipe.description) ||ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) || instructions.some((x: any) => hasHebrew(x));
+  const recipeIsHebrew = hasHebrew(recipe.title) || hasHebrew(recipe.description) || ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) || instructions.some((x: any) => hasHebrew(x));
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const flag = getCountryFlag(recipe.countryOfOrigin);
@@ -53,7 +53,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
     if (shareOnceRef.current) return;
     shareOnceRef.current = true;
     try {
-     await shareRecipeAsPdfWithToasts({...recipe,imageUrl: (localImgSrc ?? "").trim() || (recipe as any)?.imageUrl || ""});
+      await shareRecipeAsPdfWithToasts({ ...recipe, imageUrl: (localImgSrc ?? "").trim() || (recipe as any)?.imageUrl || "" });
     } catch (err: any) {
       notify.error(err?.message || String(err));
     } finally {
@@ -81,7 +81,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
       }
       (window as any).__SHARE_READY__ = true;
     });
-return () => cancelAnimationFrame(raf);
+    return () => cancelAnimationFrame(raf);
   }, [shareMode, localImgSrc, recipe]);
   function normalizeIngredientRow(row: any) {
     const ingredient = String(row?.ingredient ?? "").trim();
@@ -114,7 +114,7 @@ return () => cancelAnimationFrame(raf);
     for (const line of ingredients) {
       const ingredientText = String((line as any)?.ingredient ?? "").trim();
       const rawAmount = (line as any)?.amount;
-      const amountText =rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
+      const amountText = rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
       if (!ingredientText) continue;
       if (!amountText && isModifierLine(ingredientText)) {
         appendToPrev(ingredientText);
@@ -166,9 +166,9 @@ return () => cancelAnimationFrame(raf);
                 <CircularProgress />
               </Box>
             </IconButton>
-                      <h2 className="LoadingImage">
-                  {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-                </h2>
+            <h2 className="LoadingImage">
+              {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+            </h2>
           </>
         ) : (
           !shareMode && (
@@ -179,83 +179,64 @@ return () => cancelAnimationFrame(raf);
           )
         )
       ) : null}
-
       <FilterBadges filters={filters} isRTL={isRTL} />
 
-   
-        <div className="RecipeExtraDataContainer">
+      <div className="RecipeExtraData">
+        <div className="CaloryParent">
+          <p className="Title">{t("recipeUi.calories")}</p>
 
-          <div className="CaloryParent">
-            <p>{t("recipeUi.calories")}</p>
-                <p>{recipe.calories}</p>
-                <p>{t("recipeUi.kcal")}</p>
-          </div>
+          {isRTL ? (
+            <div className="CaloriesInnerText">
+               <p> ק ל100 גרם</p> <p>{recipe.calories}</p>
+            </div>
+          ) : (
+            <div>
+              <p>{recipe.calories} {t("recipeUi.kcal")}</p>
+            </div>
+          )}
+        </div>
+        <div className="SugarParent">
+          <p className="Title">{t("recipeUi.sugar")}</p>
+          {Number(recipe.totalSugar) === 0 ? (
+            <p>0</p>
+          ) : isRTL ? (
+            <div>
+              <p>  כפיות ל100 גרם  </p> <p>  {recipe.totalSugar}</p>
 
-          <div className="SugarParent">
-            <p>{t("recipeUi.sugar")}</p>
-    
+            </div>) : (
+            <div>
+              <p>{recipe.totalSugar} table spoons (per 100 grams)</p>
+            </div>
+          )}
+        </div>
+        <div className="ProteinParent">
+          <p className="Title">{t("recipeUi.protein")}</p>
+          {isRTL ? (
+            <div className="ProteinInnerText">
+              <p>  גרם ל100 גרם מאכל </p> <p>  {recipe.totalProtein}</p>
+            </div>
+          ) : (
+            <div>
+              <p>{recipe.totalProtein} grams (per 100 grams)</p>
+            </div>
+          )}
+        </div>
+        <div className="AmountParent">
+          <p className="Title">{t("recipeUi.time")}</p>
+          <p>
+            {recipe.prepTime} {t("units.minuteShort")}{" "}
+          </p>
+        </div>
+        <div className="CountryParent">
+              <p className="Title">{recipe.countryOfOrigin}</p>
+          {shareMode && flag ? (
+            <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} />
+          ) : (
+            <span className="ExtraDataFlag">{flag}</span>
+          )}
       
-                {Number(recipe.totalSugar) === 0 ? (
-                  <p>None</p>
-                ) : isRTL ? (
-            <>
-                    <p>{t("units.gramShort")}</p>
-                    <p>100</p>
-                    <p>{t("units.tbspShort")}</p>
-                    <p >{recipe.totalSugar}</p>
-             </>
-                )
-                : (
-              <>
-                    <p>{recipe.totalSugar}</p>
-                    <p>{t("units.tbspShort")}</p>
-                    <p>100</p>
-                    <p>{t("units.gramShort")}</p>
-           </>
-                )}
-      
-          </div>
-
-          <div className="ProteinParent">
-            <p>{t("recipeUi.protein")}</p>
-
-                {isRTL ? (
-                  <>
-                    <p>{t("units.gramShort")}</p>
-                    <p >100</p>
-                    <p>{t("units.gramShort")}</p>
-                    <p>{recipe.totalProtein}</p>
-                  </>
-                ) : (
-                  <>
-                    <p>{recipe.totalProtein}</p>
-                    <p>{t("units.gramShort")}</p>
-                    <p>100</p> 
-                    <p>{t("units.gramShort")}</p>
-                  </>
-                )}
-              </div>
-  
-        
-
-     
-          <div className="AmountParent">
-  
-            <p>
-              {recipe.prepTime} {t("units.minuteShort")}{" "}
-            </p>
-          </div>
-
-          <div className="CountryNameParent">
-            {shareMode && flag ? (
-              <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} alt="" />
-            ) : (
-              <span className="ExtraDataFlag">{flag}</span>
-            )}
-            <p>{recipe.countryOfOrigin}</p>
-          </div>
-     
-</div>
+        </div>
+      </div>
 
       <div className="RecipeStepsWide">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
@@ -263,7 +244,6 @@ return () => cancelAnimationFrame(raf);
             <h2 className={`IngredientsTitle ${headingDir}`} dir={headingDir}>
               {t("recipeUi.ingredients", { lng: headingLng })}
             </h2>
-
             {normalizedIngredients.map((line, index) => {
               const { ingredient, amount } = normalizeIngredientRow(line);
               return (

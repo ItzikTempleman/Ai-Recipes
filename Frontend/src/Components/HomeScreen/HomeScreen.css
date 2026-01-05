@@ -6,6 +6,8 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+    position: relative;  
+  overflow: hidden; 
 }
 
 .HomeScreenTitleWrapper {
@@ -168,8 +170,53 @@
   scroll-snap-type: none;
 }
 
+.HomeScreen::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 40vh;
+  height: 55vh;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("../../Assets/images/wave.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.18;
+}
+
+.HomeScreen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-image:
+    url("../../Assets/images/chef.png"),
+    url("../../Assets/images/whisk.png");
+  background-repeat: no-repeat, no-repeat;
+
+  background-size: 44px 44px, 44px 44px;
+
+  /* hat higher + left, whisk lower + right */
+  background-position:
+    20% 46%,
+    78% 44%;
+
+  opacity: 0.68;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.12));
+}
+
+
 .HomeScreen .RecipeList > * {
   min-width: 0;
+}
+
+.HomeScreen > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 600px) {

@@ -157,6 +157,7 @@ const resources = {
         protein: "Protein",
         health: "Health",
         kcal: "kcal",
+        time:"Prep time"
       },
       difficulty: {
         easy: "Easy",
@@ -338,6 +339,7 @@ likeScreen:{
         protein: "חלבון",
         health: "בריאות",
         kcal: 'קק"ל',
+        time:"זמן הכנה"
       },
       difficulty: {
         easy: "קל",
