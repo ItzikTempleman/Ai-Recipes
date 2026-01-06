@@ -28,10 +28,8 @@
   font-weight:1100;
   letter-spacing:-1.4px;
   background:linear-gradient(180deg,#ffaf01 0%,#eea23e 100%);
-  -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
 
@@ -209,7 +207,7 @@ font-size: 20px;
   font-size:.9rem;
 }
 
-.FiltersColumn{
+.FiltersSectionContainer{
   margin-top:4px;
   display:flex;
   flex-direction:column;
@@ -218,7 +216,7 @@ font-size: 20px;
   overflow:visible;
 }
 
-.FiltersRow{
+.FilterBar{
   width:100%;
   display:flex;
   align-items:center;
@@ -231,18 +229,18 @@ font-size: 20px;
   padding:0;  
 }
 
-.FiltersRow .ExcludedBar{
+.FilterBar .ExcludedBar{
   flex:1 1 0 !important;
   min-width:0 !important;
   max-width:none !important;
 }
 
-.FiltersRow .ExcludedBar > div{
+.FilterBar .ExcludedBar > div{
   width:100%;
   max-width:none;
 }
 
-.FiltersRow .ExcludeTextField{
+.FilterBar .ExcludeTextField{
   width:100%;
   min-width:0 !important;
 }
@@ -500,13 +498,17 @@ font-size: 20px;
   padding:0 12px;
 }
 
+.RecipeInputScreenWithPreviousData .GenerateContainer{
+  display:none;
+}
+
 @media (max-width:600px){
 
-  .FiltersColumn{
+  .FiltersSectionContainer{
     margin-top:14px !important;
   }
 
-  .FiltersRow{
+  .FilterBar{
     gap:10px;
     padding:0 2px;
     justify-content:center;

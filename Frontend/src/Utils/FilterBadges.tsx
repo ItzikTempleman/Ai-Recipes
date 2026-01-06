@@ -61,7 +61,7 @@ export function FilterBadges({ filters, isRTL }: { filters?: Filters; isRTL: boo
   if (filterBadges.length === 0) return null;
 
   return (
-    <div className="FiltersRow" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="FilterBar" dir={isRTL ? "rtl" : "ltr"}>
       {filterBadges.map((label) => (
         <span key={label} className="FilterBadge">{label}</span>
       ))}

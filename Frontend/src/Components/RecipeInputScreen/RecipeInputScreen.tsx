@@ -146,15 +146,18 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
     }
   }
 
-  return (
-    <div
-      className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
-  onClickCapture={(e) => {
-    if (!filtersOpen) return;
-    const target = e.target as Node;
-    if (filterBtnRef.current?.contains(target)) return;
-    setTimeout(() => setFiltersOpen(false), 0);
-  }} >
+return (
+  <div
+    className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
+    onClickCapture={(e) => {
+      if (!filtersOpen) return;
+      const target = e.target as Node;
+      if (filterBtnRef.current?.contains(target)) return;
+      setTimeout(() => setFiltersOpen(false), 0);
+    }}
+  >
+    {/* ✅ Hide input section ONLY after recipe exists (not during loading) */}
+    {!recipeHasData && (
       <div className="GenerateContainer">
         <div>
           <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
@@ -171,7 +174,9 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
               disabled={loading}
               InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
               inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
-              InputLabelProps={{ style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" } }}
+              InputLabelProps={{
+                style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
+              }}
             />
 
             <IconButton
@@ -188,7 +193,13 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                 </Box>
               </IconButton>
             ) : (
-              <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
+              <Button
+                className="GenerateRecipeBtn"
+                variant="contained"
+                disableElevation
+                type="submit"
+                disabled={loading}
+              >
                 {t("generate.go")}
                 <AutoAwesome className="BtnIcon" />
               </Button>
@@ -211,8 +222,8 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
 
           <div className="Divider"></div>
 
-          <div className="FiltersColumn">
-            <div className={`FiltersRow ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+          <div className="FiltersSectionContainer">
+            <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
               <div className="ExcludedBar" dir={isRTL ? "rtl" : "ltr"}>
                 <div>
                   <TextField
@@ -243,7 +254,7 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                 <Button
                   className="FilterBtn"
                   onClick={(e) => {
-                    e.stopPropagation(); // ✅ open/close should not instantly close via parent click
+                    e.stopPropagation();
                     setFiltersOpen((v) => !v);
                   }}
                   variant="contained"
@@ -256,7 +267,6 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                   <div
                     className="FilterPanelInnerSection"
                     onClick={(e) => {
-                      // ✅ clicking inside the panel should NOT close it *until* a filter is chosen
                       e.stopPropagation();
                     }}
                   >
@@ -265,7 +275,7 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                         key={`diet-${filtersResetKey}`}
                         onDietSelect={(v) => {
                           setDietType(v);
-                          setFiltersOpen(false); // ✅ close after selection
+                          setFiltersOpen(false);
                         }}
                       />
                     </div>
@@ -275,7 +285,7 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                         key={`sugar-${filtersResetKey}`}
                         onSugarLevelSelect={(v) => {
                           setSugarLevel(v);
-                          setFiltersOpen(false); // ✅ close after selection
+                          setFiltersOpen(false);
                         }}
                       />
                     </div>
@@ -285,7 +295,7 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                         key={`lac-${filtersResetKey}`}
                         onChange={(v) => {
                           setHasLactose(v);
-                          setFiltersOpen(false); // ✅ close after selection
+                          setFiltersOpen(false);
                         }}
                       />
                     </div>
@@ -295,24 +305,25 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
                         key={`glu-${filtersResetKey}`}
                         onChange={(v) => {
                           setHasGluten(v);
-                          setFiltersOpen(false); // ✅ close after selection
+                          setFiltersOpen(false);
                         }}
                       />
                     </div>
                   </div>
                 </div>
               </div>
-              {/* end FiltersDropdown */}
             </div>
           </div>
         </form>
       </div>
+    )}
 
-      {recipe && (
-        <div className="RecipeCardContainer">
-          <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
-        </div>
-      )}
-    </div>
-  );
+    {recipe && (
+      <div className="RecipeCardContainer">
+        <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
+      </div>
+    )}
+  </div>
+);
+
 }

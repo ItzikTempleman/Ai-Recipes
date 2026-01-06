@@ -40,7 +40,7 @@
 .ProteinInnerText{
   display: flex;
   flex-direction: row;
-     gap: 6px;              /* smaller gap between the two <p> */
+     gap: 6px;          
   align-items: baseline;
   justify-content: center;
 }
@@ -54,11 +54,11 @@
 margin: 4px;
 border-radius: 18px;
 padding: 4px;
-  padding: 8px 10px;     /* smaller inner padding */
+  padding: 8px 10px;   
 
   display: flex;
   flex-direction: column;
-  align-items: center;   /* centers children horizontally inside the card */
+  align-items: center;   
   text-align: center; 
 width: 100%;
 background-color: white;
@@ -115,7 +115,7 @@ border: 1px solid rgb(253, 160, 29);
   font-size: 1.2rem;
 }
 
-.FiltersRow {
+.FilterBar {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -125,7 +125,7 @@ border: 1px solid rgb(253, 160, 29);
   align-items: center;
 }
 
-html[dir="rtl"] .FiltersRow {
+html[dir="rtl"] .FilterBar {
   justify-content: flex-end;
 }
 

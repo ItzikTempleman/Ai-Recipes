@@ -28,12 +28,12 @@ body.share-render-mode #recipe-print-root {
 }
 
 
-body.share-render-mode #recipe-print-root[dir="rtl"] .FiltersRow {
+body.share-render-mode #recipe-print-root[dir="rtl"] .FilterBar {
   direction: rtl !important;
   justify-content: flex-end !important;
 }
 
-body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
+body.share-render-mode #recipe-print-root[dir="ltr"] .FilterBar {
   direction: ltr !important;
   justify-content: flex-start !important;
 }
@@ -76,7 +76,7 @@ body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
 
   body.share-render-mode .DataScreen,
   body.share-render-mode .RecipeSneakPeakInfo,
-  body.share-render-mode .FiltersRow {
+  body.share-render-mode .FilterBar {
     background: transparent !important;
     background-image: none !important;
   }
@@ -127,7 +127,7 @@ body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
 
   body.share-render-mode .RecipeImage,
   body.share-render-mode .RecipeSneakPeakInfo,
-  body.share-render-mode .FiltersRow {
+  body.share-render-mode .FilterBar {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
