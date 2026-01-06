@@ -1,6 +1,6 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
-import "./GenerateScreen.css";
+import "./RecipeInputScreen.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
@@ -32,7 +32,7 @@ type RecipeStateType = {
   recipes: RecipeState;
 };
 
-export function GenerateScreen() {
+export function RecipeInputScreen() {
   useTitle("Generate");
 
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ export function GenerateScreen() {
 
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
-
+const filterBtnRef = useRef<HTMLButtonElement | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [initialQuantity, setQuantity] = useState(1);
 
@@ -75,41 +75,31 @@ export function GenerateScreen() {
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
     i18n.on("languageChanged", onLangChange);
-    return () => i18n.off("languageChanged", onLangChange);
-  }, [i18n]);
 
-  // Reset generated recipe once when entering the screen (after user is known)
-  useEffect(() => {
     if (user && !loading && !didResetOnEnterRef.current) {
       dispatch(resetGenerated());
       didResetOnEnterRef.current = true;
     }
-  }, [dispatch, user, loading]);
 
-  // Reset the UI once AFTER generation finishes and a recipe is loaded
-  useEffect(() => {
     if (loading) {
-      // generation started -> allow a reset when it finishes
       didResetAfterGenerateRef.current = false;
-      return;
-    }
-
-    if (!loading && recipeHasData && !didResetAfterGenerateRef.current) {
+    } else if (recipeHasData && !didResetAfterGenerateRef.current) {
       setFiltersOpen(false);
       setQuantity(1);
       setHasImage(false);
-
       setSugarLevel(SugarRestriction.DEFAULT);
       setHasLactose(LactoseRestrictions.DEFAULT);
       setHasGluten(GlutenRestrictions.DEFAULT);
       setDietType(DietaryRestrictions.DEFAULT);
-
       setFiltersResetKey((k) => k + 1);
       reset({ query: "", excludedIngredients: [""] });
-
       didResetAfterGenerateRef.current = true;
     }
-  }, [loading, recipeHasData, reset]);
+
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  }, [i18n, dispatch, user, loading, recipeHasData, reset]);
 
   async function loadImage(recipeToLoad: RecipeModel): Promise<RecipeModel> {
     if (recipeToLoad.id) {
@@ -129,7 +119,6 @@ export function GenerateScreen() {
     try {
       if (loading) return;
 
-      // clear previous generated recipe immediately when user starts a new generation
       dispatch(resetGenerated());
       setFiltersOpen(false);
 
@@ -152,26 +141,30 @@ export function GenerateScreen() {
         dietType,
         excludedList
       );
-
-      // DO NOT reset here.
-      // The effect above resets AFTER redux gets the loaded recipe.
     } catch (err: unknown) {
       notify.error(err);
     }
   }
 
   return (
-    <div className={`GenerateScreen ${recipeHasData ? "GenerateScreen--hasData" : ""}`}>
+    <div
+      className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
+  onClickCapture={(e) => {
+    if (!filtersOpen) return;
+    const target = e.target as Node;
+    if (filterBtnRef.current?.contains(target)) return;
+    setTimeout(() => setFiltersOpen(false), 0);
+  }} >
       <div className="GenerateContainer">
         <div>
           <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
         </div>
 
         <form onSubmit={handleSubmit(send)}>
-          <div className={`InputData ${isRTL ? "rtl" : ""}`}>
+          <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
             <TextField
               dir={isRTL ? "rtl" : "ltr"}
-              className="SearchTF"
+              className="RecipeTextField"
               size="small"
               label={t("generate.labelGenerate")}
               {...register("query", { required: `${t("generate.requiredTitle")}` })}
@@ -182,14 +175,14 @@ export function GenerateScreen() {
             />
 
             <IconButton
-              className={`ImageToggleBtn ${hasImage ? "on" : "off"}`}
+              className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
               onClick={() => setHasImage((v) => !v)}
             >
               {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
             </IconButton>
 
             {loading ? (
-              <IconButton className="RoundedBtn large-loading" edge="end" disabled>
+              <IconButton className="ProgressBar" edge="end" disabled>
                 <Box>
                   <CircularProgress />
                 </Box>
@@ -207,7 +200,7 @@ export function GenerateScreen() {
           {loading && (
             <div>
               {hasImage ? (
-                <h2 className="LoadingImage">
+                <h2 className="ImageLoadingMessage">
                   {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
                 </h2>
               ) : (
@@ -220,10 +213,10 @@ export function GenerateScreen() {
 
           <div className="FiltersColumn">
             <div className={`FiltersRow ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-              <div className="ExcludedSection" dir={isRTL ? "rtl" : "ltr"}>
+              <div className="ExcludedBar" dir={isRTL ? "rtl" : "ltr"}>
                 <div>
                   <TextField
-                    className="ExcludeTF"
+                    className="ExcludeTextField"
                     label={t("generate.excludeIngredient")}
                     size="small"
                     {...register("excludedIngredients.0")}
@@ -233,7 +226,11 @@ export function GenerateScreen() {
 
               <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
                 <p>{t("generate.quantitySelector")}</p>
-                <select className="QuantitySelector" value={initialQuantity} onChange={(e) => setQuantity(Number(e.target.value))}>
+                <select
+                  className="QuantitySelector"
+                  value={initialQuantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                >
                   {[...Array(10)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>
                       {i + 1}
@@ -245,37 +242,74 @@ export function GenerateScreen() {
               <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
                 <Button
                   className="FilterBtn"
-                  onClick={() => setFiltersOpen((v) => !v)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ✅ open/close should not instantly close via parent click
+                    setFiltersOpen((v) => !v);
+                  }}
                   variant="contained"
                   endIcon={<TuneIcon />}
                 >
                   {t("generate.filters")}
                 </Button>
 
-                <div className={`FiltersDropdown__panel ${filtersOpen ? "open" : ""}`}>
-                  <div className="FiltersDropdown__panelInner">
+                <div className={`FilterPanel ${filtersOpen ? "open" : "closed"}`}>
+                  <div
+                    className="FilterPanelInnerSection"
+                    onClick={(e) => {
+                      // ✅ clicking inside the panel should NOT close it *until* a filter is chosen
+                      e.stopPropagation();
+                    }}
+                  >
                     <div>
-                      <DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={setDietType} />
+                      <DietaryFilter
+                        key={`diet-${filtersResetKey}`}
+                        onDietSelect={(v) => {
+                          setDietType(v);
+                          setFiltersOpen(false); // ✅ close after selection
+                        }}
+                      />
                     </div>
+
                     <div>
-                      <SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={setSugarLevel} />
+                      <SugarFilter
+                        key={`sugar-${filtersResetKey}`}
+                        onSugarLevelSelect={(v) => {
+                          setSugarLevel(v);
+                          setFiltersOpen(false); // ✅ close after selection
+                        }}
+                      />
                     </div>
+
                     <div>
-                      <LactoseFilter key={`lac-${filtersResetKey}`} onChange={setHasLactose} />
+                      <LactoseFilter
+                        key={`lac-${filtersResetKey}`}
+                        onChange={(v) => {
+                          setHasLactose(v);
+                          setFiltersOpen(false); // ✅ close after selection
+                        }}
+                      />
                     </div>
+
                     <div>
-                      <GlutenFilter key={`glu-${filtersResetKey}`} onChange={setHasGluten} />
+                      <GlutenFilter
+                        key={`glu-${filtersResetKey}`}
+                        onChange={(v) => {
+                          setHasGluten(v);
+                          setFiltersOpen(false); // ✅ close after selection
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
+              {/* end FiltersDropdown */}
             </div>
           </div>
         </form>
       </div>
 
       {recipe && (
-        <div className="CenterRow">
+        <div className="RecipeCardContainer">
           <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
         </div>
       )}

@@ -1,4 +1,4 @@
-.GenerateScreen{
+.RecipeInputScreen{
   width:100%;
   min-height:100vh;
   padding:18px;
@@ -35,8 +35,9 @@
   text-rendering:optimizeLegibility;
 }
 
+
 .LoadingWithoutImage, 
-.LoadingImage{
+.ImageLoadingMessage{
 color:#6a4dff !important;
 font-size: 20px;
 }
@@ -45,70 +46,70 @@ font-size: 20px;
   letter-spacing:-0.8px;
 }
 
-.InputData{
+.RecipeTextFieldBar{
   display:flex;
   align-items:center;
   gap:12px;
   margin-top:8px;
 }
 
-.InputData .SearchTF{
+.RecipeTextFieldBar .RecipeTextField{
   flex:1;
   min-width:0;
 }
 
-.InputData.rtl{
+.RecipeTextFieldBar.rtl{
   flex-direction:row-reverse;
 }
 
-.InputData.rtl .BtnIcon{
+.RecipeTextFieldBar.rtl .BtnIcon{
   margin-left:0;
   margin-right:12px;
 }
 
-.InputData.rtl .SearchTF .MuiOutlinedInput-root{
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-root{
   direction:rtl;
 }
 
-.InputData.rtl .SearchTF .MuiOutlinedInput-notchedOutline{
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-notchedOutline{
   text-align:right;
 }
 
-.InputData.rtl .SearchTF fieldset legend{
+.RecipeTextFieldBar.rtl .RecipeTextField fieldset legend{
   text-align:right;
 }
 
-.InputData.rtl .SearchTF .MuiInputLabel-root,
-.InputData.rtl .SearchTF .MuiInputLabel-outlined{
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-root,
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined{
   left:auto !important;
   right:0 !important;
   transform-origin:top right !important;
   text-align:right !important;
 }
 
-.InputData.rtl .SearchTF .MuiInputLabel-outlined{
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined{
   transform:translate(-14px, 9px) scale(1) !important;
 }
 
-.InputData.rtl .SearchTF .MuiInputLabel-shrink{
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-shrink{
   transform:translate(-14px, -7px) scale(0.85) !important;
 }
 
-.InputData.rtl .SearchTF input,
-.InputData.rtl .SearchTF input::placeholder{
+.RecipeTextFieldBar.rtl .RecipeTextField input,
+.RecipeTextFieldBar.rtl .RecipeTextField input::placeholder{
   direction:rtl;
   text-align:right;
 }
 
-.InputData.rtl .SearchTF .MuiOutlinedInput-input{
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-input{
   padding-right:18px !important;
 }
 
-.large-loading .MuiCircularProgress-root{
+.ProgressBar .MuiCircularProgress-root{
   color:#6a4dff !important;
 }
 
-.ImageToggleBtn{
+.GenerateImageSelector{
   border-radius:14px !important;
   height:40px !important;
   width:40px !important;
@@ -117,18 +118,18 @@ font-size: 20px;
   border:1px solid rgba(106,77,255,.18) !important;
 }
 
-.ImageToggleBtn.off{
+.GenerateImageSelector.off{
   background:rgba(0,0,0,.06) !important;
   border:1px solid rgba(15,23,42,.12) !important;
 }
 
-.ImageToggleBtn svg{
+.GenerateImageSelector svg{
   width:22px;
   height:22px;
   color:#6a4dff;
 }
 
-.FiltersDropdown__panel{
+.FilterPanel{
   position:absolute;
   top:calc(100% + 10px);
   left:50%;
@@ -146,15 +147,15 @@ font-size: 20px;
   pointer-events:none; 
 }
 
-.FiltersDropdown__panel.open{
+.FilterPanel.open{
   max-height:900px;
   opacity:1;
   pointer-events:auto;
   transform:translateX(-50%) translateY(0);
 }
 
-.SearchTF .MuiOutlinedInput-root,
-.ExcludeTF .MuiOutlinedInput-root{
+.RecipeTextField .MuiOutlinedInput-root,
+.ExcludeTextField .MuiOutlinedInput-root{
   border-radius:14px;
   background:rgba(255,255,255,.88);
   backdrop-filter:blur(10px);
@@ -162,43 +163,43 @@ font-size: 20px;
   transition:.15s ease;
 }
 
-.SearchTF .MuiOutlinedInput-notchedOutline,
-.ExcludeTF .MuiOutlinedInput-notchedOutline{
+.RecipeTextField .MuiOutlinedInput-notchedOutline,
+.ExcludeTextField .MuiOutlinedInput-notchedOutline{
   border:1px solid rgba(148,163,184,.55);
 }
 
-.SearchTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+.RecipeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
   border-color:rgba(106,77,255,.45);
 }
 
 
-.SearchTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+.RecipeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
   border-color:rgba(106,77,255,.9);
   border-width:2px;
 }
 
-.ExcludeTF .MuiInputLabel-root.Mui-focused,
-.ExcludeTF .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+.ExcludeTextField .MuiInputLabel-root.Mui-focused,
+.ExcludeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
   border-color: #ff9d00;
 }
-.ExcludeTF .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+.ExcludeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
   border-color: #ff9d00;
   border-width:2px;
 }
 
-.SearchTF .MuiOutlinedInput-root.Mui-focused,
-.ExcludeTF .MuiOutlinedInput-root.Mui-focused{
+.RecipeTextField .MuiOutlinedInput-root.Mui-focused,
+.ExcludeTextField .MuiOutlinedInput-root.Mui-focused{
   box-shadow:0 18px 38px rgba(106,77,255,.14),inset 0 1px 0 rgba(255,255,255,.85);
 }
 
-.ExcludeTF .MuiInputLabel-root.MuiInputLabel-shrink{
+.ExcludeTextField .MuiInputLabel-root.MuiInputLabel-shrink{
   color:#ff9d00 !important;
 }
-.SearchTF .MuiOutlinedInput-input{
+.RecipeTextField .MuiOutlinedInput-input{
   padding:10px 12px;
 }
 
-.SearchTF .MuiInputLabel-root.Mui-focused{
+.RecipeTextField .MuiInputLabel-root.Mui-focused{
   color:rgba(106,77,255,.95);
 }
 
@@ -230,82 +231,80 @@ font-size: 20px;
   padding:0;  
 }
 
-.FiltersRow .ExcludedSection{
+.FiltersRow .ExcludedBar{
   flex:1 1 0 !important;
   min-width:0 !important;
   max-width:none !important;
 }
 
-.FiltersRow .ExcludedSection > div{
+.FiltersRow .ExcludedBar > div{
   width:100%;
   max-width:none;
 }
 
-.FiltersRow .ExcludeTF{
+.FiltersRow .ExcludeTextField{
   width:100%;
   min-width:0 !important;
 }
 
-.ExcludeTF .MuiOutlinedInput-root{
+.ExcludeTextField .MuiOutlinedInput-root{
   height:40px !important;
   min-height:40px !important;
   border-radius:14px !important;
 }
 
-.ExcludeTF .MuiOutlinedInput-input{
+.ExcludeTextField .MuiOutlinedInput-input{
   padding:10px 12px !important;  
   font-size:16px !important;    
 }
 
-.ExcludeTF .MuiInputLabel-root{
+.ExcludeTextField .MuiInputLabel-root{
   font-size:14px !important;
 }
 
-/* FIX: LTR label transform should NOT override shrink state */
-.ExcludeTF .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
+.ExcludeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
   transform:translate(14px, 9px) scale(1) !important;
 }
-.ExcludeTF .MuiInputLabel-outlined.MuiInputLabel-shrink{
+.ExcludeTextField .MuiInputLabel-outlined.MuiInputLabel-shrink{
   transform:translate(14px, -7px) scale(0.85) !important;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-root{
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-root{
   direction:rtl;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-notchedOutline{
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-notchedOutline{
   text-align:right;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF fieldset legend{
+.ExcludedBar[dir="rtl"] .ExcludeTextField fieldset legend{
   text-align:right;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF input,
-.ExcludedSection[dir="rtl"] .ExcludeTF input::placeholder{
+.ExcludedBar[dir="rtl"] .ExcludeTextField input,
+.ExcludedBar[dir="rtl"] .ExcludeTextField input::placeholder{
   direction:rtl;
   text-align:right;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiOutlinedInput-input{
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-input{
   text-align:right;
   padding-right:10px !important;
   padding-left:10px !important;
 }
 
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-root,
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined{
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-root,
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-outlined{
   right:14px !important;
   left:auto !important;
   transform-origin:top right !important;
   text-align:right !important;
 }
 
-/* FIX: RTL label transform should NOT override shrink state */
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
   transform:translate(-14px, 9px) scale(1) !important;
 }
-.ExcludedSection[dir="rtl"] .ExcludeTF .MuiInputLabel-shrink{
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-shrink{
   transform:translate(-14px, -7px) scale(0.85) !important;
 }
 
@@ -394,7 +393,7 @@ font-size: 20px;
   display:flex;
 }
 
-.FiltersDropdown__panelInner{
+.FilterPanelInnerSection{
   padding-top:0;
   display:flex;
   flex-direction:column;
@@ -402,22 +401,22 @@ font-size: 20px;
   text-align:left;
 }
 
-.FiltersDropdown[dir="rtl"] .FiltersDropdown__panelInner{
+.FiltersDropdown[dir="rtl"] .FilterPanelInnerSection{
   align-items:flex-end;
   text-align:right;
 }
 
-.FiltersDropdown__panelInner > div{
+.FilterPanelInnerSection > div{
   width:100%;
 }
 
-.FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
+.FilterPanelInnerSection .MuiToggleButtonGroup-root{
   width:100% !important;
   display:flex !important;
   flex-wrap:wrap !important;
 }
 
-.FiltersDropdown__panelInner .MuiToggleButton-root{
+.FilterPanelInnerSection .MuiToggleButton-root{
   width:140px;
   border:1px solid;
   border-color:#6f6f6f;
@@ -430,12 +429,12 @@ font-size: 20px;
   width:100%;
 }
 
-.FiltersDropdown__panelInner .MuiToggleButton-root:hover{
+.FilterPanelInnerSection .MuiToggleButton-root:hover{
   border-color:rgba(106, 77, 255, 0.65) !important;
   background:rgba(106,77,255,.08) !important;
 }
 
-.FiltersDropdown__panelInner .MuiToggleButton-root.Mui-selected{
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected{
   background:#f6b139 !important;
   color:white !important;
 }
@@ -492,7 +491,7 @@ font-size: 20px;
   color:#ffe08a;
 }
 
-.CenterRow{
+.RecipeCardContainer{
   width:100%;
   display:flex;
   justify-content:center;
@@ -532,7 +531,7 @@ font-size: 20px;
     justify-content:center !important;
   }
 
-  .FiltersDropdown__panel{
+  .FilterPanel{
     width:calc(100vw - 28px) !important;
     max-width:420px !important;
     left:50% !important;
@@ -543,12 +542,12 @@ font-size: 20px;
     background:#fff !important;
   }
 
-  .FiltersDropdown__panel.open{
+  .FilterPanel.open{
     transform:translateX(-50%) translateY(0);
     padding:12px;
   }
 
-  .FiltersDropdown__panelInner .MuiToggleButtonGroup-root{
+  .FilterPanelInnerSection .MuiToggleButtonGroup-root{
     width:100% !important;
     display:flex !important;
     flex-wrap:nowrap !important;
@@ -558,12 +557,12 @@ font-size: 20px;
     padding-bottom:6px;
   }
 
-  .FiltersDropdown__panelInner .MuiToggleButton-root{
+  .FilterPanelInnerSection .MuiToggleButton-root{
     flex:0 0 auto !important;
     white-space:nowrap !important;
   }
 
-  .FiltersDropdown__panelInner .MuiToggleButtonGroup-root::-webkit-scrollbar{
+  .FilterPanelInnerSection .MuiToggleButtonGroup-root::-webkit-scrollbar{
     height:6px;
   }
 }

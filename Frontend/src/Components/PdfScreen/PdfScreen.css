@@ -74,19 +74,19 @@ body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
   }
 
 
-  body.share-render-mode .RecipeData,
-  body.share-render-mode .RecipeExtraData,
+  body.share-render-mode .DataScreen,
+  body.share-render-mode .RecipeSneakPeakInfo,
   body.share-render-mode .FiltersRow {
     background: transparent !important;
     background-image: none !important;
   }
 
 
-  body.share-render-mode .CaloryParent,
-  body.share-render-mode .SugarParent,
-  body.share-render-mode .ProteinParent,
-  body.share-render-mode .AmountParent,
-  body.share-render-mode .CountryParent {
+  body.share-render-mode .Calories,
+  body.share-render-mode .Sugar,
+  body.share-render-mode .Protein,
+  body.share-render-mode .Quantity,
+  body.share-render-mode .Country {
     background: #fff !important;
     border: 1px solid rgb(253, 160, 29) !important;
     border-radius: 18px !important;
@@ -95,7 +95,7 @@ body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
     padding: 8px 10px !important;
   }
 
-  body.share-render-mode .RecipeExtraData {
+  body.share-render-mode .RecipeSneakPeakInfo {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -105,28 +105,28 @@ body.share-render-mode #recipe-print-root[dir="ltr"] .FiltersRow {
   }
 
 
-  body.share-render-mode .CaloryParent,
-  body.share-render-mode .SugarParent,
-  body.share-render-mode .ProteinParent,
-  body.share-render-mode .AmountParent,
-  body.share-render-mode .CountryParent {
+  body.share-render-mode .Calories,
+  body.share-render-mode .Sugar,
+  body.share-render-mode .Protein,
+  body.share-render-mode .Quantity,
+  body.share-render-mode .Country {
     width: auto !important;
     min-width: 120px !important;
     flex: 1 1 0 !important;
   }
 
 
-  body.share-render-mode .CaloryParent p,
-  body.share-render-mode .SugarParent p,
-  body.share-render-mode .ProteinParent p,
-  body.share-render-mode .AmountParent p,
-  body.share-render-mode .CountryParent p {
+  body.share-render-mode .Calories p,
+  body.share-render-mode .Sugar p,
+  body.share-render-mode .Protein p,
+  body.share-render-mode .Quantity p,
+  body.share-render-mode .Country p {
     margin: 0 !important;
   }
 
 
   body.share-render-mode .RecipeImage,
-  body.share-render-mode .RecipeExtraData,
+  body.share-render-mode .RecipeSneakPeakInfo,
   body.share-render-mode .FiltersRow {
     break-inside: avoid !important;
     page-break-inside: avoid !important;

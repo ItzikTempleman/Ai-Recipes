@@ -22,10 +22,10 @@ export function Header() {
   const currentRecipe = useSelector((state: AppState) => state.recipes.current);
   const isGuest = !user;
   const location = useLocation();
-  const isOnGenerateScreen =
+  const isOnRecipeInputScreen =
     location.pathname === "/generate" || location.pathname.startsWith("/generate/");
   const hasGeneratedRecipe = Boolean(currentRecipe?.title);
-  const showUndo = isGuest && hasGeneratedRecipe && !isOnGenerateScreen;
+  const showUndo = isGuest && hasGeneratedRecipe && !isOnRecipeInputScreen;
   const navigate = useNavigate();
 
   return (

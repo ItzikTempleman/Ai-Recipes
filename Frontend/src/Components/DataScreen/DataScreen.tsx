@@ -1,4 +1,4 @@
-import "./RecipeData.css";
+import "./DataScreen.css";
 import { formatAmount } from "../../Utils/Utils";
 import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
@@ -21,7 +21,7 @@ type RecipeProps = {
   shareMode?: boolean;
 };
 
-export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
+export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
   const shareOnceRef = useRef(false);
@@ -126,7 +126,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
   })();
 
   return (
-    <div className="RecipeData">
+    <div className="DataScreen">
       <div className="RecipeHeaderRow">
         {!shareMode && (
           <Button
@@ -161,12 +161,12 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
       ) : loadImage ? (
         isImageLoading ? (
           <>
-            <IconButton className="RoundedBtn large-loading" edge="end" disabled>
+            <IconButton className="ProgressBar" edge="end" disabled>
               <Box>
                 <CircularProgress />
               </Box>
             </IconButton>
-            <h2 className="LoadingImage">
+            <h2 className="ImageLoadingMessage">
               {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
             </h2>
           </>
@@ -181,8 +181,8 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
       ) : null}
       <FilterBadges filters={filters} isRTL={isRTL} />
 
-      <div className="RecipeExtraData">
-        <div className="CaloryParent">
+      <div className="RecipeSneakPeakInfo">
+        <div className="Calories">
           <p className="Title">{t("recipeUi.calories")}</p>
 
           {isRTL ? (
@@ -195,7 +195,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             </div>
           )}
         </div>
-        <div className="SugarParent">
+        <div className="Sugar">
           <p className="Title">{t("recipeUi.sugar")}</p>
           {Number(recipe.totalSugar) === 0 ? (
             <p>0</p>
@@ -209,7 +209,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             </div>
           )}
         </div>
-        <div className="ProteinParent">
+        <div className="Protein">
           <p className="Title">{t("recipeUi.protein")}</p>
           {isRTL ? (
             <div className="ProteinInnerText">
@@ -221,24 +221,24 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
             </div>
           )}
         </div>
-        <div className="AmountParent">
+        <div className="Quantity">
           <p className="Title">{t("recipeUi.time")}</p>
           <p>
             {recipe.prepTime} {t("units.minuteShort")}{" "}
           </p>
         </div>
-        <div className="CountryParent">
+        <div className="Country">
               <p className="Title">{recipe.countryOfOrigin}</p>
           {shareMode && flag ? (
-            <img className="ExtraDataFlagImg" src={flagEmojiToTwemojiUrl(flag)} />
+            <img className="CountryFlagImg" src={flagEmojiToTwemojiUrl(flag)} />
           ) : (
-            <span className="ExtraDataFlag">{flag}</span>
+            <span className="CountryFlag">{flag}</span>
           )}
       
         </div>
       </div>
 
-      <div className="RecipeStepsWide">
+      <div className="RecipePreparationWideView">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
           <div className={`IngredientsList ${headingDir}`} dir={headingDir}>
             <h2 className={`IngredientsTitle ${headingDir}`} dir={headingDir}>
@@ -260,7 +260,7 @@ export function RecipeData({ recipe, imageSrc, filters, loadImage, shareMode }: 
               {t("recipeUi.instructions", { lng: headingLng })}
             </h2>
 
-            <ol className={`instructions-list ${headingDir}`} dir={headingDir}>
+            <ol className={`InstructionsListOl ${headingDir}`} dir={headingDir}>
               {instructions
                 .map((s) => String(s ?? "").trim())
                 .filter((s) => s.length > 0)

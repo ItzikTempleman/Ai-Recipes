@@ -1,4 +1,4 @@
-.RecipeData {
+.DataScreen {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   height: auto;
   object-fit: cover;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
+  border-radius: 18px;
 }
 
 .ShareBtnContainer{
@@ -29,7 +29,7 @@
 
 
 
-.RecipeExtraData{
+.RecipeSneakPeakInfo{
   display: flex;
   flex-direction: row;
   
@@ -45,11 +45,11 @@
   justify-content: center;
 }
 
-.CaloryParent,
-.SugarParent,
-.ProteinParent,
-.AmountParent,
-.CountryParent
+.Calories,
+.Sugar,
+.Protein,
+.Quantity,
+.Country
 {
 margin: 4px;
 border-radius: 18px;
@@ -66,11 +66,11 @@ height: auto;
 border: 1px solid rgb(253, 160, 29);
 }
 
-.CaloryParent p,
-.SugarParent p,
-.ProteinParent p,
-.AmountParent p,
-.CountryParent p{
+.Calories p,
+.Sugar p,
+.Protein p,
+.Quantity p,
+.Country p{
   margin: 0;
 }
 
@@ -111,7 +111,7 @@ border: 1px solid rgb(253, 160, 29);
   height: 20px;
 }
 
-.ExtraDataFlag {
+.CountryFlag {
   font-size: 1.2rem;
 }
 
@@ -213,26 +213,26 @@ html[dir="rtl"] .FiltersRow {
   text-align: right;
 }
 
-.instructions-list {
+.InstructionsListOl {
   margin: 0;
   padding: 0;
   list-style-position: inside;
 }
 
-.instructions-list.ltr {
+.InstructionsListOl.ltr {
   direction: ltr;
   text-align: left;
   padding-right: 0;
   list-style-position: inside;
 }
 
-.instructions-list.rtl {
+.InstructionsListOl.rtl {
   direction: rtl;
   text-align: right;
   padding-left: 0;
 }
 
-.instructions-list.rtl li {
+.InstructionsListOl.rtl li {
   direction: rtl;
   text-align: right;
   list-style-position: inside;
@@ -257,19 +257,15 @@ color: rgb(255, 140, 0) !important;
 }
 
 
-.ExtraDataFlag {
+.CountryFlag {
   font-size: 1.2rem;
   font-family:
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Noto Color Emoji",
-    "Twemoji Mozilla",
     system-ui,
     sans-serif;
   line-height: 1;
 }
 
-.ExtraDataFlagImg {
+.CountryFlagImg {
   width: 18px;
   height: 18px;
   display: inline-block;
@@ -277,7 +273,7 @@ color: rgb(255, 140, 0) !important;
 }
 
 @media (min-width: 780px) {
-  .RecipeStepsWide {
+  .RecipePreparationWideView {
     margin-top: 60px;
     width: calc(100vw - 4vw);
     max-width: 1600px;
@@ -289,7 +285,7 @@ color: rgb(255, 140, 0) !important;
     margin-right: calc(-50vw + 2vw);
   }
 
-  html[dir="rtl"] .RecipeStepsWide {
+  html[dir="rtl"] .RecipePreparationWideView {
     transform: translateX(-2vw);
   }
 
@@ -374,7 +370,7 @@ color: rgb(255, 140, 0) !important;
 }
 
 @media (max-width: 600px) {
-    .RecipeExtraData{
+    .RecipeSneakPeakInfo{
     flex-direction: column;
     align-items: stretch; 
   }
@@ -383,11 +379,11 @@ color: rgb(255, 140, 0) !important;
 }
 
 
-  .CaloryParent,
-  .SugarParent,
-  .ProteinParent,
-  .AmountParent,
-  .CountryParent{
+  .Calories,
+  .Sugar,
+  .Protein,
+  .Quantity,
+  .Country{
     width: 100%;
  gap: 8px;
     border-radius: 0;
@@ -405,7 +401,7 @@ color: rgb(255, 140, 0) !important;
     flex-wrap: wrap;   
   }
 
-  .RecipeData {
+  .DataScreen {
     max-width: 100%;
   }
 

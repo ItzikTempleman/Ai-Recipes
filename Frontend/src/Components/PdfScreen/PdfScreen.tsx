@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RecipeModel } from "../../Models/RecipeModel";
-import { RecipeData } from "../RecipeData/RecipeData";
+import { DataScreen } from "../DataScreen/DataScreen";
 import "./PdfScreen.css";
 
 export function PdfScreen() {
@@ -12,13 +12,13 @@ export function PdfScreen() {
 
   const [recipe, setRecipe] = useState<RecipeModel | null>(null);
 
-  // Add print/share mode class
+
   useEffect(() => {
     document.body.classList.add("share-render-mode");
     return () => document.body.classList.remove("share-render-mode");
   }, []);
 
-  // Fetch recipe: token share payload OR public id
+ 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
@@ -69,16 +69,16 @@ export function PdfScreen() {
     };
   }, [recipe]);
 
-  // Mirror RecipeData behavior: render PDF using the recipe content language
+ 
   useEffect(() => {
     if (!recipe) return;
     if (i18n.language !== headingLng) {
       i18n.changeLanguage(headingLng);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [recipe, headingLng]);
 
-  // Tag the stats block in DOM (kept from your original logic)
+
   useEffect(() => {
     if (!recipe) return;
 
@@ -144,7 +144,7 @@ export function PdfScreen() {
           <h3>Itzik's AI Recipes</h3>
         </div>
 
-        <RecipeData
+        <DataScreen
           recipe={recipe}
           imageSrc={(recipe as any).imageUrl ?? (recipe as any).image ?? ""}
           filters={filters as any}

@@ -1,7 +1,7 @@
 import { ArrowBackIosNew } from "@mui/icons-material";
 import {DietaryRestrictions,GlutenRestrictions,LactoseRestrictions,RecipeModel,SugarRestriction} from "../../Models/RecipeModel";
 import { Filters } from "../RecipeCard/RecipeCard";
-import { RecipeData } from "../RecipeData/RecipeData";
+import { DataScreen } from "../DataScreen/DataScreen";
 import { notify } from "../../Utils/Notify";
 import { recipeService } from "../../Services/RecipeService";
 import { useEffect, useState } from "react";
@@ -85,7 +85,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
 
   
         <div className="InfoScreenContainer">
-          <RecipeData
+          <DataScreen
             loadImage={loadImageHelper}
             recipe={recipe}
             imageSrc={imgSrc}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../Redux/RecipeSlice";
-import { RecipeData } from "../RecipeData/RecipeData";
+import { DataScreen } from "../DataScreen/DataScreen";
 import "./RecipeCard.css";
 import { useTranslation } from "react-i18next";
 
@@ -51,7 +51,7 @@ const {i18n } = useTranslation();
     ❌
   </div>
 
-  <RecipeData filters={filters} recipe={recipe} imageSrc={imgSrc} loadImage={loadImage} />
+  <DataScreen filters={filters} recipe={recipe} imageSrc={imgSrc} loadImage={loadImage} />
 </div>
   );
 }
