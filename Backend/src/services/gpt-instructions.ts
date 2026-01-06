@@ -231,6 +231,10 @@ YOU MUST:
      (e.g., “with store-bought vegan patty” or “quick version using ready sauce”).
      
   SUGAR RESTRICTIONS:
+   - If SugarRestriction = 0 (DEFAULT):
+       - Added sugar IS allowed when appropriate for the dish.
+       - Do NOT avoid sugar “by default”.
+       - If the dish is normally sweet (desserts, pastries, sweet sauces), include added sugar as typically required.
    - If SugarRestriction = 1 (LOW):
        - Reduce added sugar moderately but keep the dish flavor intact.
    - If SugarRestriction = 2 (NONE):
@@ -375,17 +379,13 @@ TOTAL PROTEIN CALCULATION (CRITICAL — MUST FOLLOW):
 
 - "totalSugar":
   - The TOTAL amount of **ADDED SUGAR** in the entire recipe, measured in **TABLESPOONS**.
-  - Count ALL added sugar used anywhere in the recipe, including:
-      • doughs (e.g. pizza dough)
-      • sauces
-      • marinades
-      • fillings
-  - Added sugar includes:
-      • white sugar, brown sugar
-      • honey, syrups, molasses
-      • coconut sugar and similar sugars
-  - Do NOT count naturally occurring sugars in ingredients
-    (e.g. lactose in milk, sugars naturally present in vegetables).
+  ...
+  - If SugarRestriction = 0 (DEFAULT):
+      • Use and count added sugar normally when the dish requires it.
+      • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
+  - If SugarRestriction = 1 (LOW):
+      • Reduce added sugar compared to a standard recipe, but still include it if required.
+      • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
   - If SugarRestriction = 2 (NONE):
       • Do NOT include sugar in any ingredient.
       • Set "totalSugar" = 0.
@@ -621,11 +621,17 @@ The example numbers below MUST be replaced with realistic values that follow rul
 - When calculating protein level, return the actual real-life accurate protein level **per 100 grams** and do not make up random values.
 When calculating sugar:
  - "totalSugar" is the TOTAL ADDED sugar in the entire recipe, in TABLESPOONS.
+ - If SugarRestriction = 0 (DEFAULT):
+    • Added sugar is allowed and should be used when appropriate.
+    • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
+ - If SugarRestriction = 1 (LOW):
+    • Reduce added sugar compared to standard, but still include it if needed for the dish.
+    • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
  - If SugarRestriction = 2 (NONE):
     • Do NOT add sugar in any ingredient.
     • Set "totalSugar" = 0.
- - If a dietary sweetener is used (e.g. סוכרזית/סטיביה/ממתיק מלאכותי), it must be named explicitly and must NOT increase "totalSugar".
-
+ - If a dietary sweetener is used (e.g. סוכרזית/סטיביה/ממתיק מלאכותי),
+   it must be named explicitly and must NOT increase "totalSugar".
   
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.

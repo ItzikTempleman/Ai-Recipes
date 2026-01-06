@@ -6,8 +6,6 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-    position: relative;  
-  overflow: hidden; 
 }
 
 .HomeScreenTitleWrapper {
@@ -88,7 +86,7 @@
 .HomeScreenTitle.user {
   width: 100%;
   margin-top: 0 !important;
-  padding-top: 40px;
+  padding-top: 20px;
   text-align: start;
 }
 
@@ -96,10 +94,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-   margin-left: 0 !important;
-  margin-right: 0 !important;
-  margin-inline: auto !important;
-  margin: 120px auto 0;
+  margin: 50px auto 0;
   border-radius: 18px !important;
   padding: 8px 20px !important;
   height: 50px !important;
@@ -134,8 +129,9 @@
     0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
 }
 
+
 .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
-  margin: 24px 0 0 !important;
+  margin: 6px 0 0 !important; /* was 24px */
 }
 
 .HomeScreenTitleWrapper.ltr .HomeScreenTitle.user {
@@ -146,15 +142,11 @@
   text-align: right;
 }
 
+/* ONLY CHANGE (desktop RTL, user exists): keep same but higher */
 .HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
-  margin: 24px 0 0 !important;
+  margin: 6px 0 0 !important; /* was 24px */
   margin-left: auto !important;
   margin-right: 0 !important;
-}
-
-.HomeScreen .HomeScreenTitleWrapper + .RecipeList::before,
-.HomeScreen .HomeScreenTitleWrapper + .RecipeList::after {
-  content: none;
 }
 
 .HomeScreen .RecipeList {
@@ -170,53 +162,8 @@
   scroll-snap-type: none;
 }
 
-.HomeScreen::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 40vh;
-  height: 55vh;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("../../Assets/images/wave.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.18;
-}
-
-.HomeScreen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-
-  background-image:
-    url("../../Assets/images/chef.png"),
-    url("../../Assets/images/whisk.png");
-  background-repeat: no-repeat, no-repeat;
-
-  background-size: 44px 44px, 44px 44px;
-
-  /* hat higher + left, whisk lower + right */
-  background-position:
-    20% 46%,
-    78% 44%;
-
-  opacity: 0.68;
-  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.12));
-}
-
-
 .HomeScreen .RecipeList > * {
   min-width: 0;
-}
-
-.HomeScreen > * {
-  position: relative;
-  z-index: 1;
 }
 
 @media (max-width: 600px) {
@@ -245,7 +192,8 @@
     max-width: min(100%, 360px);
   }
 
+  /* ONLY CHANGE (mobile, user exists): make button higher */
   .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
-    margin: 18px auto 0 !important;
+    margin: 6px auto 0 !important; /* was 18px */
   }
 }

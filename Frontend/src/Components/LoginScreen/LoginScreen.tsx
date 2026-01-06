@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { Credentials } from "../../Models/UserModel";
 import { useTitle } from "../../Utils/Utils";
@@ -30,6 +30,9 @@ const { t, i18n } = useTranslation();
     };
   }, [i18n]);
 
+    function returnToLogin() {
+    navigate("/home");
+  }
   
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,6 +53,10 @@ const { t, i18n } = useTranslation();
   return (
     <div className="LoginScreen">
       <form className="LoginForm" onSubmit={handleSubmit(send)}>
+                <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
+                  <ArrowBackIosNew />
+                  {t("auth.registration.back")}
+                </Button>
         <h2 className="LoginScreenTitle">{t("auth.login.title")}</h2>
 
         <TextField className="InputTextField"
