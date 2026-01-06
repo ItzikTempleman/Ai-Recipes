@@ -161,14 +161,15 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
       ) : loadImage ? (
         isImageLoading ? (
           <>
+                      <h2 className="ImageLoadingMessageAfterRecipeGenerated">
+              {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+            </h2>
             <IconButton className="ProgressBar" edge="end" disabled>
               <Box>
                 <CircularProgress />
               </Box>
             </IconButton>
-            <h2 className="ImageLoadingMessage">
-              {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-            </h2>
+
           </>
         ) : (
           !shareMode && (
