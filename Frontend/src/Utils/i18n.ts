@@ -36,7 +36,7 @@ const resources = {
         title: "About this site",
         topSection: getTopSectionEn(),
         restOfSection: getRestOfSectionEn(),
-        footer: "© 2025 All rights reserved ® Itzik's AI recipe generator",
+        footer: "© 2025 All rights reserved ® Isaaks's AI recipe generator",
       },
       page404: {
         title: "Page not found",
