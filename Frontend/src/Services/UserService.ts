@@ -91,6 +91,9 @@ class UserService {
         await axios.delete(appConfig.userUrl + id);
         store.dispatch(userSlice.actions.deleteAccount(id));
     }
+    public async forgotPassword(_email: string): Promise<void> {
+  return;
+}
 }
 
 export const userService = new UserService();

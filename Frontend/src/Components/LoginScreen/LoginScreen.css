@@ -28,6 +28,10 @@
   font-size: 20px;
 }
 
+.ResetLink{
+  text-decoration: none;
+}
+
 .RegisterLink{
  display: inline-flex;
   align-items: center;            
@@ -37,6 +41,19 @@
   justify-content: center; 
 }
 
+.ResetFacebook img,
+.ResetGoogle img{
+  width: 40px;
+  height: 40px;
+}
+
+.LoginWithFacebookAndGoogle{
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 20px;
+}
 
 html[dir="rtl"] .InputTextField .MuiInputBase-input {
   text-align: right;

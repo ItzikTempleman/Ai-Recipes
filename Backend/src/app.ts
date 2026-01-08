@@ -8,6 +8,7 @@ import { errorMiddleware } from "./middleware/error-middleware";
 import { userController } from "./controllers/user-controller";
 import { healthController } from "./utils/health-controller";
 import fileUpload from "express-fileupload";
+import { resetPasswordController } from "./controllers/reset-password-controller";
 
 export class App {
   public async start(): Promise<void> {
@@ -24,7 +25,7 @@ export class App {
 
     server.use(express.json());
     server.use(fileUpload());
-
+    
     const imageDir = process.env.IMAGE_DIR || path.join(__dirname, "1-assets", "images");
     await fs.mkdir(imageDir, { recursive: true });
     const userImageDir = path.join(imageDir, "users");
@@ -33,6 +34,7 @@ export class App {
     server.use("/api/users/images", express.static(userImageDir));
     server.use("/api", userController.router);
     server.use(recipeController.router);
+    server.use("/api", resetPasswordController.router);
     server.use(healthController.router);
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);

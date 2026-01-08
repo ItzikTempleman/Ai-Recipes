@@ -89,6 +89,10 @@ const resources = {
       },
       auth: {
         login: {
+                    emailLabelToSendCode:"Enter email to rest code",
+          sendCode:"send recovery code",
+          reset:"Reset passeword",
+          forgot:"Forgot password",
           title: "Log in",
           emailLabel: "Enter Email",
           emailPlaceholder: "Email",
@@ -267,7 +271,12 @@ likeScreen:{
 
       auth: {
         login: {
+          emailLabelToSendCode:"הזן אימייל לשחזור קוד",
+             sendCode:"שלח קוד שחזור",
+          reset:"שחזור סיסמה",
+          forgot:"שכחתי סיסמה",
           title: "התחברות",
+        
           emailLabel: "הכנס אימייל",
           emailPlaceholder: "אימייל",
           passwordLabel: "הכנס סיסמה",
