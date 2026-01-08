@@ -44,7 +44,12 @@ class Mailer {
     const subject = appConfig.resetMailSubject;
     const text = resetLink;
 
-    const message: Mail.Options = { to, subject, text };
+  const message: Mail.Options = {
+  from: `AI Recipes <${appConfig.senderEmail}>`,
+  to,
+  subject,
+  text
+};
     await this.transport.sendMail(message);
   }
 }

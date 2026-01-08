@@ -17,6 +17,10 @@ function randomToken(bytes = 32) {
     return crypto.randomBytes(bytes).toString("base64url");
 }
 
+function otp6(): string {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
 export type DbUserRow = {
     id: number;
     email: string;
@@ -39,16 +43,16 @@ class PasswordResetService {
         const users = await dal.execute(sql, values) as DbUserRow[];
         const user = users[0];
         if (!user) return { code: AuthResponseCode.PasswordResetRequested };
-        const token = randomToken(32);
+        const token = otp6();
         const tokenHash = sha256Hex(token);
         const exp = new Date(Date.now() + 30 * 60 * 1000);
-        const insertSql = "insert into passwordReset(userId, tokenHash, exp) values (?, ?, ?)";
+        const insertSql = "insert into passwordReset(userId, tokenHash, exp, created) values (?, ?, ?, now())";
         const insertValues = [user.id, tokenHash, exp];
         const result = await dal.execute(insertSql, insertValues) as ResultSetHeader;
         const resetId = result.insertId;
-        const resetLink = `${appConfig.frontendBaseUrl}/reset-password?rid=${resetId}&t=${token}`;
+        const resetLink = `Your password reset code is: ${token}\nIt expires in 30 minutes.\nReset ID: ${resetId}`;
         await mailer.sendResetLink(user.email, resetLink);
-        return { code: AuthResponseCode.PasswordResetRequested };
+        return { code: AuthResponseCode.PasswordResetRequested, params: { resetId } };
     };
 
 
