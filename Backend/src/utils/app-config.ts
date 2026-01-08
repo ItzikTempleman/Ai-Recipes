@@ -16,6 +16,13 @@ class AppConfig {
   public readonly user = process.env.MYSQL_USER!;
   public readonly password = process.env.MYSQL_PASSWORD!;
  public readonly database = process.env.MYSQL_DB || "smart-recipes";
+
+public readonly senderEmail = process.env.SENDER_EMAIL;     
+public readonly senderAppPassword = process.env.APP_PASSWORD;  
+public readonly resetExpiresMinutes = Number(process.env.RESET_EXPIRES_MINUTES ?? "30");
+public readonly resetMailSubject = process.env.RESET_MAIL_SUBJECT ?? "Password reset";
+
+
 public readonly frontendBaseUrl = this.normalizeFrontendBaseUrl();
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";
   public readonly apiKey = process.env.API_KEY;
@@ -25,6 +32,10 @@ public readonly frontendBaseUrl = this.normalizeFrontendBaseUrl();
 
   public readonly baseImageUrl = this.normalizeBaseImageUrl();
 public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
+
+
+
+
 
 
   private normalizeBaseUserImageUrl(): string {

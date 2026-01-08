@@ -5,7 +5,9 @@ import { ValidationError } from "../models/client-errors";
 import { UserModel } from "../models/user-model";
 import { OkPacketParams } from "mysql2";
 import type { ResultSetHeader } from "mysql2";
-import { AuthResponse, AuthResponseCode } from "../models/auth-response";
+import { AuthResponse, AuthResponseCode, mailer } from "../models/reset-password-model";
+import { appConfig } from "../utils/app-config";
+
 
 function sha256Hex(value: string) {
     return crypto.createHash("sha256").update(value).digest("hex");
@@ -44,7 +46,9 @@ class PasswordResetService {
         const insertValues = [user.id, tokenHash, exp];
         const result = await dal.execute(insertSql, insertValues) as ResultSetHeader;
         const resetId = result.insertId;
-        return { code: AuthResponseCode.PasswordResetRequested, params: { resetId, token, exp: exp.getTime() } };
+        const resetLink = `${appConfig.frontendBaseUrl}/reset-password?rid=${resetId}&t=${token}`;
+        await mailer.sendResetLink(user.email, resetLink);
+        return { code: AuthResponseCode.PasswordResetRequested };
     };
 
 
