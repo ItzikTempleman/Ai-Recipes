@@ -89,6 +89,18 @@ const resources = {
       },
       auth: {
         login: {
+          enterCode: "Enter the 6-digit code sent to your email",
+submitCode: "Submit code",
+resendCode: "Resend code",
+newPassword: "New password",
+confirmNewPassword: "Confirm new password",
+updatePassword: "Update password",
+passwordMismatch: "Passwords do not match",
+codeSent: "If that email exists, a code was sent.",
+invalidCode: "Invalid code",
+expiredCode: "Code expired",
+usedCode: "Code already used",
+passwordUpdated: "Password updated successfully",
                     emailLabelToSendCode:"Enter email to rest code",
           sendCode:"send recovery code",
           reset:"Reset passeword",
@@ -271,6 +283,18 @@ likeScreen:{
 
       auth: {
         login: {
+          enterCode: "הזן/י את הקוד בן 6 הספרות שנשלח למייל",
+submitCode: "אישור קוד",
+resendCode: "שלח קוד מחדש",
+newPassword: "סיסמה חדשה",
+confirmNewPassword: "אימות סיסמה חדשה",
+updatePassword: "עדכן סיסמה",
+passwordMismatch: "הסיסמאות אינן תואמות",
+codeSent: "אם המייל קיים, נשלח קוד לאיפוס.",
+invalidCode: "קוד שגוי",
+expiredCode: "תוקף הקוד פג",
+usedCode: "הקוד כבר נוצל",
+passwordUpdated: "הסיסמה עודכנה בהצלחה",
           emailLabelToSendCode:"הזן אימייל לשחזור קוד",
              sendCode:"שלח קוד שחזור",
           reset:"שחזור סיסמה",

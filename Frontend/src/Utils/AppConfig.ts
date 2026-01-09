@@ -13,5 +13,8 @@ class AppConfig {
   public readonly loginUrl = `${API}/login/`;
   public readonly userUrl = `${API}/users/`;
   public readonly likeUrl = `${API}/recipes/liked/`;
+
+  public readonly forgotPasswordUrl = `${API}/auth/forgot-password`;
+  public readonly resetPasswordUrl = `${API}/auth/reset-password`;
 }
 export const appConfig = new AppConfig();
