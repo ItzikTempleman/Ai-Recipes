@@ -329,7 +329,7 @@ export function ResetPasswordScreen() {
                             variant="contained"
                             onClick={updatePassword}
                             
-                        >{t("auth.registration.update")}</Button>
+                        >{t("auth.login.update")}</Button>
                     </>
                 )}
 
