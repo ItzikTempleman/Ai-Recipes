@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../../Utils/Notify";
 import { Button, IconButton, InputAdornment, TextField, } from "@mui/material";
-import { ArrowBackIosNew ,Visibility, VisibilityOff} from "@mui/icons-material";
+import { ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
@@ -24,6 +24,7 @@ export function ResetPasswordScreen() {
     const [isRTL, setIsRTL] = useState<boolean>(() =>
         (i18n.language ?? "").startsWith("he")
     );
+
     const resetState = useSelector((state: AppState) => state.passwordReset);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ export function ResetPasswordScreen() {
             .map(c => (c === " " ? "" : c));
     }
     )
-     const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
     const otpValue = incomingDigit.join("");
 
@@ -71,15 +72,15 @@ export function ResetPasswordScreen() {
             dispatch(setResetId(resetIdFromServer));
             dispatch(setStep("enterCode"))
             notify.success(t("auth.login.codeSent"));
-            setAllDigitsCombined(["", "", "", "", "", "", ""])
-            //setTimeout(() => otpRefs.current[0]?.focus(), 50); waits for the send to finnish so that the otp shows upo and ficus in the otp bix happens automatically
+            setAllDigitsCombined(["", "", "", "", "", ""])
+            setTimeout(() => otpRefs.current[0]?.focus(), 50);
         } catch (err) {
             notify.error(err)
         }
     }
 
     function onOtpChange(index: number, value: string) {
-        const digit = onlyDigits(value).slice(-1); // keep only 1 digit
+        const digit = onlyDigits(value).slice(-1);
         const next = [...incomingDigit];
         next[index] = digit;
         setAllDigitsCombined(next);
@@ -112,14 +113,47 @@ export function ResetPasswordScreen() {
         e.preventDefault();
     }
 
-    function submitCode() {
+    async function submitCode() {
         const token = onlyDigits(otpValue);
         if (token.length !== 6) {
             notify.error(t("auth.login.invalidCode"));
             return;
         }
-        dispatch(setStep("enterNewPassword"));
-    };
+
+        const resetId = resetState.resetId ?? -1;
+        if (resetId <= 0) {
+            notify.error(t("auth.login.invalidCode"));
+            dispatch(setStep("enterEmail"));
+            return;
+        }
+
+        try {
+            dispatch(setToken(token));
+            const res = await resetPasswordService.verifyResetToken(resetId, token);
+
+            if (res.code === AuthResponseCode.PasswordResetTokenValid) {
+                dispatch(setStep("enterNewPassword"));
+                return;
+            }
+
+            if (res.code === AuthResponseCode.PasswordResetExpired) {
+                notify.error(t("auth.login.expiredCode"));
+                dispatch(setStep("enterCode"));
+                return;
+            }
+
+            if (res.code === AuthResponseCode.PasswordResetUsed) {
+                notify.error(t("auth.login.usedCode"));
+                dispatch(setStep("enterCode"));
+                return;
+            }
+
+            notify.error(t("auth.login.invalidCode"));
+            dispatch(setStep("enterCode"));
+        } catch (err) {
+            notify.error(err);
+        }
+    }
 
     async function updatePassword() {
         try {
@@ -133,7 +167,7 @@ export function ResetPasswordScreen() {
                 notify.error(t("auth.registration.passwordMin8"));
                 return;
             }
- 
+
             const resetId = resetState.resetId ?? -1;
             const res = await resetPasswordService.resetPassword(resetId, token, newPassword);
 
@@ -279,48 +313,49 @@ export function ResetPasswordScreen() {
                     <>
                         <div className="PasswordRow">
                             <TextField className="NewPasswordTextField"
-          autoComplete="password"
-          label={t("auth.login.passwordLabel")}
-           placeholder={t("auth.login.newPassword")}
-          fullWidth
-          type= "password"
-        onChange={(e) => setNewPassword(e.target.value)}
-          InputProps={{
-            ...(isRTL
-              ? {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton
-                    
-                      edge="start"
-                      tabIndex={-1}
-                      onClick={() => setShowPassword((show) => !show)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }
-              : {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                    
-                      edge="end"
-                      value={newPassword}
-                      tabIndex={-1}
-                      onClick={() => setShowPassword((show) => !show)}
-                      
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }),
-          }}
-        />
+                                autoComplete="password"
+                                label={t("auth.login.passwordLabel")}
+                                placeholder={t("auth.login.newPassword")}
+                                fullWidth
+                                type={showPassword ? "text" : "password"}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                InputProps={{
+                                    ...(isRTL
+                                        ? {
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <IconButton
+
+                                                        edge="start"
+                                                        tabIndex={-1}
+
+                                                        onClick={() => setShowPassword((show) => !show)}
+                                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                                    >
+                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }
+                                        : {
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+
+                                                        edge="end"
+                                                        value={newPassword}
+                                                        tabIndex={-1}
+                                                        onClick={() => setShowPassword((show) => !show)}
+
+                                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                                    >
+                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }),
+                                }}
+                            />
                         </div>
 
                         <Button
@@ -328,7 +363,7 @@ export function ResetPasswordScreen() {
                             className="LoginScreenBtn"
                             variant="contained"
                             onClick={updatePassword}
-                            
+
                         >{t("auth.login.update")}</Button>
                     </>
                 )}

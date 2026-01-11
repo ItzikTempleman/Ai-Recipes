@@ -16,5 +16,6 @@ class AppConfig {
 
   public readonly forgotPasswordUrl = `${API}/auth/forgot-password`;
   public readonly resetPasswordUrl = `${API}/auth/reset-password`;
+  public readonly verifyResetTokenUrl = `${API}/auth/verify-reset-token`;
 }
 export const appConfig = new AppConfig();

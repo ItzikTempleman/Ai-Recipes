@@ -6,7 +6,8 @@ export enum AuthResponseCode {
     PasswordResetInvalid = 2,
     PasswordResetExpired = 3,
     PasswordResetUsed = 4,
-    PasswordResetSuccess = 5
+    PasswordResetSuccess = 5,
+    PasswordResetTokenValid = 6 
 }
 
 
@@ -16,6 +17,12 @@ export type AuthResponse = {
 }
 
 class ResetPasswordService {
+
+    public async verifyResetToken(resetId: number, token: string): Promise<AuthResponse> {
+  const { data } = await axios.post<AuthResponse>(appConfig.verifyResetTokenUrl, { resetId, token });
+  return data;
+}
+
     public async requestOtpCode(email: string): Promise<AuthResponse> {
         const { data } = await axios.post<AuthResponse>(appConfig.forgotPasswordUrl, { email });
         return data;

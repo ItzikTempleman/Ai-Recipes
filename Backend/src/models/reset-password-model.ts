@@ -18,13 +18,15 @@ export enum AuthResponseCode {
   PasswordResetInvalid = 2,
   PasswordResetExpired = 3,
   PasswordResetUsed = 4,
-  PasswordResetSuccess = 5
+  PasswordResetSuccess = 5,
+  PasswordResetTokenValid = 6 
 }
 
 export interface AuthResponse {
   code: AuthResponseCode;
   params?: Record<string, string | number>;
 }
+
 
 class Mailer {
   private transport =
