@@ -63,7 +63,6 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
     }
   };
 
-
   useEffect(() => {
     const url = (imageSrc ?? "").trim();
     setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");

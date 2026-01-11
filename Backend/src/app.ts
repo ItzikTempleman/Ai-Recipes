@@ -9,6 +9,7 @@ import { userController } from "./controllers/user-controller";
 import { healthController } from "./utils/health-controller";
 import fileUpload from "express-fileupload";
 import { resetPasswordController } from "./controllers/reset-password-controller";
+import { pdfController } from "./controllers/pdf-controller";
 
 export class App {
   public async start(): Promise<void> {
@@ -33,6 +34,7 @@ export class App {
     server.use("/api/recipes/images", express.static(imageDir));
     server.use("/api/users/images", express.static(userImageDir));
     server.use("/api", userController.router);
+    server.use(pdfController.router)
     server.use(recipeController.router);
     server.use("/api", resetPasswordController.router);
     server.use(healthController.router);

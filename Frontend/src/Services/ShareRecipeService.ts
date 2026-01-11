@@ -1,4 +1,6 @@
+import axios from "axios";
 import { RecipeModel } from "../Models/RecipeModel";
+import { appConfig } from "../Utils/AppConfig";
 import { notify } from "../Utils/Notify";
 
 let __shareCallCounter = 0;
@@ -50,56 +52,32 @@ async function downloadBlob(blob: Blob, filename: string) {
 async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
   const payload = {
     title: recipe?.title ?? "",
-
-    description:
-  (recipe as any)?.description ??
-  (recipe as any)?.data?.description ??
-  "",
-  
+    description: (recipe as any)?.description ?? (recipe as any)?.data?.description ?? "",
     data: {
       ingredients: recipe?.data?.ingredients ?? [],
       instructions: recipe?.data?.instructions ?? [],
     },
-
-    // ShareRenderPage uses imageUrl in your backend code comments
     imageUrl: (recipe as any)?.imageUrl ?? (recipe as any)?.image ?? "",
     image: (recipe as any)?.imageUrl ?? (recipe as any)?.image ?? "",
-
-    // badges / filters
     sugarRestriction: (recipe as any)?.sugarRestriction,
     lactoseRestrictions: (recipe as any)?.lactoseRestrictions,
     glutenRestrictions: (recipe as any)?.glutenRestrictions,
     dietaryRestrictions: (recipe as any)?.dietaryRestrictions,
-
-    // meta
     prepTime: (recipe as any)?.prepTime,
     difficultyLevel: (recipe as any)?.difficultyLevel,
     countryOfOrigin: (recipe as any)?.countryOfOrigin,
     healthLevel: (recipe as any)?.healthLevel,
-
-    // ✅ servings (was missing)
     amountOfServings: (recipe as any)?.amountOfServings,
-
-    // nutrition
     calories: (recipe as any)?.calories,
     totalProtein: (recipe as any)?.totalProtein,
     totalSugar: (recipe as any)?.totalSugar,
   };
 
-  const tokenResp = await fetch(`/api/recipes/share-token`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!tokenResp.ok) throw new Error(await tokenResp.text());
-
-  const { token } = await tokenResp.json();
-
-  const pdfPath = `/api/recipes/share.pdf?token=${encodeURIComponent(token)}`;
-
-  // use origin so the URL is clean and consistent
-  return new URL(pdfPath, window.location.origin).toString();
+  const { data } = await axios.post<{ token: string }>(
+    appConfig.shareTokenUrl,
+    payload
+  );
+  return new URL(`${appConfig.sharePdfUrl}.pdf?token=${encodeURIComponent(data.token)}`, window.location.origin).toString();
 }
 
 async function fetchPdfBlobFromUrl(pdfUrl: string): Promise<Blob> {
@@ -129,7 +107,7 @@ function openPdfInNewTab(pdfUrl: string) {
 export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
   __shareCallCounter += 1;
 
-  // prevent spam double taps/clicks
+
   if (sharingInFlight) return;
   sharingInFlight = true;
 
@@ -140,15 +118,11 @@ export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
     const pdfUrl = await getTokenPdfUrl(recipe);
     const navAny = navigator as any;
 
-    // -----------------------
-    // MOBILE
-    // -----------------------
     if (isMobileUA()) {
-      // localhost => share as FILE (URL share often fails / is blocked)
+
       if (isLocalhostUrl(pdfUrl)) {
         const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
         const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
-
         if (canNativeShareFiles(file)) {
           await navAny.share({ files: [file], title: safeName });
           notify.success("Shared.");
@@ -159,8 +133,6 @@ export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
         notify.success("Downloaded PDF.");
         return;
       }
-
-      // public domain => try share URL
       if (typeof navAny?.share === "function") {
         try {
           await navAny.share({ title: safeName, url: pdfUrl });
@@ -168,21 +140,13 @@ export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
           return;
         } catch (e: any) {
           if (e?.name === "AbortError") return;
-          // fall through
+
         }
       }
-
-      // fallback: open PDF
       openPdfInNewTab(pdfUrl);
       notify.success("Opened PDF.");
       return;
     }
-
-    // -----------------------
-    // DESKTOP (fixed behavior)
-    // -----------------------
-
-    // 1) First try sharing the URL (works in more desktop cases than file-share)
     if (typeof navAny?.share === "function") {
       try {
         await navAny.share({ title: safeName, url: pdfUrl });
@@ -190,16 +154,13 @@ export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
         return;
       } catch (e: any) {
         if (e?.name === "AbortError") return;
-        // fall through
+
       }
     }
 
-    // 2) Next: download the PDF (existing desktop behavior)
     try {
       const pdfBlob = await fetchPdfBlobFromUrl(pdfUrl);
       const file = new File([pdfBlob], `${safeName}.pdf`, { type: "application/pdf" });
-
-      // If some desktop supports file-share, try it
       if (canNativeShareFiles(file)) {
         await navAny.share({ files: [file], title: safeName });
         notify.success("Shared.");
@@ -210,7 +171,7 @@ export async function shareRecipeAsPdfWithToasts(recipe: RecipeModel) {
       notify.success("Downloaded PDF.");
       return;
     } catch {
-      // 3) Last fallback: open the PDF
+
       openPdfInNewTab(pdfUrl);
       notify.success("Opened PDF.");
       return;
