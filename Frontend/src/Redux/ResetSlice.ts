@@ -2,16 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type PasswordResetState = {
     email: string;
-    resetId: number;
+    resetId: number | null;
     token: string;
     step: "enterEmail" | "enterCode" | "enterNewPassword" | "finnish";
+    
 };
 
 const initialState: PasswordResetState = {
     email: "",
     resetId: null,
     token: "",
-    step: "enterEmail"
+    step: "enterEmail",
+    
 };
 
 export const passwordResetSlice = createSlice(

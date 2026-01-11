@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import "./ResetPasswordScreen.css";
 import { useTitle } from "../../Utils/Utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import i18n from "../../Utils/i18n";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -9,41 +9,184 @@ import { notify } from "../../Utils/Notify";
 import { Button, InputAdornment, TextField } from "@mui/material";
 import { ArrowBackIosNew } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
-import { userService } from "../../Services/UserService";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../Redux/Store";
+import { clearReset, setEmail, setResetId, setStep, setToken } from "../../Redux/ResetSlice";
+import { AuthResponseCode, resetPasswordService } from "../../Services/ResetPasswordService";
+import LockIcon from "@mui/icons-material/Lock";
 
 type ResetPasswordForm = {
     email: string;
 };
-
 export function ResetPasswordScreen() {
     useTitle("Reset password");
     const { t } = useTranslation();
-
     const [isRTL, setIsRTL] = useState<boolean>(() =>
         (i18n.language ?? "").startsWith("he")
     );
-    const { register, handleSubmit } = useForm<ResetPasswordForm>();
-
+    const resetState = useSelector((state: AppState) => state.passwordReset);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    function returnToLogin() {
-        navigate("/home");
+    const { register, handleSubmit, setValue } = useForm<ResetPasswordForm>({ defaultValues: { email: resetState.email || "" } });
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmNewPassword, setConfirmNewPassword] = useState("");
+    function onlyDigits(value: string) {
+        return (value ?? "").replace(/\D/g, "");
     }
-
-
-    async function send(data: ResetPasswordForm) {
-        try {
-           await userService.forgotPassword(data.email); 
-        } catch (err) {
-            notify.error(err)
-        }
+    const [incomingDigit, setAllDigitsCombined] = useState<string[]>(() => {
+        const v = onlyDigits(resetState.token);
+        return v
+            .padEnd(6, " ")
+            .slice(0, 6)
+            .split("")
+            .map(c => (c === " " ? "" : c));
     }
+    )
+    const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
+    const otpValue = incomingDigit.join("");
+
+    useEffect(() => {
+        dispatch(setToken(otpValue))
+    }, []);
 
     useEffect(() => {
         const onLangChange = (lng: string) => setIsRTL((lng ?? "").startsWith("he"));
         i18n.on("languageChanged", onLangChange);
         return () => i18n.off("languageChanged", onLangChange);
     }, [i18n]);
+
+    function returnToLogin() {
+        dispatch(clearReset());
+        navigate("/home");
+    }
+
+    async function send(data: ResetPasswordForm) {
+        try {
+            const email = (data.email ?? "").trim();
+            dispatch(setEmail(email));
+
+            const receivedCode = await resetPasswordService.requestOtpCode(email);
+            const resetIdFromServer = typeof receivedCode?.params?.resetId === "number" ? (receivedCode.params.resetId as number) : -1;
+
+            dispatch(setResetId(resetIdFromServer));
+            dispatch(setStep("enterCode"))
+            notify.success(t("auth.login.codeSent"));
+            setAllDigitsCombined(["", "", "", "", "", "", ""])
+            //setTimeout(() => otpRefs.current[0]?.focus(), 50); waits for the send to finnish so that the otp shows upo and ficus in the otp bix happens automatically
+        } catch (err) {
+            notify.error(err)
+        }
+    }
+
+    function onOtpChange(index: number, value: string) {
+        const digit = onlyDigits(value).slice(-1); // keep only 1 digit
+        const next = [...incomingDigit];
+        next[index] = digit;
+        setAllDigitsCombined(next);
+
+        if (digit && index < 5) {
+            otpRefs.current[index + 1]?.focus();
+        }
+    }
+
+    function onOtpKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Backspace") {
+            if (incomingDigit[index]) {
+                const next = [...incomingDigit];
+                next[index] = "";
+                setAllDigitsCombined(next);
+                return;
+            }
+            if (index > 0) otpRefs.current[index - 1]?.focus();
+        }
+    }
+
+    function onOtpPaste(e: React.ClipboardEvent<HTMLInputElement>) {
+        const pasted = onlyDigits(e.clipboardData.getData("text")).slice(0, 6);
+        if (!pasted) return;
+
+        const next = Array.from({ length: 6 }, (_, i) => pasted[i] ?? "");
+        setAllDigitsCombined(next);
+        const last = Math.min(5, pasted.length - 1);
+        setTimeout(() => otpRefs.current[last]?.focus(), 0);
+        e.preventDefault();
+    }
+
+    function submitCode() {
+        const token = onlyDigits(otpValue);
+        if (token.length !== 6) {
+            notify.error(t("auth.login.invalidCode"));
+            return;
+        }
+        dispatch(setStep("enterNewPassword"));
+    };
+
+    async function updatePassword() {
+        try {
+            const token = onlyDigits(resetState.token);
+            if (token.length !== 6) {
+                notify.error(t("auth.login.invalidCode"));
+                dispatch(setStep("enterCode"));
+                return;
+            }
+            if (!newPassword || newPassword.length < 8) {
+                notify.error(t("auth.registration.passwordMin8"));
+                return;
+            }
+            if (newPassword !== confirmNewPassword) {
+                notify.error(t("auth.login.passwordMismatch"));
+                return;
+            }
+            const resetId = resetState.resetId ?? -1;
+            const res = await resetPasswordService.resetPassword(resetId, token, newPassword);
+
+
+            if (res.code === AuthResponseCode.PasswordResetSuccess) {
+                notify.success(t("auth.login.passwordUpdated"));
+                dispatch(setStep("finnish"));
+                returnToLogin();
+                return;
+            }
+
+            if (res.code === AuthResponseCode.PasswordResetExpired) {
+                notify.error(t("auth.login.expiredCode"));
+                dispatch(setStep("enterCode"));
+                return;
+            }
+            if (res.code === AuthResponseCode.PasswordResetUsed) {
+                notify.error(t("auth.login.usedCode"));
+                dispatch(setStep("enterCode"));
+                return;
+            }
+            notify.error(t("auth.login.invalidCode"));
+            dispatch(setStep("enterCode"));
+        } catch (err) {
+            notify.error(err);
+        }
+    }
+
+
+    async function resendCode() {
+        try {
+            const email = (resetState.email ?? "").trim();
+            const res = await resetPasswordService.requestOtpCode(email)
+            const resetIdFromServer = typeof res?.params?.resetId === "number" ? (res.params.resetId as number) : -1;
+            dispatch(setResetId(resetIdFromServer));
+            setAllDigitsCombined(["", "", "", "", "", ""]);
+            notify.success(t("auth.login.codeSent"));
+        } catch (err) {
+            notify.error(err);
+        };
+    }
+
+
+    useEffect(() => {
+        setValue("email", resetState.email || "");
+    }, [resetState.email, setValue])
+
+    const setOtpRef = (i: number) => (el: HTMLInputElement | null) => {
+        otpRefs.current[i] = el;
+    };
 
 
     return (
@@ -57,35 +200,157 @@ export function ResetPasswordScreen() {
 
                 <h2 className="ResetTitle">{t("auth.login.reset")}</h2>
 
-                <TextField className="InputTextField"
-                    autoComplete="email" label={t("auth.login.emailLabelToSendCode")} placeholder={t("auth.login.emailLabelToSendCode")} fullWidth
-                    InputProps={{
-                        ...(isRTL
-                            ? {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <EmailIcon />
-                                    </InputAdornment>
-                                ),
+                {resetState.step === "enterEmail" && (
+                    <>
+                        <TextField className="InputTextField"
+                            autoComplete="email" label={t("auth.login.emailLabelToSendCode")} placeholder={t("auth.login.emailLabelToSendCode")} fullWidth
+                            InputProps={{
+                                ...(isRTL
+                                    ? {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <EmailIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }
+                                    : {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <EmailIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }),
+                            }}
+                            {
+                            ...register("email")
                             }
-                            : {
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <EmailIcon />
-                                    </InputAdornment>
-                                ),
-                            }),
-                    }}
-                    {
-                    ...register("email")
-                    }
-                ></TextField>
-                <Button type="submit"
-                    className="LoginScreenBtn"
-                    variant="contained">
-                    {t("auth.login.sendCode")}
-                </Button>
+                        />
+
+                        <Button type="submit"
+                            className="LoginScreenBtn"
+                            variant="contained">
+                            {t("auth.login.sendCode")}
+                        </Button>
+                    </>
+                )
+                }
+
+                {resetState.step === "enterCode" && (
+                    <>
+                        <div>{t("auth.login.enterCode")}</div>
+
+                        <div className="OtpRow">
+                            {
+                                Array.from({ length: 6 }).map((_, i) => (
+                                    <input
+                                        key={i}
+                                        className="OtpBox"
+                                        inputMode="numeric"
+                                        maxLength={1}
+                                        value={incomingDigit[i] ?? ""}
+                                        ref={setOtpRef(i)}
+                                        onChange={(e) => onOtpChange(i, e.target.value)}
+                                        onKeyDown={(e) => onOtpKeyDown(i, e)}
+                                        onPaste={onOtpPaste}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <Button
+                            type="button"
+                            className="LoginScreenBtn"
+                            variant="contained"
+                            onClick={submitCode}
+                        >
+                            {t("auth.login.submitCode")}
+                        </Button>
+
+                        <Button
+                            type="button"
+                            variant="text"
+                            onClick={resendCode}
+                            style={{ textTransform: "none" }}
+                        >
+                            {t("auth.login.resendCode")}
+                        </Button>
+                    </>
+                )
+                }
+
+
+                {resetState.step === "enterNewPassword" && (
+                    <>
+                        <div className="PasswordRow">
+                            <TextField
+                                type="password"
+                                label={t("auth.login.newPassword")}
+                                placeholder={t("auth.login.newPassword")}
+                                fullWidth
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                InputProps={{
+                                    ...(isRTL
+                                        ? {
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <LockIcon />
+                                                </InputAdornment>
+                                            )
+                                        }
+                                        : {
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <LockIcon />
+                                                </InputAdornment>
+                                            )
+                                        })
+                                }}
+                            />
+                            <TextField
+                                type="password"
+                                label={t("auth.login.confirmNewPassword")}
+                                placeholder={t("auth.login.confirmNewPassword")}
+                                fullWidth
+                                value={confirmNewPassword}
+                                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                InputProps={{
+                                    ...(isRTL
+                                        ? {
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <LockIcon />
+                                                </InputAdornment>
+                                            )
+                                        }
+                                        : {
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <LockIcon />
+                                                </InputAdornment>
+                                            )
+                                        })
+                                }}
+                            />
+                        </div>
+
+                        <Button
+                            type="button"
+                            className="LoginScreenBtn"
+                            variant="contained"
+                            onClick={updatePassword}
+                        ></Button>
+                    </>
+                )}
+
+                {resetState.step === "finnish" && (
+                    <>
+                        <div>{t("auth.login.passwordUpdated")}</div>
+                        <Button type="button" variant="contained" onClick={returnToLogin}>
+                            {t("auth.registration.back")}
+                        </Button>
+                    </>
+                )}
             </form>
         </div>
     );
-}
+};
