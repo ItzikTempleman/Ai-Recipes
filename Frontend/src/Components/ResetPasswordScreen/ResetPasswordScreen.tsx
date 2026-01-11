@@ -29,7 +29,6 @@ export function ResetPasswordScreen() {
     const navigate = useNavigate();
     const { register, handleSubmit, setValue } = useForm<ResetPasswordForm>({ defaultValues: { email: resetState.email || "" } });
     const [newPassword, setNewPassword] = useState("");
-    const [confirmNewPassword, setConfirmNewPassword] = useState("");
     function onlyDigits(value: string) {
         return (value ?? "").replace(/\D/g, "");
     }
@@ -134,10 +133,7 @@ export function ResetPasswordScreen() {
                 notify.error(t("auth.registration.passwordMin8"));
                 return;
             }
-            if (newPassword !== confirmNewPassword) {
-                notify.error(t("auth.login.passwordMismatch"));
-                return;
-            }
+ 
             const resetId = resetState.resetId ?? -1;
             const res = await resetPasswordService.resetPassword(resetId, token, newPassword);
 
@@ -282,7 +278,7 @@ export function ResetPasswordScreen() {
                 {resetState.step === "enterNewPassword" && (
                     <>
                         <div className="PasswordRow">
-                            <TextField className="InputTextField"
+                            <TextField className="NewPasswordTextField"
           autoComplete="password"
           label={t("auth.login.passwordLabel")}
            placeholder={t("auth.login.newPassword")}
@@ -325,32 +321,6 @@ export function ResetPasswordScreen() {
               }),
           }}
         />
-                            {/* <TextField
-                                type="password"
-                                label={t("auth.login.newPassword")}
-                                placeholder={t("auth.login.newPassword")}
-                                fullWidth
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                InputProps={{
-                                    ...(isRTL
-                                        ? {
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <LockIcon />
-                                                </InputAdornment>
-                                            )
-                                        }
-                                        : {
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <LockIcon />
-                                                </InputAdornment>
-                                            )
-                                        })
-                                }}
-                            /> */}
-
                         </div>
 
                         <Button
@@ -359,7 +329,7 @@ export function ResetPasswordScreen() {
                             variant="contained"
                             onClick={updatePassword}
                             
-                        >{t("auth.registration.back")}</Button>
+                        >{t("auth.registration.update")}</Button>
                     </>
                 )}
 
