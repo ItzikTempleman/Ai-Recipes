@@ -6,14 +6,14 @@ import i18n from "../../Utils/i18n";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../../Utils/Notify";
-import { Button, InputAdornment, TextField } from "@mui/material";
-import { ArrowBackIosNew } from "@mui/icons-material";
+import { Button, IconButton, InputAdornment, TextField, } from "@mui/material";
+import { ArrowBackIosNew ,Visibility, VisibilityOff} from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
 import { clearReset, setEmail, setResetId, setStep, setToken } from "../../Redux/ResetSlice";
 import { AuthResponseCode, resetPasswordService } from "../../Services/ResetPasswordService";
-import LockIcon from "@mui/icons-material/Lock";
+
 
 type ResetPasswordForm = {
     email: string;
@@ -42,6 +42,7 @@ export function ResetPasswordScreen() {
             .map(c => (c === " " ? "" : c));
     }
     )
+     const [showPassword, setShowPassword] = useState(false);
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
     const otpValue = incomingDigit.join("");
 
@@ -281,7 +282,50 @@ export function ResetPasswordScreen() {
                 {resetState.step === "enterNewPassword" && (
                     <>
                         <div className="PasswordRow">
-                            <TextField
+                            <TextField className="InputTextField"
+          autoComplete="password"
+          label={t("auth.login.passwordLabel")}
+           placeholder={t("auth.login.newPassword")}
+          fullWidth
+          type= "password"
+        onChange={(e) => setNewPassword(e.target.value)}
+          InputProps={{
+            ...(isRTL
+              ? {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton
+                    
+                      edge="start"
+                      tabIndex={-1}
+                      onClick={() => setShowPassword((show) => !show)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }
+              : {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                    
+                      edge="end"
+                      value={newPassword}
+                      tabIndex={-1}
+                      onClick={() => setShowPassword((show) => !show)}
+                      
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }),
+          }}
+        />
+                            {/* <TextField
                                 type="password"
                                 label={t("auth.login.newPassword")}
                                 placeholder={t("auth.login.newPassword")}
@@ -305,32 +349,8 @@ export function ResetPasswordScreen() {
                                             )
                                         })
                                 }}
-                            />
-                            <TextField
-                                type="password"
-                                label={t("auth.login.confirmNewPassword")}
-                                placeholder={t("auth.login.confirmNewPassword")}
-                                fullWidth
-                                value={confirmNewPassword}
-                                onChange={(e) => setConfirmNewPassword(e.target.value)}
-                                InputProps={{
-                                    ...(isRTL
-                                        ? {
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <LockIcon />
-                                                </InputAdornment>
-                                            )
-                                        }
-                                        : {
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <LockIcon />
-                                                </InputAdornment>
-                                            )
-                                        })
-                                }}
-                            />
+                            /> */}
+
                         </div>
 
                         <Button
@@ -338,7 +358,8 @@ export function ResetPasswordScreen() {
                             className="LoginScreenBtn"
                             variant="contained"
                             onClick={updatePassword}
-                        ></Button>
+                            
+                        >{t("auth.registration.back")}</Button>
                     </>
                 )}
 
