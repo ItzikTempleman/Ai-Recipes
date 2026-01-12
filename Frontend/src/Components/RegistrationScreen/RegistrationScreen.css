@@ -1,30 +1,30 @@
 .RegistrationScreen {
   display: flex;
   justify-content: center;   
-  align-items: flex-start;   
+  align-items: start;   
   height: 100vh;
   width: 100%;
   margin: 0;
-  padding-top: 60px; 
+  padding-top: 30px; 
   
 }
 
 .RegistrationForm {
    background-color: white;
   border-radius: 18px;
-  padding: 60px;
+  padding: 30px;
   width: 310px;
-  margin: 40px;
+  margin: 20px;
   height: auto;
   box-shadow: 1px 2px black, 0 6px 18px black;
- 
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
 .RegistrationScreenTitle{
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   color: #323232;
   margin-left: 20px;
   font-size: 20px;
@@ -34,7 +34,7 @@
   position: relative;
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 4px;               
 }
 
@@ -84,37 +84,20 @@ background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
 }
 
 
-.RegisterBtn.MuiButton-root {
-   width: 100% !important;
-  border-radius: 18px !important;
-  padding: 0 20px !important;
-  height: 50px !important;
-  font-weight: 800 !important;
-  margin-top: 30px;
+
+
+.FormController .MuiRadio-root {
+  color: #9e9e9e;
 }
 
-
-.RegisterBtn.MuiButton-root {
-background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-}
-
-.RegisterBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-}
-
-.RegisterBtn.MuiButton-root:active {
-  transform: translateY(0px);
-  box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+.FormController .MuiRadio-root.Mui-checked {
+  color: #5c02e3;
 }
 
 @media (max-width: 600px) {
 
   .RegistrationForm {
-    padding: 60px 30px; 
+    padding: 30px; 
   }
 
   .InputTextField {
@@ -122,9 +105,5 @@ background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
     margin: 4px 0;  
     padding: 0;     
   }
-.FromController{
-      align-items: center;
-    margin: 4px 0;  
-    padding: 0;     
-}
+
   }

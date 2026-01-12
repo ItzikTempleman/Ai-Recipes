@@ -58,7 +58,7 @@ export function ResetPasswordScreen() {
 
     function returnToLogin() {
         dispatch(clearReset());
-        navigate("/home");
+        navigate("/login");
     }
 
     async function send(data: ResetPasswordForm) {
@@ -371,7 +371,7 @@ export function ResetPasswordScreen() {
                 {resetState.step === "finnish" && (
                     <>
                         <div>{t("auth.login.passwordUpdated")}</div>
-                        <Button type="button" variant="contained" onClick={returnToLogin}>
+                        <Button  className="LoginScreenBtn" type="button" variant="contained" onClick={returnToLogin}>
                             {t("auth.registration.back")}
                         </Button>
                     </>

@@ -3,23 +3,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
-
-  /* Base gradient background */
   background:
     radial-gradient(900px 420px at 50% 0%, rgba(163, 156, 255, 0.35) 0%, rgba(163, 156, 255, 0) 60%),
-    radial-gradient(900px 520px at 50% 100%, rgba(255, 195, 120, 0.28) 0%, rgba(255, 195, 120, 0) 62%),
-    linear-gradient(180deg, #d2cbf9 0%, #f7f9ff 42%, #f9cb82 100%);
-
+    radial-gradient(900px 520px at 50% 100%, rgba(29, 168, 255, 0.28) 0%, rgba(255, 195, 120, 0) 62%),
+    linear-gradient(180deg, #d2cbf9 0%, #ffffff 42%, #4cb3fd 100%);
   position: relative;
   overflow: hidden;
-  isolation: isolate; /* important: keeps pseudo layers predictable */
+  isolation: isolate; 
 }
 
-/* Dots texture layer */
 .MainLayout::before {
   content: "";
   position: absolute;
@@ -31,7 +26,6 @@
   z-index: 0;
 }
 
-/* Wave/ripple image layer */
 .MainLayout::after {
   content: "";
   position: absolute;
@@ -40,17 +34,14 @@
   bottom: 40vh;
   height: 55vh;
   pointer-events: none;
-
   background-image: url("../../Assets/images/wave.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-
   opacity: 0.18;
-  z-index: 0; /* same layer as dots; order is still after because ::after paints above ::before */
+  z-index: 0; 
 }
 
-/* Keep actual layout content above the pseudo layers */
 .MainLayout > * {
   position: relative;
   z-index: 1;
@@ -65,7 +56,6 @@ header {
 main {
   grid-row: 2;
   grid-column: 1;
-
   overflow-y: auto;
   min-height: 0;
   padding: 0;

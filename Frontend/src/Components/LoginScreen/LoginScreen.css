@@ -1,18 +1,18 @@
 .LoginScreen {
   display: flex;
   justify-content: center;   
-  align-items: flex-start;   
+  align-items: start;   
   height: 100vh;
   width: 100%;
   margin: 0;
-  padding-top: 60px; 
+  padding-top: 30px; 
 }
 
 .LoginForm {
   border-radius: 18px;
-  padding: 60px;
+  padding: 30px;
   width: 300px;
-  margin: 40px;
+  margin: 20px;
   height: auto;
   box-shadow: 1px 2px black, 0 6px 18px black;
   background-color: white;
@@ -21,17 +21,15 @@
   gap: 16px;
 }
 .LoginScreenTitle{
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   color: #323232;
-  margin-left: 20px;
+
   font-size: 20px;
 }
 
-.ResetLink{
-  text-decoration: none;
-}
 
+.ResetLink,
 .RegisterLink{
  display: inline-flex;
   align-items: center;            
@@ -39,6 +37,7 @@
   color: #323232;
   cursor: pointer;
   justify-content: center; 
+  font-weight: 800;
 }
 
 .ResetFacebook img,
@@ -129,7 +128,7 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
 @media (max-width: 600px) {
 
   .LoginForm {
-    padding: 60px 30px; 
+    padding: 30px; 
   }
 
   .InputTextField {

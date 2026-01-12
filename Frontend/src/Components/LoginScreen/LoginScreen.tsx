@@ -153,7 +153,7 @@ export function LoginScreen() {
           {t("auth.login.submit")}
         </Button>
         <NavLink to="/registration" className="RegisterLink">
-          <h2> {t("auth.login.registerLink")}</h2>
+          <p > {t("auth.login.registerLink")}</p>
         </NavLink>
 
         <div className="LoginWithFacebookAndGoogle">
@@ -167,7 +167,7 @@ export function LoginScreen() {
         </div>
 
         <NavLink to="/reset" className="ResetLink">
-          <p> {t("auth.login.forgot")}</p>
+          <p > {t("auth.login.forgot")}</p>
         </NavLink>
       </form>
     </div>

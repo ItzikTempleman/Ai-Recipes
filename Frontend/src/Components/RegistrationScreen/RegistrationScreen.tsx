@@ -32,6 +32,7 @@ const { t, i18n } = useTranslation();
     };
   }, [i18n]);
   
+  
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({
@@ -232,7 +233,7 @@ const { t, i18n } = useTranslation();
           error={!!errors.phoneNumber}
           helperText={errors.phoneNumber?.message}
         />
-        <FormControl className="FromController">
+        <FormControl className="FormController">
           <Controller
             name="gender"
             control={control}
@@ -259,7 +260,7 @@ const { t, i18n } = useTranslation();
         </FormControl>
         <Button
           type="submit"
-          className="RegisterBtn"
+          className="LoginScreenBtn"
           variant="contained">
           {t("auth.registration.submit")}
         </Button>
