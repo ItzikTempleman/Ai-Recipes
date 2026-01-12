@@ -37,10 +37,25 @@
   align-items: center;
   gap: 4px;               
 }
+html[dir="rtl"] .NameRow {
+  flex-direction: row-reverse;
+}
+
 
 html[dir="rtl"] .InputTextField .MuiInputBase-input {
   text-align: right;
 }
+
+.NameRow--he {
+  flex-direction: row-reverse;
+}
+
+.NameRow .MuiInputBase-input {
+  font-family: inherit !important;
+  font-weight: 400 !important;
+  font-size: inherit !important;
+}
+
 
 html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   margin-left: 0 !important;
@@ -50,8 +65,40 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   flex: 1;             
   min-width: 0;          
 }
-html[dir="rtl"] .NameRow {
+
+
+/* RTL input alignment (global, as you originally had) */
+html[dir="rtl"] .InputTextField .MuiInputBase-input {
+  text-align: right;
+}
+
+html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+}
+
+/* Same inner font in both name inputs */
+.NameRow .MuiInputBase-input {
+  font-family: inherit !important;
+  font-weight: 400 !important;
+  font-size: inherit !important;
+}
+
+/* ✅ Hebrew-only: flip the two name fields (layout only) */
+.NameRow--he {
   flex-direction: row-reverse;
+}
+
+/* ✅ Hebrew-only + first-name only: push the TEXT/PLACEHOLDER to the right edge
+   (this is the "font itself", not the TextField) */
+html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input {
+  padding-inline-start: 0 !important; /* in RTL = right padding */
+}
+
+/* keep placeholder readable + match MUI default color */
+html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input::placeholder {
+  color: rgba(0, 0, 0, 0.38) !important;
+  opacity: 1 !important;
 }
 
 
@@ -84,7 +131,14 @@ background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
 }
 
 
+.FormController {
+  display: flex;
+  justify-content: center;
+}
 
+.FormController .MuiRadioGroup-root {
+  justify-content: center;
+}
 
 .FormController .MuiRadio-root {
   color: #9e9e9e;

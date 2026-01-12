@@ -62,7 +62,7 @@ const { t, i18n } = useTranslation();
           {t("auth.registration.back")}
         </Button>
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
-        <div className="NameRow">
+       <div className={`NameRow ${isRTL ? "NameRow--he" : ""}`}>
 
           <TextField
             className="InputTextField NameTF"
@@ -74,6 +74,23 @@ const { t, i18n } = useTranslation();
             })}
             error={!!errors.firstName}
             helperText={errors.firstName?.message}
+                        InputProps={{
+              ...(isRTL
+                ? {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                }
+                : {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                }),
+            }}
           />
 
           <TextField
