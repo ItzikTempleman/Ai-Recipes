@@ -9,9 +9,9 @@ export class UserModel {
     public email!: string;
     public password!: string;
     public age!: number;
-    public birthDate!: string;
-    public phoneNumber!: string;
-    public gender!: Gender;
+   public phoneNumber?: string | null; 
+  public gender?: Gender | null;      
+  public birthDate?: string | null;
     public image!: UploadedFile;
     public imageUrl!: string;
     public imageName!: string;
@@ -31,22 +31,20 @@ export class UserModel {
         this.imageName = user.imageName;
     }
 
-    private static validationSchema = Joi.object(
-        {
-            id: Joi.number().optional().positive(),
-            firstName: Joi.string().required().min(2).max(50),
-            familyName: Joi.string().required().min(2).max(50),
-            email: Joi.string().required().min(0).max(1000),
-            password: Joi.string().optional().min(0).max(1000),
-            birthDate: Joi.string().optional(),
-            phoneNumber: Joi.string().required().min(9).max(16),
-            age: Joi.number().optional(),
-            gender: Joi.string().valid("MALE", "FEMALE", "OTHER").optional(),
-            image: Joi.object().optional(),
-            imageUrl: Joi.string().optional().uri,
-            imageName: Joi.string().optional().max(50)
-        }
-    );
+private static validationSchema = Joi.object({
+  id: Joi.number().optional().positive(),
+  firstName: Joi.string().required().min(2).max(50),
+  familyName: Joi.string().required().min(2).max(50),
+  email: Joi.string().required().min(0).max(1000),
+  password: Joi.string().optional().min(0).max(1000),
+  birthDate: Joi.string().optional().allow("", null),
+  phoneNumber: Joi.string().optional().allow("", null).min(9).max(16),
+  age: Joi.number().optional().allow(null),
+  gender: Joi.string().valid("MALE", "FEMALE", "OTHER").optional().allow("", null),
+  image: Joi.object().optional(),
+  imageUrl: Joi.string().optional().uri(),
+  imageName: Joi.string().optional().max(50),
+});
 
     public validate(): void {
         const result = UserModel.validationSchema.validate(this);

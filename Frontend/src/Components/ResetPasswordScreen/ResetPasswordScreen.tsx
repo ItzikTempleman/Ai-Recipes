@@ -223,11 +223,8 @@ export function ResetPasswordScreen() {
     return (
         <div className="ResetPasswordScreen">
             <form className="ResetForm" onSubmit={handleSubmit(send)}>
-
-                <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
-                    <ArrowBackIosNew />
-                    {t("auth.registration.back")}
-                </Button>
+ <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
+ 
 
                 <h2 className="ResetTitle">{t("auth.login.reset")}</h2>
 

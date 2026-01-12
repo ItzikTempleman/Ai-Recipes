@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `smart-recipes` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `smart-recipes`;
 -- MySQL dump 10.13  Distrib 8.0.42, for macos15 (arm64)
 --
 -- Host: localhost    Database: smart-recipes
@@ -54,12 +56,13 @@ CREATE TABLE `passwordReset` (
   `userId` int NOT NULL,
   `tokenHash` varchar(64) NOT NULL,
   `exp` datetime NOT NULL,
-  `created` datetime NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usedAt` datetime DEFAULT NULL,
+  `passwordResetcol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `passwordResetToUser_idx` (`userId`),
   CONSTRAINT `passwordResetToUser` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +71,7 @@ CREATE TABLE `passwordReset` (
 
 LOCK TABLES `passwordReset` WRITE;
 /*!40000 ALTER TABLE `passwordReset` DISABLE KEYS */;
+INSERT INTO `passwordReset` VALUES (1,21,'5f74027a242fdd6692dbf276c8faf3b291fdaea0fa88e22fea93fce101c6a4a4','2026-01-11 11:06:08','2026-01-11 10:36:08',NULL,NULL),(2,21,'6348a11f9b4c6cb39edf6844951c3c6cf44e442d75947ff6ced3f1b998b4f0fa','2026-01-11 11:06:36','2026-01-11 10:36:36',NULL,NULL),(3,21,'efe012b0520c80e993c4b59d87b18403edbcaef14920252b512543af0e6969c5','2026-01-11 11:06:50','2026-01-11 10:36:49',NULL,NULL),(4,21,'fc58deaf87664f32cc2fc3e942e7a2a4d49151f60adc32c10622fdcc15e3c815','2026-01-11 11:57:53','2026-01-11 11:27:52',NULL,NULL),(5,21,'883bcfbcf9c87af71fec4f1aef9c8dfbce43f6a3dcca0e670831a4c98c27d7b7','2026-01-12 08:52:34','2026-01-12 08:22:34',NULL,NULL);
 /*!40000 ALTER TABLE `passwordReset` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,9 +135,9 @@ CREATE TABLE `user` (
   `familyName` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phoneNumber` varchar(45) NOT NULL,
-  `Gender` enum('MALE','FEMALE','OTHER') NOT NULL,
-  `birthDate` date NOT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `Gender` enum('MALE','FEMALE','OTHER') DEFAULT NULL,
+  `birthDate` date DEFAULT NULL,
   `imageName` varchar(90) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `imageName_UNIQUE` (`imageName`)
@@ -159,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-08 12:11:32
+-- Dump completed on 2026-01-12 11:57:18

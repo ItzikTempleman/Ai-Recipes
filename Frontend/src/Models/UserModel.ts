@@ -4,9 +4,9 @@ export type User = {
      familyName: string;
      email: string;
      password: string;
-     birthDate: string;
-     phoneNumber: string;
-     gender: Gender;
+  birthDate?: string | null;
+  phoneNumber?: string | null;
+  gender?: Gender | null;
      imageUrl?: string;
      image?: File;
 }

@@ -1,10 +1,7 @@
 import { useSelector } from "react-redux";
-
 import "./ProfileScreen.css";
-
 import { Button, Dialog, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { AppState } from "../../Redux/Store";
@@ -17,14 +14,20 @@ export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
   useTitle("Profile");
   if (!user) return null;
-    const { t } = useTranslation();
+
+  const { t } = useTranslation();
+
+  // ---- minimal-safe optional handling ----
   const rawBirthDate = user.birthDate ?? "";
-  const birthDateStr = showDate(rawBirthDate);
-  const isoDate = rawBirthDate.split("T")[0];
-  const age = isoDate ? getAge(isoDate) : "";
-  const rawGender = (user.gender ?? (user as any).Gender ?? "").toString();
-  const gender =
-    rawGender.charAt(0).toUpperCase() + rawGender.slice(1).toLowerCase();
+  const birthDateStr = rawBirthDate ? showDate(rawBirthDate) : "";
+  const isoDate = rawBirthDate ? rawBirthDate.split("T")[0] : "";
+  const computedAge = isoDate ? getAge(isoDate) : NaN;
+  const ageText = Number.isFinite(computedAge) ? String(computedAge) : "";
+
+  const rawGender = (user.gender ?? (user as any).Gender ?? "")?.toString() ?? "";
+  const genderText = rawGender
+    ? rawGender.charAt(0).toUpperCase() + rawGender.slice(1).toLowerCase()
+    : "";
 
   const [open, setOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(
@@ -37,7 +40,7 @@ export function ProfileScreen() {
       firstName: user.firstName,
       familyName: user.familyName,
       email: user.email,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber ?? ""
     }
   });
 
@@ -52,12 +55,10 @@ export function ProfileScreen() {
   }, [user?.imageUrl]);
 
   async function send(formUser: Partial<User>) {
-    if (!user) return;
-
     const finalFirstName = formUser.firstName ?? user.firstName;
     const finalFamilyName = formUser.familyName ?? user.familyName;
     const finalEmail = formUser.email ?? user.email;
-    const finalPhone = formUser.phoneNumber ?? user.phoneNumber;
+    const finalPhone = (formUser.phoneNumber ?? user.phoneNumber ?? "").toString();
 
     const formData = new FormData();
     formData.append("id", String(user.id));
@@ -82,6 +83,7 @@ export function ProfileScreen() {
   return (
     <div className="ProfileScreen">
       <p className="ProfileScreenTitle">{t("profile.title")}</p>
+
       <div className="ProfileSection">
         <div className="EditProfileDiv">
           <Button
@@ -130,44 +132,47 @@ export function ProfileScreen() {
                 {...register("email")}
               />
 
-              <TextField
-                variant="outlined"
-                size="small"
-                label={t("profile.updatePhone")}
-                fullWidth
-                inputProps={{ minLength: 2, maxLength: 30 }}
-                placeholder={t("profile.updatePhone")}
-                {...register("phoneNumber")}
-              />
-
+        <TextField
+  variant="outlined"
+  size="small"
+  label={
+    user.phoneNumber && user.phoneNumber.trim() !== ""
+      ? t("profile.updatePhone")
+      : t("profile.addPhoneNumber")
+  }
+  fullWidth
+  inputProps={{ minLength: 2, maxLength: 30 }}
+  placeholder={
+    user.phoneNumber && user.phoneNumber.trim() !== ""
+      ? t("profile.updatePhone")
+      : t("profile.addPhoneNumber")
+  }
+  {...register("phoneNumber")}
+/>
               <Button
                 variant="contained"
                 type="submit"
                 fullWidth
                 className="UpdateBtn"
               >
-               {t("profile.updateProfile")}
+                {t("profile.updateProfile")}
               </Button>
             </form>
           </div>
         </Dialog>
 
-        <img
-          className="ImagePreview"
-          src={imagePreview || fallbackAvatar}
-        />
+        <img className="ImagePreview" src={imagePreview || fallbackAvatar} />
 
-        <TextField 
+        <TextField
           variant="standard"
           InputProps={{ disableUnderline: true }}
           type="file"
-          inputProps={{ accept: "image/*"}}
-          
-          onChange={async e => {
+          inputProps={{ accept: "image/*" }}
+          onChange={async (e) => {
             const target = e.target as HTMLInputElement;
             const file = target.files?.[0];
 
-            if (!file || !user) return;
+            if (!file) return;
 
             const uri = URL.createObjectURL(file);
             setSelectedFile(file);
@@ -178,7 +183,7 @@ export function ProfileScreen() {
             formData.append("firstName", user.firstName);
             formData.append("familyName", user.familyName);
             formData.append("email", user.email);
-            formData.append("phoneNumber", user.phoneNumber);
+            formData.append("phoneNumber", (user.phoneNumber ?? "").toString());
             formData.append("image", file);
 
             try {
@@ -188,18 +193,37 @@ export function ProfileScreen() {
             } catch (err) {
               notify.error(err);
             }
-          }}/>
+          }}
+        />
 
         <h3 className="Name">
           {user.firstName} {user.familyName}
         </h3>
-        <p>
-          {age}, {gender}
-        </p>
+
+        {/* ✅ show age/gender only if at least one exists */}
+        {(ageText || genderText) && (
+          <p>{[ageText, genderText].filter(Boolean).join(", ")}</p>
+        )}
+
         <div className="divider" />
-        <p>{t("profile.emailPrefix")} {user.email}</p>
-        <p>{t("profile.phonePrefix")} {user.phoneNumber}</p>
-        <p>{t("profile.birthDatePrefix")} {birthDateStr}</p>
+
+        <p>
+          {t("profile.emailPrefix")} {user.email}
+        </p>
+
+        {/* ✅ hide phone line if missing */}
+        {user.phoneNumber && user.phoneNumber.trim() !== "" && (
+          <p>
+            {t("profile.phonePrefix")} {user.phoneNumber}
+          </p>
+        )}
+
+        {/* ✅ hide birthDate line if missing */}
+        {birthDateStr && (
+          <p>
+            {t("profile.birthDatePrefix")} {birthDateStr}
+          </p>
+        )}
       </div>
     </div>
   );

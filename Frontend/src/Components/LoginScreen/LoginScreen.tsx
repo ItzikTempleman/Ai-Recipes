@@ -55,10 +55,8 @@ export function LoginScreen() {
   return (
     <div className="LoginScreen">
       <form className="LoginForm" onSubmit={handleSubmit(send)}>
-        <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
-          <ArrowBackIosNew />
-          {t("auth.registration.back")}
-        </Button>
+         <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
+
         <h2 className="LoginScreenTitle">{t("auth.login.title")}</h2>
 
         <TextField className="InputTextField"

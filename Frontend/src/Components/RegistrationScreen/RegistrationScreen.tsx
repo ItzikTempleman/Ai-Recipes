@@ -18,27 +18,25 @@ import { userService } from "../../Services/UserService";
 import { notify } from "../../Utils/Notify";
 
 export function RegistrationScreen() {
-const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
 
- const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
- const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
+  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
 
   useEffect(() => {
-   const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
+    const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
     i18n.on("languageChanged", onLangChange);
     return () => {
       i18n.off("languageChanged", onLangChange);
     };
   }, [i18n]);
-  
-  
+
+
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({
-    mode: "onChange", defaultValues: {
-      gender: Gender.MALE,
-    }
+    mode: "onChange"
   })
   const navigate = useNavigate();
   async function send(user: User) {
@@ -57,12 +55,10 @@ const { t, i18n } = useTranslation();
   return (
     <div className="RegistrationScreen">
       <form className="RegistrationForm" onSubmit={handleSubmit(send)}>
-        <Button className="BackBtn" variant="contained" onClick={returnToLogin}>
-          <ArrowBackIosNew />
-          {t("auth.registration.back")}
-        </Button>
+         <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
+
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
-       <div className={`NameRow ${isRTL ? "NameRow--he" : ""}`}>
+        <div className={`NameRow ${isRTL ? "NameRow--he" : ""}`}>
 
           <TextField
             className="InputTextField NameTF"
@@ -74,7 +70,7 @@ const { t, i18n } = useTranslation();
             })}
             error={!!errors.firstName}
             helperText={errors.firstName?.message}
-                        InputProps={{
+            InputProps={{
               ...(isRTL
                 ? {
                   startAdornment: (
@@ -198,25 +194,13 @@ const { t, i18n } = useTranslation();
               }),
           }}
         />
-        <TextField className="InputTextField"
-          fullWidth
-          type="date"
-          {...register("birthDate", {
-            required: `${t("auth.registration.birthDateRequired")}`,
-            validate: (value) => {
-              const today = new Date();
-              const chosen = new Date(value);
-              const isAgeValid = isAgeOk(chosen)
-              if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
-              if (!isAgeValid) return `${t("auth.registration.minAge12")}`;
-              return true;
-            }
-          })}
-          label={t("auth.registration.birthDateLabel")}
-          InputLabelProps={{ shrink: true }}
-          error={!!errors.birthDate}
-          helperText={errors.birthDate?.message}
-        />
+
+        <div className="divider">
+          <div className="line"></div>
+          <h4>{t("auth.registration.optionalFields")}</h4>
+          <div className="line"></div>
+        </div>
+
         <TextField className="InputTextField"
           label={t("auth.registration.phoneLabel")}
           placeholder={t("auth.registration.phonePlaceholder")}
@@ -244,12 +228,35 @@ const { t, i18n } = useTranslation();
             inputMode: "tel",
             pattern: "[0-9]*",
           }}
-          {...register("phoneNumber", {
-            required: "Phone number is required",
-          })}
+          {...register("phoneNumber")}
           error={!!errors.phoneNumber}
           helperText={errors.phoneNumber?.message}
         />
+
+        <TextField className="InputTextField"
+          fullWidth
+          type="date"
+{...register("birthDate", {
+  validate: (value) => {
+    if (!value) return true;
+
+    const today = new Date();
+    const chosen = new Date(value);
+
+    if (Number.isNaN(chosen.getTime())) return true; 
+
+    if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
+    if (!isAgeOk(chosen)) return `${t("auth.registration.minAge12")}`;
+
+    return true;
+  },
+})}
+          label={t("auth.registration.birthDateLabel")}
+          InputLabelProps={{ shrink: true }}
+          error={!!errors.birthDate}
+          helperText={errors.birthDate?.message}
+        />
+
         <FormControl className="FormController">
           <Controller
             name="gender"
