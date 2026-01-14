@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { getRestOfSectionEn, getRestOfSectionHe, getTopSectionEn, getTopSectionHe } from "./AboutSections";
+import { getPrivacyPolicyRestOfSectionEn, getPrivacyPolicyRestOfSectionHe, getPrivacyPolicyTopSectionEn, getPrivacyPolicyTopSectionHe } from "./PrivacyPolicy";
 
 const resources = {
   en: {
@@ -31,6 +32,11 @@ const resources = {
         noRecipes: "Blank history",
         guestNoticeLine1: "Generate recipes freely",
         guestNoticeLine2: "Log in to save or view history"
+      },
+      privacy: {
+        title: "Privacy policy",
+          topSection: getPrivacyPolicyTopSectionEn(),
+        restOfSection: getPrivacyPolicyRestOfSectionEn(),
       },
       about: {
         title: "About this site",
@@ -226,7 +232,11 @@ const resources = {
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
-
+      privacy: {
+        title: "מדיניות פרטיות",
+             topSection: getPrivacyPolicyTopSectionHe(),
+        restOfSection: getPrivacyPolicyRestOfSectionHe(),
+      },
       about: {
         title: "אודות אתר זה",
         topSection: getTopSectionHe(),

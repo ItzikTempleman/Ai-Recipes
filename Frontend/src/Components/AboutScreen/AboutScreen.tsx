@@ -25,8 +25,8 @@ useTitle("About");
  <div className={`AboutScreen ${isRTL ? "rtl" : "ltr"}`}>
  <p className="AboutScreenTitle">{t("about.title")}</p>
    <div className="AboutCard">
- <div className="TopSection"><h2 className="TopContent">{t("about.topSection")}</h2></div>
-   <div className="RestOfSection"><h3 className="RestOfContent">{t("about.restOfSection")}</h3></div>
+ <div className="TopSection"><h2 className="TopContent">{t("privacy.topSection")}</h2></div>
+   <div className="RestOfSection"><h3 className="RestOfContent">{t("privacy.restOfSection")}</h3></div>
          </div>
             <div className="Copyrights">
             <p> {t("about.footer")}</p>
