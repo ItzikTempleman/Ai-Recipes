@@ -13,6 +13,7 @@ import { LikesScreen } from "../LikesScreen/LikesScreen";
 import { RecipeInputScreen } from "../RecipeInputScreen/RecipeInputScreen";
 import { ResetPasswordScreen } from "../ResetPasswordScreen/ResetPasswordScreen";
 import { PrivacyPolicy } from "../PrivacyPolicy/PrivacyPolicy";
+import { DataDeletion } from "../DataDeletion/DataDeletion";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
@@ -32,7 +33,8 @@ export function Routing() {
                 <Route path="/share-render/:recipeId" element={<PdfScreen />} />
                 <Route path="/likes" element={<LikesScreen />} />
                 <Route path="/reset" element={<ResetPasswordScreen />} />
-                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/data-deletion" element={<DataDeletion />} />
             </Routes>
         </div>
     );

@@ -33,9 +33,12 @@ const resources = {
         guestNoticeLine1: "Generate recipes freely",
         guestNoticeLine2: "Log in to save or view history"
       },
+      dataDeletion: {
+        title: "Delete user data"
+      },
       privacy: {
         title: "Privacy policy",
-          topSection: getPrivacyPolicyTopSectionEn(),
+        topSection: getPrivacyPolicyTopSectionEn(),
         restOfSection: getPrivacyPolicyRestOfSectionEn(),
       },
       about: {
@@ -232,9 +235,12 @@ const resources = {
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
       },
+      dataDeletion: {
+        title: "מחק נתוני משתמש"
+      },
       privacy: {
         title: "מדיניות פרטיות",
-             topSection: getPrivacyPolicyTopSectionHe(),
+        topSection: getPrivacyPolicyTopSectionHe(),
         restOfSection: getPrivacyPolicyRestOfSectionHe(),
       },
       about: {
