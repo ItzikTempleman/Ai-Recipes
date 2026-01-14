@@ -101,7 +101,6 @@ html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input::placeholder
   opacity: 1 !important;
 }
 
-
 .FormController {
   display: flex;
   justify-content: center;
@@ -119,24 +118,53 @@ html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input::placeholder
   color: #5c02e3;
 }
 
-.divider {
+.RegistrationScreenBtn.MuiButton-root {
+  width: 100% !important;
+  border-radius: 18px !important;
+  padding: 0 50px !important;
+  height: 40px !important;
+  font-weight: 800 !important;
+  margin-top: 0;
+}
+
+.RegistrationScreenBtn.MuiButton-root {
+  background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+}
+
+.RegistrationScreenBtn.MuiButton-root:hover {
+  background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+}
+
+.RegistrationScreenBtn.MuiButton-root:active {
+  transform: translateY(0px);
+  box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+}
+
+.Divider--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.DividerTitle {
   display: flex;
+  justify-content: center;
   align-items: center;
-  width: 100%;
+  gap: 6px;
 }
 
-.line {
-  flex: 1;
-  height: 1px;
-  background: #ccc;
+.DividerToggle {
+  padding: 2px !important;
 }
 
-.divider h4 {    
-  padding: 0 20px;       
-  background: white;    
-  white-space: nowrap;
+.OptionalFields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
-
 @media (max-width: 600px) {
 
   .RegistrationForm {

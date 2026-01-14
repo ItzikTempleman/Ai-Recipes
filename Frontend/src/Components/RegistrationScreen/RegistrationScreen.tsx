@@ -16,13 +16,17 @@ import { isAgeOk, useTitle } from "../../Utils/Utils";
 import { Gender, User } from "../../Models/UserModel";
 import { userService } from "../../Services/UserService";
 import { notify } from "../../Utils/Notify";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import Collapse from "@mui/material/Collapse";
 
 export function RegistrationScreen() {
   const { t, i18n } = useTranslation();
-
-
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
+
+  const [showOptional, setShowOptional] = useState(false);
+const toggleOptional = () => setShowOptional((s) => !s);
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
@@ -31,7 +35,6 @@ export function RegistrationScreen() {
       i18n.off("languageChanged", onLangChange);
     };
   }, [i18n]);
-
 
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
@@ -56,10 +59,8 @@ export function RegistrationScreen() {
     <div className="RegistrationScreen">
       <form className="RegistrationForm" onSubmit={handleSubmit(send)}>
          <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
-
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
         <div className={`NameRow ${isRTL ? "NameRow--he" : ""}`}>
-
           <TextField
             className="InputTextField NameTF"
             label={t("auth.registration.firstNameLabel")}
@@ -77,15 +78,14 @@ export function RegistrationScreen() {
                     <InputAdornment position="start">
                       <PersonIcon />
                     </InputAdornment>
-                  ),
-                }
-                : {
+                  )
+                }:{
                   endAdornment: (
                     <InputAdornment position="end">
                       <PersonIcon />
                     </InputAdornment>
-                  ),
-                }),
+                  )
+                })
             }}
           />
 
@@ -106,15 +106,14 @@ export function RegistrationScreen() {
                     <InputAdornment position="start">
                       <PersonIcon />
                     </InputAdornment>
-                  ),
-                }
-                : {
+                  )
+                } : {
                   endAdornment: (
                     <InputAdornment position="end">
                       <PersonIcon />
                     </InputAdornment>
-                  ),
-                }),
+                  )
+                })
             }}
           />
         </div>
@@ -137,15 +136,14 @@ export function RegistrationScreen() {
                   <InputAdornment position="start">
                     <EmailIcon />
                   </InputAdornment>
-                ),
-              }
-              : {
+                )
+              } : {
                 endAdornment: (
                   <InputAdornment position="end">
                     <EmailIcon />
                   </InputAdornment>
-                ),
-              }),
+                )
+              })
           }}
           error={!!errors.email}
           helperText={errors.email?.message}
@@ -176,9 +174,8 @@ export function RegistrationScreen() {
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                ),
-              }
-              : {
+                )
+              }:{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
@@ -190,101 +187,103 @@ export function RegistrationScreen() {
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                ),
-              }),
+                )
+              })
           }}
         />
+<div className="Divider--clickable" onClick={toggleOptional} 
+     onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && toggleOptional()}>
 
-        <div className="divider">
-          <div className="line"></div>
-          <h4>{t("auth.registration.optionalFields")}</h4>
-          <div className="line"></div>
-        </div>
 
-        <TextField className="InputTextField"
-          label={t("auth.registration.phoneLabel")}
-          placeholder={t("auth.registration.phonePlaceholder")}
-          fullWidth
-          type="tel"
-          variant="outlined"
-          InputProps={{
-            ...(isRTL
-              ? {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PhoneAndroidIcon />
-                  </InputAdornment>
-                ),
-              }
-              : {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <PhoneAndroidIcon />
-                  </InputAdornment>
-                ),
-              }),
-          }}
-          inputProps={{
-            inputMode: "tel",
-            pattern: "[0-9]*",
-          }}
-          {...register("phoneNumber")}
-          error={!!errors.phoneNumber}
-          helperText={errors.phoneNumber?.message}
-        />
+  <div className="DividerTitle">
+    <h4>{t("auth.registration.optionalFields")}</h4>
 
-        <TextField className="InputTextField"
-          fullWidth
-          type="date"
-{...register("birthDate", {
-  validate: (value) => {
-    if (!value) return true;
+    <IconButton
+      className="DividerToggle"
+      onClick={(e) => {
+        e.stopPropagation(); 
+        toggleOptional();
+      }}>
+      {showOptional ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+    </IconButton>
+  </div>
 
-    const today = new Date();
-    const chosen = new Date(value);
 
-    if (Number.isNaN(chosen.getTime())) return true; 
+</div>
 
-    if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
-    if (!isAgeOk(chosen)) return `${t("auth.registration.minAge12")}`;
+<Collapse in={showOptional} timeout={250} unmountOnExit>
+  <div className="OptionalFields">
+    <TextField className="InputTextField"
+      label={t("auth.registration.phoneLabel")}
+      placeholder={t("auth.registration.phonePlaceholder")}
+      fullWidth
+      type="tel"
+      variant="outlined"
+      InputProps={{
+        ...(isRTL
+          ? {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PhoneAndroidIcon />
+                </InputAdornment>
+              )
+            }
+          : {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <PhoneAndroidIcon />
+                </InputAdornment>
+              )
+            })
+      }}
+      inputProps={{
+        inputMode: "tel",
+        pattern: "[0-9]*",
+      }}
+      {...register("phoneNumber")}
+      error={!!errors.phoneNumber}
+      helperText={errors.phoneNumber?.message}
+    />
 
-    return true;
-  },
-})}
-          label={t("auth.registration.birthDateLabel")}
-          InputLabelProps={{ shrink: true }}
-          error={!!errors.birthDate}
-          helperText={errors.birthDate?.message}
-        />
+    <TextField className="InputTextField"
+      fullWidth
+      type="date"
+      {...register("birthDate", {
+        validate: (value) => {
+          if (!value) return true;
+          const today = new Date();
+          const chosen = new Date(value);
+          if (Number.isNaN(chosen.getTime())) return true;
+          if (chosen > today) return `${t("auth.registration.birthDateFuture")}`;
+          if (!isAgeOk(chosen)) return `${t("auth.registration.minAge12")}`;
+          return true;
+        }
+      })}
+      label={t("auth.registration.birthDateLabel")}
+      InputLabelProps={{ shrink: true }}
+      error={!!errors.birthDate}
+      helperText={errors.birthDate?.message}
+    />
 
-        <FormControl className="FormController">
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup row {...field}>
-                <FormControlLabel
-                  value={Gender.MALE}
-                  control={<Radio />}
-                  label={t("auth.registration.male")}
-                />
-                <FormControlLabel
-                  value={Gender.FEMALE}
-                  control={<Radio />}
-                  label={t("auth.registration.female")}
-                />
-                <FormControlLabel
-                  value={Gender.OTHER}
-                  control={<Radio />}
-                  label={t("auth.registration.other")}
-                />
-              </RadioGroup>
-            )}
-          />
-        </FormControl>
+    <FormControl className="FormController">
+      <Controller
+        name="gender"
+        control={control}
+        render={({ field }) => (
+          <RadioGroup row {...field}>
+            <FormControlLabel value={Gender.MALE} control={<Radio />} label={t("auth.registration.male")} />
+            <FormControlLabel value={Gender.FEMALE} control={<Radio />} label={t("auth.registration.female")} />
+            <FormControlLabel value={Gender.OTHER} control={<Radio />} label={t("auth.registration.other")} />
+          </RadioGroup>
+        )}
+      />
+    </FormControl>
+  </div>
+</Collapse>
+
         <Button
           type="submit"
-          className="LoginScreenBtn"
+          className="RegistrationScreenBtn"
           variant="contained">
           {t("auth.registration.submit")}
         </Button>

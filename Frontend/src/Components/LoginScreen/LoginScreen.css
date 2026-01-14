@@ -83,7 +83,7 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   padding: 0 50px !important;
   height: 40px !important;
   font-weight: 800 !important;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 .LoginScreenBtn.MuiButton-root {
@@ -103,14 +103,7 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
 }
 
-.LoginScreenBtn.MuiButton-root {
-  width: 100% !important;
-  border-radius: 18px !important;
-  padding: 0 50px !important;
-  height: 40px !important;
-  font-weight: 800 !important;
-  margin-top: 30px;
-}
+
 
 .LoginScreenBtn.MuiButton-root {
   background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
