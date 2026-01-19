@@ -1,572 +1,303 @@
-.RecipeInputScreen{
-  width:100%;
-  min-height:100vh;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  box-sizing:border-box;
-  overflow-x:hidden;
-  position:relative;
-  isolation:isolate;
+.RecipeInputScreen {
+  width: 100%;
+  min-height: 100vh;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  position: relative;
+  isolation: isolate;
 }
 
-.GenerateContainer{
-  width:100%;
-  max-width:640px;
-  padding:24px;
-  display:flex;
-  flex-direction:column;
+.GenerateContainer {
+  width: 100%;
+  max-width: 640px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
-.GenerateTitle{
-  margin:20px 0 30px;
-  width:100%;
-  text-align:center;
-  font-size:clamp(34px,3.2vw,60px);
-  line-height:1.02;
-  font-weight:1100;
-  letter-spacing:-1.4px;
-  background:linear-gradient(180deg,#ffaf01 0%,#eea23e 100%);
-  background-clip:text;
-  color:transparent;
-  text-rendering:optimizeLegibility;
+.GenerateTitle {
+  margin: 20px 0 30px;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(34px, 3.2vw, 60px);
+  line-height: 1.02;
+  font-weight: 1100;
+  letter-spacing: -1.4px;
+  background: linear-gradient(180deg, #ffaf01 0%, #eea23e 100%);
+  background-clip: text;
+  color: transparent;
+  text-rendering: optimizeLegibility;
 }
 
-.LoadingWithoutImage, 
-.ImageLoadingMessage{
-color:#6a4dff !important;
-font-size: 20px;
+.LoadingWithoutImage,
+.ImageLoadingMessage {
+  color: #6a4dff !important;
+  font-size: 20px;
 }
 
-
-
-.GenerateTitle.rtl{
-  direction:rtl;
-  letter-spacing:-0.8px;
+.GenerateTitle.rtl {
+  direction: rtl;
+  letter-spacing: -0.8px;
 }
 
-.RecipeTextFieldBar{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-top:8px;
+.RecipeTextFieldBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
 }
 
-.RecipeTextFieldBar .RecipeTextField{
-  flex:1;
-  min-width:0;
+.RecipeTextFieldBar .RecipeTextField {
+  flex: 1;
+  min-width: 0;
 }
 
-.RecipeTextFieldBar.rtl{
-  flex-direction:row-reverse;
+.RecipeTextFieldBar.rtl {
+  flex-direction: row-reverse;
 }
 
-.RecipeTextFieldBar.rtl .BtnIcon{
-  margin-left:0;
-  margin-right:12px;
+.RecipeTextFieldBar.rtl .BtnIcon {
+  margin-left: 0;
+  margin-right: 12px;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-root{
-  direction:rtl;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-root {
+  direction: rtl;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-notchedOutline{
-  text-align:right;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-notchedOutline {
+  text-align: right;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField fieldset legend{
-  text-align:right;
+.RecipeTextFieldBar.rtl .RecipeTextField fieldset legend {
+  text-align: right;
 }
 
 .RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-root,
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined{
-  left:auto !important;
-  right:0 !important;
-  transform-origin:top right !important;
-  text-align:right !important;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined {
+  left: auto !important;
+  right: 0 !important;
+  transform-origin: top right !important;
+  text-align: right !important;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined{
-  transform:translate(-14px, 9px) scale(1) !important;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined {
+  transform: translate(-14px, 9px) scale(1) !important;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-shrink{
-  transform:translate(-14px, -7px) scale(0.85) !important;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-shrink {
+  transform: translate(-14px, -7px) scale(0.85) !important;
 }
 
 .RecipeTextFieldBar.rtl .RecipeTextField input,
-.RecipeTextFieldBar.rtl .RecipeTextField input::placeholder{
-  direction:rtl;
-  text-align:right;
+.RecipeTextFieldBar.rtl .RecipeTextField input::placeholder {
+  direction: rtl;
+  text-align: right;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-input{
-  padding-right:18px !important;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-input {
+  padding-right: 18px !important;
 }
 
-.ProgressBar .MuiCircularProgress-root{
-  color:#6a4dff !important;
+.ProgressBar .MuiCircularProgress-root {
+  color: #6a4dff !important;
 }
 
-.GenerateImageSelector{
-  border-radius:14px !important;
-  height:40px !important;
-  width:40px !important;
-  padding:0 !important;
-  background:rgba(106,77,255,.10) !important;
-  border:1px solid rgba(106,77,255,.18) !important;
+.GenerateImageSelector {
+  border-radius: 14px !important;
+  height: 40px !important;
+  width: 40px !important;
+  padding: 0 !important;
+  background: rgba(106, 77, 255, .10) !important;
+  border: 1px solid rgba(106, 77, 255, .18) !important;
 }
 
-.GenerateImageSelector.off{
-  background:rgba(0,0,0,.06) !important;
-  border:1px solid rgba(15,23,42,.12) !important;
+.GenerateImageSelector.off {
+  background: rgba(0, 0, 0, .06) !important;
+  border: 1px solid rgba(15, 23, 42, .12) !important;
 }
 
-.GenerateImageSelector svg{
-  width:22px;
-  height:22px;
-  color:#6a4dff;
+.GenerateImageSelector svg {
+  width: 22px;
+  height: 22px;
+  color: #6a4dff;
 }
 
-.FilterPanel{
-  position:absolute;
-  top:calc(100% + 10px);
-  left:50%;
-  right:auto;
-  transform:translateX(-50%) translateY(-6px);
-  width:max-content;
-  max-width:min(92vw, 560px);
-  border:1px solid gray;
-  backdrop-filter:blur(12px);
-  max-height:0;
-  opacity:0;
-  transition:max-height 220ms ease, opacity 160ms ease, transform 160ms ease, padding 160ms ease;
-  background-color:white;
-  z-index:1300 !important;
-  pointer-events:none; 
+.RecipeTextField .MuiOutlinedInput-root {
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .06), inset 0 1px 0 rgba(255, 255, 255, .75);
+  transition: .15s ease;
 }
 
-.FilterPanel.open{
-  max-height:900px;
-  opacity:1;
-  pointer-events:auto;
-  transform:translateX(-50%) translateY(0);
+.RecipeTextField .MuiOutlinedInput-notchedOutline {
+  border: 1px solid rgba(148, 163, 184, .55);
 }
 
-.RecipeTextField .MuiOutlinedInput-root,
-.ExcludeTextField .MuiOutlinedInput-root{
-  border-radius:14px;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(10px);
-  box-shadow:0 10px 24px rgba(15,23,42,.06),inset 0 1px 0 rgba(255,255,255,.75);
-  transition:.15s ease;
+.RecipeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(106, 77, 255, .45);
 }
 
-.RecipeTextField .MuiOutlinedInput-notchedOutline,
-.ExcludeTextField .MuiOutlinedInput-notchedOutline{
-  border:1px solid rgba(148,163,184,.55);
+.RecipeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(106, 77, 255, .9);
+  border-width: 2px;
 }
 
-.RecipeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
-  border-color:rgba(106,77,255,.45);
+.RecipeTextField .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: 0 18px 38px rgba(106, 77, 255, .14), inset 0 1px 0 rgba(255, 255, 255, .85);
 }
 
 
-.RecipeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
-  border-color:rgba(106,77,255,.9);
-  border-width:2px;
+.RecipeTextField .MuiOutlinedInput-input {
+  padding: 10px 12px;
 }
 
-.ExcludeTextField .MuiInputLabel-root.Mui-focused,
-.ExcludeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
-  border-color: #ff9d00;
-}
-.ExcludeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
-  border-color: #ff9d00;
-  border-width:2px;
+.RecipeTextField .MuiInputLabel-root.Mui-focused {
+  color: rgba(106, 77, 255, .95);
 }
 
-.RecipeTextField .MuiOutlinedInput-root.Mui-focused,
-.ExcludeTextField .MuiOutlinedInput-root.Mui-focused{
-  box-shadow:0 18px 38px rgba(106,77,255,.14),inset 0 1px 0 rgba(255,255,255,.85);
+.ErrorText {
+  margin-top: 8px;
+  color: #d32f2f;
+  font-size: .9rem;
 }
 
-.ExcludeTextField .MuiInputLabel-root.MuiInputLabel-shrink{
-  color:#ff9d00 !important;
-}
-.RecipeTextField .MuiOutlinedInput-input{
-  padding:10px 12px;
-}
-
-.RecipeTextField .MuiInputLabel-root.Mui-focused{
-  color:rgba(106,77,255,.95);
-}
-
-.ErrorText{
-  margin-top:8px;
-  color:#d32f2f;
-  font-size:.9rem;
+.Servings {
+  width: auto;
+  margin: 0;
+  min-height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex: 0 0 auto !important;
+  white-space: nowrap;
 }
 
-.FiltersSectionContainer{
-  margin-top:4px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  overflow:visible;
+.Servings p {
+  margin: 0 !important;
+  font-weight: 900;
+  font-size: 15px;
+  color: #707070;
 }
 
-.FilterBar{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  position:relative;
-  overflow:visible;
-  justify-content:center;
-  flex-wrap:nowrap !important;
-  box-sizing:border-box;
-  padding:0;  
+.Servings.rtl {
+  flex-direction: row-reverse;
 }
 
-.FilterBar .ExcludedBar{
-  flex:1 1 0 !important;
-  min-width:0 !important;
-  max-width:none !important;
-}
-
-.FilterBar .ExcludedBar > div{
-  width:100%;
-  max-width:none;
-}
-
-.FilterBar .ExcludeTextField{
-  width:100%;
-  min-width:0 !important;
-}
-
-.ExcludeTextField .MuiOutlinedInput-root{
-  height:40px !important;
-  min-height:40px !important;
-  border-radius:14px !important;
-}
-
-.ExcludeTextField .MuiOutlinedInput-input{
-  padding:10px 12px !important;  
-  font-size:16px !important;    
-}
-
-.ExcludeTextField .MuiInputLabel-root{
-  font-size:14px !important;
-}
-
-.ExcludeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
-  transform:translate(14px, 9px) scale(1) !important;
-}
-.ExcludeTextField .MuiInputLabel-outlined.MuiInputLabel-shrink{
-  transform:translate(14px, -7px) scale(0.85) !important;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-root{
-  direction:rtl;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-notchedOutline{
-  text-align:right;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField fieldset legend{
-  text-align:right;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField input,
-.ExcludedBar[dir="rtl"] .ExcludeTextField input::placeholder{
-  direction:rtl;
-  text-align:right;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-input{
-  text-align:right;
-  padding-right:10px !important;
-  padding-left:10px !important;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-root,
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-outlined{
-  right:14px !important;
-  left:auto !important;
-  transform-origin:top right !important;
-  text-align:right !important;
-}
-
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
-  transform:translate(-14px, 9px) scale(1) !important;
-}
-.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-shrink{
-  transform:translate(-14px, -7px) scale(0.85) !important;
-}
-
-.Servings{
-  width:auto;
-  margin:0;
-  min-height:36px;
-  padding:0;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  gap:10px;
-  flex:0 0 auto !important;
-  white-space:nowrap;
-}
-
-.Servings p{
-  margin:0 !important;
-  font-weight:900;
-  font-size:15px;
-  color: #ff9d00;
-}
-
-.Servings.rtl{
-  flex-direction:row-reverse;
-}
-
-.QuantitySelector{
-  height:28px;
-  min-width:72px;
-  padding:0 28px 0 10px;
-  border:none !important;
-  outline:none;
-  border-radius:12px;
-  background:rgba(255,255,255,.9);
-  box-shadow:0 5px 10px rgba(2,6,23,.10);
-  font-weight:900;
-  font-size:15px;
-  color: #ff9d00;
-  appearance:none;
-  -webkit-appearance:none;
-  -moz-appearance:none;
-  cursor:pointer;
+.QuantitySelector {
+  height: 28px;
+  min-width: 72px;
+  padding: 0 28px 0 10px;
+  border: none !important;
+  outline: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .9);
+  box-shadow: 0 5px 10px rgba(2, 6, 23, .10);
+  font-weight: 900;
+  font-size: 15px;
+  color: #707070;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
   background-image:
-    linear-gradient(45deg,transparent 50%,rgba(17,24,39,.55) 50%),
-    linear-gradient(135deg,rgba(17,24,39,.55) 50%,transparent 50%);
-  background-size:6px 6px,6px 6px;
-  background-repeat:no-repeat;
-  background-position:calc(100% - 14px) 11px,calc(100% - 8px) 11px;
+    linear-gradient(45deg, transparent 50%, rgba(17, 24, 39, .55) 50%),
+    linear-gradient(135deg, rgba(17, 24, 39, .55) 50%, transparent 50%);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 14px) 11px, calc(100% - 8px) 11px;
 }
 
-.Servings.rtl .QuantitySelector{
-  padding:0 10px;
-  background-image:none !important;
-  appearance:auto !important;
-  -webkit-appearance:menulist !important;
-  -moz-appearance:auto !important;
-  direction:rtl;
-  text-align:right;
+.Servings.rtl .QuantitySelector {
+  padding: 0 10px;
+  background-image: none !important;
+  appearance: auto !important;
+  -webkit-appearance: menulist !important;
+  -moz-appearance: auto !important;
+  direction: rtl;
+  text-align: right;
 }
 
-.FiltersDropdown{
-  position:relative;
-  overflow:visible;
-  flex:0 0 auto !important;
-  white-space:nowrap;
-  width:auto;
-  padding:0;
-  box-sizing:border-box;
-  z-index:2;
-  margin:0;
-}
-
-.FilterBtn.MuiButton-root{
-  gap:10px;
-  width:max-content !important;
-  min-width:0 !important;
-  padding:6px 14px !important;
-  height:36px !important;
-  font-size:16px !important;
-  border-radius:12px !important;
-  margin-top:0 !important;
-  background:linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
-  box-shadow:0 12px 22px rgba(253, 209, 33, 0.22),0 2px 0 rgba(255, 196, 0, 0.22) inset !important;
-  color:#fff !important;
-  display:flex;
-}
-
-.FilterPanelInnerSection{
-  padding-top:0;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  text-align:left;
-}
-
-.FiltersDropdown[dir="rtl"] .FilterPanelInnerSection{
-  align-items:flex-end;
-  text-align:right;
-}
-
-.FilterPanelInnerSection > div{
-  width:100%;
-}
-
-.FilterPanelInnerSection .MuiToggleButtonGroup-root{
-  width:100% !important;
-  display:flex !important;
-  flex-wrap:wrap !important;
-}
-
-.FilterPanelInnerSection .MuiToggleButton-root{
-  width:140px;
-  border:1px solid;
-  border-color:#6f6f6f;
-}
-
-.Divider{
-  border:1px solid rgba(65, 65, 65, 0.65);
+.Divider {
+  border: 1px solid rgba(65, 65, 65, 0.65);
   border-radius: 999px;
-  margin:30px 0 0 0;
-  width:100%;
+  margin: 30px 0 0 0;
+  width: 100%;
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root:hover{
-  border-color:rgba(106, 77, 255, 0.65) !important;
-  background:rgba(106,77,255,.08) !important;
+.GenerateRecipeBtn {
+  height: 40px;
+  min-width: 96px;
+  padding: 0 14px;
+  text-transform: none;
+  font-weight: 700;
+  border: 1px solid rgba(2, 6, 23, .16);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 14px !important;
+  transition: transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
+  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
+  box-shadow: 0 12px 22px rgba(106, 77, 255, .22), 0 2px 0 rgba(255, 255, 255, .22) inset;
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected{
-  background:#f6b139 !important;
-  color:white !important;
+.GenerateRecipeBtn:hover {
+  transform: translateY(-1px);
 }
 
-.FiltersDropdown[dir="rtl"] .MuiToggleButtonGroup-grouped:first-of-type{
-  border-right:1px solid rgba(0,0,0,.12) !important;
+.GenerateRecipeBtn:active {
+  transform: translateY(0px);
 }
 
-.GenerateRecipeBtn{
-  height:40px;
-  min-width:96px;
-  padding:0 14px;
-  text-transform:none;
-  font-weight:700;
-  border:1px solid rgba(2,6,23,.16);
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  border-radius:14px !important;
-  transition:transform 120ms ease,box-shadow 140ms ease,filter 140ms ease;
-  background:linear-gradient(180deg,#a07bff 0%,#6a4dff 100%);
-  box-shadow:0 12px 22px rgba(106,77,255,.22),0 2px 0 rgba(255,255,255,.22) inset;
+.GenerateRecipeBtn svg {
+  color: #fff;
+  font-size: 22px;
 }
 
-.GenerateRecipeBtn:hover{
-  filter:brightness(1.03);
-  transform:translateY(-1px);
+.GenerateRecipeBtn p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
 }
 
-.GenerateRecipeBtn:active{
-  transform:translateY(0px);
+.GenerateRecipeBtn.Mui-disabled {
+  background: #e5e7eb !important;
+  border: 1px solid rgba(15, 23, 42, .12) !important;
+  box-shadow: none !important;
+  color: rgba(17, 24, 39, .55) !important;
 }
 
-.GenerateRecipeBtn svg{
-  color:#fff;
-  font-size:22px;
+.GenerateRecipeBtn .BtnIcon {
+  font-size: 18px;
+  color: #ffe08a;
 }
 
-.GenerateRecipeBtn p{
-  margin:0;
-  font-size:14px;
-  font-weight:900;
+.RecipeCardContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 8px 0;
+  padding: 0 12px;
 }
 
-.GenerateRecipeBtn.Mui-disabled{
-  background:#e5e7eb !important;
-  border:1px solid rgba(15,23,42,.12) !important;
-  box-shadow:none !important;
-  color:rgba(17,24,39,.55) !important;
+.RecipeInputScreenWithPreviousData .GenerateContainer {
+  display: none;
 }
 
-.GenerateRecipeBtn .BtnIcon{
-  font-size:18px;
-  color:#ffe08a;
-}
-
-.RecipeCardContainer{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  box-sizing:border-box;
-  margin:8px 0;
-  padding:0 12px;
-}
-
-.RecipeInputScreenWithPreviousData .GenerateContainer{
-  display:none;
-}
-
-@media (max-width:600px){
-
-  .FiltersSectionContainer{
-    margin-top:14px !important;
+@media (max-width:600px) {
+  .Servings p {
+    font-size: 14px;
   }
 
-  .FilterBar{
-    gap:10px;
-    padding:0 2px;
-    justify-content:center;
-  }
-
-  .Servings p{
-    font-size:14px;
-  }
-
-  .QuantitySelector{
-    min-width:64px;
-  }
-
-  .FilterBtn.MuiButton-root{
-    padding:6px 12px !important;
-    font-size:15px !important;
-  }
-
-  .FiltersDropdown{
-    width:auto !important;
-    display:flex !important;
-    justify-content:center !important;
-  }
-
-  .FilterPanel{
-    width:calc(100vw - 28px) !important;
-    max-width:420px !important;
-    left:50% !important;
-    right:auto !important;
-    transform:translateX(-50%) translateY(-6px) !important;
-    position:fixed !important;
-    top:140px !important;
-    background:#fff !important;
-  }
-
-  .FilterPanel.open{
-    transform:translateX(-50%) translateY(0);
-    padding:12px;
-  }
-
-  .FilterPanelInnerSection .MuiToggleButtonGroup-root{
-    width:100% !important;
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch;
-    gap:10px !important;
-    padding-bottom:6px;
-  }
-
-  .FilterPanelInnerSection .MuiToggleButton-root{
-    flex:0 0 auto !important;
-    white-space:nowrap !important;
-  }
-
-  .FilterPanelInnerSection .MuiToggleButtonGroup-root::-webkit-scrollbar{
-    height:6px;
+  .QuantitySelector {
+    min-width: 64px;
   }
 }

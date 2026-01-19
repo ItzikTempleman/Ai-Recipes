@@ -1,0 +1,103 @@
+.FiltersSectionContainer{
+  margin-top:4px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  overflow:visible;
+}
+
+.FilterBtn.MuiButton-root {
+    margin-top: 20px;
+    width: 60%;
+    border-radius: 12px;
+    background: rgb(244, 178, 92);
+    color: #ffffff;
+    gap: 10px;
+}
+
+.FiltersDropdown {
+    position: relative;
+    overflow: visible;
+    flex: 0 0 auto;
+    white-space: nowrap;
+   width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    z-index: 2;
+    margin: 0;
+}
+
+
+.PanelState.closed{
+  opacity:0;
+}
+
+.PanelState.open{
+  opacity:1;
+}
+
+
+
+/* .FilterPanelInnerSection .MuiToggleButton-root:hover{
+  border-color:rgba(106, 77, 255, 0.65) !important;
+  background:rgba(106,77,255,.08) !important;
+}
+
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected{
+  background:#f6b139 !important;
+  color:white !important;
+}
+
+.FilterPanelInnerSection > div{
+  width:100%;
+}
+
+.FilterPanelInnerSection .MuiToggleButtonGroup-root{
+  width:100% !important;
+  display:flex !important;
+  flex-wrap:wrap !important;
+}
+
+.FilterPanelInnerSection .MuiToggleButton-root{
+  width:140px;
+  border:1px solid;
+  border-color:#6f6f6f;
+} 
+
+.FilterPanelInnerSection{
+  padding-top:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  text-align:left;
+}
+
+
+
+
+@media (max-width:600px){
+
+
+
+  .FilterPanelInnerSection .MuiToggleButtonGroup-root{
+    width:100% !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+    gap:10px !important;
+    padding-bottom:6px;
+  }
+
+  .FilterPanelInnerSection .MuiToggleButton-root{
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+
+  .FilterPanelInnerSection .MuiToggleButtonGroup-root::-webkit-scrollbar{
+    height:6px;
+  }
+
+}
+ */

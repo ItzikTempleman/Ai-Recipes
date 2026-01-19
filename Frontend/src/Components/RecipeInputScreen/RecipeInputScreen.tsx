@@ -1,6 +1,8 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./RecipeInputScreen.css";
+import "./FilterSection.css";
+import "./ExcludeSection.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
@@ -156,7 +158,7 @@ return (
       setTimeout(() => setFiltersOpen(false), 0);
     }}
   >
-    {/* ✅ Hide input section ONLY after recipe exists (not during loading) */}
+
     {!recipeHasData && (
       <div className="GenerateContainer">
         <div>
@@ -263,7 +265,7 @@ return (
                   {t("generate.filters")}
                 </Button>
 
-                <div className={`FilterPanel ${filtersOpen ? "open" : "closed"}`}>
+                <div className={`PanelState ${filtersOpen ? "open" : "closed"}`}>
                   <div
                     className="FilterPanelInnerSection"
                     onClick={(e) => {

@@ -1,0 +1,107 @@
+
+.ExcludeTextField .MuiOutlinedInput-root{
+  border-radius:14px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 24px rgba(15,23,42,.06),inset 0 1px 0 rgba(255,255,255,.75);
+  transition:.15s ease;
+}
+
+.ExcludeTextField .MuiInputLabel-root.Mui-focused,
+.ExcludeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+  border-color: #ff9d00;
+}
+.ExcludeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border-color: #ff9d00;
+  border-width:2px;
+}
+
+.ExcludeTextField .MuiOutlinedInput-root.Mui-focused{
+  box-shadow:0 18px 38px rgba(106,77,255,.14),inset 0 1px 0 rgba(255,255,255,.85);
+}
+
+
+.ExcludeTextField .MuiOutlinedInput-notchedOutline{
+  border:1px solid rgba(148,163,184,.55);
+}
+.ExcludeTextField .MuiOutlinedInput-root{
+  height:40px !important;
+  min-height:40px !important;
+  border-radius:14px !important;
+}
+
+.ExcludeTextField .MuiOutlinedInput-input{
+  padding:10px 12px !important;  
+  font-size:16px !important;    
+}
+
+.ExcludeTextField .MuiInputLabel-root{
+  font-size:14px !important;
+}
+
+
+ .ExcludedBar{
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  max-width:none !important;
+}
+
+.ExcludedBar > div{
+  width:100%;
+  max-width:none;
+}
+
+ .ExcludeTextField{
+  width:100%;
+  min-width:0 !important;
+}
+
+
+.ExcludeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
+  transform:translate(14px, 9px) scale(1) !important;
+}
+.ExcludeTextField .MuiInputLabel-outlined.MuiInputLabel-shrink{
+  transform:translate(14px, -7px) scale(0.85) !important;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-root{
+  direction:rtl;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-notchedOutline{
+  text-align:right;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField fieldset legend{
+  text-align:right;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField input,
+.ExcludedBar[dir="rtl"] .ExcludeTextField input::placeholder{
+  direction:rtl;
+  text-align:right;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiOutlinedInput-input{
+  text-align:right;
+  padding-right:10px !important;
+  padding-left:10px !important;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-root,
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-outlined{
+  right:14px !important;
+  left:auto !important;
+  transform-origin:top right !important;
+  text-align:right !important;
+}
+
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink){
+  transform:translate(-14px, 9px) scale(1) !important;
+}
+.ExcludedBar[dir="rtl"] .ExcludeTextField .MuiInputLabel-shrink{
+  transform:translate(-14px, -7px) scale(0.85) !important;
+}
+.ExcludeTextField .MuiInputLabel-root.MuiInputLabel-shrink{
+  color:#ff9d00 !important;
+}
