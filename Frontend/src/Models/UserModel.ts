@@ -3,7 +3,7 @@ export type User = {
      firstName: string;
      familyName: string;
      email: string;
-     password: string;
+     password?: string;
   birthDate?: string | null;
   phoneNumber?: string | null;
   gender?: Gender | null;

@@ -67,6 +67,27 @@ class UserService {
         }
     }
 
+    public async loginWithGoogle(credential: string): Promise<void> {
+    try {
+        const response = await axios.post<string>(appConfig.googleLoginUrl, { credential });
+        const token: string = response.data;
+
+        const decoded = jwtDecode<DecodedToken>(token);
+        const dbUser = decoded.user;
+
+        if ((decoded.exp * 1000) > Date.now() && dbUser) {
+            store.dispatch(userSlice.actions.registrationAndLogin(dbUser));
+            localStorage.setItem("token", token);
+            this.logoutAfterTimeout(token);
+        } else {
+            this.logout();
+        }
+    } catch (err) {
+        this.logout();
+        throw err;
+    }
+}
+
     public logout(): void {
         if (this.logoutTimer) {
             clearTimeout(this.logoutTimer);

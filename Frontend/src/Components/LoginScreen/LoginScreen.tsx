@@ -13,8 +13,9 @@ import { Credentials } from "../../Models/UserModel";
 import { useTitle } from "../../Utils/Utils";
 import { notify } from "../../Utils/Notify";
 import { userService } from "../../Services/UserService";
-import googleIcon from "../../Assets/images/google.png";
-import facebookIcon from "../../Assets/images/facebook.png";
+// import googleIcon from "../../Assets/images/google.png";
+// import facebookIcon from "../../Assets/images/facebook.png";
+import { GoogleLogin } from "@react-oauth/google";
 
 export function LoginScreen() {
   useTitle("Login");
@@ -155,13 +156,24 @@ export function LoginScreen() {
         </NavLink>
 
         <div className="LoginWithFacebookAndGoogle">
-          <NavLink to="/reset-google" className="ResetGoogle">
-            <img src={googleIcon} />
-          </NavLink>
-
-          <NavLink to="/reset-facebook" className="ResetFacebook">
+  <div className="ResetGoogle">
+    <GoogleLogin
+      onSuccess={async (res) => {
+        try {
+          if (!res.credential) throw new Error("Missing Google credential");
+          await userService.loginWithGoogle(res.credential);
+          navigate("/home");
+        } catch (err) {
+          notify.error(err);
+        }
+      }}
+      onError={() => notify.error("Google login failed")}
+      useOneTap={false}
+    />
+  </div>
+          {/* <NavLink to="/reset-facebook" className="ResetFacebook">
             <img src={facebookIcon} />
-          </NavLink>
+          </NavLink> */}
         </div>
 
         <NavLink to="/reset" className="ResetLink">

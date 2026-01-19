@@ -12,11 +12,15 @@ class AppConfig {
   public readonly registerUrl = `${API}/register/`;
   public readonly loginUrl = `${API}/login/`;
   public readonly userUrl = `${API}/users/`;
+  public readonly googleLoginUrl = `${API}/auth/google`;
+  
   public readonly likeUrl = `${API}/recipes/liked/`;
   public readonly shareTokenUrl = `${API}/recipes/share-token`;
   public readonly sharePdfUrl = `${API}/recipes/share`;
   public readonly forgotPasswordUrl = `${API}/auth/forgot-password`;
   public readonly resetPasswordUrl = `${API}/auth/reset-password`;
   public readonly verifyResetTokenUrl = `${API}/auth/verify-reset-token`;
+
+
 }
 export const appConfig = new AppConfig();
