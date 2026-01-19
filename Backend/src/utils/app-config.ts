@@ -22,6 +22,7 @@ public readonly senderAppPassword = process.env.APP_PASSWORD;
 public readonly resetExpiresMinutes = Number(process.env.RESET_EXPIRES_MINUTES ?? "30");
 public readonly resetMailSubject = process.env.RESET_MAIL_SUBJECT ?? "Password reset";
 
+public readonly googleClientId = process.env.GOOGLE_CLIENT_ID!;
 
 public readonly frontendBaseUrl = this.normalizeFrontendBaseUrl();
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";

@@ -3,6 +3,9 @@ import { userService } from "../services/user-service";
 import { CredentialsModel, UserModel } from "../models/user-model";
 import { StatusCode } from "../models/status-code";
 import { fileSaver } from "uploaded-file-saver";
+import { AuthorizationError } from "../models/client-errors";
+import { appConfig } from "../utils/app-config";
+import { OAuth2Client } from "google-auth-library";
 
 class UserController {
 
@@ -15,6 +18,7 @@ class UserController {
         this.router.get("/users/:id", this.getOneUser);
         this.router.put("/users/:id", this.updateUser);
         this.router.delete("/users/:id", this.deleteUser);
+        this.router.post("/auth/google", this.googleLogin);
         this.router.get("/users/images/:imageName", this.getImage);
     }
 
@@ -29,6 +33,24 @@ class UserController {
         const token = await userService.login(credentials);
         response.json(token);
     }
+
+    private async googleLogin(request: Request, response: Response) {
+    const { credential } = request.body as { credential?: string };
+    if (!credential) throw new AuthorizationError("Missing Google credential");
+
+    const client = new OAuth2Client(appConfig.googleClientId);
+
+    const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: appConfig.googleClientId,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload?.email) throw new AuthorizationError("Google token missing email");
+
+    const token = await userService.loginWithGoogle(payload.email, payload.given_name, payload.family_name);
+    response.json(token);
+}
 
     public async getAllUsers(request: Request, response: Response) {
         const users = await userService.getAllUsers();

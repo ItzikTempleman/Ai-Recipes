@@ -93,6 +93,30 @@ class UserService {
         return cyber.generateToken(dbUser);
     }
 
+    public async loginWithGoogle(email: string, firstName?: string, familyName?: string): Promise<string> {
+    const sqlFind = `select * , concat(?, imageName) as imageUrl from user where email = ?`;
+    const found = await dal.execute(sqlFind, [appConfig.baseUserImageUrl, email]) as UserModel[];
+    const existing = found[0];
+    if (existing) return cyber.generateToken(existing);
+    const sqlInsert =
+        "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate,imageName) values (?,?,?,?,?,?,?,?)";
+    const randomPassword = cyber.hash(randomUUID());
+    const values = [
+        firstName ?? "Google",
+        familyName ?? "User",
+        email,
+        randomPassword,
+        null,
+        null,
+        null,
+        null
+    ];
+    const info = await dal.execute(sqlInsert, values) as OkPacketParams;
+    const id = info.insertId!;
+    const dbUser = await this.getOneUser(id);
+    return cyber.generateToken(dbUser);
+}
+
     private async getImageName(id: number): Promise<string | null> {
         const sql = `select imageName from user where id=?`;
         const values = [id];
