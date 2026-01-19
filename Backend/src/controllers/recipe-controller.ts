@@ -233,10 +233,15 @@ class RecipeController {
     private async getImageFile(request: Request, response: Response) {
         try {
             const { fileName } = request.params;
+
+            if (Array.isArray(fileName) || typeof fileName !== "string") {
+                return response.status(StatusCode.BadRequest).json({ message: "Invalid fileName" });
+            }
+
             const imagePath = await recipeService.getImageFilePath(fileName);
-            response.sendFile(imagePath);
+            return response.sendFile(imagePath);
         } catch (err) {
-            response.status(StatusCode.NotFound).json({ message: "Image not found" });
+            return response.status(StatusCode.NotFound).json({ message: "Image not found" });
         }
     }
 

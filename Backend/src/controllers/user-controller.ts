@@ -72,9 +72,14 @@ class UserController {
     }
     
     public async getImage(request: Request, response: Response) {
-        const imageName = request.params.imageName
-        const imagePath = fileSaver.getFilePath(imageName);
-        response.sendFile(imagePath);
+const { imageName } = request.params;
+
+if (Array.isArray(imageName) || typeof imageName !== "string") {
+  return response.status(StatusCode.BadRequest).json({ message: "Invalid imageName" });
+}
+
+const imagePath = fileSaver.getFilePath(imageName);
+return response.sendFile(imagePath);
     }
 
     public async deleteUser(request: Request, response: Response) {
