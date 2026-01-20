@@ -226,7 +226,7 @@ return (
 
           <div className="FiltersSectionContainer">
             <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-              <div className="ExcludedBar" dir={isRTL ? "rtl" : "ltr"}>
+             <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
                 <div>
                   <TextField
                     className="ExcludeTextField"
@@ -235,7 +235,7 @@ return (
                     {...register("excludedIngredients.0")}
                   />
                 </div>
-              </div>
+          
 
               <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
                 <p>{t("generate.quantitySelector")}</p>
@@ -251,7 +251,8 @@ return (
                   ))}
                 </select>
               </div>
-
+    </div>
+    
               <div className="FiltersDropdown" ref={filtersWrapRef} dir={isRTL ? "rtl" : "ltr"}>
                 <Button
                   className="FilterBtn"

@@ -101,9 +101,9 @@
 
 /* keep About colors as now */
 .AboutScreenBtn{
-  background: linear-gradient(180deg, #a07bff 0%, #6a4dff 100%);
+  background: linear-gradient(180deg, #c091bd 0%, #A247DF 100%);
   box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
-              0 2px 0 rgba(255, 255, 255, .22) inset;
+              0 2px 0 rgba(186, 185, 185, 0.22) inset;
 }
 
 /* keep Profile colors as your profile/pink */

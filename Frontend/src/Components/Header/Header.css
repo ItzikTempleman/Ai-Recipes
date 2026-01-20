@@ -66,17 +66,17 @@ text-decoration: none;
 }
 
 .HomeScreenBtn svg {
-  color: #5c02e3;
+  color: #A247DF;
 }
 
 .HomeScreenBtn p {
-  color: #5c02e3;
+  color: #A247DF;
 }
 
 .HomeScreenBtn.active,
 .HomeScreenBtn:hover {
-  background: rgba(150, 143, 246, 0.22);
-  border-color: rgba(150, 143, 246, 0.45) !important;
+  background: rgba(225, 143, 246, 0.22);
+  border-color: rgba(210, 143, 246, 0.45) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 22px rgba(150, 143, 246, 0.26);
 }
@@ -86,11 +86,11 @@ text-decoration: none;
 }
 
 .LikesScreenBtn svg {
-  color: #d34b86;
+  color: #ea1e76;
 }
 
 .LikesScreenBtn p {
-  color: #d34b86;
+  color: #da2775;
 }
 
 .LikesScreenBtn.active,
@@ -129,7 +129,7 @@ text-decoration: none;
 }
 
 .LoginBtn {
-  color: #6a4dff !important;
+  color: #A247DF !important;
   
 }
 

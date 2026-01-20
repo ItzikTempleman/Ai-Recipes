@@ -9,10 +9,10 @@
 
 .FilterBtn.MuiButton-root {
     margin-top: 20px;
-    width: 60%;
+    width: 20%;
     border-radius: 12px;
-    background: rgb(255, 162, 0);
-    color: #ffffff;
+    background: rgb(208, 168, 235);
+    color: #2a2a2a;
     gap: 10px;
 }
 
@@ -59,7 +59,7 @@
 
 
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
-  background: #ffa200;
+    background: rgb(196, 145, 229);
   color: #ffffff;
 }
 
@@ -93,14 +93,13 @@
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible{
-  background: #ffa200 !important;
+ background: rgb(162, 71, 223);
   color: #ffffff !important;
-  border-color: #ffa200 !important;
 }
 
 /* Also ensure the non-selected :active doesn't override selected */
 .FilterPanelInnerSection .MuiToggleButton-root:active{
-  background: rgb(254, 219, 159);
+  background: rgb(171, 88, 194);
 }
 
 
