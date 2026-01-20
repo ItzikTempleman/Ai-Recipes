@@ -53,6 +53,7 @@ export function RecipeInputScreen() {
   const [hasLactose, setHasLactose] = useState(LactoseRestrictions.DEFAULT);
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
+const filtersWrapRef = useRef<HTMLDivElement | null>(null);
 
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
@@ -63,7 +64,7 @@ export function RecipeInputScreen() {
 
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
-const filterBtnRef = useRef<HTMLButtonElement | null>(null);
+
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [initialQuantity, setQuantity] = useState(1);
 
@@ -149,15 +150,15 @@ const filterBtnRef = useRef<HTMLButtonElement | null>(null);
   }
 
 return (
-  <div
-    className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
-    onClickCapture={(e) => {
-      if (!filtersOpen) return;
-      const target = e.target as Node;
-      if (filterBtnRef.current?.contains(target)) return;
-      setTimeout(() => setFiltersOpen(false), 0);
-    }}
-  >
+<div
+  className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
+  onClickCapture={(e) => {
+    if (!filtersOpen) return;
+    const target = e.target as Node;
+    if (filtersWrapRef.current?.contains(target)) return;
+
+    setFiltersOpen(false);
+  }}>
 
     {!recipeHasData && (
       <div className="GenerateContainer">
@@ -200,8 +201,7 @@ return (
                 variant="contained"
                 disableElevation
                 type="submit"
-                disabled={loading}
-              >
+                disabled={loading}>
                 {t("generate.go")}
                 <AutoAwesome className="BtnIcon" />
               </Button>
@@ -252,7 +252,7 @@ return (
                 </select>
               </div>
 
-              <div className="FiltersDropdown" dir={isRTL ? "rtl" : "ltr"}>
+              <div className="FiltersDropdown" ref={filtersWrapRef} dir={isRTL ? "rtl" : "ltr"}>
                 <Button
                   className="FilterBtn"
                   onClick={(e) => {
@@ -277,7 +277,7 @@ return (
                         key={`diet-${filtersResetKey}`}
                         onDietSelect={(v) => {
                           setDietType(v);
-                          setFiltersOpen(false);
+                       
                         }}
                       />
                     </div>
@@ -287,7 +287,7 @@ return (
                         key={`sugar-${filtersResetKey}`}
                         onSugarLevelSelect={(v) => {
                           setSugarLevel(v);
-                          setFiltersOpen(false);
+                        
                         }}
                       />
                     </div>
@@ -297,7 +297,7 @@ return (
                         key={`lac-${filtersResetKey}`}
                         onChange={(v) => {
                           setHasLactose(v);
-                          setFiltersOpen(false);
+                     
                         }}
                       />
                     </div>
@@ -307,7 +307,6 @@ return (
                         key={`glu-${filtersResetKey}`}
                         onChange={(v) => {
                           setHasGluten(v);
-                          setFiltersOpen(false);
                         }}
                       />
                     </div>

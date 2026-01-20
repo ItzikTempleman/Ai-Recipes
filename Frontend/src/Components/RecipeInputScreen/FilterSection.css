@@ -11,7 +11,7 @@
     margin-top: 20px;
     width: 60%;
     border-radius: 12px;
-    background: rgb(244, 178, 92);
+    background: rgb(255, 162, 0);
     color: #ffffff;
     gap: 10px;
 }
@@ -28,7 +28,6 @@
     margin: 0;
 }
 
-
 .PanelState.closed{
   opacity:0;
 }
@@ -37,67 +36,59 @@
   opacity:1;
 }
 
-
-
-/* .FilterPanelInnerSection .MuiToggleButton-root:hover{
-  border-color:rgba(106, 77, 255, 0.65) !important;
-  background:rgba(106,77,255,.08) !important;
+.FilterPanelInnerSection{
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 22px rgba(53, 53, 53, 0.22), 0 2px 0 rgba(255, 255, 255, .22) inset;
+  border-radius: 12px;
+  margin: 12px auto;
+  padding: 12px;
+  background: linear-gradient(110deg, #ffffff 0%, #e0dcf2 100%);
+  gap: 12px;
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected{
-  background:#f6b139 !important;
-  color:white !important;
+.FilterPanelInnerSection .MuiToggleButtonGroup-root {
+  gap: 12px;           
+}
+
+.FilterPanelInnerSection .MuiToggleButton-root {
+  background: #ffffff;
+  border-radius: 12px !important;
+}
+
+
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
+  background: #ffa200;
+  color: #ffffff;
 }
 
 .FilterPanelInnerSection > div{
-  width:100%;
+  position: relative;
+  padding-bottom: 12px;
 }
 
-.FilterPanelInnerSection .MuiToggleButtonGroup-root{
-  width:100% !important;
-  display:flex !important;
-  flex-wrap:wrap !important;
+.FilterPanelInnerSection > div:not(:last-child)::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.10);
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root{
-  width:140px;
-  border:1px solid;
-  border-color:#6f6f6f;
-} 
+@media (max-width: 600px){
+  .FilterBtn.MuiButton-root{
+    width: 90%;
+  }
 
-.FilterPanelInnerSection{
-  padding-top:0;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  text-align:left;
-}
-
-
-
-
-@media (max-width:600px){
-
-
+  .FilterPanelInnerSection{
+    width: 90%;
+    padding: 10px;
+  }
 
   .FilterPanelInnerSection .MuiToggleButtonGroup-root{
-    width:100% !important;
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch;
-    gap:10px !important;
-    padding-bottom:6px;
+    gap: 8px;
   }
-
-  .FilterPanelInnerSection .MuiToggleButton-root{
-    flex:0 0 auto !important;
-    white-space:nowrap !important;
-  }
-
-  .FilterPanelInnerSection .MuiToggleButtonGroup-root::-webkit-scrollbar{
-    height:6px;
-  }
-
 }
- */

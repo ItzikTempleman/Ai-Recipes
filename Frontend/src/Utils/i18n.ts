@@ -91,7 +91,7 @@ const resources = {
           none: "Gluten free",
         },
         diet: {
-          none: "None",
+          none: "No dietary restrictions",
           vegan: "Vegan",
           kosher: "Kosher"
         },
@@ -294,7 +294,7 @@ const resources = {
           none: "ללא גלוטן",
         },
         diet: {
-          none: "רגיל",
+          none: "ללא העדפות כשרות / טבעוניות",
           vegan: "טבעוני",
           kosher: "כשר"
         },
