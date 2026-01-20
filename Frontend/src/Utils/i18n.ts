@@ -63,7 +63,7 @@ const resources = {
         quantitySelector: "Servings",
         requiredTitle: "title is required",
         go: "Go",
-        excludeIngredient: "Exclude items",
+        excludeIngredient: "Exclude ingredients",
         loadingWithImage: "Generating an image…",
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe…",
