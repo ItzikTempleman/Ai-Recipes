@@ -78,6 +78,32 @@
   background: rgba(0,0,0,0.10);
 }
 
+
+
+
+/* iOS/Chrome: make taps apply immediately */
+.FilterPanelInnerSection .MuiToggleButton-root{
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* On iOS, hover can "stick" after tap; make sure selected always wins */
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected,
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover,
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible{
+  background: #ffa200 !important;
+  color: #ffffff !important;
+  border-color: #ffa200 !important;
+}
+
+/* Also ensure the non-selected :active doesn't override selected */
+.FilterPanelInnerSection .MuiToggleButton-root:active{
+  background: rgb(254, 219, 159);
+}
+
+
 @media (max-width: 600px){
   .FilterBtn.MuiButton-root{
     width: 90%;
