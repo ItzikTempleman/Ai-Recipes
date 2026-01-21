@@ -14,10 +14,10 @@ import { AppState } from "../../Redux/Store";
 import { clearReset, setEmail, setResetId, setStep, setToken } from "../../Redux/ResetSlice";
 import { AuthResponseCode, resetPasswordService } from "../../Services/ResetPasswordService";
 
-
 type ResetPasswordForm = {
     email: string;
 };
+
 export function ResetPasswordScreen() {
     useTitle("Reset password");
     const { t } = useTranslation();
@@ -66,8 +66,14 @@ export function ResetPasswordScreen() {
             const email = (data.email ?? "").trim();
             dispatch(setEmail(email));
 
-            const receivedCode = await resetPasswordService.requestOtpCode(email);
-            const resetIdFromServer = typeof receivedCode?.params?.resetId === "number" ? (receivedCode.params.resetId as number) : -1;
+            const received = await resetPasswordService.requestOtpCode(email);
+            if (received.code === AuthResponseCode.EmailNotFound) {
+                notify.error(t("auth.login.emailNotFound"));
+                dispatch(setStep("enterEmail"));
+                return;
+            }
+            const resetIdFromServer =
+                typeof received?.params?.resetId === "number" ? (received.params.resetId as number) : -1;
 
             dispatch(setResetId(resetIdFromServer));
             dispatch(setStep("enterCode"))
@@ -196,7 +202,6 @@ export function ResetPasswordScreen() {
         }
     }
 
-
     async function resendCode() {
         try {
             const email = (resetState.email ?? "").trim();
@@ -210,7 +215,6 @@ export function ResetPasswordScreen() {
         };
     }
 
-
     useEffect(() => {
         setValue("email", resetState.email || "");
     }, [resetState.email, setValue])
@@ -219,19 +223,17 @@ export function ResetPasswordScreen() {
         otpRefs.current[i] = el;
     };
 
-
     return (
         <div className="ResetPasswordScreen">
             <form className="ResetForm" onSubmit={handleSubmit(send)}>
- <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
- 
+                <ArrowBackIosNew className="BackIcon" onClick={returnToLogin} />
 
                 <h2 className="ResetTitle">{t("auth.login.reset")}</h2>
 
                 {resetState.step === "enterEmail" && (
                     <>
                         <TextField className="InputTextField"
-                          size="small"
+                            size="small"
                             autoComplete="email" label={t("auth.login.emailLabelToSendCode")} placeholder={t("auth.login.emailLabelToSendCode")} fullWidth
                             InputProps={{
                                 ...(isRTL
@@ -306,7 +308,6 @@ export function ResetPasswordScreen() {
                 )
                 }
 
-
                 {resetState.step === "enterNewPassword" && (
                     <>
                         <div className="PasswordRow">
@@ -317,7 +318,7 @@ export function ResetPasswordScreen() {
                                 fullWidth
                                 type={showPassword ? "text" : "password"}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                  size="small"
+                                size="small"
                                 InputProps={{
                                     ...(isRTL
                                         ? {
@@ -352,7 +353,7 @@ export function ResetPasswordScreen() {
                                                     </IconButton>
                                                 </InputAdornment>
                                             ),
-                                        }),
+                                        })
                                 }}
                             />
                         </div>
@@ -370,7 +371,7 @@ export function ResetPasswordScreen() {
                 {resetState.step === "finnish" && (
                     <>
                         <div>{t("auth.login.passwordUpdated")}</div>
-                        <Button  className="LoginScreenBtn" type="button" variant="contained" onClick={returnToLogin}>
+                        <Button className="LoginScreenBtn" type="button" variant="contained" onClick={returnToLogin}>
                             {t("auth.registration.back")}
                         </Button>
                     </>
