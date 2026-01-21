@@ -29,30 +29,31 @@ type DbPasswordResetRow = {
 class PasswordResetService {
 
     public async verifyResetToken(resetId: number, token: string): Promise<AuthResponse> {
-  if (!resetId || !token) throw new ValidationError("Missing data");
+        if (!resetId || !token) throw new ValidationError("Missing data");
 
-  const sql = "select id, userId, tokenHash, exp, usedAt from passwordReset where id = ?";
-  const values = [resetId];
-  const rows = await dal.execute(sql, values) as DbPasswordResetRow[];
-  const row = rows[0];
+        const sql = "select id, userId, tokenHash, exp, usedAt from passwordReset where id = ?";
+        const values = [resetId];
+        const rows = await dal.execute(sql, values) as DbPasswordResetRow[];
+        const row = rows[0];
 
-  if (!row) return { code: AuthResponseCode.PasswordResetInvalid };
-  if (row.usedAt) return { code: AuthResponseCode.PasswordResetUsed };
-  if (new Date(row.exp).getTime() < Date.now()) return { code: AuthResponseCode.PasswordResetExpired };
-  if (sha256Hex(token) !== row.tokenHash) return { code: AuthResponseCode.PasswordResetInvalid };
+        if (!row) return { code: AuthResponseCode.PasswordResetInvalid };
+        if (row.usedAt) return { code: AuthResponseCode.PasswordResetUsed };
+        if (new Date(row.exp).getTime() < Date.now()) return { code: AuthResponseCode.PasswordResetExpired };
+        if (sha256Hex(token) !== row.tokenHash) return { code: AuthResponseCode.PasswordResetInvalid };
 
-  return { code: AuthResponseCode.PasswordResetTokenValid }; // ✅ FIX
-}
+        return { code: AuthResponseCode.PasswordResetTokenValid }; // ✅ FIX
+    }
 
     public async forgotPassword(email: string): Promise<AuthResponse> {
-        if (!email) return { code: AuthResponseCode.PasswordResetRequested };
+        email = (email ?? "").trim().toLowerCase();
+        if (!email)  throw new ValidationError("Email is required");
 
         const sql = "select id, email from user where email= ?";
         const values = [email];
         const users = await dal.execute(sql, values) as DbUserRow[];
         const user = users[0];
 
-        if (!user) return { code: AuthResponseCode.PasswordResetRequested };
+        if (!user) return { code: AuthResponseCode.EmailNotFound };
 
         const token = otp6();
         const tokenHash = sha256Hex(token);

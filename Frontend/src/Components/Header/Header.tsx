@@ -44,21 +44,6 @@ export function Header() {
           )}
         </NavLink>
 
-<NavLink
-  to="/generate"
-  className={({ isActive }) => `NewScreenBtn ${isActive ? "active" : ""}`}
->
-  <AddIcon />
-  <p>{t("nav.generate")}</p>
-</NavLink>
-
-        {showUndo && (
-          <NavLink to="/generate" className="ReturnScreenBtn">
-            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
-            <p>{t("nav.return")}</p>
-          </NavLink>
-        )}
-
         {user && (
           <NavLink
             to="/likes"
@@ -72,6 +57,23 @@ export function Header() {
             )}
           </NavLink>
         )}
+        
+<NavLink
+  to="/generate"
+  className={({ isActive }) => `NewScreenBtn ${isActive ? "active" : ""}`}
+>
+  <AddIcon />
+  <p>{t("nav.generate")}</p>
+</NavLink>
+
+        {showUndo && (
+          <NavLink to="/generate" className="ReturnScreenBtn">
+            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
+  
+          </NavLink>
+        )}
+
+
       </div>
 
       <div className="HeaderRight">

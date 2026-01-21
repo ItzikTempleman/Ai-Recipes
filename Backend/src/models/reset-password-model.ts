@@ -19,7 +19,8 @@ export enum AuthResponseCode {
   PasswordResetExpired = 3,
   PasswordResetUsed = 4,
   PasswordResetSuccess = 5,
-  PasswordResetTokenValid = 6 
+  PasswordResetTokenValid = 6,
+  EmailNotFound = 7
 }
 
 export interface AuthResponse {
