@@ -1,4 +1,4 @@
-import { OkPacketParams } from "mysql2";
+import { OkPacketParams, ResultSetHeader } from "mysql2";
 import { cyber } from "../utils/cyber";
 import { dal } from "../utils/dal";
 import { AuthorizationError, ResourceNotFound, ValidationError } from "../models/client-errors";
@@ -20,17 +20,17 @@ class UserService {
         const sql = "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate,imageName) values (?,?,?,?,?,?,?,?)";
 
         user.password = cyber.hash(user.password);
-       
-  const values = [
-    user.firstName,
-    user.familyName,
-    user.email,
-    user.password,
-    user.phoneNumber ?? null, 
-    user.gender ?? null,     
-    user.birthDate ?? null,  
-    imageName
-  ];
+
+        const values = [
+            user.firstName,
+            user.familyName,
+            user.email,
+            user.password,
+            user.phoneNumber ?? null,
+            user.gender ?? null,
+            user.birthDate ?? null,
+            imageName
+        ];
         const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
         user.id = info.insertId!;
         return cyber.generateToken(user);
@@ -81,12 +81,12 @@ class UserService {
         const sql = `update user set firstName = ?, familyName = ?, email = ?, phoneNumber = ?, imageName = ? where id = ?`;
         const values = [
             user.firstName,
-             user.familyName,
-              user.email, 
-              user.phoneNumber ?? null,
-              newImageName, 
-              user.id
-            ];
+            user.familyName,
+            user.email,
+            user.phoneNumber ?? null,
+            newImageName,
+            user.id
+        ];
         const info = await dal.execute(sql, values) as OkPacketParams;
         if (info.affectedRows === 0) throw new ResourceNotFound(user.id);
         const dbUser = await this.getOneUser(user.id);
@@ -94,28 +94,24 @@ class UserService {
     }
 
     public async loginWithGoogle(email: string, firstName?: string, familyName?: string): Promise<string> {
-    const sqlFind = `select * , concat(?, imageName) as imageUrl from user where email = ?`;
-    const found = await dal.execute(sqlFind, [appConfig.baseUserImageUrl, email]) as UserModel[];
-    const existing = found[0];
-    if (existing) return cyber.generateToken(existing);
-    const sqlInsert =
-        "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate,imageName) values (?,?,?,?,?,?,?,?)";
-    const randomPassword = cyber.hash(randomUUID());
-    const values = [
-        firstName ?? "Google",
-        familyName ?? "User",
-        email,
-        randomPassword,
-        null,
-        null,
-        null,
-        null
-    ];
-    const info = await dal.execute(sqlInsert, values) as OkPacketParams;
-    const id = info.insertId!;
-    const dbUser = await this.getOneUser(id);
-    return cyber.generateToken(dbUser);
-}
+        email = email.trim().toLowerCase();
+        const sql = `select *  from user where email = ?`;
+        const emailValue = [email];
+        const users = await dal.execute(sql, emailValue) as UserModel[];
+        const existing = users[0];
+        if (existing) return cyber.generateToken(existing);
+
+        const safeFirst = firstName?.trim() || "Google";
+        const safeLast = familyName?.trim() || "User";
+
+        const insertSql = "insert into user(email, firstName, lastName) values (?,?,?)";
+
+        const values = [email, safeFirst, safeLast];
+        const result = await dal.execute(insertSql, values) as OkPacketParams;
+        const id = result.insertId!;
+        const newUser = await this.getOneUser(id);
+        return cyber.generateToken(newUser);
+    }
 
     private async getImageName(id: number): Promise<string | null> {
         const sql = `select imageName from user where id=?`;
@@ -165,17 +161,17 @@ class UserService {
     }
 
     private normalizeOptionalFields(user: UserModel): void {
-  // treat empty strings (common from forms) as NULLs
-  if ((user.phoneNumber as any) === "" || user.phoneNumber === undefined) {
-    (user as any).phoneNumber = null;
-  }
-  if ((user.gender as any) === "" || user.gender === undefined) {
-    (user as any).gender = null;
-  }
-  if ((user.birthDate as any) === "" || user.birthDate === undefined) {
-    (user as any).birthDate = null;
-  }
-}
+        // treat empty strings (common from forms) as NULLs
+        if ((user.phoneNumber as any) === "" || user.phoneNumber === undefined) {
+            (user as any).phoneNumber = null;
+        }
+        if ((user.gender as any) === "" || user.gender === undefined) {
+            (user as any).gender = null;
+        }
+        if ((user.birthDate as any) === "" || user.birthDate === undefined) {
+            (user as any).birthDate = null;
+        }
+    }
 }
 
 export const userService = new UserService();

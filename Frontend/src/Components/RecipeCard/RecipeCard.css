@@ -1,6 +1,6 @@
 .RecipeCard {
   width: 100%;
-  max-width: 710px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 18px;
   display: flex;
@@ -30,10 +30,4 @@
 .ClearFormDiv.ltr {
   right: 16px;  
   left: auto;
-}
-
-@media (max-width: 600px) {
-  .RecipeCard {
-    padding: 4px;
-  }
 }

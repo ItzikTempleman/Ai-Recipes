@@ -35,22 +35,38 @@ class UserController {
     }
 
     private async googleLogin(request: Request, response: Response) {
-    const { credential } = request.body as { credential?: string };
-    if (!credential) throw new AuthorizationError("Missing Google credential");
+        const { credential } = request.body as { credential?: string };
+        if (!credential) throw new AuthorizationError("Missing Google credential");
 
-    const client = new OAuth2Client(appConfig.googleClientId);
+        const client = new OAuth2Client(appConfig.googleClientId);
 
-    const ticket = await client.verifyIdToken({
-        idToken: credential,
-        audience: appConfig.googleClientId,
-    });
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: appConfig.googleClientId,
+        });
 
-    const payload = ticket.getPayload();
-    if (!payload?.email) throw new AuthorizationError("Google token missing email");
+        const payload = ticket.getPayload();
+        if (!payload?.email) throw new AuthorizationError("Google token missing email");
 
-    const token = await userService.loginWithGoogle(payload.email, payload.given_name, payload.family_name);
-    response.json(token);
-}
+        const fullName = (payload.name ?? "").trim();
+
+        const firstName =
+            payload.given_name ??
+            (fullName ? fullName.split(" ")[0] : "Google");
+
+        const lastName =
+            payload.family_name ??
+            (fullName ? fullName.split(" ").slice(1).join(" ") : "User");
+
+
+        const token = await userService.loginWithGoogle(
+            payload.email.toLowerCase(),
+            firstName,
+            lastName
+        );
+        response.json(token);
+    }
+
 
     public async getAllUsers(request: Request, response: Response) {
         const users = await userService.getAllUsers();
@@ -70,16 +86,16 @@ class UserController {
         const token = await userService.updateUser(user);
         response.json(token);
     }
-    
+
     public async getImage(request: Request, response: Response) {
-const { imageName } = request.params;
+        const { imageName } = request.params;
 
-if (Array.isArray(imageName) || typeof imageName !== "string") {
-  return response.status(StatusCode.BadRequest).json({ message: "Invalid imageName" });
-}
+        if (Array.isArray(imageName) || typeof imageName !== "string") {
+            return response.status(StatusCode.BadRequest).json({ message: "Invalid imageName" });
+        }
 
-const imagePath = fileSaver.getFilePath(imageName);
-return response.sendFile(imagePath);
+        const imagePath = fileSaver.getFilePath(imageName);
+        return response.sendFile(imagePath);
     }
 
     public async deleteUser(request: Request, response: Response) {

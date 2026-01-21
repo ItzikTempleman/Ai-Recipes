@@ -16,13 +16,6 @@
   flex-direction: column;
 }
 
-.HomeScreenTitleWrapper.ltr {
-  direction: ltr;
-}
-
-.HomeScreenTitleWrapper.rtl {
-  direction: rtl;
-}
 
 .HomeScreen .HomeScreenTitleWrapper + .RecipeList {
   padding-inline: 10px !important;
@@ -32,15 +25,6 @@
   scroll-padding-inline-end: var(--edge-pad, 34px);
 }
 
-.HomeScreenTitleWrapper:has(.HomeScreenTitle.user) {
-  align-items: flex-start;
-  gap: 22px;
-}
-
-.HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) {
-  align-items: flex-end;
-  gap: 22px;
-}
 
 .HomeScreenTitleWrapper:not(:has(.HomeScreenTitle.user)) {
   align-items: center;
@@ -178,21 +162,13 @@
     font-size: 20px;
   }
 
-  .HomeScreen .RecipeList {
-    margin: 16px auto 0;
-    padding: 18px var(--edge-pad, 18px) 0;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 18px;
-  }
 
   .HomeScreen .RecipeList > * {
     width: min(100%, 360px);
     max-width: min(100%, 360px);
   }
 
-  /* ONLY CHANGE (mobile, user exists): make button higher */
   .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
-    margin: 6px auto 0 !important; /* was 18px */
+    margin: 6px auto 0 !important; 
   }
 }

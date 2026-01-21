@@ -67,7 +67,7 @@ class UserService {
         }
     }
 
-    public async loginWithGoogle(credential: string): Promise<void> {
+    public async  loginWithGoogle(credential: string): Promise<void> {
     try {
         const response = await axios.post<string>(appConfig.googleLoginUrl, { credential });
         const token: string = response.data;
