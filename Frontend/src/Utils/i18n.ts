@@ -210,7 +210,7 @@ const resources = {
         return: "המשך",
         likes: "אהבתי",
         home: "בית",
-        generate: "מתכון",
+        generate: "חדש",
         about: "אודות האתר",
         selectLanguage: "שפה",
       },

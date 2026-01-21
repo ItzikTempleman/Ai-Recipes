@@ -13,6 +13,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import AddIcon from "@mui/icons-material/Add";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -43,9 +44,17 @@ export function Header() {
           )}
         </NavLink>
 
+<NavLink
+  to="/generate"
+  className={({ isActive }) => `NewScreenBtn ${isActive ? "active" : ""}`}
+>
+  <AddIcon />
+  <p>{t("nav.generate")}</p>
+</NavLink>
+
         {showUndo && (
           <NavLink to="/generate" className="ReturnScreenBtn">
-            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : ""}`} />
+            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
             <p>{t("nav.return")}</p>
           </NavLink>
         )}
@@ -88,7 +97,7 @@ export function Header() {
               userService.logout();
             }}
           >
-           <h3>{t("drawer.logout")}</h3> 
+            <h3>{t("drawer.logout")}</h3>
           </div>
         ) : (
           <div

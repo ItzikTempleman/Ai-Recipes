@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-
 import "./LoginScreen.css";
-
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import { ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -13,9 +10,9 @@ import { Credentials } from "../../Models/UserModel";
 import { useTitle } from "../../Utils/Utils";
 import { notify } from "../../Utils/Notify";
 import { userService } from "../../Services/UserService";
+import { GoogleLogin } from "@react-oauth/google";
 // import googleIcon from "../../Assets/images/google.png";
 // import facebookIcon from "../../Assets/images/facebook.png";
-import { GoogleLogin } from "@react-oauth/google";
 
 export function LoginScreen() {
   useTitle("Login");
@@ -61,6 +58,7 @@ export function LoginScreen() {
         <h2 className="LoginScreenTitle">{t("auth.login.title")}</h2>
 
         <TextField className="InputTextField"
+          size="small"
           autoComplete="email" label={t("auth.login.emailLabel")} placeholder={t("auth.login.emailPlaceholder")} fullWidth
           InputProps={{
             ...(isRTL
@@ -97,6 +95,7 @@ export function LoginScreen() {
           label={t("auth.login.passwordLabel")}
           placeholder={t("auth.login.passwordPlaceholder")}
           fullWidth
+            size="small"
           type={
             showPassword ? "text" : "password"
           }{
@@ -171,9 +170,11 @@ export function LoginScreen() {
       useOneTap={false}
     />
   </div>
-          {/* <NavLink to="/reset-facebook" className="ResetFacebook">
+          {
+          /* <NavLink to="/reset-facebook" className="ResetFacebook">
             <img src={facebookIcon} />
-          </NavLink> */}
+          </NavLink> */
+          }
         </div>
 
         <NavLink to="/reset" className="ResetLink">

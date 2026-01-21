@@ -28,6 +28,7 @@
   transform: scaleX(-1);
 }
 
+.NewScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
   padding: 6px !important;
@@ -50,6 +51,7 @@
 text-decoration: none;
 }
 
+.NewScreenBtn svg,
 .ReturnScreenBtn svg,
 .LikesScreenBtn svg,
 .HomeScreenBtn svg {
@@ -58,6 +60,7 @@ text-decoration: none;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.08));
 }
 
+.NewScreenBtn p,
 .ReturnScreenBtn p,
 .LikesScreenBtn p,
 .HomeScreenBtn p {
@@ -73,6 +76,7 @@ text-decoration: none;
   color: #A247DF;
 }
 
+
 .HomeScreenBtn.active,
 .HomeScreenBtn:hover {
   background: rgba(225, 143, 246, 0.22);
@@ -84,6 +88,30 @@ text-decoration: none;
 .HomeScreenBtn:active {
   transform: translateY(0px);
 }
+
+.NewScreenBtn.active,
+.NewScreenBtn:hover {
+  background: rgba(246, 207, 143, 0.22);
+  border-color: rgba(233, 183, 66, 0.684) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(246, 210, 143, 0.26);
+}
+
+.NewScreenBtn:active {
+  transform: translateY(0px);
+}
+
+
+.NewScreenBtn svg {
+  color: #f4a321;
+}
+
+.NewScreenBtn p {
+  color: #f4a321;
+}
+
+
+
 
 .LikesScreenBtn svg {
   color: #ea1e76;
@@ -222,12 +250,14 @@ text-decoration: none;
 
   /* nav buttons sizing */
   .ReturnScreenBtn,
+  .NewScreenBtn,
   .LikesScreenBtn,
   .HomeScreenBtn {
     width: 36px !important;
     height: 36px !important;
   }
 
+  .NewScreenBtn svg,
   .ReturnScreenBtn svg,
   .LikesScreenBtn svg,
   .HomeScreenBtn svg {
@@ -235,6 +265,7 @@ text-decoration: none;
     height: 26px !important;
   }
 
+  .NewScreenBtn p,
   .HomeScreenBtn p,
   .LikesScreenBtn p,
   .ReturnScreenBtn p {

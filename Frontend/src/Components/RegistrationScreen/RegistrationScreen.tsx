@@ -62,6 +62,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
         <div className={`NameRow ${isRTL ? "NameRow--he" : ""}`}>
           <TextField
+            size="small"
             className="InputTextField NameTF"
             label={t("auth.registration.firstNameLabel")}
             placeholder={t("auth.registration.firstNamePlaceholder")}
@@ -90,6 +91,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
           />
 
           <TextField
+            size="small"
             className="InputTextField NameTF"
             label={t("auth.registration.lastNameLabel")}
             placeholder={t("auth.registration.lastNamePlaceholder")}
@@ -122,6 +124,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
           label={t("auth.registration.emailLabel")}
           placeholder={t("auth.registration.emailPlaceholder")}
           fullWidth
+            size="small"
           {...register("email", {
             required: "Email is required",
             pattern: {
@@ -149,6 +152,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
           helperText={errors.email?.message}
         />
         <TextField className="InputTextField"
+          size="small"
           autoComplete="current-password"
           label={t("auth.registration.passwordLabel")}
           placeholder={t("auth.registration.passwordPlaceholder")}
@@ -217,6 +221,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
       label={t("auth.registration.phoneLabel")}
       placeholder={t("auth.registration.phonePlaceholder")}
       fullWidth
+        size="small"
       type="tel"
       variant="outlined"
       InputProps={{
@@ -247,6 +252,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
 
     <TextField className="InputTextField"
       fullWidth
+        size="small"
       type="date"
       {...register("birthDate", {
         validate: (value) => {

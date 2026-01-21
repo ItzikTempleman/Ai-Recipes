@@ -231,6 +231,7 @@ export function ResetPasswordScreen() {
                 {resetState.step === "enterEmail" && (
                     <>
                         <TextField className="InputTextField"
+                          size="small"
                             autoComplete="email" label={t("auth.login.emailLabelToSendCode")} placeholder={t("auth.login.emailLabelToSendCode")} fullWidth
                             InputProps={{
                                 ...(isRTL
@@ -316,6 +317,7 @@ export function ResetPasswordScreen() {
                                 fullWidth
                                 type={showPassword ? "text" : "password"}
                                 onChange={(e) => setNewPassword(e.target.value)}
+                                  size="small"
                                 InputProps={{
                                     ...(isRTL
                                         ? {

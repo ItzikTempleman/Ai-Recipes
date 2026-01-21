@@ -105,7 +105,7 @@
 
 @media (max-width: 600px){
   .FilterBtn.MuiButton-root{
-    width: 90%;
+    width: 25%;
   }
 
   .FilterPanelInnerSection{
