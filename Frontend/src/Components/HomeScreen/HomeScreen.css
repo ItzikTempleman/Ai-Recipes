@@ -25,6 +25,15 @@
   scroll-padding-inline-end: var(--edge-pad, 34px);
 }
 
+.HomeScreenTitleWrapper:has(.HomeScreenTitle.user) {
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) {
+  align-items: flex-end;
+  gap: 22px;
+}
 
 .HomeScreenTitleWrapper:not(:has(.HomeScreenTitle.user)) {
   align-items: center;
