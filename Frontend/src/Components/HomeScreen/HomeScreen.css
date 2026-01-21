@@ -72,7 +72,7 @@
   line-height: 1.15;
   padding-bottom: 6px;
   display: block;
-  color: #ca75e1;
+  color: #75b8eb;
   text-shadow: 0 10px 30px rgba(90, 77, 255, 0.16);
 }
 
@@ -142,7 +142,6 @@
   text-align: right;
 }
 
-/* ONLY CHANGE (desktop RTL, user exists): keep same but higher */
 .HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
   margin: 6px 0 0 !important; /* was 24px */
   margin-left: auto !important;

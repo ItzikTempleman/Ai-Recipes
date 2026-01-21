@@ -17,7 +17,7 @@
 
   font-size: 24px;
   font-weight: bold;
-  color: #7700ff;
+  color: #48a9f4;
   text-transform: uppercase;
 
   display: flex;
@@ -80,7 +80,7 @@
   position: absolute;
   inset: 0;
   height: 6px;
-  background: linear-gradient(90deg, #d5b9f0, #6f42d0, #6a00ff);
+  background: linear-gradient(90deg, #eaf6ff, #a5d0f1, #48a9f4);
 }
 
 .TopContent {

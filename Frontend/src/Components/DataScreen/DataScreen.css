@@ -90,7 +90,7 @@ border: 1px solid rgb(253, 160, 29);
 }
 
 .ImageLoadingMessageAfterRecipeGenerated{
-color:#A247DF !important;
+color:#48a9f4 !important;
 font-size: 20px;
   width: 100%;
   text-align: center;
@@ -159,12 +159,12 @@ html[dir="rtl"] .FilterBar {
 } 
 
 .LoadImageBtn {
-   background: linear-gradient(180deg, #c495e4 0%, #A247DF 100%) !important;
+   background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
   width: 50%;
   gap: 10px;
-  border-radius: 14px !important;
+  border-radius: 8px !important;
   align-self: center;
 }
 

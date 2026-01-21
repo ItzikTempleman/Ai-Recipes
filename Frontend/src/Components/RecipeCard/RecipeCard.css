@@ -23,12 +23,12 @@
 }
 
 .ClearFormDiv.rtl {
-  right: 16px;   /* ✅ RTL on the right */
+  right: 16px;   
   left: auto;
 }
 
 .ClearFormDiv.ltr {
-  right: 16px;   /* LTR on the right too (keep if you want same) */
+  right: 16px;  
   left: auto;
 }
 

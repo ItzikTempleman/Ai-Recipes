@@ -41,7 +41,7 @@ class PasswordResetService {
         if (new Date(row.exp).getTime() < Date.now()) return { code: AuthResponseCode.PasswordResetExpired };
         if (sha256Hex(token) !== row.tokenHash) return { code: AuthResponseCode.PasswordResetInvalid };
 
-        return { code: AuthResponseCode.PasswordResetTokenValid }; // ✅ FIX
+        return { code: AuthResponseCode.PasswordResetTokenValid };
     }
 
     public async forgotPassword(email: string): Promise<AuthResponse> {

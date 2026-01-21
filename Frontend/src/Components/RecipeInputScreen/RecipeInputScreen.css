@@ -27,7 +27,7 @@
   line-height: 1.02;
   font-weight: 1100;
   letter-spacing: -1.4px;
-  background: linear-gradient(180deg, #ffaf01 0%, #eea23e 100%);
+  background: #fbc31d;
   background-clip: text;
   color: transparent;
   text-rendering: optimizeLegibility;
@@ -35,7 +35,7 @@
 
 .LoadingWithoutImage,
 .ImageLoadingMessage {
-  color: #A247DF !important;
+  color: #75b8eb !important;
   font-size: 20px;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .ProgressBar .MuiCircularProgress-root {
-  color: #A247DF !important;
+  color: #75b8eb !important;
 }
 
 .GenerateImageSelector {
@@ -112,23 +112,23 @@
   height: 40px !important;
   width: 40px !important;
   padding: 0 !important;
-  background: rgba(255, 77, 255, 0.1) !important;
-  border: 1px solid rgba(255, 77, 219, 0.22) !important;
+  background: rgba(174, 235, 255, 0.503) !important;
+  border: 1px solid rgb(0, 183, 255) !important;
 }
 
 .GenerateImageSelector.off {
   background: white !important;
-  border: 1px solid rgba(255, 77, 219, 0.22) !important;
+  border: 1px solid rgb(0, 183, 255) !important;
 }
 
 .GenerateImageSelector svg {
   width: 22px;
   height: 22px;
-  color: #A247DF;
+  color: #4eb2ff;
 }
 
 .RecipeTextField .MuiOutlinedInput-root {
-  border-radius: 14px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, .88);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 24px rgba(15, 23, 42, .06), inset 0 1px 0 rgba(255, 255, 255, .75);
@@ -139,27 +139,13 @@
   border: 1px solid rgba(148, 163, 184, .55);
 }
 
-.RecipeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-  border-color: #A247DF;
-}
-
-.RecipeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #A247DF;
-  border-width: 2px;
-}
 
 .RecipeTextField .MuiOutlinedInput-root.Mui-focused {
   box-shadow: 0 18px 38px rgba(106, 77, 255, .14), inset 0 1px 0 rgba(255, 255, 255, .85);
 }
 
 
-.RecipeTextField .MuiOutlinedInput-input {
-  padding: 10px 12px;
-}
 
-.RecipeTextField .MuiInputLabel-root.Mui-focused {
-  color: #A247DF;
-}
 
 .ErrorText {
   margin-top: 8px;
@@ -233,18 +219,17 @@
 }
 
 .GenerateRecipeBtn {
-  height: 40px;
+  height: auto;
   min-width: 96px;
   padding: 0 14px;
   text-transform: none;
   font-weight: 700;
-  border: 1px solid rgba(2, 6, 23, .16);
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border-radius: 14px !important;
+  border-radius: 8px !important;
   transition: transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
-  background: linear-gradient(180deg, #f27bff 0%, rgb(162, 71, 223) 100%);
+  background: #48a9f4 !important;
   box-shadow: 0 12px 22px rgba(106, 77, 255, .22), 0 2px 0 rgba(255, 255, 255, .22) inset;
 }
 
@@ -268,15 +253,13 @@
 }
 
 .GenerateRecipeBtn.Mui-disabled {
-  background: #e5e7eb !important;
-  border: 1px solid rgba(15, 23, 42, .12) !important;
+  background: #ffffff !important;
   box-shadow: none !important;
-  color: rgba(17, 24, 39, .55) !important;
 }
 
 .GenerateRecipeBtn .BtnIcon {
   font-size: 18px;
-  color: #ffe08a;
+  color: #fbc31d;
 }
 
 .RecipeCardContainer {

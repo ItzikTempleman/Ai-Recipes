@@ -14,7 +14,7 @@
   width: 100%;
   max-width: 600px;
   margin: 0 0 16px;
-  color:#6a4dff; 
+  color:#48a9f4; 
   font-size: 20px;
   font-weight: 600;
   text-align: left;
@@ -91,18 +91,18 @@
 
 
 .EditProfileBtn.MuiButton-root{
-  border-radius: 18px !important;
+  border-radius: 8px !important;
   padding: 0 50px !important;
   height: 40px !important;
   font-weight: 800 !important;
  margin-top: 30px;
-background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
+background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .EditProfileBtn.MuiButton-root:hover {
-   background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
+   background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
@@ -115,18 +115,18 @@ background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
 
 .UpdateBtn.MuiButton-root{
     width: 100% !important;
-  border-radius: 18px !important;
+  border-radius: 8px !important;
   padding: 0 50px !important;
   height: 40px !important;
   font-weight: 800 !important;
  margin-top: 30px;
-background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
+background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .UpdateBtn.MuiButton-root:hover {
-   background: linear-gradient(180deg, #a07bff 0%, #5c02e3 100%) !important;
+   background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }

@@ -62,7 +62,7 @@
   justify-content: flex-start;
   gap: 10px;
   padding: 12px 14px;
-  border-radius: 18px;
+  border-radius: 8px;
   text-decoration: none;
   color: #fff;
   min-height: 46px;
@@ -73,8 +73,8 @@
 }
 
 .DrawerContent.LoggedOut .AboutScreenBtn{
-  margin-top: 12px;     /* or 0 if you want it flush */
-  margin-bottom: 0;
+
+  margin-bottom: auto;
 }
 
 .ProfileBtn{
@@ -83,8 +83,8 @@
 
 
 .AboutScreenBtn{
-  margin-top: auto;
-  margin-bottom: 16px;
+  margin-top: 12px;     
+  margin-bottom: 16px; 
 }
 .ProfileBtn:hover,
 .AboutScreenBtn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
@@ -101,14 +101,14 @@
 
 /* keep About colors as now */
 .AboutScreenBtn{
-  background: linear-gradient(180deg, #c091bd 0%, #A247DF 100%);
+  background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%);
   box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
               0 2px 0 rgba(186, 185, 185, 0.22) inset;
 }
 
 /* keep Profile colors as your profile/pink */
 .ProfileBtn{
-  background: linear-gradient(180deg,#ff6f9c 0%,#d94672 100%);
+  background: linear-gradient(180deg,#ffb700 0%,#ffb700 100%);
   box-shadow: 0 12px 22px rgba(217,70,114,.22),
               0 2px 0 rgba(255,255,255,.22) inset;
 }

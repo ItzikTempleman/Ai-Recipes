@@ -121,7 +121,8 @@ const resources = {
           passwordLabel: "Enter password",
           passwordPlaceholder: "Password",
           submit: "Log in",
-          registerLink: "Register"
+          registerLink: "Register",
+          emailNotFound:" Email not found"
         },
 
         registration: {
@@ -328,6 +329,7 @@ const resources = {
           registerLink: "הרשמה",
           hidePassword: "הסתר סיסמה",
           showPassword: "הצג סיסמה",
+          emailNotFound:"האימייל לא נמצא"
         },
 
         registration: {

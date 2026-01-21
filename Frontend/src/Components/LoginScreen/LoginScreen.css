@@ -70,16 +70,16 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
 }
 
 .InputTextField .MuiOutlinedInput-root {
-  border-radius: 18px;
+  border-radius: 8px;
 }
 
 .InputTextField .MuiOutlinedInput-notchedOutline {
-  border-radius: 18px;
+  border-radius: 8px;
 }
 
 .LoginScreenBtn.MuiButton-root {
   width: 100% !important;
-  border-radius: 18px !important;
+  border-radius: 8px !important;
   padding: 0 50px !important;
   height: 40px !important;
   font-weight: 800 !important;
@@ -87,13 +87,13 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
 }
 
 .LoginScreenBtn.MuiButton-root {
-  background: linear-gradient(180deg, #e27bff 0%, #A247DF 100%) !important;
+  background: linear-gradient(180deg, #75b8eb 0%, #75b8eb 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .LoginScreenBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #e27bff 0%, #A247DF 100%) !important;
+  background: linear-gradient(180deg, #75b8eb 0%, #75b8eb 100%) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
@@ -106,13 +106,13 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
 
 
 .LoginScreenBtn.MuiButton-root {
-  background: linear-gradient(180deg, #e27bff 0%, #A247DF 100%) !important;
+  background: linear-gradient(180deg, #75b8eb 0%, #75b8eb 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .LoginScreenBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #e27bff 0%, #A247DF 100%) !important;
+  background: linear-gradient(180deg, #75b8eb 0%, #75b8eb 100%) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }

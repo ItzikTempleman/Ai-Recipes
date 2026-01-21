@@ -31,7 +31,6 @@ class RecipeService {
     if (popularity === 0 || desc.startsWith("fictional dish")) {
       throw new ValidationError("Non existing dish");
     }
-
     return { ...data, amountOfServings: input.quantity };
   }
 
@@ -67,7 +66,6 @@ class RecipeService {
     if (!row) throw new ResourceNotFound(id);
     return mapDbRowToFullRecipe(row);
   };
-
 
   public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;

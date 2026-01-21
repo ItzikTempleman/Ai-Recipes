@@ -7,7 +7,7 @@
   flex:1 1 0;
 }
 
-/* NARROW width – change 360 if needed */
+
 .ExcludeGroup > div:first-child{
   width:360px;
 }
@@ -16,10 +16,10 @@
   width:100%;
 }
 
-/* simple, clean styling */
+
 .ExcludeTextField .MuiOutlinedInput-root{
   height:40px;
-  border-radius:14px;
+  border-radius:8px;
   background:#fff;
   box-shadow:0 6px 14px rgba(15,23,42,.08);
 }
@@ -28,21 +28,10 @@
   border:1px solid rgba(148,163,184,.55);
 }
 
-.ExcludeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
-.ExcludeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
-  border-color:#A247DF;
-}
-
-.ExcludeTextField .MuiInputLabel-root.Mui-focused{
-  color:#A247DF;
-}
-
-/* center servings under it */
 .ExcludeGroup .Servings{
   justify-content:center;
 }
 
-/* RTL text only */
 .ExcludeGroup[dir="rtl"] input{
   direction:rtl;
   text-align:right;
