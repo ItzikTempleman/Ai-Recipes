@@ -15,20 +15,15 @@ import { SugarFilter } from "../Filters/SugarFilter";
 import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
-import {
-  DietaryRestrictions,
-  GlutenRestrictions,
-  InputModel,
-  LactoseRestrictions,
-  RecipeModel,
-  RecipeState,
-  SugarRestriction
-} from "../../Models/RecipeModel";
+import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction}
+from "../../Models/RecipeModel";
 import { resetGenerated } from "../../Redux/RecipeSlice";
 import { AppState } from "../../Redux/Store";
 import HideImageOutlinedIcon from "@mui/icons-material/HideImageOutlined";
 import ImageIcon from "@mui/icons-material/Image";
 import TuneIcon from "@mui/icons-material/Tune";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 type RecipeStateType = {
   recipes: RecipeState;
@@ -54,24 +49,14 @@ export function RecipeInputScreen() {
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
   const filtersWrapRef = useRef<HTMLDivElement | null>(null);
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    sugarLevel: SugarRestriction.DEFAULT,
-    hasLactose: LactoseRestrictions.DEFAULT,
-    hasGluten: GlutenRestrictions.DEFAULT,
-    dietType: DietaryRestrictions.DEFAULT,
-  });
-
-  const { t, i18n } = useTranslation();
+  const [appliedFilters, setAppliedFilters] = useState({sugarLevel: SugarRestriction.DEFAULT, hasLactose: LactoseRestrictions.DEFAULT, hasGluten: GlutenRestrictions.DEFAULT,dietType: DietaryRestrictions.DEFAULT});
+  const {t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
-
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [initialQuantity, setQuantity] = useState(1);
-
-  const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
+  const {loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
   const recipe = current;
   const recipeHasData = Boolean(recipe?.title);
-
   const didResetOnEnterRef = useRef(false);
   const didResetAfterGenerateRef = useRef(false);
 
@@ -156,7 +141,6 @@ export function RecipeInputScreen() {
         if (!filtersOpen) return;
         const target = e.target as Node;
         if (filtersWrapRef.current?.contains(target)) return;
-
         setFiltersOpen(false);
       }}>
 
@@ -214,7 +198,8 @@ export function RecipeInputScreen() {
                     setFiltersOpen((v) => !v);
                   }}
                   variant="contained"
-                  endIcon={<TuneIcon />}
+                  startIcon={<TuneIcon />}
+                  endIcon={filtersOpen? <ArrowDropUpIcon />: <ArrowDropDownIcon />}
                 >
                   {t("generate.filters")}
                 </Button>

@@ -6,20 +6,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .PanelState{
-  position: absolute;               /* KEY: remove from document flow */
-  top: calc(100% + 10px);           /* right under the FilterBtn */
+  position: absolute;              
+  top: calc(100% + 10px);           
   left: 0;
   right: 0;
-  z-index: 20;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .15s ease;
 }
+
 .PanelState.open{
   opacity: 1;
   pointer-events: auto;
@@ -31,7 +26,7 @@
 }
 
 .FilterPanelInnerSection{
-  margin: 0 auto;                   /* KEY: no vertical margin */
+  margin: 0 auto;                  
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -57,13 +52,12 @@
     overflow: visible;
     flex: 0 0 auto;
     white-space: nowrap;
-   width: 100%;
+    width: 100%;
     padding: 0;
     box-sizing: border-box;
     z-index: 2;
     margin: 0;
 }
-
 
 .FilterPanelInnerSection .MuiToggleButtonGroup-root {
   gap: 12px;           
@@ -74,9 +68,8 @@
   border-radius: 8px !important;
 }
 
-
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
-    background: rgb(145, 202, 229);
+  background: rgb(145, 202, 229);
   color: #ffffff;
 }
 
@@ -95,16 +88,11 @@
   background: rgba(0,0,0,0.10);
 }
 
-
-
-
-/* iOS/Chrome: make taps apply immediately */
 .FilterPanelInnerSection .MuiToggleButton-root{
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-/* On iOS, hover can "stick" after tap; make sure selected always wins */
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
@@ -114,11 +102,9 @@
   color: #ffffff !important;
 }
 
-/* Also ensure the non-selected :active doesn't override selected */
 .FilterPanelInnerSection .MuiToggleButton-root:active{
   background: #75b8eb;
 }
-
 
 @media (max-width: 600px){
   .FilterBtn.MuiButton-root{
