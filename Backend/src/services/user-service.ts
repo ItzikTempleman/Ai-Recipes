@@ -93,25 +93,32 @@ class UserService {
         return cyber.generateToken(dbUser);
     }
 
-    public async loginWithGoogle(email: string, firstName?: string, familyName?: string): Promise<string> {
-        email = email.trim().toLowerCase();
-        const sql = `select *  from user where email = ?`;
-        const emailValue = [email];
-        const users = await dal.execute(sql, emailValue) as UserModel[];
-        const existing = users[0];
-        if (existing) return cyber.generateToken(existing);
+public async loginWithGoogle(email: string, firstName?: string, familyName?: string): Promise<string> {
+    email = email.trim().toLowerCase();
 
-        const safeFirst = firstName?.trim() || "Google";
-        const safeLast = familyName?.trim() || "User";
+    const sql = `select * from user where email = ?`;
+    const users = await dal.execute(sql, [email]) as UserModel[];
+    const existing = users[0];
+    if (existing) return cyber.generateToken(existing);
 
-        const insertSql = "insert into user(email, firstName, lastName) values (?,?,?)";
+    const safeFirst = firstName?.trim() || "Google";
+    const safeFamily = familyName?.trim() || "User";
 
-        const values = [email, safeFirst, safeLast];
-        const result = await dal.execute(insertSql, values) as OkPacketParams;
-        const id = result.insertId!;
-        const newUser = await this.getOneUser(id);
-        return cyber.generateToken(newUser);
-    }
+    // generate a random password (user won't use it, but DB requires NOT NULL)
+    const randomPassword = cyber.hash(randomUUID());
+
+    const insertSql = `
+        insert into user(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName)
+        values (?,?,?,?,?,?,?,?)
+    `;
+    const values = [safeFirst, safeFamily, email, randomPassword, null, null, null, null];
+
+    const result = await dal.execute(insertSql, values) as OkPacketParams;
+    const id = result.insertId!;
+    const newUser = await this.getOneUser(id);
+    return cyber.generateToken(newUser);
+}
+
 
     private async getImageName(id: number): Promise<string | null> {
         const sql = `select imageName from user where id=?`;
