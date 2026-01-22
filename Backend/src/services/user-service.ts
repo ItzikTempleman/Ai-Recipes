@@ -102,7 +102,7 @@ public async loginWithGoogle(email: string, firstName?: string, familyName?: str
     if (existing) return cyber.generateToken(existing);
 
     const safeFirst = firstName?.trim() || "Google";
-    const safeFamily = familyName?.trim() || "User";
+    const safeFamily = familyName?.trim() || null;
 
     // generate a random password (user won't use it, but DB requires NOT NULL)
     const randomPassword = cyber.hash(randomUUID());

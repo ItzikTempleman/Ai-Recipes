@@ -53,7 +53,7 @@ export function RecipeInputScreen() {
   const [hasLactose, setHasLactose] = useState(LactoseRestrictions.DEFAULT);
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
-const filtersWrapRef = useRef<HTMLDivElement | null>(null);
+  const filtersWrapRef = useRef<HTMLDivElement | null>(null);
 
   const [appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
@@ -149,110 +149,63 @@ const filtersWrapRef = useRef<HTMLDivElement | null>(null);
     }
   }
 
-return (
-<div
-  className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
-  onClickCapture={(e) => {
-    if (!filtersOpen) return;
-    const target = e.target as Node;
-    if (filtersWrapRef.current?.contains(target)) return;
+  return (
+    <div
+      className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
+      onClickCapture={(e) => {
+        if (!filtersOpen) return;
+        const target = e.target as Node;
+        if (filtersWrapRef.current?.contains(target)) return;
 
-    setFiltersOpen(false);
-  }}>
+        setFiltersOpen(false);
+      }}>
 
-    {!recipeHasData && (
-      <div className="GenerateContainer">
-        <div>
-          <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
-        </div>
-
-        <form onSubmit={handleSubmit(send)}>
-          <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
-            <TextField
-              dir={isRTL ? "rtl" : "ltr"}
-              className="RecipeTextField"
-              size="small"
-              label={t("generate.labelGenerate")}
-              {...register("query", { required: `${t("generate.requiredTitle")}` })}
-              disabled={loading}
-              InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
-              inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
-              InputLabelProps={{
-                style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
-              }}
-            />
-
-            <IconButton
-              className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
-              onClick={() => setHasImage((v) => !v)}
-            >
-              {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
-            </IconButton>
-
-            {loading ? (
-              <IconButton className="ProgressBar" edge="end" disabled>
-                <Box>
-                  <CircularProgress />
-                </Box>
-              </IconButton>
-            ) : (
-              <Button
-                className="GenerateRecipeBtn"
-                variant="contained"
-                disableElevation
-                type="submit"
-                disabled={loading}>
-                {t("generate.go")}
-                <AutoAwesome className="BtnIcon" />
-              </Button>
-            )}
+      {!recipeHasData && (
+        <div className="GenerateContainer">
+          <div>
+            <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
           </div>
 
-          {error && <div className="ErrorText">{error}</div>}
+          <form onSubmit={handleSubmit(send)}>
+            <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
+              <TextField
+                dir={isRTL ? "rtl" : "ltr"}
+                className="RecipeTextField"
+                size="small"
+                label={t("generate.labelGenerate")}
+                {...register("query", { required: `${t("generate.requiredTitle")}` })}
+                disabled={loading}
+                InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
+                inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
+                InputLabelProps={{
+                  style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
+                }}
+              />
 
-          {loading && (
-            <div>
-              {hasImage ? (
-                <h2 className="ImageLoadingMessage">
-                  {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-                </h2>
-              ) : (
-                <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
-              )}
+              <IconButton
+                className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
+                onClick={() => setHasImage((v) => !v)}
+              >
+                {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
+              </IconButton>
             </div>
-          )}
 
-          <div className="Divider"></div>
+            {error && <div className="ErrorText">{error}</div>}
 
-          <div className="FiltersSectionContainer">
-            <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-             <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
-                <div>
-                  <TextField
-                    className="ExcludeTextField"
-                    label={t("generate.excludeIngredient")}
-                    size="small"
-                    {...register("excludedIngredients.0")}
-                  />
-                </div>
-          
-
-              <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-                <p>{t("generate.quantitySelector")}</p>
-                <select
-                  className="QuantitySelector"
-                  value={initialQuantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                >
-                  {[...Array(10)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </select>
+            {loading && (
+              <div>
+                {hasImage ? (
+                  <h2 className="ImageLoadingMessage">
+                    {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                  </h2>
+                ) : (
+                  <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
+                )}
               </div>
-    </div>
-    
+            )}
+
+                   <div className="FiltersSectionContainer">
+              <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
               <div className="FiltersDropdown" ref={filtersWrapRef} dir={isRTL ? "rtl" : "ltr"}>
                 <Button
                   className="FilterBtn"
@@ -314,18 +267,63 @@ return (
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    )}
 
-    {recipe && (
-      <div className="RecipeCardContainer">
-        <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
-      </div>
-    )}
-  </div>
-);
+
+     
+                <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
+                  <div>
+                    <TextField
+                      className="ExcludeTextField"
+                      label={t("generate.excludeIngredient")}
+                      size="small"
+                      {...register("excludedIngredients.0")}
+                    />
+                  </div>
+                  <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+                    <p>{t("generate.quantitySelector")}</p>
+                    <select
+                      className="QuantitySelector"
+                      value={initialQuantity}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
+                    >
+                      {[...Array(10)].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            {loading ? (
+                <IconButton className="ProgressBar" edge="end" disabled>
+                  <Box>
+                    <CircularProgress />
+                  </Box>
+                </IconButton>
+              ) : (
+                <Button
+                  className="GenerateRecipeBtn"
+                  variant="contained"
+                  disableElevation
+                  type="submit"
+                  disabled={loading}>
+                  {t("generate.go")}
+                  <AutoAwesome className="BtnIcon" />
+                </Button>
+              )}
+          </form>
+        </div>
+      )}
+
+      {recipe && (
+        <div className="RecipeCardContainer">
+          <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
+        </div>
+      )}
+    </div>
+  );
 
 }

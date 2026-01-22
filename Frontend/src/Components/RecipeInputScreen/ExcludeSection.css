@@ -1,15 +1,14 @@
 .ExcludeGroup{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-  width:100%;
-  flex:1 1 0;
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-
 .ExcludeGroup > div:first-child{
-  width:360px;
+  width:50%;
 }
 
 .ExcludeTextField{
@@ -20,19 +19,12 @@
 .ExcludeTextField .MuiOutlinedInput-root{
   height:40px;
   border-radius:8px;
-  background:#fff;
-  box-shadow:0 6px 14px rgba(15,23,42,.08);
+
 }
 
-.ExcludeTextField .MuiOutlinedInput-notchedOutline{
-  border:1px solid rgba(148,163,184,.55);
+@media (max-width: 600px){
+.ExcludeGroup > div:first-child{
+  width:60%;
 }
 
-.ExcludeGroup .Servings{
-  justify-content:center;
-}
-
-.ExcludeGroup[dir="rtl"] input{
-  direction:rtl;
-  text-align:right;
 }
