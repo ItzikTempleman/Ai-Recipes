@@ -79,9 +79,9 @@ export function Header() {
     {isGuest ? (
       <div className="Guest">{t("homeScreen.guest")}</div>
     ) : (
-      <div className="User">
-        {user.firstName} {user.familyName}
-      </div>
+<div className="User">
+  {user.firstName} <span className="FamilyName">{user.familyName}</span>
+</div>
     )}
   </div>
 

@@ -240,13 +240,17 @@
 @media (max-width: 670px) {
   .Header {
     display: grid;
-    grid-template-columns: 1fr auto auto auto; /* tabs | language | login/logout | menu */
+    grid-template-columns: 1fr auto auto auto; 
     grid-template-rows: auto auto;
     align-items: center;
     column-gap: 10px;
     row-gap: 10px;
     padding: 0 10px;
     justify-content: unset;
+  }
+
+    .FamilyName {
+    display: none;
   }
 
   .GeneralNavigation {
@@ -256,12 +260,11 @@
     margin-top: 6px;
   }
 
-  /* keep this so children can be placed on Header grid */
   .HeaderRight {
     display: contents;
   }
 
-  /* badge under tabs */
+
   .IdentityBadge {
     grid-column: 1;
     grid-row: 2;
@@ -270,7 +273,7 @@
     margin-top: 0;
   }
 
-  /* ✅ top-right items each get their own column (no more stacking) */
+
   .LanguageLink {
     grid-column: 2;
     grid-row: 1;
@@ -298,7 +301,7 @@
     height: 40px;
   }
 
-  /* keep your existing sizes */
+
   .ReturnScreenBtn,
   .NewScreenBtn,
   .LikesScreenBtn,
@@ -345,7 +348,7 @@
     margin: 0 !important;
     padding: 0 10px !important;
     height: 40px;
-    display: inline-flex; /* better than flex here */
+    display: inline-flex; 
     align-items: center;
     justify-content: center;
   }
