@@ -47,9 +47,6 @@ export function HomeScreen() {
 
             {list.length === 0 ? (
               <div className="HomeScreenTitleContainer ">
-                <div className="UserHello">
-                  {t("homeScreen.hello")} {user.firstName} {user.familyName}
-                </div>
                 <h3 className="HomeScreenTitle user">
                   {t("homeScreen.noRecipes")}
                 </h3>
@@ -62,14 +59,10 @@ export function HomeScreen() {
           </>
         ) : (
           <div>
-            <h3 className="GuestTitle">
-              {t("homeScreen.hello")} {t("homeScreen.guest")}
-            </h3>
             <Button
               className="GenerateBtn"
               onClick={() => navigate("/generate")}
-              variant="contained"
-            >
+              variant="contained">
               <AddIcon />
               {t("homeScreen.generate")}
             </Button>

@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
- margin-top: 6px; 
+  margin-top: 6px;
 }
 
 .Header.rtl .GeneralNavigation {
@@ -47,8 +47,8 @@
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
-.ReturnScreenBtn{
-text-decoration: none;
+.ReturnScreenBtn {
+  text-decoration: none;
 }
 
 .NewScreenBtn svg,
@@ -117,7 +117,7 @@ text-decoration: none;
 
 .LikesScreenBtn.active,
 .LikesScreenBtn:hover {
-  background: rgba(211, 75, 134, 0.18); 
+  background: rgba(211, 75, 134, 0.18);
   border-color: rgba(211, 75, 134, 0.45) !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 22px rgba(211, 75, 134, 0.24);
@@ -137,6 +137,11 @@ text-decoration: none;
   gap: 10px;
 }
 
+.IdentityBadge {
+  display: flex;
+  align-items: center;
+}
+
 .Header.rtl .HeaderRight {
   flex-direction: row-reverse;
 }
@@ -151,7 +156,7 @@ text-decoration: none;
 
 .LoginBtn {
   color: #393939 !important;
-  
+
 }
 
 .LoginBtn:hover {
@@ -159,7 +164,7 @@ text-decoration: none;
 }
 
 .LogoutBtn {
-  color: rgba(203, 14, 14, 0.95)  !important;
+  color: rgba(203, 14, 14, 0.95) !important;
 }
 
 .LogoutBtn:hover {
@@ -218,21 +223,82 @@ text-decoration: none;
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
+.Guest,
+.User {
+  box-shadow: 0 18px 34px rgba(243, 164, 0, 0.3), 0 10px 18px rgba(243, 164, 0, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.22) inset;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(180deg, #5cc5e8 0%, #1bbeff 100%);
+  border-radius: 8px;
+  padding: 6px 14px;
+  margin: 4px;
+}
+
+
+@media (max-width: 670px) {
   .Header {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto; /* tabs | language | login/logout | menu */
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 10px;
     padding: 0 10px;
+    justify-content: unset;
   }
 
   .GeneralNavigation {
+    grid-column: 1;
+    grid-row: 1;
     gap: 6px;
     margin-top: 6px;
   }
 
+  /* keep this so children can be placed on Header grid */
   .HeaderRight {
-    gap: 4px;
-    align-items: center;
+    display: contents;
   }
 
+  /* badge under tabs */
+  .IdentityBadge {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    align-self: start;
+    margin-top: 0;
+  }
+
+  /* ✅ top-right items each get their own column (no more stacking) */
+  .LanguageLink {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0 !important;
+  }
+
+  .LoginBtn,
+  .LogoutBtn {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0 !important;
+  }
+
+  .MenuBtn {
+    grid-column: 4;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0 !important;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* keep your existing sizes */
   .ReturnScreenBtn,
   .NewScreenBtn,
   .LikesScreenBtn,
@@ -251,8 +317,7 @@ text-decoration: none;
 
   .NewScreenBtn p,
   .HomeScreenBtn p,
-  .LikesScreenBtn p,
-  .ReturnScreenBtn p {
+  .LikesScreenBtn p {
     font-size: 10px;
   }
 
@@ -262,7 +327,6 @@ text-decoration: none;
     gap: 4px !important;
     border-radius: 8px !important;
     box-shadow: 0 8px 14px rgba(57, 59, 63, 0.1) !important;
-    margin-top: 6px;
   }
 
   .LanguageLink svg {
@@ -281,16 +345,9 @@ text-decoration: none;
     margin: 0 !important;
     padding: 0 10px !important;
     height: 40px;
-    display: flex;
+    display: inline-flex; /* better than flex here */
     align-items: center;
     justify-content: center;
-    margin-top: 6px; 
-  }
-
-  .MenuBtn {
-    width: 40px;
-    height: 40px;
-    margin-top: 6px;
   }
 
   .LogoutBtn.MuiButton-root,
@@ -301,6 +358,5 @@ text-decoration: none;
     height: 40px !important;
     font-weight: 900 !important;
     margin: 0 !important;
-    margin-top: 6px !important;
   }
 }
