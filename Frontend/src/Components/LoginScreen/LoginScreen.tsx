@@ -157,6 +157,7 @@ export function LoginScreen() {
         <div className="LoginWithFacebookAndGoogle">
   <div className="ResetGoogle">
     <GoogleLogin
+  
       onSuccess={async (res) => {
         try {
           if (!res.credential) throw new Error("Missing Google credential");
@@ -170,11 +171,7 @@ export function LoginScreen() {
       useOneTap={false}
     />
   </div>
-          {
-          /* <NavLink to="/reset-facebook" className="ResetFacebook">
-            <img src={facebookIcon} />
-          </NavLink> */
-          }
+
         </div>
 
         <NavLink to="/reset" className="ResetLink">

@@ -48,6 +48,8 @@ class UserController {
         const payload = ticket.getPayload();
         if (!payload?.email) throw new AuthorizationError("Google token missing email");
 
+        const pictureUrl = (payload.picture ?? null) as string | null;
+
 const fullName = (payload.name ?? "").trim();
 const parts = fullName.split(/\s+/).filter(Boolean);
 
@@ -61,7 +63,8 @@ const familyName =
 const token = await userService.loginWithGoogle(
   payload.email.toLowerCase(),
   firstName,
-  familyName
+  familyName,
+  pictureUrl
 );
         response.json(token);
     }

@@ -9,6 +9,7 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { UploadedFile } from "express-fileupload";
 import fs from "fs/promises";
+import axios from "axios";
 
 class UserService {
     public async register(user: UserModel): Promise<string> {
@@ -93,30 +94,51 @@ class UserService {
         return cyber.generateToken(dbUser);
     }
 
-public async loginWithGoogle(email: string, firstName?: string, familyName?: string): Promise<string> {
-    email = email.trim().toLowerCase();
+public async loginWithGoogle(
+  email: string,
+  firstName?: string,
+  familyName?: string,
+  pictureUrl?: string | null
+): Promise<string> {
+  email = email.trim().toLowerCase();
 
-    const sql = `select * from user where email = ?`;
-    const users = await dal.execute(sql, [email]) as UserModel[];
-    const existing = users[0];
-    if (existing) return cyber.generateToken(existing);
+  // Always include imageUrl, like normal login:
+  const sql = `select * , concat(?, imageName) as imageUrl from user where email = ?`;
+  const users = await dal.execute(sql, [appConfig.baseUserImageUrl, email]) as UserModel[];
+  const existing = users[0];
 
-    const safeFirst = firstName?.trim() || "Google";
-    const safeFamily = familyName?.trim() || null;
+  // Existing user: optionally backfill image if missing
+  if (existing) {
+    if (!existing.imageName && pictureUrl) {
+      const downloaded = await this.saveRemoteUserImage(pictureUrl);
+      const updateSql = `update user set imageName=? where id=?`;
+      await dal.execute(updateSql, [downloaded, existing.id]) as any;
 
-    // generate a random password (user won't use it, but DB requires NOT NULL)
-    const randomPassword = cyber.hash(randomUUID());
+      const refreshed = await this.getOneUser(existing.id!); // includes imageUrl
+      return cyber.generateToken(refreshed);
+    }
+    return cyber.generateToken(existing);
+  }
 
-    const insertSql = `
-        insert into user(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName)
-        values (?,?,?,?,?,?,?,?)
-    `;
-    const values = [safeFirst, safeFamily, email, randomPassword, null, null, null, null];
+  // New user
+  const safeFirst = firstName?.trim() || "Google";
+  const safeFamily = (familyName ?? "").trim();
 
-    const result = await dal.execute(insertSql, values) as OkPacketParams;
-    const id = result.insertId!;
-    const newUser = await this.getOneUser(id);
-    return cyber.generateToken(newUser);
+  const randomPassword = cyber.hash(randomUUID());
+
+  const imageName = pictureUrl ? await this.saveRemoteUserImage(pictureUrl) : null;
+
+  const insertSql = `
+    insert into user(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName)
+    values (?,?,?,?,?,?,?,?)
+  `;
+  const values = [safeFirst, safeFamily, email, randomPassword, null, null, null, imageName];
+
+  const result = await dal.execute(insertSql, values) as OkPacketParams;
+  const id = result.insertId!;
+
+  const newUser = await this.getOneUser(id); // includes imageUrl
+  return cyber.generateToken(newUser);
 }
 
 
@@ -128,6 +150,53 @@ public async loginWithGoogle(email: string, firstName?: string, familyName?: str
         if (!user) return null;
         return user.imageName
     }
+
+    private normalizeGoogleImageUrl(url: string): string {
+  // Remove existing size params
+  const base = url.split("=")[0];
+  // Request high resolution (safe max)
+  return `${base}=s1024-c`;
+}
+
+    private async saveRemoteUserImage(url: string): Promise<string> {
+  if (!/^https?:\/\//i.test(url)) {
+    throw new ValidationError("Invalid profile image URL");
+  }
+
+  const dir = this.getUserImageDir();
+  await fs.mkdir(dir, { recursive: true });
+
+  const highResUrl = this.normalizeGoogleImageUrl(url);
+
+  const resp = await axios.get<ArrayBuffer>(highResUrl, {
+    responseType: "arraybuffer",
+    timeout: 15000,
+    maxContentLength: 5 * 1024 * 1024,
+    maxBodyLength: 5 * 1024 * 1024,
+    validateStatus: (s) => s >= 200 && s < 300,
+  });
+
+  const contentType = (resp.headers["content-type"] || "").toString().toLowerCase();
+  if (!contentType.startsWith("image/")) {
+    throw new ValidationError("Google profile image is not an image");
+  }
+
+  const extFromType: Record<string, string> = {
+    "image/jpeg": ".jpg",
+    "image/jpg": ".jpg",
+    "image/png": ".png",
+    "image/webp": ".webp",
+    "image/gif": ".gif",
+  };
+  const ext = extFromType[contentType] ?? ".jpg";
+
+  const fileName = `${randomUUID()}${ext}`;
+  const fullPath = path.join(dir, fileName);
+
+  await fs.writeFile(fullPath, Buffer.from(resp.data));
+  return fileName;
+}
+
 
     public async deleteUser(id: number): Promise<void> {
         const oldImageName = await this.getImageName(id);
