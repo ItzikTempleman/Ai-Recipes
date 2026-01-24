@@ -177,7 +177,26 @@
     max-width: min(100%, 360px);
   }
 
-  .HomeScreenTitleWrapper:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
-    margin: 6px auto 0 !important; 
+  .HomeScreenTitleWrapper.ltr:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
+    margin: 6px 0 0 !important;     /* higher */
+    margin-right: auto !important;  /* push to left */
+    margin-left: 0 !important;
   }
+
+  /* keep RTL mobile as you already have it (optional here) */
+  .HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
+    margin: 6px 0 0 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+    .HomeScreenTitleWrapper.ltr {
+    margin-top: 10px; /* was 48px */
+  }
+
+  /* optional: if you also want the English title to sit higher */
+  .HomeScreenTitleWrapper.ltr .HomeScreenTitle.user {
+    padding-top: 8px; /* was 20px */
+  }
+
+  
 }

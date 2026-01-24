@@ -3,8 +3,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-
-  /* ✅ NEW: anchor for absolute MenuBtn + reserve space so it never overlaps */
   position: relative;
   padding-right: 64px;
 }
@@ -247,10 +245,7 @@
     column-gap: 10px;
     row-gap: 10px;
     padding: 0 10px;
-
-    /* ✅ keep reserved space for the pinned MenuBtn */
     padding-right: 56px;
-
     justify-content: unset;
   }
 
@@ -269,13 +264,6 @@
     display: contents;
   }
 
-  .IdentityBadge {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: start;
-    align-self: start;
-    margin-top: 0;
-  }
 
   .LanguageLink {
     grid-column: 2;
@@ -294,7 +282,6 @@
     margin-top: 0 !important;
   }
 
-  /* ✅ MenuBtn stays pinned right; just align it to row 1 */
   .MenuBtn {
     top: 14px;
     transform: none;
@@ -385,9 +372,29 @@
     justify-self: end;
   }
 
-  .Header.rtl .IdentityBadge {
-    grid-column: 4;
+  .IdentityBadge {
     grid-row: 2;
-    justify-self: end;
+    align-self: start;
+    margin-top: 2px; /* optional small spacing */
+  }
+.Header.rtl .IdentityBadge {
+  position: absolute;
+  right: 10px;     /* same as .MenuBtn right */
+  top: 10px;       /* ✅ higher (smaller = higher) */
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+}
+
+  /* remove the pill margin in mobile so it hugs the pinned position */
+  .Header.rtl .IdentityBadge .Guest,
+  .Header.rtl .IdentityBadge .User {
+    margin: 0;
+  }
+
+  /* remove the desktop margin from the pill in mobile */
+  .IdentityBadge .Guest,
+  .IdentityBadge .User {
+    margin: 0;
   }
 }

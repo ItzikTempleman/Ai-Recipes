@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment } from "@mui/material";
 import { t } from "i18next";
 import { useEffect, useState } from "react";
 import i18n from "../../Utils/i18n";
@@ -31,11 +31,11 @@ export function SetGoogleLoginPassword({
     const [password, setPassword] = useState("");
 
     return (
-        <Dialog open={open} onClose={onLater}>
-   <div className="DialogTitleStack">
-    <div className="DialogTitleMain">{t("auth.login.googlePasswordUpdateTitle")}</div>
-    <div className="DialogTitleSub">{t("auth.login.googlePassword")}</div>
-  </div>
+        <Dialog open={open} onClose={onLater} className={isRTL ? "GooglePassDialog rtl" : "GooglePassDialog"}>
+            <DialogTitle>
+                <h2>{t("auth.login.googlePasswordUpdateTitle")}</h2> 
+                {t("auth.login.googlePassword")}
+            </DialogTitle>
             <DialogContent>
                 <TextField className="InputTextField"
                     autoComplete="password"
@@ -77,7 +77,7 @@ export function SetGoogleLoginPassword({
                     }}>
                 </TextField>
                 <DialogActions>
-                    <Button onClick={onLater}>{t("auth.login.later")}</Button>
+                    <Button className="LaterBtn" onClick={onLater}>{t("auth.login.later")}</Button>
                     <Button className="SubmitNewPasswordBtn" variant="contained" onClick={() => onSubmit(password)}>
                         {t("auth.login.update")}
                     </Button>

@@ -99,14 +99,14 @@
 .AboutScreenBtn p{ margin:0; font-size:14px; font-weight:900; }
 
 
-/* keep About colors as now */
+
 .AboutScreenBtn{
-  background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%);
+  background: linear-gradient(180deg, #75d2f1 0%, #1bbeff 100%) !important;
   box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
               0 2px 0 rgba(186, 185, 185, 0.22) inset;
 }
 
-/* keep Profile colors as your profile/pink */
+
 .ProfileBtn{
   background: linear-gradient(180deg,#ffb700 0%,#ffb700 100%);
   box-shadow: 0 12px 22px rgba(217,70,114,.22),
