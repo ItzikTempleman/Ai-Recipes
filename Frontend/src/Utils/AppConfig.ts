@@ -14,6 +14,8 @@ class AppConfig {
   public readonly userUrl = `${API}/users/`;
   public readonly googleLoginUrl = `${API}/auth/google`;
   
+   public readonly setUserPasswordUrl = `${API}/users/set-password`;
+
   public readonly likeUrl = `${API}/recipes/liked/`;
   public readonly shareTokenUrl = `${API}/recipes/share-token`;
   public readonly sharePdfUrl = `${API}/recipes/share`;

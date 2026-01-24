@@ -31,61 +31,78 @@ class UserService {
         const savedToken = localStorage.getItem("token");
         if (!savedToken) return;
         try {
-            const decoded = jwtDecode<DecodedToken>(savedToken);
-            const user = decoded.user;
-            if ((decoded.exp * 1000) > Date.now() && user) {
-                store.dispatch(userSlice.actions.registrationAndLogin(user));
-                this.logoutAfterTimeout(savedToken);
-            } else {
-                this.logout()
-            }
+this.applyToken(savedToken);
         }
         catch (err) {
             this.logout();
         }
     }
 
-    public async loginOrRegister(data: | { login: Credentials; register?: never } | { register: User; login?: never }): Promise<void> {
-        try {
-            const isLogin = "login" in data;
-            const url = isLogin ? appConfig.loginUrl : appConfig.registerUrl;
-            const body = isLogin ? data.login : data.register;
-            const response = await axios.post<string>(url, body);
-            const token: string = response.data;
-            const decoded = jwtDecode<DecodedToken>(token);
-            const dbUser = decoded.user;
-            if ((decoded.exp * 1000) > Date.now() && dbUser) {
-                store.dispatch(userSlice.actions.registrationAndLogin(dbUser));
-                localStorage.setItem("token", token);
-                this.logoutAfterTimeout(token);
-            } else {
-                this.logout();
-            }
-        } catch (err) {
-            this.logout();
-            throw err;
-        }
+
+private applyToken(token: string): User | null {
+  try {
+    const decoded = jwtDecode<DecodedToken>(token);
+    const dbUser = decoded.user;
+
+    if (decoded.exp * 1000 > Date.now() && dbUser) {
+      store.dispatch(userSlice.actions.registrationAndLogin(dbUser));
+      localStorage.setItem("token", token);
+      this.logoutAfterTimeout(token);
+      return dbUser;
     }
 
-    public async  loginWithGoogle(credential: string): Promise<void> {
+    this.logout();
+    return null;
+  } catch {
+    this.logout();
+    return null;
+  }
+}
+
+public async loginOrRegister(
+  data: { login: Credentials; register?: never } | { register: User; login?: never }
+): Promise<void> {
+  try {
+    const isLogin = "login" in data;
+    const url = isLogin ? appConfig.loginUrl : appConfig.registerUrl;
+    const body = isLogin ? data.login : data.register;
+
+    const response = await axios.post<string>(url, body);
+    const token: string = response.data;
+
+    this.applyToken(token);
+  } catch (err) {
+    this.logout();
+    throw err; 
+  }
+}
+
+
+public async loginWithGoogle(credential: string): Promise<User | null> {
     try {
         const response = await axios.post<string>(appConfig.googleLoginUrl, { credential });
         const token: string = response.data;
-
-        const decoded = jwtDecode<DecodedToken>(token);
-        const dbUser = decoded.user;
-
-        if ((decoded.exp * 1000) > Date.now() && dbUser) {
-            store.dispatch(userSlice.actions.registrationAndLogin(dbUser));
-            localStorage.setItem("token", token);
-            this.logoutAfterTimeout(token);
-        } else {
-            this.logout();
-        }
+        return this.applyToken(token);
     } catch (err) {
         this.logout();
         throw err;
     }
+}
+
+public async setLoggedInUserPassword(password: string): Promise<User> {
+    const token = localStorage.getItem("token") ?? "";
+    if (!token) throw new Error("Not logged in");
+
+    const response = await axios.post<{ token: string }>(
+        appConfig.setUserPasswordUrl,
+        { password, confirm: password },
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    const newToken = response.data.token;
+    const user = this.applyToken(newToken);
+    if (!user) throw new Error("Failed to apply updated token");
+    return user;
 }
 
     public logout(): void {
@@ -98,15 +115,15 @@ class UserService {
         localStorage.removeItem("token");
     }
 
-    public async updateUserInfo(userId: number, formData: FormData): Promise<void> {
-        const response = await axios.put<string>(appConfig.userUrl + userId, formData, { headers: { "Content-Type": "multipart/form-data" } });
-        const token = response.data;
-        localStorage.setItem("token", token);
-        const decoded = jwtDecode<DecodedToken>(token);
-         const dbUser = decoded.user;
-        store.dispatch(userSlice.actions.updateUserProfile(dbUser));
-        this.logoutAfterTimeout(token);
-    }
+public async updateUserInfo(userId: number, formData: FormData): Promise<void> {
+  const response = await axios.put<string>(
+    appConfig.userUrl + userId,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+
+  this.applyToken(response.data);
+}
 
     public async deleteAccount(id: number): Promise<void> {
         await axios.delete(appConfig.userUrl + id);

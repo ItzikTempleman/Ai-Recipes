@@ -11,6 +11,7 @@ import { useTitle } from "../../Utils/Utils";
 import { notify } from "../../Utils/Notify";
 import { userService } from "../../Services/UserService";
 import { GoogleLogin } from "@react-oauth/google";
+import { SetGoogleLoginPassword } from "../SetGoogleLoginPassword/SetGoogleLoginPassword";
 
 export function LoginScreen() {
   useTitle("Login");
@@ -34,6 +35,8 @@ export function LoginScreen() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [openSetPassword, setOpenSetPassword] = useState(false);
+
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })
 
   const navigate = useNavigate();
@@ -51,7 +54,7 @@ export function LoginScreen() {
   return (
     <div className="LoginScreen">
       <form className="LoginForm" onSubmit={handleSubmit(send)}>
-         <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
+        <ArrowBackIosNew className="BackIcon" onClick={returnToLogin} />
 
         <h2 className="LoginScreenTitle">{t("auth.login.title")}</h2>
 
@@ -93,7 +96,7 @@ export function LoginScreen() {
           label={t("auth.login.passwordLabel")}
           placeholder={t("auth.login.passwordPlaceholder")}
           fullWidth
-            size="small"
+          size="small"
           type={
             showPassword ? "text" : "password"
           }{
@@ -153,22 +156,45 @@ export function LoginScreen() {
         </NavLink>
 
         <div className="LoginWithFacebookAndGoogle">
-  <div className="ResetGoogle">
-    <GoogleLogin
-  
-      onSuccess={async (res) => {
-        try {
-          if (!res.credential) throw new Error("Missing Google credential");
-          await userService.loginWithGoogle(res.credential);
-          navigate("/home");
-        } catch (err) {
-          notify.error(err);
-        }
-      }}
-      onError={() => notify.error("Google login failed")}
-      useOneTap={false}
-    />
-  </div>
+          <div className="ResetGoogle">
+
+
+            <GoogleLogin
+
+              onSuccess={async (res) => {
+                try {
+                  if (!res.credential) throw new Error("Missing Google credential");
+                  const user = await userService.loginWithGoogle(res.credential);
+                  if (user?.needsPasswordSetup) {
+                    setOpenSetPassword(true);
+                  } else {
+                    navigate("/home");
+                  }
+                } catch (err) {
+                  notify.error(err);
+                }
+              }}
+              onError={() => notify.error("Google login failed")}
+              useOneTap={false}
+            />
+
+            <SetGoogleLoginPassword
+              open={openSetPassword}
+              onLater={() => {
+                setOpenSetPassword(false);
+                navigate("/home");
+              }}
+              onSubmit={async (password: string) => {
+                try {
+                  await userService.setLoggedInUserPassword(password);
+                  setOpenSetPassword(false);
+                  navigate("/home");
+                } catch (err) {
+                  notify.error(err);
+                }
+              }}
+            />
+          </div>
 
         </div>
 
