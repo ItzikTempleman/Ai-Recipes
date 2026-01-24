@@ -3,7 +3,7 @@ import { t } from "i18next";
 import { useEffect, useState } from "react";
 import i18n from "../../Utils/i18n";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import "./SetGoogleLoginPassword.css";
 
 export function SetGoogleLoginPassword({
     open,
@@ -74,7 +74,7 @@ export function SetGoogleLoginPassword({
                 </TextField>
                 <DialogActions>
                     <Button onClick={onLater}>{t("auth.login.later")}</Button>
-                    <Button variant="contained" onClick={() => onSubmit(password)}>
+                    <Button className="SubmitNewPasswordBtn" variant="contained" onClick={() => onSubmit(password)}>
                         {t("auth.login.update")}
                     </Button>
                 </DialogActions>
