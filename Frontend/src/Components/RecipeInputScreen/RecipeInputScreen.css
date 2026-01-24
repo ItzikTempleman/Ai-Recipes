@@ -104,7 +104,7 @@
 }
 
 .ProgressBar .MuiCircularProgress-root {
-  color: #75b8eb !important;
+  color: #383838 !important;
 }
 
 .GenerateImageSelector {
@@ -124,7 +124,7 @@
 .GenerateImageSelector svg {
   width: 22px;
   height: 22px;
-  color: #4eb2ff;
+  color: #1bbeff;
 }
 
 .RecipeTextField .MuiOutlinedInput-root {
@@ -224,7 +224,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: 8px !important;
-  background: #48a9f4 !important;
+  background: #1bbeff !important;
 }
 
 .GenerateRecipeBtn:hover {

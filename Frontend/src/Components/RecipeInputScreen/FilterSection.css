@@ -69,7 +69,7 @@
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
-  background:#48a9f4; 
+  background:#1bbeff; 
   color: #ffffff;
 }
 
@@ -98,12 +98,12 @@
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible{
- background: #48a9f4;;
+ background: #1bbeff;;
   color: #ffffff !important;
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root:active{
-  background: #48a9f4;;
+  background: #1bbeff;;
 }
 
 @media (max-width: 600px){

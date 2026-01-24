@@ -172,10 +172,6 @@
   }
 
 
-  .HomeScreen .RecipeList > * {
-    width: min(100%, 360px);
-    max-width: min(100%, 360px);
-  }
 
   .HomeScreenTitleWrapper.ltr:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
     margin: 6px 0 0 !important;     /* higher */

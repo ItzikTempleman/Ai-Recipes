@@ -1,11 +1,8 @@
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import { useTitle } from "../../Utils/Utils";
 import { AppState } from "../../Redux/Store";
-
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
-
 import "./LikesScreen.css";
 import { recipeService } from "../../Services/RecipeService";
 import { useEffect } from "react";
