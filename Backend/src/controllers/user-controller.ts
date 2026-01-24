@@ -6,9 +6,13 @@ import { fileSaver } from "uploaded-file-saver";
 import { AuthorizationError } from "../models/client-errors";
 import { appConfig } from "../utils/app-config";
 import { OAuth2Client } from "google-auth-library";
+import { verificationMiddleware } from "../middleware/verification-middleware";
+
+
 
 class UserController {
 
+    
     public readonly router = express.Router();
 
     public constructor() {
@@ -20,6 +24,7 @@ class UserController {
         this.router.delete("/users/:id", this.deleteUser);
         this.router.post("/auth/google", this.googleLogin);
         this.router.get("/users/images/:imageName", this.getImage);
+        this.router.post("/users/set-password",verificationMiddleware.verifyLoggedIn,this.setPassword);
     }
 
     private async register(request: Request, response: Response) {
@@ -105,6 +110,15 @@ const token = await userService.loginWithGoogle(
         await userService.deleteUser(id);
         response.sendStatus(StatusCode.NoContent);
     }
+
+    public async setPassword(request: Request, response: Response){
+ const userId = (request as any).user.id;
+  const { password, confirm } = request.body as { password?: string; confirm?: string };
+    const token = await userService.setPasswordForLoggedInUser( userId, password || "", confirm || "" );
+  response.json({ token });
+}
+    
+
 }
 
 export const userController = new UserController();

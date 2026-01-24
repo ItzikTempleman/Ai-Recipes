@@ -11,8 +11,6 @@ import { useTitle } from "../../Utils/Utils";
 import { notify } from "../../Utils/Notify";
 import { userService } from "../../Services/UserService";
 import { GoogleLogin } from "@react-oauth/google";
-// import googleIcon from "../../Assets/images/google.png";
-// import facebookIcon from "../../Assets/images/facebook.png";
 
 export function LoginScreen() {
   useTitle("Login");
