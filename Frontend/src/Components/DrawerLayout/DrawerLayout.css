@@ -1,7 +1,6 @@
 .MuiDrawer-paper {
   width: 240px;
-  height: fit-content !important;
-padding-bottom: 12px;
+  height: 450px !important;
   margin: 8px;
   border-radius: 8px;
   background: rgb(255, 255, 255) !important;
@@ -119,7 +118,7 @@ padding-bottom: 12px;
 
 
 .ProfileBtn {
-  background: linear-gradient(180deg, #75d2f1 0%, #1bbeff 100%) !important;
+  background:  #1bbeff  ;
   box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
     0 2px 0 rgba(186, 185, 185, 0.22) inset;
 }
