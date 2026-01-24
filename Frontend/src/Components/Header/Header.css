@@ -198,7 +198,6 @@
   padding-left: 6px;
 }
 
-/* ✅ NEW: MenuBtn pinned to the far RIGHT always (LTR/RTL, desktop/mobile) */
 .MenuBtn {
   position: absolute;
   right: 12px;
@@ -225,18 +224,20 @@
 
 .Guest,
 .User {
-  box-shadow: 0 18px 34px rgba(243, 164, 0, 0.3), 0 10px 18px rgba(243, 164, 0, 0.22),
-    0 2px 0 rgba(255, 255, 255, 0.22) inset;
   font-size: 18px;
   font-weight: 800;
   color: #ffffff;
-  background: linear-gradient(180deg, #75d2f1 0%, #1bbeff 100%);
+  background: #48a9f4 ;
   border-radius: 8px;
   padding: 6px 14px;
   margin: 4px;
   cursor: pointer;
 }
 
+.Guest{
+  background: #80807f !important;
+    cursor: default !important;
+}
 @media (max-width: 670px) {
   .Header {
     display: grid;

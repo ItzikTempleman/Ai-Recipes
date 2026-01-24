@@ -377,9 +377,14 @@ TOTAL PROTEIN CALCULATION (CRITICAL — MUST FOLLOW):
   - For mixed dishes (fish cakes + sauce), "totalProtein" should usually be lower than plain fish.
   - If the recipe includes sauce and binders, values like 8–14 g/100g are common; 20 g/100g is suspicious unless it is nearly pure fish.
 
-- "totalSugar":
-  - The TOTAL amount of **ADDED SUGAR** in the entire recipe, measured in **TABLESPOONS**.
-  ...
+"totalSugar":
+- The TOTAL SUGAR in the entire recipe (added + naturally occurring), in grams.
+- Estimate realistically based on ingredients:
+  - flour: ~1 g sugar per cup (approx)
+  - tomato sauce: often 4–10 g sugar per ½ cup depending on tomatoes
+  - vegetables: small natural sugars
+- If SugarRestriction = 2 (NONE): added sugar must be 0, but total sugar can still be > 0 due to natural sugars.
+
   - If SugarRestriction = 0 (DEFAULT):
       • Use and count added sugar normally when the dish requires it.
       • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
@@ -447,6 +452,14 @@ UNIT SELECTION RULE (CRITICAL — AVOID UNREALISTIC UNITS):
 - Do NOT forget to include in the "ingredients" array any item that is used in the instructions (including water, oil, salt, spices, etc.).
 - Before returning the JSON, mentally cross-check that the "ingredients" list and "instructions" refer to the exact same set of ingredients.
 
+COMMERCIAL / BRANDED PRODUCT RULE (CRITICAL):
+- If the query is a branded or mass-produced commercial product (e.g., "Mike and Ike", "Oreo", "Coca-Cola"):
+  - It is STILL a real food. Do NOT mark it as fictional.
+  - Do NOT output empty ingredients or empty instructions.
+  - You MUST provide a realistic "homemade copycat" recipe that approximates the taste/texture using standard home ingredients and tools.
+  - The title MUST NOT use the brand name; rename it to a generic equivalent (e.g., "Chewy Fruit Candy", "Chocolate Sandwich Cookies").
+  - In the description, briefly say it is a homemade copycat approximation (one short sentence).
+  - "popularity" must be high if the product is widely known (e.g., 7–10).
 
 CRITICAL SANITY & SAFETY RULES (MUST FOLLOW):
 - Ingredient field purity:

@@ -1,13 +1,12 @@
 .MuiDrawer-paper {
   width: 240px;
   height: fit-content !important;
-  max-height: 100vh !important;
-  overflow-y: auto;
+padding-bottom: 12px;
   margin: 8px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.825) !important;
+  background: rgb(255, 255, 255) !important;
   box-shadow: none !important;
-    box-shadow: 0 18px 34px rgba(243, 164, 0, 0.3), 0 10px 18px rgba(243, 164, 0, 0.22),
+    box-shadow: 0 18px 34px rgba(245, 194, 92, 0.248), 0 10px 18px rgba(243, 164, 0, 0.22),
     0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 

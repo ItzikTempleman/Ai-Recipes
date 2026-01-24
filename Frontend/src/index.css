@@ -1,12 +1,13 @@
-html, body , #root{
+html, body {
   margin: 0;
   padding: 0;
- overflow-x: hidden;  
+ height: 100%;
 }
 
 #root {
-  min-height: 100vh; 
   text-align: center;
+   min-height: 100%;
+  min-height: 100dvh;
 }
 
 .notyf__toast {

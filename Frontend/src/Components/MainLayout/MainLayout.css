@@ -1,5 +1,6 @@
 .MainLayout {
-  min-height: 100vh;
+   min-height: 100%;
+  min-height: 100dvh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -11,8 +12,7 @@
     radial-gradient(900px 520px at 50% 100%, rgba(29, 168, 255, 0.28) 0%, rgba(255, 195, 120, 0) 62%),
     linear-gradient(180deg, #d2cbf9 0%, #ffffff 42%, #4cb3fd 100%); */
   position: relative;
-  overflow-x: clip;    /* better than hidden for this use */
-  overflow-y: visible;
+  overflow: visible;
   isolation: isolate; 
 }
 
@@ -57,7 +57,7 @@ header {
 main {
   grid-row: 2;
   grid-column: 1;
-  overflow-y: auto;
+  overflow-y: visible;
   min-height: 0;
   padding: 0;
   box-sizing: border-box;

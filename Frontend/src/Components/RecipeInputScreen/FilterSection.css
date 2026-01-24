@@ -42,7 +42,7 @@
     width: 50%;
     border-radius: 8px;
     background: #ffffff;
-    color: #75b8eb;
+    color: #666666;
     font-weight: 800;
     gap: 10px;
 }
@@ -69,7 +69,7 @@
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
-  background: rgb(145, 202, 229);
+  background:#48a9f4; 
   color: #ffffff;
 }
 
@@ -98,12 +98,12 @@
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible{
- background: #75b8eb;
+ background: #48a9f4;;
   color: #ffffff !important;
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root:active{
-  background: #75b8eb;
+  background: #48a9f4;;
 }
 
 @media (max-width: 600px){
