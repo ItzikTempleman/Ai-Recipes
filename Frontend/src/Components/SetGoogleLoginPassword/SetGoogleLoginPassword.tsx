@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography, IconButton, InputAdornment } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment } from "@mui/material";
 import { t } from "i18next";
 import { useEffect, useState } from "react";
 import i18n from "../../Utils/i18n";
