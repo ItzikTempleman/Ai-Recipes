@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment } from "@mui/material";
 import { t } from "i18next";
 import { useEffect, useState } from "react";
 import i18n from "../../Utils/i18n";
@@ -32,7 +32,10 @@ export function SetGoogleLoginPassword({
 
     return (
         <Dialog open={open} onClose={onLater}>
-            <DialogTitle>{t("auth.login.googlePassword")}</DialogTitle>
+   <div className="DialogTitleStack">
+    <div className="DialogTitleMain">{t("auth.login.googlePasswordUpdateTitle")}</div>
+    <div className="DialogTitleSub">{t("auth.login.googlePassword")}</div>
+  </div>
             <DialogContent>
                 <TextField className="InputTextField"
                     autoComplete="password"
@@ -44,32 +47,33 @@ export function SetGoogleLoginPassword({
                         showPassword ? "text" : "password"
                     }
                     onChange={(e) => setPassword(e.target.value)}
-                    InputProps={{...(isRTL ? {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <IconButton
-                                            edge="start"
-                                            tabIndex={-1}
-                                            onClick={() => setShowPassword((show) => !show)}
-                                            aria-label={showPassword ? "Hide password" : "Show password"} >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
-                            } : {
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            edge="end"
-                                            tabIndex={-1}
-                                            onClick={() => setShowPassword((show) => !show)}
-                                            aria-label={showPassword ? "Hide password" : "Show password"}
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
-                            })
+                    InputProps={{
+                        ...(isRTL ? {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <IconButton
+                                        edge="start"
+                                        tabIndex={-1}
+                                        onClick={() => setShowPassword((show) => !show)}
+                                        aria-label={showPassword ? "Hide password" : "Show password"} >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        } : {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        edge="end"
+                                        tabIndex={-1}
+                                        onClick={() => setShowPassword((show) => !show)}
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        })
                     }}>
                 </TextField>
                 <DialogActions>
