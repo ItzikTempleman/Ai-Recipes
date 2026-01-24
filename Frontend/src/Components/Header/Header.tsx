@@ -74,49 +74,51 @@ export function Header() {
         )}
       </div>
 
-<div className="HeaderRight">
-  <div className="IdentityBadge">
-    {isGuest ? (
-      <div className="Guest">{t("homeScreen.guest")}</div>
-    ) : (
-<div className="User">
-  {user.firstName} <span className="FamilyName">{user.familyName}</span>
-</div>
-    )}
-  </div>
+      <div className="HeaderRight">
+        <div className="IdentityBadge">
+          {isGuest ? (
+            <div className="Guest">{t("homeScreen.guest")}</div>
+          ) : (
+            <div className="User" onClick={() => {
+              navigate("/profile");
+            }}>
+              {user.firstName} <span className="FamilyName">{user.familyName}</span>
+            </div>
+          )}
+        </div>
 
-  <div className="LanguageLink">
-    <LanguageIcon />
-    <select
-      className="LanguageSelector"
-      value={initialLanguage}
-      onChange={(e) => setLang(e.target.value as Language)}
-    >
-      <option value="en">{t("drawer.english")}</option>
-      <option value="he">{t("drawer.hebrew")}</option>
-    </select>
-  </div>
+        <div className="LanguageLink">
+          <LanguageIcon />
+          <select
+            className="LanguageSelector"
+            value={initialLanguage}
+            onChange={(e) => setLang(e.target.value as Language)}
+          >
+            <option value="en">{t("drawer.english")}</option>
+            <option value="he">{t("drawer.hebrew")}</option>
+          </select>
+        </div>
 
-  {!isGuest ? (
-    <div
-      className="LogoutBtn"
-      onClick={() => {
-        navigate("/home");
-        userService.logout();
-      }}
-    >
-      <h3>{t("drawer.logout")}</h3>
-    </div>
-  ) : (
-    <div className="LoginBtn" onClick={() => navigate("/login")}>
-      <h3>{t("drawer.login")}</h3>
-    </div>
-  )}
+        {!isGuest ? (
+          <div
+            className="LogoutBtn"
+            onClick={() => {
+              navigate("/home");
+              userService.logout();
+            }}
+          >
+            <h3>{t("drawer.logout")}</h3>
+          </div>
+        ) : (
+          <div className="LoginBtn" onClick={() => navigate("/login")}>
+            <h3>{t("drawer.login")}</h3>
+          </div>
+        )}
 
-  <div className="MenuBtn">
-    <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
-  </div>
-</div>
+        <div className="MenuBtn">
+          <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
+        </div>
+      </div>
 
     </div>
   );

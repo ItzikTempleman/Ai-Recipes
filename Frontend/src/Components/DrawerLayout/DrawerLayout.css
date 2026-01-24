@@ -1,8 +1,14 @@
 .MuiDrawer-paper {
   width: 240px;
-  height: 100vh;
-    background:  rgb(255, 255, 255)!important;
-    box-shadow: none !important;
+  height: fit-content !important;
+  max-height: 100vh !important;
+  overflow-y: auto;
+  margin: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.825) !important;
+  box-shadow: none !important;
+    box-shadow: 0 18px 34px rgba(243, 164, 0, 0.3), 0 10px 18px rgba(243, 164, 0, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .DrawerMainContainer {
@@ -11,7 +17,7 @@
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .DrawerContent {
@@ -53,7 +59,7 @@
 
 
 .ProfileBtn,
-.AboutScreenBtn{
+.AboutScreenBtn {
   width: calc(100% - 24px);
   margin-left: 12px;
   margin-right: 12px;
@@ -72,50 +78,56 @@
   transition: filter 120ms ease, transform 120ms ease;
 }
 
-.DrawerContent.LoggedOut .AboutScreenBtn{
+.DrawerContent.LoggedOut .AboutScreenBtn {
 
   margin-bottom: auto;
 }
 
-.ProfileBtn{
+.ProfileBtn {
   margin-top: 10px;
 }
 
 
-.AboutScreenBtn{
-  margin-top: 12px;     
-  margin-bottom: 16px; 
+.AboutScreenBtn {
+  margin-top: 12px;
+  margin-bottom: 16px;
 }
+
 .ProfileBtn:hover,
-.AboutScreenBtn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+.AboutScreenBtn:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
 
 .ProfileBtn:active,
-.AboutScreenBtn:active{ transform: translateY(0px); }
+.AboutScreenBtn:active {
+  transform: translateY(0px);
+}
 
 .ProfileBtn svg,
-.AboutScreenBtn svg{ color:#fff; font-size:22px; }
+.AboutScreenBtn svg {
+  color: #fff;
+  font-size: 22px;
+}
 
 .ProfileBtn p,
-.AboutScreenBtn p{ margin:0; font-size:14px; font-weight:900; }
+.AboutScreenBtn p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+}
 
 
 
-.AboutScreenBtn{
+.ProfileBtn {
   background: linear-gradient(180deg, #75d2f1 0%, #1bbeff 100%) !important;
   box-shadow: 0 12px 22px rgba(106, 77, 255, .22),
-              0 2px 0 rgba(186, 185, 185, 0.22) inset;
+    0 2px 0 rgba(186, 185, 185, 0.22) inset;
 }
 
 
-.ProfileBtn{
-  background: linear-gradient(180deg,#ffb700 0%,#ffb700 100%);
-  box-shadow: 0 12px 22px rgba(217,70,114,.22),
-              0 2px 0 rgba(255,255,255,.22) inset;
+.AboutScreenBtn {
+  background: linear-gradient(180deg, #ffb700 0%, #ffb700 100%);
+  box-shadow: 0 12px 22px rgba(217, 70, 114, .22),
+    0 2px 0 rgba(255, 255, 255, .22) inset;
 }
-
-
-
-
-
-
-

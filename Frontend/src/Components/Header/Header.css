@@ -234,6 +234,7 @@
   border-radius: 8px;
   padding: 6px 14px;
   margin: 4px;
+  cursor: pointer;
 }
 
 @media (max-width: 670px) {
@@ -396,5 +397,6 @@
   .IdentityBadge .Guest,
   .IdentityBadge .User {
     margin: 0;
+    cursor: pointer;
   }
 }
