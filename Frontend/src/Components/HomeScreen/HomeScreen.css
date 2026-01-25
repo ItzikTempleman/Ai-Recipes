@@ -190,7 +190,7 @@
   }
 
   /* optional: if you also want the English title to sit higher */
-  .HomeScreenTitleWrapper.ltr .HomeScreenTitle.user {
+ .HomeScreenTitle.user {
     padding-top: 8px; /* was 20px */
   }
 

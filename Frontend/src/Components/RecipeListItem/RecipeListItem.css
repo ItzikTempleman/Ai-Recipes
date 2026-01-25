@@ -26,15 +26,6 @@
   transform: translateY(-2px);
 }
 
-.LikesScreenWrapper.rtl .RecipeListItem .CardImage {
-  left: auto;
-  right: -20px;
-}
-
-.LikesScreenWrapper.rtl .RecipeListItem .TopRightActions {
-  right: auto;
-  left: 10px;
-}
 
 .RecipeListItem:hover::after {
   border-color: rgba(40, 179, 244, 0.32);

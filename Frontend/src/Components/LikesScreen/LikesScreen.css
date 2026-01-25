@@ -24,11 +24,18 @@
   padding-inline-end: var(--edge-pad, 34px) !important;
   scroll-padding-inline-end: var(--edge-pad, 34px);
 }
-
-
-.LikesScreenWrapper:not(:has(.HomeScreenTitle.user)) {
+.LikesScreenWrapper:has(.HomeScreenTitle) {
+  align-items: flex-start;
+  gap: 22px;
+}
+.LikesScreenWrapper.rtl:has(.HomeScreenTitle) {
+  align-items: flex-end;
+  gap: 22px;
+}
+.LikesScreenWrapper:not(:has(.HomeScreenTitle)) {
   align-items: center;
 }
+
 
 .LikesScreenTitle {
   box-sizing: border-box;

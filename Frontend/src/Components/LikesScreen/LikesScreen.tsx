@@ -37,23 +37,19 @@ export function LikesScreen() {
   );
 
   const likedList = list.filter((r) => r.id != null && likedIds.has(r.id));
-
-  return (
-    <div className="LikesScreen">
-      <div className={`LikesScreenWrapper ${isRTL ? "rtl" : "ltr"}`}>
-        <h3 className="LikeScreenTitle">{t("likeScreen.likedTitle")}</h3>
-
-        <div className="RecipeList">
-          {user && likedList.length > 0
-            ? likedList.map((recipe) => (
-                <RecipeListItem
-                  key={recipe.id ?? recipe.title}
-                  recipe={recipe}
-                />
-              ))
-            : null}
-        </div>
-      </div>
+return (
+  <div className="LikesScreen">
+    <div className={`LikesScreenWrapper ${isRTL ? "rtl" : "ltr"}`}>
+      <h3 className="HomeScreenTitle user">{t("likeScreen.likedTitle")}</h3>
     </div>
-  );
+
+    <div className="RecipeList">
+      {user && likedList.length > 0
+        ? likedList.map((recipe) => (
+            <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
+          ))
+        : null}
+    </div>
+  </div>
+);
 }
