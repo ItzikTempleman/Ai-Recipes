@@ -1,20 +1,65 @@
+/* MainLayout.css */
+
+/* Hard clamp: never allow horizontal overflow */
 .MainLayout {
-   min-height: 100%;
   min-height: 100dvh;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+
   display: grid;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 1fr;
-  /* background:
+  grid-template-columns: minmax(0, 1fr); /* critical: prevents intrinsic overflow */
+  position: relative;
+  isolation: isolate;
+
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: hidden; /* absolute seatbelt */
+  overflow-y: visible;
+
+  box-sizing: border-box;
+}
+
+/* Ensure children can shrink inside grid/flex contexts */
+.MainLayout > * {
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+
+  min-width: 0;  /* critical: prevents long content from forcing width */
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+header {
+  grid-row: 1;
+  grid-column: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden; /* header content often causes jiggle */
+  box-sizing: border-box;
+}
+
+main {
+  grid-row: 2;
+  grid-column: 1;
+
+  min-height: 0;
+  min-width: 0;       /* critical */
+  max-width: 100%;
+  width: 100%;
+
+  padding: 0;
+  box-sizing: border-box;
+
+  overflow-y: visible;
+  overflow-x: hidden; /* clamp anything that sticks out */
+}
+
+/* background:
     radial-gradient(900px 420px at 50% 0%, rgba(163, 156, 255, 0.35) 0%, rgba(163, 156, 255, 0) 60%),
     radial-gradient(900px 520px at 50% 100%, rgba(29, 168, 255, 0.28) 0%, rgba(255, 195, 120, 0) 62%),
     linear-gradient(180deg, #d2cbf9 0%, #ffffff 42%, #4cb3fd 100%); */
-  position: relative;
-  overflow: visible;
-  isolation: isolate; 
-}
 
 /* .MainLayout::before {
   content: "";
@@ -42,24 +87,3 @@
   opacity: 0.18;
   z-index: 0; 
 } */
-
-.MainLayout > * {
-  position: relative;
- 
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-header {
-  grid-row: 1;
-  grid-column: 1;
-}
-
-main {
-  grid-row: 2;
-  grid-column: 1;
-  overflow-y: visible;
-  min-height: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
