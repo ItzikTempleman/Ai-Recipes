@@ -138,9 +138,22 @@
 
 .IdentityBadge {
   display: flex;
+  width: fit-content;
   align-items: center;
 }
 
+.IdentityBadge { display: inline-flex; } /* optional: shrink-wrap */
+.IdentityBadge .Guest,
+.IdentityBadge .User { margin: 0; }      /* key fix */
+
+
+.IdentityBadge:hover{
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 8px;
+    box-shadow: 0 24px 44px rgba(243, 164, 0, 0.34), 0 12px 22px rgba(0, 183, 255, 0.497),
+    0 2px 0 rgba(255, 255, 255, 0.472) inset !important;
+}
 .Header.rtl .HeaderRight {
   flex-direction: row-reverse;
 }

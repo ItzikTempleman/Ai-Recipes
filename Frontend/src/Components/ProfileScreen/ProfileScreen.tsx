@@ -9,6 +9,8 @@ import { getAge, showDate, useTitle } from "../../Utils/Utils";
 import { User } from "../../Models/UserModel";
 import { userService } from "../../Services/UserService";
 import { notify } from "../../Utils/Notify";
+import { useNavigate } from "react-router-dom";
+
 
 export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
@@ -17,7 +19,7 @@ export function ProfileScreen() {
 
   const { t } = useTranslation();
 
-  // ---- minimal-safe optional handling ----
+  const navigate= useNavigate()
   const rawBirthDate = user.birthDate ?? "";
   const birthDateStr = rawBirthDate ? showDate(rawBirthDate) : "";
   const isoDate = rawBirthDate ? rawBirthDate.split("T")[0] : "";
@@ -85,6 +87,13 @@ export function ProfileScreen() {
       <p className="ProfileScreenTitle">{t("profile.title")}</p>
 
       <div className="ProfileSection">
+  <div
+    className="ReturnBtn" 
+    onClick={() => navigate("/home")}
+  >
+    ❌
+  </div>
+            
         <div className="EditProfileDiv">
           <Button
             className="EditProfileBtn"
@@ -200,7 +209,6 @@ export function ProfileScreen() {
           {user.firstName} {user.familyName}
         </h3>
 
-        {/* ✅ show age/gender only if at least one exists */}
         {(ageText || genderText) && (
           <p>{[ageText, genderText].filter(Boolean).join(", ")}</p>
         )}
@@ -208,20 +216,17 @@ export function ProfileScreen() {
         <div className="divider" />
 
         <p>
-          {t("profile.emailPrefix")} {user.email}
+         {user.email}
         </p>
 
-        {/* ✅ hide phone line if missing */}
         {user.phoneNumber && user.phoneNumber.trim() !== "" && (
           <p>
-            {t("profile.phonePrefix")} {user.phoneNumber}
+    {user.phoneNumber}
           </p>
         )}
-
-        {/* ✅ hide birthDate line if missing */}
         {birthDateStr && (
           <p>
-            {t("profile.birthDatePrefix")} {birthDateStr}
+         {birthDateStr}
           </p>
         )}
       </div>
