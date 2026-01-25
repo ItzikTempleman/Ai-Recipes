@@ -24,25 +24,29 @@
   padding-inline-end: var(--edge-pad, 34px) !important;
   scroll-padding-inline-end: var(--edge-pad, 34px);
 }
-.LikesScreenWrapper:has(.HomeScreenTitle) {
-  align-items: flex-start;
-  gap: 22px;
-}
-.LikesScreenWrapper.rtl:has(.HomeScreenTitle) {
-  align-items: flex-end;
-  gap: 22px;
-}
-.LikesScreenWrapper:not(:has(.HomeScreenTitle)) {
-  align-items: center;
+.LikesScreenWrapper {
+  align-items: stretch; /* important: stop centering children */
 }
 
+/* Title: default (LTR) */
+.LikesScreenWrapper .HomeScreenTitle.user {
+  align-self: flex-start;
+}
+
+/* Title: RTL */
+.LikesScreenWrapper.rtl .HomeScreenTitle.user {
+  align-self: flex-end;
+  text-align: right;
+}
 
 .LikesScreenTitle {
   box-sizing: border-box;
   width: 100%;
 }
 
-
+.LikesScreenWrapper.rtl .RecipeList {
+  justify-content: end;
+}
 .LikesScreen .RecipeList {
   width: 100%;
   max-width: 1480px;
@@ -53,6 +57,7 @@
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
   overflow: visible !important;
+   justify-content: start;
 }
 
 .LikesScreen .RecipeList > * {
