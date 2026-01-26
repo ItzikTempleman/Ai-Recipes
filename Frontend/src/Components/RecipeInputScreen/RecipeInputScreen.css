@@ -127,8 +127,7 @@
   border-radius: 8px;
   background: rgba(255, 255, 255, .88);
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, .06), inset 0 1px 0 rgba(255, 255, 255, .75);
-  transition: .15s ease;
+   box-shadow: 0 10px 24px rgba(102, 102, 102, 0.75), inset 0 1px 0 rgba(255, 255, 255, .75);
 }
 
 .RecipeTextField .MuiOutlinedInput-notchedOutline {
