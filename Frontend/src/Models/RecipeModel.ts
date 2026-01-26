@@ -56,6 +56,7 @@ export type GeneratedRecipeData = {
 export type RecipeState = {
     items: RecipeModel[];
     current?: RecipeModel | null;
+    guestStash?: RecipeModel | null; 
     loading: boolean;
     error?: string;
 }

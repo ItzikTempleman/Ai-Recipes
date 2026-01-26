@@ -35,6 +35,8 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
   const flag = getCountryFlag(recipe.countryOfOrigin);
+
+  
   const handleLoadImage = async () => {
     try {
       if (!loadImage || isImageLoading) return;

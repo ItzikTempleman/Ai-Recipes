@@ -14,6 +14,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddIcon from "@mui/icons-material/Add";
+import { useDispatch } from "react-redux";
+import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -21,13 +23,29 @@ export function Header() {
   const { initialLanguage, setLang, isRtl } = useLanguage();
   const user = useSelector((state: AppState) => state.user);
   const currentRecipe = useSelector((state: AppState) => state.recipes.current);
+  const guestStash = useSelector((state: AppState) => state.recipes.guestStash);
   const isGuest = !user;
   const location = useLocation();
-  const isOnRecipeInputScreen =
-    location.pathname === "/generate" || location.pathname.startsWith("/generate/");
-  const hasGeneratedRecipe = Boolean(currentRecipe?.title);
-  const showUndo = isGuest && hasGeneratedRecipe && !isOnRecipeInputScreen;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isOnRecipeInputScreen =location.pathname === "/generate" || location.pathname.startsWith("/generate/");
+  const hasCurrentRecipe = Boolean(currentRecipe?.title);
+  const hasStashRecipe = Boolean(guestStash?.title);
+  const showUndo = isGuest && (hasCurrentRecipe || hasStashRecipe) && !isOnRecipeInputScreen;
+  const returnImage = hasCurrentRecipe ? (currentRecipe?.imageUrl ?? ""): (guestStash?.imageUrl ?? "");
+
+  const handleGenerateClick = () => {
+    if (isGuest && hasCurrentRecipe) {
+      dispatch(stashGuestRecipe(currentRecipe!));
+    }
+    dispatch(resetGenerated()); 
+  };
+
+  const handleReturnClick = () => {
+    if (isGuest && !hasCurrentRecipe) {
+      dispatch(restoreGuestRecipe());
+    }
+  };
 
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
@@ -60,6 +78,7 @@ export function Header() {
 
         <NavLink
           to="/generate"
+          onClick={handleGenerateClick}
           className={({ isActive }) => `NewScreenBtn ${isActive ? "active" : ""}`}
         >
           <AddIcon />
@@ -67,9 +86,15 @@ export function Header() {
         </NavLink>
 
         {showUndo && (
-          <NavLink to="/generate" className="ReturnScreenBtn">
-            <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
-          </NavLink>
+          <div className="ReturnScreenBtn">
+            <NavLink to="/generate" onClick={handleReturnClick}>
+              {returnImage ? (
+                <img className="ReturnedRecipe" src={returnImage} alt="" />
+              ) : (
+                <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
+              )}
+            </NavLink>
+          </div>
         )}
       </div>
 

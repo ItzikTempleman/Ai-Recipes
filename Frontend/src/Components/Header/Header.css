@@ -30,6 +30,7 @@
   transform: scaleX(-1);
 }
 
+.ReturnScreenBtn,
 .NewScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
@@ -49,10 +50,8 @@
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
-.ReturnScreenBtn {
-  text-decoration: none;
-}
 
+.ReturnScreenBtn svg,
 .NewScreenBtn svg,
 .ReturnScreenBtn svg,
 .LikesScreenBtn svg,
@@ -122,12 +121,22 @@
   box-shadow: 0 14px 22px rgba(211, 75, 134, 0.24);
 }
 
+.ReturnScreenBtn.active,
+.ReturnScreenBtn:hover {
+  background: rgba(223, 223, 223, 0.51);
+  border-color: rgba(46, 46, 46, 0.45) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(211, 75, 134, 0.24);
+}
+
 .ReturnScreenBtn svg {
   color: #575656;
 }
 
 .ReturnScreenBtn p {
   color: #575656;
+  font-size: 8px;
+  font: weight 800px;
 }
 
 .HeaderRight {
@@ -142,17 +151,28 @@
   align-items: center;
 }
 
-.IdentityBadge { display: inline-flex; } /* optional: shrink-wrap */
+.IdentityBadge {
+  display: inline-flex;
+}
+
 .IdentityBadge .Guest,
-.IdentityBadge .User { margin: 0; }      /* key fix */
+.IdentityBadge .User {
+  margin: 0;
+}
 
-
-.IdentityBadge:hover{
+.ReturnedRecipe{
+  width: 52px;
+  height: 52px;
+  margin-top: 4px;
+  border-radius: 18px;
+}
+.IdentityBadge:hover {
 
   border-radius: 8px;
-    box-shadow: 0 8px 8px rgba(0, 166, 243, 0.34), 0 8px 8px rgba(0, 183, 255, 0.497),
+  box-shadow: 0 8px 8px rgba(0, 166, 243, 0.34), 0 8px 8px rgba(0, 183, 255, 0.497),
     0 1px 0 rgba(255, 255, 255, 0.214) inset !important;
 }
+
 .Header.rtl .HeaderRight {
   flex-direction: row-reverse;
 }
@@ -239,17 +259,18 @@
   font-size: 18px;
   font-weight: 800;
   color: #ffffff;
-  background: #1bbeff ;
+  background: #1bbeff;
   border-radius: 8px;
   padding: 6px 14px;
   margin: 4px;
   cursor: pointer;
 }
 
-.Guest{
+.Guest {
   background: #80807f !important;
-    cursor: default !important;
+  cursor: default !important;
 }
+
 @media (max-width: 670px) {
   .Header {
     display: grid;
@@ -303,6 +324,7 @@
   }
 
   .ReturnScreenBtn,
+  .ReturnScreenBtn,
   .NewScreenBtn,
   .LikesScreenBtn,
   .HomeScreenBtn {
@@ -310,6 +332,7 @@
     height: 36px !important;
   }
 
+  .ReturnScreenBtn svg,
   .NewScreenBtn svg,
   .ReturnScreenBtn svg,
   .LikesScreenBtn svg,
@@ -389,24 +412,23 @@
   .IdentityBadge {
     grid-row: 2;
     align-self: start;
-    margin-top: 2px; /* optional small spacing */
+    margin-top: 2px;
   }
-.Header.rtl .IdentityBadge {
-  position: absolute;
-  right: 10px;     /* same as .MenuBtn right */
-  top: 10px;       /* ✅ higher (smaller = higher) */
-  padding: 0;
-  margin: 0;
-  z-index: 2;
-}
 
-  /* remove the pill margin in mobile so it hugs the pinned position */
+  .Header.rtl .IdentityBadge {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 0;
+    margin: 0;
+    z-index: 2;
+  }
+
   .Header.rtl .IdentityBadge .Guest,
   .Header.rtl .IdentityBadge .User {
     margin: 0;
   }
 
-  /* remove the desktop margin from the pill in mobile */
   .IdentityBadge .Guest,
   .IdentityBadge .User {
     margin: 0;

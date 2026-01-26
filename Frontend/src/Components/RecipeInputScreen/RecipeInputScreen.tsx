@@ -17,7 +17,7 @@ import { DietaryFilter } from "../Filters/DietaryFilter";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
 import { DietaryRestrictions, GlutenRestrictions, InputModel, LactoseRestrictions, RecipeModel, RecipeState, SugarRestriction}
 from "../../Models/RecipeModel";
-import { resetGenerated } from "../../Redux/RecipeSlice";
+import { resetGenerated, setCurrent } from "../../Redux/RecipeSlice";
 import { AppState } from "../../Redux/Store";
 import HideImageOutlinedIcon from "@mui/icons-material/HideImageOutlined";
 import ImageIcon from "@mui/icons-material/Image";
@@ -90,19 +90,26 @@ export function RecipeInputScreen() {
     };
   }, [i18n, dispatch, user, loading, recipeHasData, reset]);
 
-  async function loadImage(recipeToLoad: RecipeModel): Promise<RecipeModel> {
-    if (recipeToLoad.id) {
-      const updated = await recipeService.generateImageForSavedRecipe(recipeToLoad.id);
-      return updated;
-    }
-    const preview = await recipeService.generateImagePreview(recipeToLoad);
 
-    return {
+
+  async function loadImage(recipeToLoad: RecipeModel): Promise<RecipeModel> {
+  let updated: RecipeModel;
+
+  if (recipeToLoad.id) {
+    updated = await recipeService.generateImageForSavedRecipe(recipeToLoad.id);
+  } else {
+    const preview = await recipeService.generateImagePreview(recipeToLoad);
+    updated = {
       ...recipeToLoad,
       imageUrl: preview.imageUrl,
       imageName: preview.imageName ?? recipeToLoad.imageName ?? null,
     };
   }
+  dispatch(setCurrent(updated));
+
+  return updated;
+}
+
 
   async function send(recipeTitle: InputModel) {
     try {

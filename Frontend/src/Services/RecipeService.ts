@@ -124,3 +124,6 @@ public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: stri
 }
 
 export const recipeService = new RecipeService();
+
+
+
