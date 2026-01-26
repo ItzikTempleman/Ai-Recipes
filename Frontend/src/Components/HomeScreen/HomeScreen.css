@@ -171,28 +171,27 @@
     font-size: 20px;
   }
 
+  /* lift the whole title block for BOTH LTR + RTL (logged-in + guest) */
+  .HomeScreenTitleWrapper.ltr,
+  .HomeScreenTitleWrapper.rtl {
+    margin-top: 10px !important; /* was 48px */
+  }
 
-
+  /* logged-in: keep the generate button high */
   .HomeScreenTitleWrapper.ltr:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
-    margin: 6px 0 0 !important;     /* higher */
-    margin-right: auto !important;  /* push to left */
+    margin: 6px 0 0 !important;
+    margin-right: auto !important;
     margin-left: 0 !important;
   }
 
-  /* keep RTL mobile as you already have it (optional here) */
   .HomeScreenTitleWrapper.rtl:has(.HomeScreenTitle.user) .GenerateBtn.MuiButton-root {
     margin: 6px 0 0 !important;
     margin-left: auto !important;
     margin-right: 0 !important;
   }
-    .HomeScreenTitleWrapper.ltr {
-    margin-top: 10px; /* was 48px */
-  }
 
-  /* optional: if you also want the English title to sit higher */
- .HomeScreenTitle.user {
-    padding-top: 8px; /* was 20px */
+  /* reduce title top padding on mobile so everything sits higher */
+  .HomeScreenTitle.user {
+    padding-top: 8px !important; /* was 20px */
   }
-
-  
 }

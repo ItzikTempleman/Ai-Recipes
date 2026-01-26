@@ -272,6 +272,9 @@
 }
 
 @media (max-width: 670px) {
+  /* =========================
+     Base mobile layout
+  ========================== */
   .Header {
     display: grid;
     grid-template-columns: 1fr auto auto auto;
@@ -282,6 +285,10 @@
     padding: 0 10px;
     padding-right: 56px;
     justify-content: unset;
+
+    /* keep absolute children (MenuBtn / RTL badge) anchored */
+    position: relative;
+    overflow: visible;
   }
 
   .FamilyName {
@@ -295,10 +302,10 @@
     margin-top: 6px;
   }
 
+  /* keep existing behavior */
   .HeaderRight {
     display: contents;
   }
-
 
   .LanguageLink {
     grid-column: 2;
@@ -306,48 +313,7 @@
     justify-self: end;
     align-self: center;
     margin-top: 0 !important;
-  }
 
-  .LoginBtn,
-  .LogoutBtn {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    align-self: center;
-    margin-top: 0 !important;
-  }
-
-  .MenuBtn {
-    top: 14px;
-    transform: none;
-    right: 10px;
-  }
-
-  .ReturnScreenBtn,
-  .ReturnScreenBtn,
-  .NewScreenBtn,
-  .LikesScreenBtn,
-  .HomeScreenBtn {
-    width: 36px !important;
-    height: 36px !important;
-  }
-
-  .ReturnScreenBtn svg,
-  .NewScreenBtn svg,
-  .ReturnScreenBtn svg,
-  .LikesScreenBtn svg,
-  .HomeScreenBtn svg {
-    width: 26px !important;
-    height: 26px !important;
-  }
-
-  .NewScreenBtn p,
-  .HomeScreenBtn p,
-  .LikesScreenBtn p {
-    font-size: 10px;
-  }
-
-  .LanguageLink {
     height: 30px;
     padding: 0 6px !important;
     gap: 4px !important;
@@ -361,19 +327,62 @@
   }
 
   .LanguageSelector {
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 900 !important;
     padding: 0 2px !important;
   }
 
-  .LogoutBtn,
-  .LoginBtn {
+  .LoginBtn,
+  .LogoutBtn {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0 !important;
+
     margin: 0 !important;
     padding: 0 10px !important;
     height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .LoginBtn h3,
+  .LogoutBtn h3 {
+    font-size: 15px;
+    font-weight: bold !important;
+  }
+
+  /* menu button placement in mobile */
+  .MenuBtn {
+    position: absolute;
+    right: 10px;
+    top: 14px;
+    transform: none;
+    z-index: 4;
+  }
+
+  .ReturnScreenBtn,
+  .NewScreenBtn,
+  .LikesScreenBtn,
+  .HomeScreenBtn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .ReturnScreenBtn svg,
+  .NewScreenBtn svg,
+  .LikesScreenBtn svg,
+  .HomeScreenBtn svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .NewScreenBtn p,
+  .HomeScreenBtn p,
+  .LikesScreenBtn p {
+    font-size: 10px;
   }
 
   .LogoutBtn.MuiButton-root,
@@ -386,8 +395,31 @@
     margin: 0 !important;
   }
 
+  /* LTR badge: row 2, left side */
+  .IdentityBadge {
+    grid-row: 2;
+    grid-column: 1 / -1; /* span so we can align start/end */
+    justify-self: start;
+    align-self: start;
+    margin-top: 2px;
+  }
+
+  .IdentityBadge .Guest,
+  .IdentityBadge .User {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  /* =========================
+     RTL mobile overrides
+  ========================== */
   .Header.rtl {
     grid-template-columns: auto auto auto 1fr;
+
+    /* IMPORTANT:
+       In RTL we want the badge UNDER the absolute hamburger.
+       Reserve vertical space so it never gets "pushed/clipped". */
+    padding-bottom: 58px;
   }
 
   .Header.rtl .LogoutBtn,
@@ -409,29 +441,22 @@
     justify-self: end;
   }
 
-  .IdentityBadge {
-    grid-row: 2;
-    align-self: start;
-    margin-top: 2px;
-  }
-
+  /* ✅ RTL badge: exactly under hamburger, all the way right */
   .Header.rtl .IdentityBadge {
     position: absolute;
-    right: 10px;
-    top: 10px;
-    padding: 0;
-    margin: 0;
-    z-index: 2;
+    right: 10px;                    /* same as MenuBtn */
+    top: calc(14px + 40px + 10px);  /* menuTop + menuHeight + gap */
+    z-index: 3;
+
+    /* neutralize grid placement conflicts */
+    grid-column: auto !important;
+    grid-row: auto !important;
+    justify-self: auto !important;
+    margin: 0 !important;
   }
 
   .Header.rtl .IdentityBadge .Guest,
   .Header.rtl .IdentityBadge .User {
     margin: 0;
-  }
-
-  .IdentityBadge .Guest,
-  .IdentityBadge .User {
-    margin: 0;
-    cursor: pointer;
   }
 }
