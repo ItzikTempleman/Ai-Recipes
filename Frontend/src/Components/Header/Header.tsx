@@ -69,7 +69,6 @@ export function Header() {
         {showUndo && (
           <NavLink to="/generate" className="ReturnScreenBtn">
             <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
-
           </NavLink>
         )}
       </div>

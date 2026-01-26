@@ -64,6 +64,7 @@ export function RecipeInputScreen() {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
     i18n.on("languageChanged", onLangChange);
 
+
     if (user && !loading && !didResetOnEnterRef.current) {
       dispatch(resetGenerated());
       didResetOnEnterRef.current = true;
@@ -175,19 +176,6 @@ export function RecipeInputScreen() {
             </div>
 
             {error && <div className="ErrorText">{error}</div>}
-
-            {loading && (
-              <div>
-                {hasImage ? (
-                  <h2 className="ImageLoadingMessage">
-                    {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-                  </h2>
-                ) : (
-                  <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
-                )}
-              </div>
-            )}
-
                    <div className="FiltersSectionContainer">
               <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
               <div className="FiltersDropdown" ref={filtersWrapRef} dir={isRTL ? "rtl" : "ltr"}>
@@ -282,6 +270,17 @@ export function RecipeInputScreen() {
 
               </div>
             </div>
+                      {loading && (
+              <div>
+                {hasImage ? (
+                  <h2 className="ImageLoadingMessage">
+                    {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                  </h2>
+                ) : (
+                  <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
+                )}
+              </div>
+            )}
             {loading ? (
                 <IconButton className="ProgressBar" edge="end" disabled>
                   <Box>

@@ -33,12 +33,6 @@
   text-rendering: optimizeLegibility;
 }
 
-.LoadingWithoutImage,
-.ImageLoadingMessage {
-  color: #75b8eb !important;
-  font-size: 20px;
-}
-
 .GenerateTitle.rtl {
   direction: rtl;
   letter-spacing: -0.8px;
@@ -103,8 +97,10 @@
   padding-right: 18px !important;
 }
 
-.ProgressBar .MuiCircularProgress-root {
-  color: #383838 !important;
+.ProgressBar .MuiCircularProgress-root,
+.ImageLoadingMessage
+{
+  color: #545454 !important;
 }
 
 .GenerateImageSelector {
@@ -139,19 +135,17 @@
   border: 1px solid rgba(148, 163, 184, .55);
 }
 
-
 .RecipeTextField .MuiOutlinedInput-root.Mui-focused {
   box-shadow: 0 18px 38px rgba(106, 77, 255, .14), inset 0 1px 0 rgba(255, 255, 255, .85);
 }
+
 .FilterBar{
   width: 100%;
   display: flex;
-  flex-direction: column;   /* <— key */
-  align-items: center;      /* center everything */
-  gap: 12px;                /* spacing between filter btn and exclude group */
+  flex-direction: column;   
+  align-items: center;     
+  gap: 12px;              
 }
-
-
 
 .ErrorText {
   margin-top: 8px;
@@ -191,7 +185,6 @@
   outline: none;
   border-radius: 12px;
   background: rgba(255, 255, 255, .9);
-
   font-weight: 900;
   font-size: 15px;
   color: #707070;
@@ -252,7 +245,6 @@
 }
 
 .GenerateRecipeBtn .BtnIcon {
-
   color: #fbc31d;
 }
 
@@ -273,5 +265,4 @@
   .GenerateRecipeBtn.MuiButton-root{
     width: 60%;
   }
-
 }

@@ -33,6 +33,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const recipeIsHebrew = hasHebrew(recipe.title) || hasHebrew(recipe.description) || ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) || instructions.some((x: any) => hasHebrew(x));
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
+  const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
   const flag = getCountryFlag(recipe.countryOfOrigin);
   const handleLoadImage = async () => {
     try {
@@ -240,9 +241,9 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
       <div className="RecipePreparationWideView">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
-          <div className={`IngredientsList ${headingDir}`} dir={headingDir}>
-            <h2 className={`IngredientsTitle ${headingDir}`} dir={headingDir}>
-              {t("recipeUi.ingredients", { lng: headingLng })}
+          <div className={`IngredientsList ${layoutDir}`} dir={layoutDir}>
+            <h2 className={`IngredientsTitle ${layoutDir}`} dir={layoutDir}>
+              {t("recipeUi.ingredients")}
             </h2>
             {normalizedIngredients.map((line, index) => {
               const { ingredient, amount } = normalizeIngredientRow(line);
@@ -255,9 +256,9 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
             })}
           </div>
 
-          <div className={`InstructionsList ${headingDir}`} dir={headingDir}>
-            <h2 className={`InstructionsTitle ${headingDir}`} dir={headingDir}>
-              {t("recipeUi.instructions", { lng: headingLng })}
+          <div className={`InstructionsList ${layoutDir}`} dir={layoutDir}>
+            <h2 className={`InstructionsTitle ${layoutDir}`} dir={layoutDir}>
+              {t("recipeUi.instructions")}
             </h2>
 
             <ol className={`InstructionsListOl ${headingDir}`} dir={headingDir}>

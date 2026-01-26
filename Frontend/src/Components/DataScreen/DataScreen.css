@@ -269,6 +269,20 @@ color: #666666 !important;
   text-align: right !important;
 }
 
+.IngredientsTitle,
+.InstructionsTitle {
+  width: 100%;
+}
+
+.IngredientsTitle.ltr,
+.InstructionsTitle.ltr {
+  text-align: left !important;
+}
+
+.IngredientsTitle.rtl,
+.InstructionsTitle.rtl {
+  text-align: right !important;
+}
 
 .CountryFlag {
   font-size: 1.2rem;
