@@ -98,8 +98,7 @@
 }
 
 .ProgressBar .MuiCircularProgress-root,
-.ImageLoadingMessage
-{
+.ImageLoadingMessage{
   color: #545454 !important;
 }
 
@@ -135,7 +134,7 @@
 }
 
 .RecipeTextField .MuiOutlinedInput-root.Mui-focused {
-  box-shadow: 0 18px 38px rgba(106, 77, 255, .14), inset 0 1px 0 rgba(255, 255, 255, .85);
+  box-shadow: 0 18px 38px rgba(91, 91, 91, 0.64), inset 0 1px 0 rgba(255, 255, 255, .85);
 }
 
 .FilterBar{

@@ -44,12 +44,7 @@ main {
   overflow-x: hidden;
 }
 
-/* background:
-    radial-gradient(900px 420px at 50% 0%, rgba(163, 156, 255, 0.35) 0%, rgba(163, 156, 255, 0) 60%),
-    radial-gradient(900px 520px at 50% 100%, rgba(29, 168, 255, 0.28) 0%, rgba(255, 195, 120, 0) 62%),
-    linear-gradient(180deg, #d2cbf9 0%, #ffffff 42%, #4cb3fd 100%); */
-
-/* .MainLayout::before {
+.MainLayout::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -74,4 +69,4 @@ main {
   background-position: center;
   opacity: 0.18;
   z-index: 0; 
-} */
+}
