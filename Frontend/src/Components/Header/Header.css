@@ -26,17 +26,17 @@
   flex-direction: row-reverse;
 }
 
-.ReturnSvg.rtl {
+.ReturnToRecipeSvg.rtl {
   transform: scaleX(-1);
 }
 
-.ReturnScreenBtn,
+.ReturnToRecipeSection,
 .NewScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
-  padding: 6px !important;
-  border-radius: 18px !important;
-  border: 1px solid rgba(202, 204, 207, 0.65) !important;
+  padding: 6px ;
+  border-radius: 18px ;
+  border: 1px solid rgba(202, 204, 207, 0.65) ;
   backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
@@ -44,15 +44,14 @@
   text-decoration: none;
   margin: 0;
   width: 40px;
-  height: 40px !important;
+  height: 40px ;
   justify-content: center;
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 
-.ReturnScreenBtn svg,
-.NewScreenBtn svg,
-.ReturnScreenBtn svg,
+.ReturnToRecipeSvg,
+.ReturnToRecipeSection svg,
 .LikesScreenBtn svg,
 .HomeScreenBtn svg {
   height: 30px;
@@ -75,7 +74,7 @@
 .HomeScreenBtn.active,
 .HomeScreenBtn:hover {
   background: #b2c9da92;
-  border-color: #8bc4f0 !important;
+  border-color: #8bc4f0;
   transform: translateY(-1px);
 
 }
@@ -83,7 +82,7 @@
 .NewScreenBtn.active,
 .NewScreenBtn:hover {
   background: rgba(246, 207, 143, 0.22);
-  border-color: rgba(233, 183, 66, 0.684) !important;
+  border-color: rgba(233, 183, 66, 0.684) ;
   transform: translateY(-1px);
 
 }
@@ -107,24 +106,24 @@
 .LikesScreenBtn.active,
 .LikesScreenBtn:hover {
   background: rgba(211, 75, 134, 0.18);
-  border-color: rgba(211, 75, 134, 0.45) !important;
+  border-color: rgba(211, 75, 134, 0.45) ;
   transform: translateY(-1px);
 
 }
 
-.ReturnScreenBtn.active,
-.ReturnScreenBtn:hover {
+.ReturnToRecipeSection.active,
+.ReturnToRecipeSection:hover {
   background: rgba(223, 223, 223, 0.51);
-  border-color: rgba(46, 46, 46, 0.45) !important;
+  border-color: rgba(46, 46, 46, 0.45) ;
   transform: translateY(-1px);
   
 }
 
-.ReturnScreenBtn svg {
+.ReturnToRecipeSection svg {
   color: #575656;
 }
 
-.ReturnScreenBtn p {
+.ReturnToRecipeSection p {
   color: #575656;
   font-size: 8px;
   font: weight 800px;
@@ -143,13 +142,20 @@
    margin: 0;
 }
 
-.ReturnedRecipe{
-  width: 52px;
-  height: 52px;
-  margin-top: 4px;
-  border-radius: 18px;
+.ReturnToRecipeSection.hasImage {
+  width: 65px ;
+  height: 65px ;
+  padding: 0 ;
 }
 
+.ReturnToRecipeSection.hasImage .ReturnToRecipeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 18px;
+  display: block;
+  
+}
 .IdentityBadge.user:hover {
   transform: translateY(-1px);
 }
@@ -167,7 +173,7 @@
 }
 
 .LoginBtn {
-  color: #393939 !important;
+  color: #393939 ;
 }
 
 .LoginBtn:hover {
@@ -175,7 +181,7 @@
 }
 
 .LogoutBtn {
-  color: rgba(203, 14, 14, 0.95) !important;
+  color: rgba(203, 14, 14, 0.95) ;
 }
 
 .LogoutBtn:hover {
@@ -248,8 +254,8 @@
 }
 
 .Guest {
-  background: #80807f !important;
-  cursor: default !important;
+  background: #80807f ;
+  cursor: default ;
 }
 
 @media (max-width: 670px) {
@@ -270,6 +276,11 @@
 
   .FamilyName {
     display: none;
+  }
+
+    .ReturnToRecipeSection.hasImage {
+    width: 56px !important;
+    height: 56px !important;
   }
 
   .GeneralNavigation {
@@ -336,7 +347,7 @@
     z-index: 4;
   }
 
-  .ReturnScreenBtn,
+  .ReturnToRecipeSection,
   .NewScreenBtn,
   .LikesScreenBtn,
   .HomeScreenBtn {
@@ -344,7 +355,7 @@
     height: 36px !important;
   }
 
-  .ReturnScreenBtn svg,
+  .ReturnToRecipeSection svg,
   .NewScreenBtn svg,
   .LikesScreenBtn svg,
   .HomeScreenBtn svg {

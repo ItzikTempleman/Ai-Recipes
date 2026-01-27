@@ -8,13 +8,12 @@ import { LoginScreen } from "../user-components/LoginScreen/LoginScreen";
 import { RecipeInfoScreen } from "../recipe-components/RecipeInfoScreen/RecipeInfoScreen";
 import { RegistrationScreen } from "../user-components/RegistrationScreen/RegistrationScreen";
 import { ProfileScreen } from "../user-components/ProfileScreen/ProfileScreen";
-import { PdfScreen } from "../user-components/PdfScreen/PdfScreen";
 import { LikesScreen } from "../recipe-components/LikesScreen/LikesScreen";
 import { RecipeInputScreen } from "../recipe-components/RecipeInputScreen/RecipeInputScreen";
-
 import { PrivacyPolicy } from "../user-components/PrivacyPolicy/PrivacyPolicy";
 import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
 import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
+import { PdfScreen } from "../recipe-components/PdfScreen/PdfScreen";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);

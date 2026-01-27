@@ -1,21 +1,26 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useState } from "react";
-import { DrawerLayout, Language } from "../DrawerLayout/DrawerLayout";
+
 import { useTranslation } from "react-i18next";
 import LanguageIcon from "@mui/icons-material/Language";
-import { useLanguage } from "../../../Utils/SetLanguage";
+
 import { useSelector } from "react-redux";
-import { AppState } from "../../../Redux/Store";
+
 import UndoIcon from "@mui/icons-material/Undo";
-import { userService } from "../../../Services/UserService";
+
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
-import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../../Redux/RecipeSlice";
+import { Language, useLanguage } from "../../Utils/SetLanguage";
+import { AppState } from "../../Redux/Store";
+import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
+import { userService } from "../../Services/UserService";
+import { DrawerLayout } from "../user-components/DrawerLayout/DrawerLayout";
+
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -86,15 +91,15 @@ export function Header() {
         </NavLink>
 
         {showUndo && (
-          <div className="ReturnScreenBtn">
-            <NavLink to="/generate" onClick={handleReturnClick}>
-              {returnImage ? (
-                <img className="ReturnedRecipe" src={returnImage} alt="" />
-              ) : (
-                <UndoIcon className={`ReturnSvg ${isRtl ? "rtl" : "ltr"}`} />
-              )}
-            </NavLink>
-          </div>
+<div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
+  <NavLink to="/generate" onClick={handleReturnClick}>
+    {returnImage ? (
+      <img className="ReturnToRecipeImage" src={returnImage} />
+    ) : (
+      <UndoIcon className={`ReturnToRecipeSvg ${isRtl ? "rtl" : "ltr"}`} />
+    )}
+  </NavLink>
+</div>
         )}
       </div>
 

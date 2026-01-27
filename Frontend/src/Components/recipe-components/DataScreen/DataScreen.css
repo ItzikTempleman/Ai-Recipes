@@ -10,12 +10,12 @@
 
 .RecipeImage {
   display: block;
-  margin: 0 auto 1px;
-  width: 100%;
+  margin: 0 auto;
+  width: 60%;
   height: auto;
   object-fit: cover;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  border-radius: 18px;
+  border-radius: 4px;
 }
 
 .ShareBtnContainer{
@@ -73,9 +73,10 @@ border: 1px solid rgba(130, 130, 130, 0.623);
 }
 
 
-.Title{
-  font-weight: 900;
-  font-size: 20px;
+.RecipeTitle{
+  font-weight: 600;
+  font-size: 36px;
+  color: #2f2f2f;
 }
 
 .Calories p:not(.Title),
@@ -400,10 +401,14 @@ color: #666666 !important;
     flex-direction: column;
     align-items: stretch; 
   }
-.Title{
-  font-size: 20px;
+.RecipeTitle{
+  font-size: 30px;
 }
+.RecipeImage {
+  box-shadow:none;
+  width:90%;
 
+}
 
   .Calories,
   .Sugar,
@@ -431,10 +436,6 @@ color: #666666 !important;
     max-width: 100%;
   }
 
-  .RecipeImage {
-    max-width: 100%;
-    border-radius: 18px;
-  }
 
   .IngredientRow {
     flex-direction: row;

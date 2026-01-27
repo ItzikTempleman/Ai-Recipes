@@ -80,7 +80,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
 
         <div className={`BackBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={returnToList}>
           <ArrowBackIosNew />
-          {t("recipeUi.back")}
+         
         </div>
 
   

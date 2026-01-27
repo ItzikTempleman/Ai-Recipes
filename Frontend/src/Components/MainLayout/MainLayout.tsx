@@ -1,6 +1,7 @@
 
 import { Header } from "../Header/Header";
-import { Routing } from "../../Routing/Routing";
+import { Routing } from "../Routing/Routing";
+
 import "./MainLayout.css";
 
 export function MainLayout() {

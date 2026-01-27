@@ -6,8 +6,9 @@ import {store} from "./Redux/Store.ts";
 import {ThemeProvider} from "@mui/material";
 import {muiTheme} from "./Theme/Theme.ts";
 import "./Utils/i18n.ts";
-import { MainLayout } from './Components/user-components/MainLayout/MainLayout.tsx';
+
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { MainLayout } from './Components/MainLayout/MainLayout.tsx';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
