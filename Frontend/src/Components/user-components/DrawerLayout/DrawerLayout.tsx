@@ -2,7 +2,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Person from "@mui/icons-material/Person";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../../Redux/Store";
 import "./DrawerLayout.css";
@@ -13,6 +13,10 @@ import { Button } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
+import { userService } from "../../../Services/UserService";
+import { notify } from "../../../Utils/Notify";
+import { ConfirmDialog } from "../ConfirmDialog/ConfirmDialog";
+
 type DrawerState = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -20,17 +24,41 @@ type DrawerState = {
 
 export type Language = "en" | "he";
 
-
-async function deleteAccount() {
-  //to implement delete account
-}
-
 export function DrawerLayout({ open, setOpen }: DrawerState) {
   const { t } = useTranslation();
   const user = useSelector((state: AppState) => state.user);
   const isLoggedIn = !!(user && localStorage.getItem("token"));
   const [isOpen, setIsOpen] = useState(false);
   const moreActionsRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate()
+
+const [confirmOpen, setConfirmOpen] = useState(false);
+const [pendingDeleteUserId, setPendingDeleteUserId] = useState<number | null>(null);
+
+function askDeleteAccount(userId: number) {
+  setPendingDeleteUserId(userId);
+  setConfirmOpen(true);
+}
+
+function cancelDeleteAccount() {
+  setConfirmOpen(false);
+  setPendingDeleteUserId(null);
+}
+
+async function confirmDeleteAccount() {
+  if (pendingDeleteUserId == null) return;
+
+  try {
+    await userService.deleteAccount(pendingDeleteUserId);
+    notify.success(t("drawer.confirmation"));
+    setConfirmOpen(false);
+    setPendingDeleteUserId(null);
+    navigate("/login");
+  } catch (err: any) {
+    notify.error(err);
+  }
+}
+
   return (
     <div>
       <IconButton onClick={() => setOpen(true)}>
@@ -76,12 +104,14 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                     e.stopPropagation();
                     setIsOpen((v) => !v);
                   }}
-              
+
                   startIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 >
                   {t("drawer.more")}
                 </Button>
-                <div className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`} onClick={deleteAccount}>
+                <div className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`} onClick={() => {
+                  askDeleteAccount(user.id)
+                }}>
                   <PersonOffIcon />
                   <h5> {t("drawer.deleteAccount")}</h5>
 
@@ -91,6 +121,12 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
           </div>
         </aside>
       </Drawer>
+      <ConfirmDialog
+  open={confirmOpen}
+  message={t("drawer.areYouSure")}
+  onCancel={cancelDeleteAccount}
+  onConfirm={confirmDeleteAccount}
+/>
     </div>
   );
 }

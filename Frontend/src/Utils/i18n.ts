@@ -24,8 +24,9 @@ const resources = {
         more: "More",
         deleteAccount: "Delete account",
         areYouSure: "Are you sure?",
-        yes: "Yes",
-        cancel: "Cancel"
+        yes: "Ok",
+        cancel: "Cancel",
+        confirmation:"Account deleted permanently. Good bye"
       },
       homeScreen: {
         shareIntro: "Share your recipes",
@@ -71,7 +72,7 @@ const resources = {
         excludeIngredient: "Exclude ingredients",
         loadingWithImage: "Generating an image…",
         loadingWithImageLowerMessage: "This will take a minute",
-        loadingNoImage: "Generating a recipe…",
+        loadingNoImage: "Generating a recipe...",
       },
       likeScreen: {
         likedTitle: "Favorites"
@@ -235,7 +236,8 @@ const resources = {
         deleteAccount: "מחק משתמש",
         areYouSure: "?האם אתה בטוח",
         yes: "כן",
-        cancel: "ביטול"
+        cancel: "ביטול",
+        confirmation:"המשתמש הוסר לצמיתות. להתראות"
       },
 
       homeScreen: {
