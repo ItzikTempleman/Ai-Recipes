@@ -1,19 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Page404 } from "../Page404/Page404";
-import { AboutScreen } from "../AboutScreen/AboutScreen";
+import { Page404 } from "../user-components/Page404/Page404";
+import { AboutScreen } from "../user-components/AboutScreen/AboutScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import { HomeScreen } from "../HomeScreen/HomeScreen";
-import { LoginScreen } from "../LoginScreen/LoginScreen";
-import { RecipeInfoScreen } from "../RecipeInfoScreen/RecipeInfoScreen";
-import { RegistrationScreen } from "../RegistrationScreen/RegistrationScreen";
-import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
-import { PdfScreen } from "../PdfScreen/PdfScreen";
-import { LikesScreen } from "../LikesScreen/LikesScreen";
-import { RecipeInputScreen } from "../RecipeInputScreen/RecipeInputScreen";
-import { ResetPasswordScreen } from "../ResetPasswordScreen/ResetPasswordScreen";
-import { PrivacyPolicy } from "../PrivacyPolicy/PrivacyPolicy";
-import { DataDeletion } from "../DataDeletion/DataDeletion";
+import { HomeScreen } from "../recipe-components/HomeScreen/HomeScreen";
+import { LoginScreen } from "../user-components/LoginScreen/LoginScreen";
+import { RecipeInfoScreen } from "../recipe-components/RecipeInfoScreen/RecipeInfoScreen";
+import { RegistrationScreen } from "../user-components/RegistrationScreen/RegistrationScreen";
+import { ProfileScreen } from "../user-components/ProfileScreen/ProfileScreen";
+import { PdfScreen } from "../user-components/PdfScreen/PdfScreen";
+import { LikesScreen } from "../recipe-components/LikesScreen/LikesScreen";
+import { RecipeInputScreen } from "../recipe-components/RecipeInputScreen/RecipeInputScreen";
+
+import { PrivacyPolicy } from "../user-components/PrivacyPolicy/PrivacyPolicy";
+import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
+import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
 
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
