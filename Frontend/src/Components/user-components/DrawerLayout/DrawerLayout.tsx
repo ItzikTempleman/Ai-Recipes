@@ -76,7 +76,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                     e.stopPropagation();
                     setIsOpen((v) => !v);
                   }}
-                  variant="contained"
+              
                   startIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 >
                   {t("drawer.more")}

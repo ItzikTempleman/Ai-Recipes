@@ -1,6 +1,6 @@
 .MuiDrawer-paper {
   width: 240px;
-  height: 430px !important;
+  height: 460px !important;
   margin: 8px;
 
   border-radius: 8px !important;
@@ -12,7 +12,7 @@
 }
 
 .MuiDrawer-paper:has(.MoreOptionsSection.open) {
-  height: 470px !important; 
+  height: 520px !important; 
 }
 
 .DrawerMainContainer {
@@ -79,7 +79,7 @@
   justify-content: flex-start;
   gap: 10px;
   padding: 12px;
-  margin-top: 10px;
+  margin-top: 20px;
   border-radius: 8px;
   text-decoration: none;
   height: 36px;
@@ -124,8 +124,8 @@ color: #ffffff;
 }
 
 .MoreBtn.MuiButton-root {
-    background: #5b5b5b;
-    color: white;
+    background: white;
+    color: #5b5b5b;
      font-weight: 700;
 }
 
@@ -140,6 +140,7 @@ cursor: pointer;
 
 .MoreOptionsSection.open{
   max-height: 40px; 
+  margin-top: 20px;
   opacity: 1;
   pointer-events: auto;
   color: red;
