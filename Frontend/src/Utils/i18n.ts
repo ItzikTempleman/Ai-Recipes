@@ -21,6 +21,11 @@ const resources = {
         logout: "Logout",
         helloGuest: "Hello Guest",
         login: "Log in",
+        more: "More",
+        deleteAccount: "Delete account",
+        areYouSure: "Are you sure?",
+        yes: "Yes",
+        cancel: "Cancel"
       },
       homeScreen: {
         shareIntro: "Share your recipes",
@@ -114,10 +119,10 @@ const resources = {
           emailLabelToSendCode: "Enter email to rest code",
           sendCode: "send recovery code",
           reset: "Reset password",
-          googlePasswordUpdateTitle:"Welcome new user",
-          googlePassword:"You may set a new password for easy future login",
+          googlePasswordUpdateTitle: "Welcome new user",
+          googlePassword: "You may set a new password for easy future login",
           forgot: "Forgot password",
-          later:"Later",
+          later: "Later",
           title: "Log in",
           emailLabel: "Enter Email",
           emailPlaceholder: "Email",
@@ -125,7 +130,7 @@ const resources = {
           passwordPlaceholder: "Password",
           submit: "Log in",
           registerLink: "Register",
-          emailNotFound:" Email not found"
+          emailNotFound: " Email not found"
         },
 
         registration: {
@@ -226,6 +231,11 @@ const resources = {
         logout: "התנתק",
         helloGuest: "שלום אורח",
         login: "התחבר",
+        more: "עוד",
+        deleteAccount: "מחק משתמש",
+        areYouSure: "?האם אתה בטוח",
+        yes: "כן",
+        cancel: "ביטול"
       },
 
       homeScreen: {
@@ -321,8 +331,8 @@ const resources = {
           emailLabelToSendCode: "הזן אימייל לשחזור קוד",
           sendCode: "שלח קוד שחזור",
           reset: "שחזור סיסמה",
-          googlePasswordUpdateTitle:"ברוך הבא משתמש חדש",
-          googlePassword:"באפשרותך ליצור סיסמה חדשה לצורך כניסה קלה בעתיד",
+          googlePasswordUpdateTitle: "ברוך הבא משתמש חדש",
+          googlePassword: "באפשרותך ליצור סיסמה חדשה לצורך כניסה קלה בעתיד",
           forgot: "שכחתי סיסמה",
           title: "התחברות",
           update: "עדכן סיסמה",
@@ -331,11 +341,11 @@ const resources = {
           passwordLabel: "הכנס סיסמה",
           passwordPlaceholder: "סיסמה",
           submit: "התחבר",
-          later:"מאוחר יותר",
+          later: "מאוחר יותר",
           registerLink: "הרשמה",
           hidePassword: "הסתר סיסמה",
           showPassword: "הצג סיסמה",
-          emailNotFound:"האימייל לא נמצא"
+          emailNotFound: "האימייל לא נמצא"
         },
 
         registration: {

@@ -5,12 +5,14 @@ import Person from "@mui/icons-material/Person";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../../Redux/Store";
-
 import "./DrawerLayout.css";
 import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
-
+import { useRef, useState } from "react";
+import { Button } from "@mui/material";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
 type DrawerState = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -18,12 +20,17 @@ type DrawerState = {
 
 export type Language = "en" | "he";
 
+
+async function deleteAccount() {
+  //to implement delete account
+}
+
 export function DrawerLayout({ open, setOpen }: DrawerState) {
   const { t } = useTranslation();
   const user = useSelector((state: AppState) => state.user);
   const isLoggedIn = !!(user && localStorage.getItem("token"));
-
-
+  const [isOpen, setIsOpen] = useState(false);
+  const moreActionsRef = useRef<HTMLDivElement | null>(null);
   return (
     <div>
       <IconButton onClick={() => setOpen(true)}>
@@ -38,7 +45,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
           <div className="CloseButton" onClick={() => setOpen(false)}>
             ❌
           </div>
-          <div className={`DrawerContent ${isLoggedIn ? "" : "LoggedOut"}`}>
+          <div className={`DrawerContent ${isLoggedIn ? "LoggedIn" : "LoggedOut"}`}>
 
             {isLoggedIn ? (
               <div>
@@ -61,6 +68,26 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
               <p>{t("nav.about")}</p>
             </NavLink>
 
+            {isLoggedIn ? (
+              <div className="MoreOptionsDropdown" ref={moreActionsRef}>
+                <Button
+                  className="MoreBtn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen((v) => !v);
+                  }}
+                  variant="contained"
+                  startIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                >
+                  {t("drawer.more")}
+                </Button>
+                <div className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`} onClick={deleteAccount}>
+                  <PersonOffIcon />
+                  <h5> {t("drawer.deleteAccount")}</h5>
+
+                </div>
+              </div>
+            ) : null}
           </div>
         </aside>
       </Drawer>
