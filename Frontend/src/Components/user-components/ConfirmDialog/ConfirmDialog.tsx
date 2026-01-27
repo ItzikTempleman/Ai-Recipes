@@ -9,23 +9,21 @@ import { useTranslation } from "react-i18next";
 
 
 type Props = {
-  open: boolean;
-  message?: string;       
+  open: boolean;     
   onCancel: () => void;
   onConfirm: () => void;
 };
 
-export function ConfirmDialog({ open, message, onCancel, onConfirm }: Props) {
+export function ConfirmDialog({ open, onCancel, onConfirm }: Props) {
   const { t } = useTranslation();
 
-  const text = message ?? t("drawer.areYouSure");
 
   return (
     <Dialog open={open} onClose={onCancel}>
       <DialogTitle>{t("drawer.areYouSure")}</DialogTitle>
 
       <DialogContent>
-        <Typography>{text}</Typography>
+        <Typography>{t("drawer.message")}</Typography>
       </DialogContent>
 
       <DialogActions>

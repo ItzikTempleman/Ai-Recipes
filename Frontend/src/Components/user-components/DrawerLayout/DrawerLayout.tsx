@@ -123,7 +123,7 @@ async function confirmDeleteAccount() {
       </Drawer>
       <ConfirmDialog
   open={confirmOpen}
-  message={t("drawer.areYouSure")}
+
   onCancel={cancelDeleteAccount}
   onConfirm={confirmDeleteAccount}
 />

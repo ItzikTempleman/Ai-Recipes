@@ -26,7 +26,8 @@ const resources = {
         areYouSure: "Are you sure?",
         yes: "Ok",
         cancel: "Cancel",
-        confirmation:"Account deleted permanently. Good bye"
+        confirmation:"Account deleted permanently. Good bye",
+        message:"Deleting this account is irreversible"
       },
       homeScreen: {
         shareIntro: "Share your recipes",
@@ -237,7 +238,8 @@ const resources = {
         areYouSure: "?האם אתה בטוח",
         yes: "כן",
         cancel: "ביטול",
-        confirmation:"המשתמש הוסר לצמיתות. להתראות"
+        confirmation:"המשתמש הוסר לצמיתות. להתראות",
+        message:"מחיקת המשתמש לא ניתן לביטול/ שחזור"
       },
 
       homeScreen: {
