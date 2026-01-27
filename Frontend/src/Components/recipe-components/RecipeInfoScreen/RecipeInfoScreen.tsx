@@ -19,7 +19,7 @@ type Props = {
 
 export function RecipeInfoScreen({ filters, loadImage }: Props) {
 
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
   const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
 
