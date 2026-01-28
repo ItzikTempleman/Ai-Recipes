@@ -126,8 +126,12 @@ class UserService {
     }
 
     public async deleteAccount(id: number): Promise<void> {
-        await axios.delete(appConfig.userUrl + id);
-        this.logout(); 
+        const token = localStorage.getItem("token") ?? "";
+        if (!token) throw new Error("Not logged in");
+        await axios.delete(appConfig.userUrl + id, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        this.logout();
     }
 
 
