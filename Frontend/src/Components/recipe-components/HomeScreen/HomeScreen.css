@@ -35,7 +35,7 @@
   bottom: 40vh;
   height: 55vh;
   pointer-events: none;
-  background-image: url("../../Assets/images/wave.png");
+  background-image: url("../../../Assets/images/wave.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
