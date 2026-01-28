@@ -104,17 +104,7 @@ export function Header() {
       </div>
 
       <div className="HeaderRight">
-        <div className={`IdentityBadge ${user ? "user" : "guest"}`}>
-          {isGuest ? (
-            <div className="Guest">{t("homeScreen.guest")}</div>
-          ) : (
-            <div className="User" onClick={() => {
-              navigate("/profile");
-            }}>
-              {user.firstName} <span className="FamilyName">{user.familyName}</span>
-            </div>
-          )}
-        </div>
+
 
         <div className="LanguageLink">
           <LanguageIcon />
@@ -126,6 +116,21 @@ export function Header() {
             <option value="en">{t("drawer.english")}</option>
             <option value="he">{t("drawer.hebrew")}</option>
           </select>
+        </div>
+
+        <div className={`IdentityBadge ${user ? "user" : "guest"}`}>
+          {isGuest ? (
+            <div className="GuestBadgeRow">
+  <div className="Guest">{t("homeScreen.guest")}</div>
+  <div className="HeaderDiv" />
+</div>
+          ) : (
+            <div className="User" onClick={() => {
+              navigate("/profile");
+            }}>
+              {user.firstName} <span className="FamilyName">{user.familyName}</span>
+            </div>
+          )}
         </div>
 
         {!isGuest ? (

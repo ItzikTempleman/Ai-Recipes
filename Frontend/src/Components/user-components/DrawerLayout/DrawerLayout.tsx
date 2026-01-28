@@ -122,7 +122,9 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
 
                   startIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 >
-                  {t("drawer.more")}
+                  {isOpen ? t("drawer.less") : t("drawer.more")}
+                
+      
                 </Button>
                 <div className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`} onClick={() => {
                   askDeleteAccount(user.id)

@@ -19,7 +19,7 @@ export function ProfileScreen() {
 
   const { t } = useTranslation();
 
-  const navigate= useNavigate()
+  const navigate = useNavigate()
   const rawBirthDate = user.birthDate ?? "";
   const birthDateStr = rawBirthDate ? showDate(rawBirthDate) : "";
   const isoDate = rawBirthDate ? rawBirthDate.split("T")[0] : "";
@@ -86,23 +86,13 @@ export function ProfileScreen() {
     <div className="ProfileScreen">
       <p className="ProfileScreenTitle">{t("profile.title")}</p>
 
-      <div className="ProfileSection">
-  <div
-    className="ReturnBtn" 
-    onClick={() => navigate("/home")}
-  >
-    ❌
-  </div>
-            
-        <div className="EditProfileDiv">
-          <Button
-            className="EditProfileBtn"
-            variant="contained"
-            onClick={handleClickOpen}
-          >
-            {t("profile.edit")}
-          </Button>
-        </div>
+ <div className="ProfileSection">
+
+<div className="EditAndCloseSection">
+   <Button className="EditProfileBtn"onClick={handleClickOpen} > {t("profile.edit")}</Button>
+        <div className="ReturnBtn" onClick={() => navigate("/home")}> ❌ </div>
+</div>
+
 
         <Dialog open={open} onClose={handleClose} fullScreen={false}>
           <div className="DialogDiv">
@@ -141,23 +131,23 @@ export function ProfileScreen() {
                 {...register("email")}
               />
 
-        <TextField
-  variant="outlined"
-  size="small"
-  label={
-    user.phoneNumber && user.phoneNumber.trim() !== ""
-      ? t("profile.updatePhone")
-      : t("profile.addPhoneNumber")
-  }
-  fullWidth
-  inputProps={{ minLength: 2, maxLength: 30 }}
-  placeholder={
-    user.phoneNumber && user.phoneNumber.trim() !== ""
-      ? t("profile.updatePhone")
-      : t("profile.addPhoneNumber")
-  }
-  {...register("phoneNumber")}
-/>
+              <TextField
+                variant="outlined"
+                size="small"
+                label={
+                  user.phoneNumber && user.phoneNumber.trim() !== ""
+                    ? t("profile.updatePhone")
+                    : t("profile.addPhoneNumber")
+                }
+                fullWidth
+                inputProps={{ minLength: 2, maxLength: 30 }}
+                placeholder={
+                  user.phoneNumber && user.phoneNumber.trim() !== ""
+                    ? t("profile.updatePhone")
+                    : t("profile.addPhoneNumber")
+                }
+                {...register("phoneNumber")}
+              />
               <Button
                 variant="contained"
                 type="submit"
@@ -216,17 +206,17 @@ export function ProfileScreen() {
         <div className="divider" />
 
         <p>
-         {user.email}
+          {user.email}
         </p>
 
         {user.phoneNumber && user.phoneNumber.trim() !== "" && (
           <p>
-    {user.phoneNumber}
+            {user.phoneNumber}
           </p>
         )}
         {birthDateStr && (
           <p>
-         {birthDateStr}
+            {birthDateStr}
           </p>
         )}
       </div>

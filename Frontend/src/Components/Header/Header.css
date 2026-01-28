@@ -170,8 +170,29 @@
   margin-right: 6px;
 }
 
+
+.GuestBadgeRow{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;         
+}
+
+.Header.rtl .GuestBadgeRow{
+  flex-direction: row-reverse; 
+}
+
+.HeaderDiv{
+  width: 2px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.736);
+
+  padding: 0;
+}
+
 .LoginBtn {
- color: #1bbeff;
+ color: #000000;
+ font-weight: 900;
+ font-size: 16px;
 }
 
 .LoginBtn:hover {
@@ -239,12 +260,12 @@
   cursor: pointer;
 }
 
-.Guest,
+
 .User {
   font-size: 18px;
   font-weight: 800;
   color: #ffffff;
-  background: #1bbeff;
+  background: #343434;
   border-radius: 8px;
   padding: 6px 14px;
   margin: 4px;
@@ -252,7 +273,9 @@
 }
 
 .Guest {
-  background: #80807f ;
+
+  font-size: 18px;
+  color: #2d2d2d ;
   cursor: default ;
 }
 
@@ -275,6 +298,17 @@
   .FamilyName {
     display: none;
   }
+
+  .Guest {
+cursor: none ;
+  font-size: 22px;
+
+}
+
+
+  .HeaderDiv{
+  background: rgba(0, 0, 0, 0);
+}
 
     .ReturnToRecipeSection.hasImage {
     width: 56px !important;
