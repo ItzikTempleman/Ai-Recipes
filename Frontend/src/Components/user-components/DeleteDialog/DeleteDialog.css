@@ -1,22 +1,15 @@
-/* ConfirmDialog.css */
-
-/* Slightly soften the backdrop (optional, subtle) */
 .MuiBackdrop-root {
   background-color: rgba(0, 0, 0, 0.55);
 }
 
-/* Dialog surface */
 .MuiDialog-paper {
   border-radius: 14px;
   padding: 6px;
   min-width: 360px;
   max-width: 520px;
-
-  /* clean, minimal shadow */
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
 }
 
-/* Title */
 .MuiDialogTitle-root {
   padding: 18px 20px 10px;
   font-weight: 700;
@@ -24,25 +17,21 @@
   letter-spacing: -0.01em;
 }
 
-/* Content */
 .MuiDialogContent-root {
   padding: 6px 20px 14px;
 }
 
-/* Message text */
 .MuiDialogContent-root .MuiTypography-root {
   font-size: 1.02rem;
   line-height: 1.55;
   color: rgba(0, 0, 0, 0.72);
 }
 
-/* Actions row */
 .MuiDialogActions-root {
   padding: 12px 16px 16px;
   gap: 10px;
 }
 
-/* Buttons: consistent sizing */
 .MuiDialogActions-root .MuiButton-root {
   text-transform: none;
   border-radius: 10px;
@@ -51,18 +40,10 @@
   font-weight: 600;
 }
 
-/* Make Cancel look like a calm secondary action */
 .MuiDialogActions-root .MuiButton-root:first-of-type {
   color: rgba(0, 0, 0, 0.68);
 }
 
-/* Slightly tame the "error contained" button so it isn’t screaming red */
 .MuiDialogActions-root .MuiButton-containedError {
   box-shadow: none;
 }
-
-.MuiDialogActions-root .MuiButton-containedError:hover {
-  box-shadow: none;
-  filter: brightness(0.95);
-}
-

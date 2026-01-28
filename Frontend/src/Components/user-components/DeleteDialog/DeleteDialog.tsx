@@ -4,7 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
-import "./ConfirmDialog.css";
+import "./DeleteDialog.css";
 import { useTranslation } from "react-i18next";
 
 
@@ -14,7 +14,7 @@ type Props = {
   onConfirm: () => void;
 };
 
-export function ConfirmDialog({ open, onCancel, onConfirm }: Props) {
+export function DeleteDialog({ open, onCancel, onConfirm }: Props) {
   const { t } = useTranslation();
 
 
@@ -24,6 +24,7 @@ export function ConfirmDialog({ open, onCancel, onConfirm }: Props) {
 
       <DialogContent>
         <Typography>{t("drawer.message")}</Typography>
+        <Typography>{t("drawer.message2")}</Typography>
       </DialogContent>
 
       <DialogActions>

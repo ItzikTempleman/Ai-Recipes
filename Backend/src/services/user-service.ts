@@ -47,6 +47,13 @@ class UserService {
         return cyber.generateToken(user);
     }
 
+    public async isUserExists(id: number): Promise<boolean> {
+        const sql = "select id from user where id = ? limit 1";
+const values = [id];
+        const rows = (await dal.execute(sql, values)) as Array<{ id: number }>;
+        return rows.length > 0;
+    }
+
     public async getAllUsers(): Promise<UserModel[]> {
         const sql = "select * from user";
         return await dal.execute(sql) as UserModel[];

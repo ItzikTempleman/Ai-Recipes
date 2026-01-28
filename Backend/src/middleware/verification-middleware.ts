@@ -4,37 +4,46 @@ import { appConfig } from "../utils/app-config";
 import { UserModel } from "../models/user-model";
 import jwt from "jsonwebtoken";
 import { StatusCode } from "../models/status-code";
+import { userService } from "../services/user-service";
 
 class VerificationMiddleware {
-    public readonly verifyLoggedIn = (request: Request, response: Response, next: NextFunction):void => {
-        try {
-            const authHeader = (request.headers as any)["authorization"] as string | undefined;
-            const userJWT = authHeader?.split(" ")[1];
-            if (!userJWT) throw new AuthorizationError("Missing valid user");
-            const payload = jwt.verify(userJWT, appConfig.jwtSecretKey) as { user: UserModel };
-            (request as any).user = payload.user;
-            next();
-        } catch {
-             response.status(StatusCode.Unauthorized).send("Unauthorized");
+  public readonly verifyLoggedIn = (request: Request, response: Response, next: NextFunction): void => {
+    try {
+      const authHeader = (request.headers as any)["authorization"] as string | undefined;
+      const userJWT = authHeader?.split(" ")[1];
+      if (!userJWT) throw new AuthorizationError("Missing valid user");
+      const payload = jwt.verify(userJWT, appConfig.jwtSecretKey) as { user: UserModel };
+      const tokenUser = payload.user;
+      userService.isUserExists(tokenUser.id).then((isExists) => {
+        if (!isExists) {
+          response.status(StatusCode.Unauthorized).send("Unauthorized");
+          return;
         }
+        (request as any).user = payload.user;
+        next();
+      }).catch(
+        () => response.status(StatusCode.Unauthorized).send("Unauthorized"));
+    } catch {
+      response.status(StatusCode.Unauthorized).send("Unauthorized");
     }
+  };
 
 
-public verifyOptional(request: Request, response: Response, next: NextFunction) {
-  try {
-    const header = request.header("authorization");
-    if (!header) return next();
+  public verifyOptional(request: Request, response: Response, next: NextFunction) {
+    try {
+      const header = request.header("authorization");
+      if (!header) return next();
 
-    const token = header.replace("Bearer ", "").trim();
-    if (!token) return next();
+      const token = header.replace("Bearer ", "").trim();
+      if (!token) return next();
 
-    const payload = jwt.verify(token, appConfig.jwtSecretKey) as { user: UserModel };
-    (request as any).user = payload.user;
+      const payload = jwt.verify(token, appConfig.jwtSecretKey) as { user: UserModel };
+      (request as any).user = payload.user;
 
-    next();
-  } catch {
-    next();
+      next();
+    } catch {
+      next();
+    }
   }
-}
 }
 export const verificationMiddleware = new VerificationMiddleware();

@@ -15,7 +15,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import { userService } from "../../../Services/UserService";
 import { notify } from "../../../Utils/Notify";
-import { ConfirmDialog } from "../ConfirmDialog/ConfirmDialog";
+import { DeleteDialog } from "../DeleteDialog/DeleteDialog";
 
 type DrawerState = {
   open: boolean;
@@ -121,9 +121,8 @@ async function confirmDeleteAccount() {
           </div>
         </aside>
       </Drawer>
-      <ConfirmDialog
+      <DeleteDialog
   open={confirmOpen}
-
   onCancel={cancelDeleteAccount}
   onConfirm={confirmDeleteAccount}
 />

@@ -12,7 +12,7 @@ import { verificationMiddleware } from "../middleware/verification-middleware";
 
 class UserController {
 
-    
+
     public readonly router = express.Router();
 
     public constructor() {
@@ -21,10 +21,10 @@ class UserController {
         this.router.get("/users", this.getAllUsers);
         this.router.get("/users/:id", this.getOneUser);
         this.router.put("/users/:id", this.updateUser);
-        this.router.delete("/users/:id", this.deleteUser);
+        this.router.delete("/users/:id", verificationMiddleware.verifyLoggedIn, this.deleteUser);
         this.router.post("/auth/google", this.googleLogin);
         this.router.get("/users/images/:imageName", this.getImage);
-        this.router.post("/users/set-password",verificationMiddleware.verifyLoggedIn,this.setPassword);
+        this.router.post("/users/set-password", verificationMiddleware.verifyLoggedIn, this.setPassword);
     }
 
     private async register(request: Request, response: Response) {
@@ -55,22 +55,22 @@ class UserController {
 
         const pictureUrl = (payload.picture ?? null) as string | null;
 
-const fullName = (payload.name ?? "").trim();
-const parts = fullName.split(/\s+/).filter(Boolean);
+        const fullName = (payload.name ?? "").trim();
+        const parts = fullName.split(/\s+/).filter(Boolean);
 
-const firstName =
-  (payload.given_name ?? parts[0] ?? "Google").trim();
+        const firstName =
+            (payload.given_name ?? parts[0] ?? "Google").trim();
 
-const familyName =
-  (payload.family_name ?? (parts.length > 1 ? parts[parts.length - 1] : "")).trim();
+        const familyName =
+            (payload.family_name ?? (parts.length > 1 ? parts[parts.length - 1] : "")).trim();
 
 
-const token = await userService.loginWithGoogle(
-  payload.email.toLowerCase(),
-  firstName,
-  familyName,
-  pictureUrl
-);
+        const token = await userService.loginWithGoogle(
+            payload.email.toLowerCase(),
+            firstName,
+            familyName,
+            pictureUrl
+        );
         response.json(token);
     }
 
@@ -107,17 +107,23 @@ const token = await userService.loginWithGoogle(
 
     public async deleteUser(request: Request, response: Response) {
         const id = Number(request.params.id);
+        const loggedInUserId = (request as any).user?.id;
+
+
+        if (!loggedInUserId || loggedInUserId !== id) {
+            throw new AuthorizationError("You can only delete your own account");
+        }
         await userService.deleteUser(id);
         response.sendStatus(StatusCode.NoContent);
     }
 
-    public async setPassword(request: Request, response: Response){
- const userId = (request as any).user.id;
-  const { password, confirm } = request.body as { password?: string; confirm?: string };
-    const token = await userService.setPasswordForLoggedInUser( userId, password || "", confirm || "" );
-  response.json({ token });
-}
-    
+    public async setPassword(request: Request, response: Response) {
+        const userId = (request as any).user.id;
+        const { password, confirm } = request.body as { password?: string; confirm?: string };
+        const token = await userService.setPasswordForLoggedInUser(userId, password || "", confirm || "");
+        response.json({ token });
+    }
+
 
 }
 
