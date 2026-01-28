@@ -76,7 +76,6 @@
   background: #b2c9da92;
   border-color: #8bc4f0;
   transform: translateY(-1px);
-
 }
 
 .NewScreenBtn.active,
@@ -84,7 +83,6 @@
   background: rgba(246, 207, 143, 0.22);
   border-color: rgba(233, 183, 66, 0.684) ;
   transform: translateY(-1px);
-
 }
 
 .NewScreenBtn svg {
@@ -173,7 +171,7 @@
 }
 
 .LoginBtn {
-  color: #393939 ;
+ color: #1bbeff;
 }
 
 .LoginBtn:hover {

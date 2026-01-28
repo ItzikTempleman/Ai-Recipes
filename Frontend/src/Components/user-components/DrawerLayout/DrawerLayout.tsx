@@ -32,32 +32,33 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
   const moreActionsRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate()
 
-const [confirmOpen, setConfirmOpen] = useState(false);
-const [pendingDeleteUserId, setPendingDeleteUserId] = useState<number | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingDeleteUserId, setPendingDeleteUserId] = useState<number | null>(null);
 
-function askDeleteAccount(userId: number) {
-  setPendingDeleteUserId(userId);
-  setConfirmOpen(true);
-}
+  function askDeleteAccount(userId: number) {
+    setPendingDeleteUserId(userId);
+    setConfirmOpen(true);
+  }
 
-function cancelDeleteAccount() {
-  setConfirmOpen(false);
-  setPendingDeleteUserId(null);
-}
-
-async function confirmDeleteAccount() {
-  if (pendingDeleteUserId == null) return;
-
-  try {
-    await userService.deleteAccount(pendingDeleteUserId);
-    notify.success(t("drawer.confirmation"));
+  function cancelDeleteAccount() {
     setConfirmOpen(false);
     setPendingDeleteUserId(null);
-    navigate("/login");
-  } catch (err: any) {
-    notify.error(err);
   }
-}
+
+  async function confirmDeleteAccount() {
+    if (pendingDeleteUserId == null) return;
+
+    try {
+      await userService.deleteAccount(pendingDeleteUserId);
+      notify.success(t("drawer.confirmation"));
+      setConfirmOpen(false);
+      setPendingDeleteUserId(null);
+      navigate("/login");
+      setOpen(false)
+    } catch (err: any) {
+      notify.error(err);
+    }
+  }
 
   return (
     <div>
@@ -82,14 +83,28 @@ async function confirmDeleteAccount() {
 
                 <NavLink onClickCapture={() => setOpen(false)}
                   to="/profile" className="ProfileBtn"
-
                 >
                   <Person />
                   <p>{t("drawer.profile")}</p>
 
                 </NavLink>
               </div>
-            ) : null}
+            ) : (
+              <div>
+
+                <img className="NoProfileImage" src={"/person-21.png"} />
+
+                <Button className="LoginFromDrawerBtn"
+      
+                  onClick={() => {
+                    navigate("/login")
+                    setOpen(false)
+                  }}>
+                  <p>{t("auth.login.title")}</p>
+                </Button>
+              </div>
+            )
+            }
             <NavLink onClickCapture={() => setOpen(false)} to="/about" className="AboutScreenBtn" >
 
               <InfoOutlinedIcon />
@@ -121,11 +136,12 @@ async function confirmDeleteAccount() {
           </div>
         </aside>
       </Drawer>
+
       <DeleteDialog
-  open={confirmOpen}
-  onCancel={cancelDeleteAccount}
-  onConfirm={confirmDeleteAccount}
-/>
+        open={confirmOpen}
+        onCancel={cancelDeleteAccount}
+        onConfirm={confirmDeleteAccount}
+      />
     </div>
   );
 }

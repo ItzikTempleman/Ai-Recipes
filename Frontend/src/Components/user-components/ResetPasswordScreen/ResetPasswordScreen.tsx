@@ -258,7 +258,7 @@ export function ResetPasswordScreen() {
                         />
 
                         <Button type="submit"
-                            className="LoginScreenBtn"
+                            className="ResetScreenBtn"
                             variant="contained">
                             {t("auth.login.sendCode")}
                         </Button>
@@ -289,7 +289,7 @@ export function ResetPasswordScreen() {
                         </div>
                         <Button
                             type="button"
-                            className="LoginScreenBtn"
+                            className="ResetScreenBtn"
                             variant="contained"
                             onClick={submitCode}
                         >
@@ -360,7 +360,7 @@ export function ResetPasswordScreen() {
 
                         <Button
                             type="button"
-                            className="LoginScreenBtn"
+                            className="ResetScreenBtn"
                             variant="contained"
                             onClick={updatePassword}
 
@@ -371,7 +371,7 @@ export function ResetPasswordScreen() {
                 {resetState.step === "finnish" && (
                     <>
                         <div>{t("auth.login.passwordUpdated")}</div>
-                        <Button className="LoginScreenBtn" type="button" variant="contained" onClick={returnToLogin}>
+                        <Button className="ResetScreenBtn" type="button" variant="contained" onClick={returnToLogin}>
                             {t("auth.registration.back")}
                         </Button>
                     </>
