@@ -50,14 +50,15 @@
 .LikesScreen .RecipeList {
   width: 100%;
   max-width: 1480px;
-   margin: 30px auto 0 !important;
+  margin: 30px auto 0 !important;
   padding: 34px var(--edge-pad, 34px) 20px;
   box-sizing: border-box;
+
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, 320px); /* ✅ prevents 1fr stretching */
+  gap: 64px; /* or 48px if you want tighter */
+  justify-content: start; /* left aligned; use center if you prefer */
   overflow: visible !important;
-   justify-content: start;
 }
 
 .LikesScreen .RecipeList > * {

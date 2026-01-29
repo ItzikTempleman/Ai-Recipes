@@ -1,39 +1,24 @@
 DROP TABLE IF EXISTS `likes`;
-
-CREATE TABLE `likes` (
-  `userId` int NOT NULL,
-  `recipeId` int NOT NULL,
-  PRIMARY KEY (`userId`,`recipeId`),
-  KEY `likesToRecipe_idx` (`recipeId`),
-  CONSTRAINT `likesToRecipe` FOREIGN KEY (`recipeId`) REFERENCES `recipe` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `likesToUsers` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-LOCK TABLES `likes` WRITE;
-
-UNLOCK TABLES;
-
 DROP TABLE IF EXISTS `passwordReset`;
-
-CREATE TABLE `passwordReset` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `tokenHash` varchar(64) NOT NULL,
-  `exp` datetime NOT NULL,
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `usedAt` datetime DEFAULT NULL,
-  `passwordResetcol` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `passwordResetToUser_idx` (`userId`),
-  CONSTRAINT `passwordResetToUser` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
-LOCK TABLES `passwordReset` WRITE;
-
-UNLOCK TABLES;
-
 DROP TABLE IF EXISTS `recipe`;
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(45) NOT NULL,
+  `familyName` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `Gender` enum('MALE','FEMALE','OTHER') DEFAULT NULL,
+  `birthDate` date DEFAULT NULL,
+  `imageName` varchar(90) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `imageName_UNIQUE` (`imageName`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `user` WRITE;
+UNLOCK TABLES;
 
 CREATE TABLE `recipe` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -61,29 +46,45 @@ CREATE TABLE `recipe` (
   `countryOfOrigin` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `recipeToUser_idx` (`userId`),
-  CONSTRAINT `recipeToUser` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE
+  CONSTRAINT `recipeToUser` FOREIGN KEY (`userId`)
+    REFERENCES `user` (`id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=462 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 LOCK TABLES `recipe` WRITE;
-
 UNLOCK TABLES;
 
-DROP TABLE IF EXISTS `user`;
-
-CREATE TABLE `user` (
+CREATE TABLE `passwordReset` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `firstName` varchar(45) NOT NULL,
-  `familyName` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `phoneNumber` varchar(45) DEFAULT NULL,
-  `Gender` enum('MALE','FEMALE','OTHER') DEFAULT NULL,
-  `birthDate` date DEFAULT NULL,
-  `imageName` varchar(90) DEFAULT NULL,
+  `userId` int NOT NULL,
+  `tokenHash` varchar(64) NOT NULL,
+  `exp` datetime NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `usedAt` datetime DEFAULT NULL,
+  `passwordResetcol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `imageName_UNIQUE` (`imageName`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `passwordResetToUser_idx` (`userId`),
+  CONSTRAINT `passwordResetToUser` FOREIGN KEY (`userId`)
+    REFERENCES `user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `user` WRITE;
+LOCK TABLES `passwordReset` WRITE;
+UNLOCK TABLES;
 
+CREATE TABLE `likes` (
+  `userId` int NOT NULL,
+  `recipeId` int NOT NULL,
+  PRIMARY KEY (`userId`,`recipeId`),
+  KEY `likesToRecipe_idx` (`recipeId`),
+  CONSTRAINT `likesToRecipe` FOREIGN KEY (`recipeId`)
+    REFERENCES `recipe` (`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `likesToUsers` FOREIGN KEY (`userId`)
+    REFERENCES `user` (`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `likes` WRITE;
 UNLOCK TABLES;

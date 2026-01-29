@@ -22,7 +22,6 @@ export function Routing() {
         <div>
             <Routes>
                 <Route path="/" element={<HomeScreen />} />
-                <Route path="*" element={<Page404 />} />
                 <Route path="/generate" element={<RecipeInputScreen />} />
                 <Route path="/about" element={<AboutScreen />} />
                 <Route path="/home" element={<HomeScreen />} />
@@ -35,6 +34,9 @@ export function Routing() {
                 <Route path="/reset" element={<ResetPasswordScreen />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/data-deletion" element={<DataDeletion />} />
+
+                <Route path="/404" element={<Page404 />} />
+                <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
         </div>
     );

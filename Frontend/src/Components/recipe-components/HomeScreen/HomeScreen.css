@@ -174,8 +174,9 @@
   padding: 34px var(--edge-pad, 34px) 20px;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+    grid-template-columns: repeat(auto-fill, 320px);
+justify-content: center;
+  gap: 64px;
   overflow: visible !important;
   scroll-snap-type: none;
 }
