@@ -113,6 +113,10 @@
   transition: filter 120ms ease, transform 120ms ease;
 }
 
+.MoreBtn.MuiButton-root {
+ justify-content: center !important;
+}
+
 .ProfileBtn:hover,
 .AboutScreenBtn:hover {
   transform: translateY(-1px);
