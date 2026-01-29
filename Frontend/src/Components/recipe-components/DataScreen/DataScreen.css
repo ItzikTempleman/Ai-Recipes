@@ -18,28 +18,57 @@
   border-radius: 4px;
 }
 
-.ShareBtnContainer{
+.ShareBtnContainer {
   background: #80807f !important;
   color: #ffffff !important;
   gap: 10px;
   border-radius: 8px !important;
 }
 
+.AskModelDiv {
+  border-radius: 18px;
+  padding: 0 24px;
+   background: #d8d8d8 !important;
+  display: flex;
+  width: 140px;
+  margin-top: 8px;
+  align-items: center;
+  gap: 12px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
 
+.AskModelDiv:hover {
+     transform: translateY(-1px);
+     cursor: pointer;
+}
 
-.RecipeSneakPeakInfo{
+.ChefImage {
+  width: 24px;
+  height:24px;
+}
+
+.RecipeSneakPeakInfo {
   margin-top: 30px;
   display: flex;
   flex-direction: row;
-  
+
 }
 
+.AskModelDiv.rtl {
+  margin-left: auto;   
+  
+  margin-right: 0;
+}
 
+.AskModelDiv.ltr {
+  margin-right: auto;  
+  margin-left: 0;
+}
 .CaloriesInnerText,
-.ProteinInnerText{
+.ProteinInnerText {
   display: flex;
   flex-direction: row;
-     gap: 6px;          
+  gap: 6px;
   align-items: baseline;
   justify-content: center;
 }
@@ -48,32 +77,34 @@
 .Sugar,
 .Protein,
 .Quantity,
-.Country
-{
-margin: 2px;
-border-radius: 8px;
-padding: 4px;
-  padding: 8px 10px;   
+.Country {
+  margin: 2px;
+  border-radius: 8px;
+  padding: 4px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;   
-  text-align: center; 
-width: 100%;
-background-color: white;
-height: auto;
-border: 1px solid rgba(130, 130, 130, 0.623);
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  background-color: white;
+  height: auto;
+  border: 1px solid rgba(130, 130, 130, 0.623);
 }
 
 .Calories p,
 .Sugar p,
 .Protein p,
 .Quantity p,
-.Country p{
+.Country p {
   margin: 0;
 }
 
+.SendIconRtl {
+  transform: rotate(180deg);
+}
 
-.RecipeTitle{
+.RecipeTitle {
   font-weight: 600;
   font-size: 36px;
   color: #2f2f2f;
@@ -83,18 +114,22 @@ border: 1px solid rgba(130, 130, 130, 0.623);
 .Sugar p:not(.Title),
 .Protein p:not(.Title),
 .Quantity p:not(.Title),
-.Country p:not(.Title){
+.Country p:not(.Title) {
   font-size: 14px;
 
 }
 
-.ImageLoadingMessageAfterRecipeGenerated{
-    color: #666666 !important;
-font-size: 20px;
+.ImageLoadingMessageAfterRecipeGenerated {
+  color: #666666 !important;
+  font-size: 20px;
   width: 100%;
   text-align: center;
 }
 
+.AskTextField textarea {
+  min-height: 180px !important;
+  line-height: 1.4;
+}
 
 .RecipeStepsGrid,
 .IngredientsList,
@@ -155,10 +190,10 @@ html[dir="rtl"] .FilterBar {
   background: rgb(255, 255, 255);
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   color: #3b3b3b;
-} 
+}
 
 .LoadImageBtn {
-   background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
+  background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   color: #ffffff !important;
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
   width: 50%;
@@ -251,8 +286,9 @@ html[dir="rtl"] .FilterBar {
   list-style-position: inside;
 }
 
-.IngredientsTitle, .InstructionsTitle{
-color: #666666 !important;
+.IngredientsTitle,
+.InstructionsTitle {
+  color: #666666 !important;
 }
 
 .InstructionsTitle.ltr,
@@ -301,7 +337,7 @@ color: #666666 !important;
 
 @media (min-width: 780px) {
   .RecipePreparationWideView {
-    margin-top: 60px;
+    margin-top: 12px;
     width: calc(100vw - 4vw);
     max-width: 1600px;
     box-sizing: border-box;
@@ -329,12 +365,12 @@ color: #666666 !important;
     flex-direction: row-reverse;
   }
 
-  .RecipeStepsGrid > .IngredientsList,
-  .RecipeStepsGrid > .InstructionsList {
+  .RecipeStepsGrid>.IngredientsList,
+  .RecipeStepsGrid>.InstructionsList {
     width: 50%;
   }
 
-  .RecipeStepsGrid > .IngredientsList {
+  .RecipeStepsGrid>.IngredientsList {
     margin-top: 0;
   }
 
@@ -397,39 +433,44 @@ color: #666666 !important;
 }
 
 @media (max-width: 600px) {
-    .RecipeSneakPeakInfo{
+  .RecipeSneakPeakInfo {
     flex-direction: column;
-    align-items: stretch; 
+    align-items: stretch;
   }
-.RecipeTitle{
-  font-size: 30px;
-}
-.RecipeImage {
-  box-shadow:none;
-  width:90%;
 
-}
+  .RecipeTitle {
+    font-size: 30px;
+  }
+
+  .RecipeImage {
+    box-shadow: none;
+    width: 90%;
+
+  }
 
   .Calories,
   .Sugar,
   .Protein,
   .Quantity,
-  .Country{
+  .Country {
     width: 100%;
- gap: 8px;
+    gap: 8px;
     border-radius: 0;
     border: none;
-    border-bottom: 0.5px solid grey !important;     
+    border-bottom: 0.5px solid grey !important;
     background-color: transparent;
-  
-  
+
+
   }
 
+.AskModelDiv {
+margin: 12px  auto !important;
+}
 
   .CaloriesInnerText,
-  .ProteinInnerText{
+  .ProteinInnerText {
     justify-content: center;
-    flex-wrap: wrap;   
+    flex-wrap: wrap;
   }
 
   .DataScreen {
@@ -441,3 +482,79 @@ color: #666666 !important;
     flex-direction: row;
   }
 }
+
+.AskDialog .MuiPaper-root {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+}
+
+.AskTextField {
+  width: 100%;
+}
+
+.AskTextField .MuiOutlinedInput-root {
+  border-radius: 22px !important;
+  background-color: #fff !important;
+  height: 180px !important;      
+  align-items: flex-start !important; 
+  position: relative !important;     
+}
+
+.AskTextField textarea,
+.AskTextField .MuiInputBase-inputMultiline,
+.AskTextField .MuiOutlinedInput-inputMultiline {
+  min-height: 180px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 14px 16px 48px 16px !important;
+  color: #111 !important;
+  -webkit-text-fill-color: #111 !important;
+  caret-color: #111 !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+
+.AskTextField textarea::placeholder {
+  color: rgba(0, 0, 0, 0.55) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.55) !important;
+  opacity: 1 !important;
+}
+
+.AskForm.rtl .AskTextField textarea {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.AskForm.rtl .AskTextField textarea::placeholder {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.AskAdornment {
+  position: absolute !important;
+  bottom: 12px;
+  right: 12px;
+  margin: 0 !important;
+}
+
+.AskForm.rtl .AskAdornment {
+  right: auto;
+  left: 12px;
+}
+
+.AskSendIcon {
+  color: #1bbeff !important;
+  font-size: 24px !important;
+}
+
+.AskSendIcon.rtl {
+  transform: rotate(180deg);
+}
+
+
+
+
+

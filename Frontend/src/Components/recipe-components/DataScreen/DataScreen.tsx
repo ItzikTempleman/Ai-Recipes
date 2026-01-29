@@ -2,16 +2,23 @@ import "./DataScreen.css";
 import { formatAmount } from "../../../Utils/Utils";
 import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../../Utils/CountryFlag";
 import { Filters } from "../RecipeCard/RecipeCard";
-
+import chef from "../../../Assets/images/chef.png";
 import { FilterBadges } from "../../../Utils/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../../Models/RecipeModel";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
-import { Box, Button, CircularProgress, IconButton } from "@mui/material";
+import { Box, Button, CircularProgress, Dialog, IconButton, InputAdornment, TextField } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import { shareRecipeAsPdfWithToasts } from "../../../Services/ShareRecipeService";
+import { useForm } from "react-hook-form";
+import SendIcon from '@mui/icons-material/Send';
+
+type QuestionProp = {
+  query: string;
+  recipe: RecipeModel;
+};
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -35,8 +42,15 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
   const flag = getCountryFlag(recipe.countryOfOrigin);
+  const [open, setOpen] = useState(false);
 
-  
+  const { register, handleSubmit, reset } = useForm<QuestionProp>({
+  defaultValues: { query: "" }
+});
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+
   const handleLoadImage = async () => {
     try {
       if (!loadImage || isImageLoading) return;
@@ -127,6 +141,15 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
     return out;
   })();
 
+  async function send(question: QuestionProp) {
+    
+      console.log(`${question.query}`)
+   reset({ query: "" }); 
+    setOpen(false);
+
+  }
+
+
   return (
     <div className="DataScreen">
       <div className="RecipeHeaderRow">
@@ -163,7 +186,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
       ) : loadImage ? (
         isImageLoading ? (
           <>
-                      <h2 className="ImageLoadingMessageAfterRecipeGenerated">
+            <h2 className="ImageLoadingMessageAfterRecipeGenerated">
               {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
             </h2>
             <IconButton className="ProgressBar" edge="end" disabled>
@@ -190,7 +213,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
           {isRTL ? (
             <div className="CaloriesInnerText">
-               <p> ק ל100 גרם</p> <p>{recipe.calories}</p>
+              <p> ק ל100 גרם</p> <p>{recipe.calories}</p>
             </div>
           ) : (
             <div>
@@ -231,15 +254,51 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
           </p>
         </div>
         <div className="Country">
-              <p className="Title">{recipe.countryOfOrigin}</p>
+          <p className="Title">{recipe.countryOfOrigin}</p>
           {shareMode && flag ? (
             <img className="CountryFlagImg" src={flagEmojiToTwemojiUrl(flag)} />
           ) : (
             <span className="CountryFlag">{flag}</span>
           )}
-      
+
         </div>
       </div>
+
+      <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleClickOpen}>
+        <img className="ChefImage" src={chef} />
+        <h4>{t("recipeUi.ask")}</h4>
+      </div>
+
+<Dialog
+  open={open}
+  onClose={handleClose}
+  fullScreen={false}
+  maxWidth="sm"
+  fullWidth
+  className="AskDialog"
+>
+  <form className={`AskForm ${isRTL ? "rtl" : "ltr"}`} onSubmit={handleSubmit(send)}>
+<TextField
+  className="AskTextField"
+  fullWidth
+  multiline
+  minRows={10}
+  placeholder={t("recipeUi.ask")}
+  {...register("query", { required: true, minLength: 2, maxLength: 300 })}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end" className="AskAdornment">
+        <IconButton type="submit" className="AskSendBtn">
+          <SendIcon className={`AskSendIcon ${isRTL ? "rtl" : "ltr"}`} />
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
+  </form>
+</Dialog>
+
+
 
       <div className="RecipePreparationWideView">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>

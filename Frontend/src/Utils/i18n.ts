@@ -198,7 +198,8 @@ const resources = {
         protein: "Protein",
         health: "Health",
         kcal: "kcal",
-        time: "Prep time"
+        time: "Prep time",
+        ask:"Ask the chef"
       },
       difficulty: {
         easy: "Easy",
@@ -419,7 +420,8 @@ const resources = {
         protein: "חלבון",
         health: "בריאות",
         kcal: 'קק"ל',
-        time: "זמן הכנה"
+        time: "זמן הכנה",
+        ask:"שאל את השף"
       },
       difficulty: {
         easy: "קל",
