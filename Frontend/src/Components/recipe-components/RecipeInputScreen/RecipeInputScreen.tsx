@@ -65,7 +65,7 @@ export function RecipeInputScreen() {
     i18n.on("languageChanged", onLangChange);
 
 
-    if (user && !loading && !didResetOnEnterRef.current) {
+    if (user && !loading && !didResetOnEnterRef.current&& !recipeHasData) {
       dispatch(resetGenerated());
       didResetOnEnterRef.current = true;
     }
