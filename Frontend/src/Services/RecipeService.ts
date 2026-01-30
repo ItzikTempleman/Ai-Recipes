@@ -1,4 +1,4 @@
-import { RecipeModel, InputModel, SugarRestriction, LactoseRestrictions, GlutenRestrictions, DietaryRestrictions, AskRecipeRequest, AskRecipeResponse, ChatMsg } from "../Models/RecipeModel";
+import { RecipeModel, InputModel, SugarRestriction, LactoseRestrictions, GlutenRestrictions, DietaryRestrictions, ChatMsg } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios, { AxiosRequestConfig } from "axios";
