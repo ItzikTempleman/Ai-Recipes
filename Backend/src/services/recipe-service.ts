@@ -236,6 +236,28 @@ class RecipeService {
     const likedRecipes = await dal.execute(sql, values) as DbRecipeRow[];
     return likedRecipes.map(mapDbRowToFullRecipe);
   }
+
+
+public async askAboutRecipe(recipeId:number,userId:number,query:string):Promise<string>{
+const recipe= await this.getSingleRecipe(recipeId,userId);
+const recipeContext={
+    title: recipe.title,
+    description: recipe.description,
+    amountOfServings: recipe.amountOfServings,
+    ingredients: recipe.data?.ingredients ?? [],
+    instructions: recipe.data?.instructions ?? [],
+    restrictions: {
+      sugarRestriction: recipe.sugarRestriction,
+      lactoseRestrictions: recipe.lactoseRestrictions,
+      glutenRestrictions: recipe.glutenRestrictions,
+      dietaryRestrictions: recipe.dietaryRestrictions,
+      caloryRestrictions: recipe.caloryRestrictions,
+      queryRestrictions: recipe.queryRestrictions ?? []
+    }
+}
+  return await gptService.askRecipeQuestion(recipeContext, query);
 }
 
+
+}
 export const recipeService = new RecipeService();

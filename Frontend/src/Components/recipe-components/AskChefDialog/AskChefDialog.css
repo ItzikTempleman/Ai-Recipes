@@ -1,0 +1,90 @@
+/* Keep your current transparent dialog look */
+.AskDialog .MuiPaper-root {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+}
+
+.AskWrap {
+  width: 100%;
+}
+
+.AskTextField {
+  width: 100%;
+}
+
+/* Make the input root a fixed height and allow internal scrolling */
+.AskTextField .MuiOutlinedInput-root {
+  border-radius: 22px !important;
+  background-color: #fff !important;
+  height: 320px !important;
+  align-items: flex-start !important;
+  position: relative !important;
+
+  overflow: hidden !important;     /* keep rounded corners clean */
+}
+
+/* The REAL scroll container */
+.AskTextField textarea,
+.AskTextField .MuiOutlinedInput-inputMultiline {
+  height: 320px !important;        /* force exact height */
+  min-height: 320px !important;
+  max-height: 320px !important;
+
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 14px 16px 48px 16px !important;
+
+  color: #111 !important;
+  -webkit-text-fill-color: #111 !important;
+  caret-color: #111 !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  white-space: pre-wrap !important;
+}
+
+/* placeholder */
+.AskTextField textarea::placeholder {
+  color: rgba(0, 0, 0, 0.55) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.55) !important;
+  opacity: 1 !important;
+}
+
+.AskWrap.rtl .AskTextField textarea {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* Send icon position */
+.AskAdornment {
+  position: absolute !important;
+  bottom: 12px;
+  right: 12px;
+  margin: 0 !important;
+}
+.AskWrap.rtl .AskAdornment {
+  right: auto;
+  left: 12px;
+}
+
+.AskSendIcon {
+  color: #1bbeff !important;
+  font-size: 24px !important;
+}
+.AskSendIcon.rtl {
+  transform: rotate(180deg);
+}
+
+.AskErrorLine {
+  margin-top: 8px;
+  color: #c62828;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+}

@@ -84,3 +84,23 @@ export enum CaloryRestrictions {
 export type QueryRestrictions = string[];
 
 
+export type AskRecipeRequest = {
+  query: string;
+};
+
+export type AskRecipeResponse = {
+  answer: string;
+};
+
+export type AskRecipeBody = {
+  question: string;
+  recipe: {
+    title: string;
+    description: string;
+    ingredients: { ingredient: string; amount: string | null }[];
+    instructions: string[];
+  };
+  history?: { role: "user" | "assistant"; content: string }[];
+};
+
+export type ChatMsg = { role: "user" | "assistant"; content: string };

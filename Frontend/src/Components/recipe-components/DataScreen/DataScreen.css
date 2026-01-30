@@ -483,6 +483,8 @@ margin: 12px  auto !important;
   }
 }
 
+
+/* Keep your current transparent dialog look */
 .AskDialog .MuiPaper-root {
   padding: 0 !important;
   background: transparent !important;
@@ -491,25 +493,29 @@ margin: 12px  auto !important;
   overflow: hidden !important;
 }
 
+/* Keep field full width */
 .AskTextField {
   width: 100%;
 }
 
+/* Keep your big white input look */
 .AskTextField .MuiOutlinedInput-root {
   border-radius: 22px !important;
   background-color: #fff !important;
-  height: 180px !important;      
-  align-items: flex-start !important; 
-  position: relative !important;     
+  height: 180px !important;
+  align-items: flex-start !important;
+  position: relative !important;
+  overflow: hidden !important; /* important so conversation fits nicely */
 }
 
+/* Text area styling stays the same */
 .AskTextField textarea,
 .AskTextField .MuiInputBase-inputMultiline,
 .AskTextField .MuiOutlinedInput-inputMultiline {
   min-height: 180px !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  padding: 14px 16px 48px 16px !important;
+  padding: 14px 16px 48px 16px !important; /* keep room for send button */
   color: #111 !important;
   -webkit-text-fill-color: #111 !important;
   caret-color: #111 !important;
@@ -523,37 +529,91 @@ margin: 12px  auto !important;
   opacity: 1 !important;
 }
 
+/* RTL typing */
 .AskForm.rtl .AskTextField textarea {
   direction: rtl !important;
   text-align: right !important;
 }
-
 .AskForm.rtl .AskTextField textarea::placeholder {
   direction: rtl !important;
   text-align: right !important;
 }
 
+/* Send icon position (unchanged) */
 .AskAdornment {
   position: absolute !important;
   bottom: 12px;
   right: 12px;
   margin: 0 !important;
 }
-
 .AskForm.rtl .AskAdornment {
   right: auto;
   left: 12px;
 }
-
 .AskSendIcon {
   color: #1bbeff !important;
   font-size: 24px !important;
 }
-
 .AskSendIcon.rtl {
   transform: rotate(180deg);
 }
 
+/* === NEW: Conversation that scrolls, while keeping same look === */
+/* This sits BELOW the TextField, but visually you can treat it as the "chat log" */
+.AskConversation {
+  margin-top: 10px;
+  border-radius: 22px;
+  background: #fff;
+  padding: 12px;
+  max-height: 240px;         /* scroll region height */
+  overflow-y: auto;          /* conversation scroll */
+  box-shadow: none;
+}
+
+/* Bubbles */
+.AskBubble {
+  max-width: 92%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  margin: 8px 0;
+  white-space: pre-wrap;
+  line-height: 1.45;
+  font-size: 15px;
+}
+
+/* User bubble */
+.AskBubble.user {
+  background: #111827;
+  color: #fff;
+  margin-left: auto;
+}
+
+/* Bot bubble - different color */
+.AskBubble.bot {
+  background: #ffeaea;       /* light red background */
+  color: #b10000;            /* red text */
+  margin-right: auto;
+}
+
+/* Error bubble */
+.AskBubble.error {
+  background: #fff2f2;
+  color: #c62828;
+  margin-right: auto;
+}
+
+/* RTL bubble alignment */
+.AskConversation.rtl .AskBubble.user {
+  margin-left: 0;
+  margin-right: auto;
+  text-align: right;
+}
+.AskConversation.rtl .AskBubble.bot,
+.AskConversation.rtl .AskBubble.error {
+  margin-right: 0;
+  margin-left: auto;
+  text-align: right;
+}
 
 
 

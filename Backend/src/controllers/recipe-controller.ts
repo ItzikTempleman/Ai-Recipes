@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { StatusCode } from "../models/status-code";
-import { FullRecipeModel } from "../models/recipe-model";
+import { AskModel, FullRecipeModel } from "../models/recipe-model";
 import { recipeService } from "../services/recipe-service";
 import { InputModel } from "../models/InputModel";
 import { verificationMiddleware } from "../middleware/verification-middleware";
@@ -26,6 +26,8 @@ class RecipeController {
         this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
         this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe.bind(this));
         this.router.get("/api/recipes/liked/count/:recipeId", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
+
+        this.router.post("/api/recipe/:recipeId/ask", verificationMiddleware.verifyLoggedIn, this.askRecipeQuestion);
     };
 
 
@@ -296,6 +298,21 @@ class RecipeController {
         }
         const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
         response.json(likedCount);
+    }
+
+    private async askRecipeQuestion(request: Request, response: Response) {
+        const user = (request as any).user as UserModel;
+        const recipeId = Number(request.params.recipeId);
+        if (Number.isNaN(recipeId) || recipeId <= 0) {
+            response.status(StatusCode.BadRequest).send("Invalid recipeId");
+            return;
+        }
+        const ask = new AskModel({ query: request.body.query } as any);
+        ask.validate();
+
+        const answer = await recipeService.askAboutRecipe(recipeId, user.id, ask.query);
+
+        response.status(StatusCode.OK).json({ answer });
     }
 }
 

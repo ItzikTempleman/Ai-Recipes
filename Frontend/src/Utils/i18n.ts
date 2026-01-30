@@ -199,7 +199,8 @@ const resources = {
         health: "Health",
         kcal: "kcal",
         time: "Prep time",
-        ask:"Ask the chef"
+        ask:"Ask the chef",
+        thinking:"Thinking..."
       },
       difficulty: {
         easy: "Easy",
@@ -421,7 +422,8 @@ const resources = {
         health: "בריאות",
         kcal: 'קק"ל',
         time: "זמן הכנה",
-        ask:"שאל את השף"
+        ask:"שאל את השף",
+        thinking:"...חושב"
       },
       difficulty: {
         easy: "קל",

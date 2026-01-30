@@ -162,3 +162,27 @@ export class FullRecipeModel {
         if (result.error) throw new ValidationError(result.error.message);
     }
 }
+
+
+
+
+export class AskModel {
+
+    public query!: string;
+
+
+    constructor(input: AskModel) {
+        if (!input) throw new ValidationError("Missing query ");
+        this.query = input.query;
+    }
+
+    private static validationSchema = Joi.object({
+        query: Joi.string().trim().min(2).max(400).required(),
+    });
+
+    public validate(): void {
+        const result = AskModel.validationSchema.validate(this);
+        if (result.error) throw new ValidationError(result.error.message);
+    }
+
+}

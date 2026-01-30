@@ -76,6 +76,51 @@ const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
     };
 
   }
+
+  public async askRecipeQuestion(recipe: any, userQuestion: string):Promise<string>{
+      const modelToUse = appConfig.modelNumber;
+  const keyToUse = appConfig.freeNoImageApiKey;
+
+const system = `
+You are Chef, a helpful cooking assistant.
+
+Rules:
+- The user is asking about THIS recipe. The recipe is provided in the request.
+- NEVER say "I don't know from this recipe" or anything similar.
+- If the recipe lacks details, do ONE of these:
+  1) Ask up to 2 short clarifying questions, OR
+  2) Give general improvements that do not contradict the recipe.
+- Always reference the provided recipe content when possible (ingredients/instructions/title/description).
+- Keep answers practical and concise.
+- If the user asks "make it tastier", give concrete seasoning, cooking, and assembly suggestions (options) even if the recipe is basic.
+`;
+
+  const user = `
+RECIPE (JSON):
+${JSON.stringify(recipe)}
+
+QUESTION:
+${userQuestion}
+`.trim();
+
+  const body = {
+    model: modelToUse,
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: user }
+    ],
+    temperature: 0.3
+  };
+
+
+  const response= await axios.post(appConfig.gptUrl, body,{
+        headers: {
+      Authorization: "Bearer " + keyToUse,
+      "Content-Type": "application/json"
+    }
+  })
+return String(response.data.choices[0].message.content ?? "").trim();
+  }
 }
 
 export const gptService = new GptService();

@@ -1,4 +1,4 @@
-import { RecipeModel, InputModel, SugarRestriction, LactoseRestrictions, GlutenRestrictions, DietaryRestrictions } from "../Models/RecipeModel";
+import { RecipeModel, InputModel, SugarRestriction, LactoseRestrictions, GlutenRestrictions, DietaryRestrictions, AskRecipeRequest, AskRecipeResponse, ChatMsg } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
 import axios, { AxiosRequestConfig } from "axios";
@@ -11,6 +11,9 @@ import {
   deleteRecipe
 } from "../Redux/RecipeSlice";
 import { like, setLikes, unlike } from "../Redux/LikeSlice";
+
+
+
 
 class RecipeService {
 
@@ -59,27 +62,27 @@ class RecipeService {
     }
   }
 
-public async generateImageForSavedRecipe(recipeId: number): Promise<RecipeModel> {
-  const url = `${appConfig.generateImageForSavedRecipeUrl}${recipeId}/generate-image`;
-  const { data } = await axios.post<RecipeModel>(url, {}, this.getAuth());
-  return data;
-}
-public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: string; imageName?: string }> {
-  const url = appConfig.generateImagePreviewUrl;
-  const { data } = await axios.post(url, recipe, this.getAuth());
-  return data;
-}
+  public async generateImageForSavedRecipe(recipeId: number): Promise<RecipeModel> {
+    const url = `${appConfig.generateImageForSavedRecipeUrl}${recipeId}/generate-image`;
+    const { data } = await axios.post<RecipeModel>(url, {}, this.getAuth());
+    return data;
+  }
+  public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: string; imageName?: string }> {
+    const url = appConfig.generateImagePreviewUrl;
+    const { data } = await axios.post(url, recipe, this.getAuth());
+    return data;
+  }
 
   public async getAllRecipes(): Promise<RecipeModel[]> {
-      try {
-    const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
-    const list = Array.isArray(data) ? data : [];
-    store.dispatch(getAllRecipes(list));
-    return list;
-      }catch(err:any){
-          if (err?.response?.status === 401) return [];
-    throw err;
-      }
+    try {
+      const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, this.getAuth());
+      const list = Array.isArray(data) ? data : [];
+      store.dispatch(getAllRecipes(list));
+      return list;
+    } catch (err: any) {
+      if (err?.response?.status === 401) return [];
+      throw err;
+    }
   }
 
   public async getSingleRecipe(id: number): Promise<RecipeModel> {
@@ -121,6 +124,23 @@ public async generateImagePreview(recipe: RecipeModel): Promise<{ imageUrl: stri
     const { data } = await axios.get<number[]>(appConfig.likeUrl, this.getAuth());
     store.dispatch(setLikes(data.map(recipeId => ({ userId, recipeId }))));
   }
+
+
+public async askRecipeQuestion(
+  recipe: RecipeModel,
+  question: string,
+  history: ChatMsg[] = []
+): Promise<string> {
+  const url = `${appConfig.askRecipeUrl}/${recipe.id}/ask`; 
+
+  const body = {
+    query: question,             
+    history: history.slice(-8), 
+  };
+
+  const { data } = await axios.post<{ answer: string }>(url, body, this.getAuth());
+  return data.answer;
+}
 }
 
 export const recipeService = new RecipeService();
