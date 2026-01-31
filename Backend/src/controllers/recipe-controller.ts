@@ -307,10 +307,11 @@ class RecipeController {
             response.status(StatusCode.BadRequest).send("Invalid recipeId");
             return;
         }
-        const ask = new AskModel({ query: request.body.query } as any);
-        ask.validate();
+const ask = new AskModel({ query: request.body.query, history: request.body.history } as any);
+ask.validate();
 
-        const answer = await recipeService.askAboutRecipe(recipeId, user.id, ask.query);
+const answer = await recipeService.askAboutRecipe(recipeId, user.id, ask.query, ask.history ?? []);
+
 
         response.status(StatusCode.OK).json({ answer });
     }

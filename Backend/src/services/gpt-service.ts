@@ -77,50 +77,62 @@ const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
 
   }
 
-  public async askRecipeQuestion(recipe: any, userQuestion: string):Promise<string>{
-      const modelToUse = appConfig.modelNumber;
+public async askRecipeQuestion(
+  recipe: any,
+  userQuestion: string,
+  history: { role: "user" | "assistant"; content: string }[] = []
+): Promise<string> {
+  const modelToUse = appConfig.modelNumber;
   const keyToUse = appConfig.freeNoImageApiKey;
 
 const system = `
 You are Chef, a helpful cooking assistant.
 
-Rules:
-- The user is asking about THIS recipe. The recipe is provided in the request.
-- NEVER say "I don't know from this recipe" or anything similar.
-- If the recipe lacks details, do ONE of these:
-  1) Ask up to 2 short clarifying questions, OR
-  2) Give general improvements that do not contradict the recipe.
-- Always reference the provided recipe content when possible (ingredients/instructions/title/description).
-- Keep answers practical and concise.
-- If the user asks "make it tastier", give concrete seasoning, cooking, and assembly suggestions (options) even if the recipe is basic.
-`;
+Hard rules:
+- NEVER use markdown headings or titles. Do not use "#", "##", "###", or any heading-style formatting.
+- Write in plain paragraphs or simple bullet points only ("-" or "•" are allowed).
+- Do NOT use inability/disclaimer language (never say: "I don't know", "not provided", "can't tell", "unclear", "missing").
+- If details aren't present, assume sensible defaults and give 2–3 plausible options.
+- Ask clarifying questions ONLY if the user cannot proceed safely without the answer (max 2 questions).
+- Keep answers practical, specific, and friendly. No lecturing.
 
-  const user = `
-RECIPE (JSON):
-${JSON.stringify(recipe)}
-
-QUESTION:
-${userQuestion}
+Context:
+- The user is asking about THIS recipe. You'll receive it as JSON.
+- Reference the recipe content whenever possible (ingredients/instructions/title/description/restrictions).
 `.trim();
+
+  const safeHistory = Array.isArray(history)
+    ? history
+        .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+        .slice(-12)
+    : [];
+
+  const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
+    { role: "system", content: system },
+    {
+      role: "user",
+      content: `RECIPE (JSON):\n${JSON.stringify(recipe)}`
+    },
+    ...safeHistory.map(m => ({ role: m.role, content: m.content })),
+    { role: "user", content: userQuestion }
+  ];
 
   const body = {
     model: modelToUse,
-    messages: [
-      { role: "system", content: system },
-      { role: "user", content: user }
-    ],
+    messages,
     temperature: 0.3
   };
 
-
-  const response= await axios.post(appConfig.gptUrl, body,{
-        headers: {
+  const response = await axios.post(appConfig.gptUrl, body, {
+    headers: {
       Authorization: "Bearer " + keyToUse,
       "Content-Type": "application/json"
     }
-  })
-return String(response.data.choices[0].message.content ?? "").trim();
-  }
+  });
+
+  return String(response.data.choices[0].message.content ?? "").trim();
+}
+
 }
 
 export const gptService = new GptService();

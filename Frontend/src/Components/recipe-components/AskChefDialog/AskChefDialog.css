@@ -6,85 +6,137 @@
   border-radius: 22px !important;
   overflow: hidden !important;
 }
-
+.AskDialog,
+.AskDialog * {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 .AskWrap {
   width: 100%;
 }
 
-.AskTextField {
-  width: 100%;
+.AskBubble.user {
+  align-self: flex-end;
+  background: rgba(255, 0, 0, 0.182) !important;   /* light red tint */
+  color: #d10000;                      /* red text */
+  border: 1px solid rgba(255, 0, 0, 0.25);
 }
 
-/* Make the input root a fixed height and allow internal scrolling */
-.AskTextField .MuiOutlinedInput-root {
-  border-radius: 22px !important;
-  background-color: #fff !important;
-  height: 320px !important;
-  align-items: flex-start !important;
-  position: relative !important;
-
-  overflow: hidden !important;     /* keep rounded corners clean */
+/* White rounded panel */
+.AskPanel {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 12px;
 }
 
-/* The REAL scroll container */
-.AskTextField textarea,
-.AskTextField .MuiOutlinedInput-inputMultiline {
-  height: 320px !important;        /* force exact height */
-  min-height: 320px !important;
-  max-height: 320px !important;
+.AskBubble.assistant {
+  align-self: flex-start;
+background: #bfdceb7f !important;
+  color: rgba(65, 65, 65, 0.85);
+  border-radius: 18px;
+  border: 1px solid rgba(84, 209, 255, 0.728);
+}
 
-  overflow-y: auto !important;
+/* Scrollable chat area */
+.AskChat {
+  height: 320px;
+  overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
-
-  width: 100% !important;
-  box-sizing: border-box !important;
-  padding: 14px 16px 48px 16px !important;
-
-  color: #111 !important;
-  -webkit-text-fill-color: #111 !important;
-  caret-color: #111 !important;
-  font-size: 16px !important;
-  line-height: 1.5 !important;
-  white-space: pre-wrap !important;
+  padding: 10px 10px 0 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* placeholder */
-.AskTextField textarea::placeholder {
-  color: rgba(0, 0, 0, 0.55) !important;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.55) !important;
-  opacity: 1 !important;
+/* Empty hint */
+.AskEmptyHint {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 14px;
+  padding: 6px 4px;
 }
 
-.AskWrap.rtl .AskTextField textarea {
-  direction: rtl !important;
-  text-align: right !important;
+/* Bubbles */
+.AskBubble {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 16px;
+  white-space: pre-wrap;
+  line-height: 1.45;
+  font-size: 15px;
 }
 
-/* Send icon position */
-.AskAdornment {
-  position: absolute !important;
-  bottom: 12px;
-  right: 12px;
-  margin: 0 !important;
+/* user bubble */
+.AskBubble.user {
+  align-self: flex-end;
+  background: rgba(27, 190, 255, 0.14);
 }
-.AskWrap.rtl .AskAdornment {
-  right: auto;
-  left: 12px;
+
+/* assistant bubble */
+.AskBubble.assistant {
+  align-self: flex-start;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.AskTyping {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.AskTypingText {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+/* Error line */
+.AskErrorLine {
+  margin-top: 10px;
+  color: #c62828;
+  background: rgba(198, 40, 40, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+/* Composer area */
+.AskComposer {
+  margin-top: 10px;
+}
+
+.AskComposerField .MuiOutlinedInput-root {
+  border-radius: 16px !important;
+  background: #fff !important;
 }
 
 .AskSendIcon {
   color: #1bbeff !important;
   font-size: 24px !important;
 }
+
+/* RTL adjustments */
+.AskWrap.rtl .AskChat {
+  direction: rtl;
+}
+
+.AskWrap.rtl .AskBubble.user {
+  align-self: flex-start;
+}
+
+.AskWrap.rtl .AskBubble.assistant {
+  align-self: flex-end;
+}
+
 .AskSendIcon.rtl {
   transform: rotate(180deg);
 }
 
-.AskErrorLine {
-  margin-top: 8px;
-  color: #c62828;
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px 12px;
+.ChefImageBlankMessage {
+  width: 100px;
+  height: auto;
+  display: block;
+}
+.AskChat.isEmpty {
+  justify-content: center;
+  align-items: center;     
 }

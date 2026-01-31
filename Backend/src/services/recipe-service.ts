@@ -238,9 +238,15 @@ class RecipeService {
   }
 
 
-public async askAboutRecipe(recipeId:number,userId:number,query:string):Promise<string>{
-const recipe= await this.getSingleRecipe(recipeId,userId);
-const recipeContext={
+public async askAboutRecipe(
+  recipeId: number,
+  userId: number,
+  query: string,
+  history: { role: "user" | "assistant"; content: string }[] = []
+): Promise<string> {
+  const recipe = await this.getSingleRecipe(recipeId, userId);
+
+  const recipeContext = {
     title: recipe.title,
     description: recipe.description,
     amountOfServings: recipe.amountOfServings,
@@ -254,8 +260,9 @@ const recipeContext={
       caloryRestrictions: recipe.caloryRestrictions,
       queryRestrictions: recipe.queryRestrictions ?? []
     }
-}
-  return await gptService.askRecipeQuestion(recipeContext, query);
+  };
+
+  return await gptService.askRecipeQuestion(recipeContext, query, history);
 }
 
 

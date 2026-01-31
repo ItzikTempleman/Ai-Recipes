@@ -164,25 +164,32 @@ export class FullRecipeModel {
 }
 
 
-
-
+export type ChatMsg = { role: "user" | "assistant"; content: string };
 export class AskModel {
-
     public query!: string;
-
+    public history?: ChatMsg[];
 
     constructor(input: AskModel) {
         if (!input) throw new ValidationError("Missing query ");
         this.query = input.query;
+        this.history = (input as any).history;
     }
 
     private static validationSchema = Joi.object({
         query: Joi.string().trim().min(2).max(400).required(),
+        history: Joi.array()
+          .items(
+            Joi.object({
+              role: Joi.string().valid("user", "assistant").required(),
+              content: Joi.string().trim().min(1).max(2000).required()
+            }).required()
+          )
+          .max(12)
+          .optional()
     });
 
     public validate(): void {
         const result = AskModel.validationSchema.validate(this);
         if (result.error) throw new ValidationError(result.error.message);
     }
-
 }
