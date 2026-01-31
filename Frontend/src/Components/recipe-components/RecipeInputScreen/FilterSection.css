@@ -27,14 +27,19 @@
 
 .FilterPanelInnerSection{
   margin: 0 auto;                  
-  width: 50%;
+  width:55%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 12px 22px rgba(53, 53, 53, 0.22), 0 2px 0 rgba(255, 255, 255, .22) inset;
+  box-shadow: 0 12px 22px rgba(53, 53, 53, 0.627), 0 2px 0 rgba(187, 187, 187, 0.355) inset;
   border-radius: 8px;
   padding: 12px;
   background: white;
   gap: 12px;
+}
+
+.FilterPanelInnerSection .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  border-left: 2px solid #1bbeff !important;
+  margin-left: 0 !important; 
 }
 
 .FilterBtn.MuiButton-root {
@@ -42,7 +47,7 @@
     width: 50%;
     border-radius: 8px;
     background: #ffffff;
-    color: #666666;
+    color: #474747;
     font-weight: 800;
     gap: 10px;
 }
@@ -66,6 +71,7 @@
 .FilterPanelInnerSection .MuiToggleButton-root {
   background: #ffffff;
   border-radius: 8px !important;
+  border:2px solid #1bbeff; 
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {

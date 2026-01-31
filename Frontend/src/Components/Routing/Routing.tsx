@@ -15,6 +15,7 @@ import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
 import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
 import { PdfScreen } from "../recipe-components/PdfScreen/PdfScreen";
 
+
 export function Routing() {
     const user = useSelector((state: AppState) => state.user);
     const isLoggedIn = user && localStorage.getItem("token");
@@ -34,7 +35,6 @@ export function Routing() {
                 <Route path="/reset" element={<ResetPasswordScreen />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/data-deletion" element={<DataDeletion />} />
-
                 <Route path="/404" element={<Page404 />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>

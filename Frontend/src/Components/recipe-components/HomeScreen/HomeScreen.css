@@ -43,7 +43,7 @@
   z-index: 0; 
 } 
 
-.HomeScreen .HomeScreenTitleWrapper + .RecipeList {
+.HomeScreen .HomeScreenTitleWrapper + .HistoryScreen {
   padding-inline: 10px !important;
   padding-inline-start: var(--edge-pad, 34px) !important;
   scroll-padding-inline-start: var(--edge-pad, 34px);
@@ -167,7 +167,7 @@
   margin-right: 0 !important;
 }
 
-.HomeScreen .RecipeList {
+.HomeScreen .HistoryScreen {
   width: 100%;
   max-width: 1480px;
   margin: 34px auto 0;
@@ -181,7 +181,7 @@ justify-content: center;
   scroll-snap-type: none;
 }
 
-.HomeScreen .RecipeList > * {
+.HomeScreen .HistoryScreen > * {
   min-width: 0;
 }
 
