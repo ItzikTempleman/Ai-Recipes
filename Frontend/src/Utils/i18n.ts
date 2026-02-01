@@ -40,7 +40,8 @@ const resources = {
         recentlyViewed: "Recently viewed",
         noRecipes: "Blank history",
         guestNoticeLine1: "Generate recipes freely",
-        guestNoticeLine2: "Log in to save or view history"
+        guestNoticeLine2: "Log in to save or view history",
+        suggestions:"Featured today",
       },
       dataDeletion: {
         title: "Delete user data"
@@ -257,7 +258,8 @@ const resources = {
         recentlyViewed: "נצפו לאחרונה",
         noRecipes: "אין היסטוריה",
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
-        guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה"
+        guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה",
+        suggestions:"המלצות היום",
       },
       dataDeletion: {
         title: "מחק נתוני משתמש"

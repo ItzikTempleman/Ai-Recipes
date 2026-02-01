@@ -58,6 +58,9 @@ function deleteRecipeReducer(state: RecipeState, action: PayloadAction<number>) 
   state.current = recipeToDelete;
 }
 
+function getRandomRecipesReducer(state: RecipeState, action: PayloadAction<number>){
+
+}
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
@@ -70,14 +73,15 @@ const recipeSlice = createSlice({
     addRecipe: addRecipeReducer,
     deleteRecipe: deleteRecipeReducer,
     stashGuestRecipe: stashGuestRecipeReducer,
-    restoreGuestRecipe: restoreGuestRecipeReducer
+    restoreGuestRecipe: restoreGuestRecipeReducer,
+    getRandomRecipes:getRandomRecipesReducer
   }
 }
 );
 
 
 export const { resetGenerated, setIsLoading, setError, getAllRecipes, addRecipe, setCurrent, deleteRecipe,
-stashGuestRecipe, restoreGuestRecipe } = recipeSlice.actions;
+stashGuestRecipe, restoreGuestRecipe ,getRandomRecipes} = recipeSlice.actions;
 export const recipeReducer = recipeSlice.reducer;
 
 
