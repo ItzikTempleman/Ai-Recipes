@@ -59,8 +59,11 @@ function deleteRecipeReducer(state: RecipeState, action: PayloadAction<number>) 
 }
 
 function getRandomRecipesReducer(state: RecipeState, action: PayloadAction<number>){
-
+  void state;
+  void action;
 }
+
+
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
