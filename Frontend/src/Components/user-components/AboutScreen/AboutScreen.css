@@ -17,7 +17,7 @@
 
   font-size: 24px;
   font-weight: bold;
-  color: #1bbeff;
+  color: #711FA0;
   text-transform: uppercase;
 
   display: flex;
@@ -80,7 +80,7 @@
   position: absolute;
   inset: 0;
   height: 6px;
-  background: linear-gradient(90deg, #eaf6ff, #a5d0f1, #1bbeff);
+  background: linear-gradient(90deg, #eaf6ff, #debcf1, #711FA0);
 }
 
 .TopContent {
@@ -107,7 +107,7 @@
 
 .RestOfContent strong,
 .TopContent strong {
-  color: #68cced;
+  color: #711FA0;
 }
 
 /* ---------- Footer ---------- */

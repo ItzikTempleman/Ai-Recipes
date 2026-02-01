@@ -48,12 +48,12 @@
   height: 36px !important;
   font-weight: 900;
   background: transparent;
-  color: #1bbeff;
+  color: #711FA0;
 }
 
 .LoginFromDrawerBtn.MuiButton-root:active,
 .LoginFromDrawerBtn.MuiButton-root:hover {
-  background: #1bbeff;    
+  background: #711FA0;    
   width: 90%;
   color: white;
 }
@@ -123,7 +123,7 @@
 }
 
 .ProfileBtn {
-  background: #1bbeff;
+  background: #711FA0;
   color: #ffffff;
   font-weight: 700;
 }

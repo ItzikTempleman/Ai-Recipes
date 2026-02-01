@@ -68,19 +68,19 @@
 
 .HomeScreenBtn p,
 .HomeScreenBtn svg {
-  color: #1bbeff;
+  color: #711fa0;
 }
 
 .HomeScreenBtn.active,
 .HomeScreenBtn:hover {
-  background: #b2c9da92;
-  border-color: #8bc4f0;
+  background: #cfb2da92;
+  border-color: #711FA0;
   transform: translateY(-1px);
 }
 
 .NewScreenBtn.active,
 .NewScreenBtn:hover {
-  background: rgba(246, 207, 143, 0.22);
+  background: rgba(239, 192, 116, 0.401);
   border-color: rgba(233, 183, 66, 0.684) ;
   transform: translateY(-1px);
 }
@@ -103,7 +103,7 @@
 
 .LikesScreenBtn.active,
 .LikesScreenBtn:hover {
-  background: rgba(211, 75, 134, 0.18);
+  background: rgba(218, 143, 175, 0.331);
   border-color: rgba(211, 75, 134, 0.45) ;
   transform: translateY(-1px);
 

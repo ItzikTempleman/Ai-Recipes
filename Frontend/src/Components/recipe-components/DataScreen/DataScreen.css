@@ -26,9 +26,10 @@
 }
 
 .AskModelDiv {
+ border: 1px solid green;
   border-radius: 18px;
   padding: 0 24px;
-   background: #d8d8d8 !important;
+   background: #ffffff !important;
   display: flex;
   width: 140px;
   margin-top: 8px;
@@ -614,7 +615,3 @@ margin: 12px  auto !important;
   margin-left: auto;
   text-align: right;
 }
-
-
-
-

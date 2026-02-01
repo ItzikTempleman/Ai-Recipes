@@ -95,7 +95,7 @@
   font-weight: 900;
   line-height: 1.15;
 
-  color: #1bbeff;
+  color: #711FA0;
   text-shadow: 0 10px 30px rgba(90, 77, 255, 0.16);
 }
 
@@ -242,7 +242,7 @@
 .SuggestionsBtn {
   padding: 6px;
   border-radius: 18px;
-  border: 1px solid rgba(193, 193, 193, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(8px);
 
   display: flex;
@@ -266,7 +266,7 @@
 }
 
 .RecentlyViewedBtn svg {
-  color: #1bbeff;
+  color: #711FA0;
 }
 
 .SuggestionsBtn svg {
@@ -275,8 +275,8 @@
 
 .RecentlyViewedBtn.active,
 .RecentlyViewedBtn:hover {
-  background: #b7d9f482;
-  border-color: #8bc4f0;
+   background: #cfb2da92;
+  border-color: #711FA0;
   transform: translateY(-1px);
 }
 
