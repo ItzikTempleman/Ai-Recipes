@@ -265,27 +265,20 @@
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.08));
 }
 
+.SuggestionsBtn svg,
 .RecentlyViewedBtn svg {
-  color: #711FA0;
-}
-
-.SuggestionsBtn svg {
-  color: #ff9d00;
-}
-
-.RecentlyViewedBtn.active,
-.RecentlyViewedBtn:hover {
-   background: #cfb2da92;
-  border-color: #711FA0;
-  transform: translateY(-1px);
+  color: #515151;
 }
 
 .SuggestionsBtn.active,
-.SuggestionsBtn:hover {
-  background: #f4dbb5b7;
-  border-color: #ff9d00;
+.SuggestionsBtn:hover,
+.RecentlyViewedBtn.active,
+.RecentlyViewedBtn:hover {
+   background: #c1c1c192;
+  border-color: #515151;
   transform: translateY(-1px);
 }
+
 
 /* =========================================================
    Grid (cards)

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
+
 import "./HomeScreen.css";
 import { useTitle } from "../../../Utils/Utils";
 import { AppState } from "../../../Redux/Store";
@@ -16,6 +17,7 @@ import { notify } from "../../../Utils/Notify";
 
 export function HomeScreen() {
   useTitle("Home");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,11 +28,15 @@ export function HomeScreen() {
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
 
-  // Tabs
-  const [showHistory, setShowHistory] = useState(false);
+
   const [showSuggestions, setShowSuggestions] = useState(true);
 
-  // Fetch history recipes when token exists (logged-in sessions)
+  useEffect(() => {
+  
+    setShowSuggestions(!user);
+  }, [user]);
+
+
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (!token) return;
@@ -42,19 +48,6 @@ export function HomeScreen() {
     () => (Array.isArray(suggestedRecipeItem) ? suggestedRecipeItem : []),
     [suggestedRecipeItem]
   );
-
-  // ✅ IMPORTANT: when user logs in/out, force the correct default
-  useEffect(() => {
-    if (!user) {
-      // logout / guest
-      setShowHistory(false);
-      setShowSuggestions(true);
-    } else {
-      // login
-      setShowHistory(true);
-      setShowSuggestions(false);
-    }
-  }, [user]);
 
   const showingSuggestions = !user || showSuggestions;
   const activeList = showingSuggestions ? suggestionsList : recentlyViewedList;
@@ -71,7 +64,10 @@ export function HomeScreen() {
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-        <h3 className="GuestTitle">{t("homeScreen.hello")}</h3>
+        {
+          !user &&(<h3 className="GuestTitle">{t("homeScreen.hello")}</h3>)
+        }
+        
 
         <div className="SelectionDiv">
           <Button className="GenerateBtn" onClick={handleGenerateClick} variant="contained">
@@ -79,49 +75,40 @@ export function HomeScreen() {
             {t("homeScreen.generate")}
           </Button>
 
-          {/* Toggle only when logged in */}
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
               <div
                 className={`RecentlyViewedBtn ${!showingSuggestions ? "active" : ""}`}
-                onClick={() => {
-                  setShowHistory(true);
-                  setShowSuggestions(false);
-                }}
+                onClick={() => setShowSuggestions(false)}
+                role="button"
+                tabIndex={0}
               >
                 <HistoryIcon />
               </div>
 
               <div
                 className={`SuggestionsBtn ${showingSuggestions ? "active" : ""}`}
-                onClick={() => {
-                  setShowSuggestions(true);
-                  setShowHistory(false);
-                }}
+                onClick={() => setShowSuggestions(true)}
+                role="button"
+                tabIndex={0}
               >
                 <AssistantIcon />
               </div>
             </div>
           )}
 
-          {/* ✅ Title ALWAYS rendered (guest included) */}
           {showingSuggestions ? (
             <h3 className="HomeScreenTitle user">
               {t("homeScreen.suggestions") || "Suggestions"}
             </h3>
+          ) : recentlyViewedList.length === 0 ? (
+            <div className="HomeScreenTitleContainer">
+              <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
+            </div>
           ) : (
-            <>
-              {recentlyViewedList.length === 0 ? (
-                <div className="HomeScreenTitleContainer">
-                  <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
-                </div>
-              ) : (
-                <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
-              )}
-            </>
+            <h3 className="HomeScreenTitle user">{t("homeScreen.recentlyViewed")}</h3>
           )}
 
-          {/* Grid ALWAYS renders (even if list is empty) */}
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
               <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
