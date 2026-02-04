@@ -70,7 +70,7 @@ const recipeSlice = createSlice({
   reducers: {
     resetGenerated: resetGeneratedReducer,
     setIsLoading: setIsLoadingReducer,
-    setError: setErrorReducer,
+    setError: setErrorReducer, 
     getAllRecipes: getAllRecipesReducer,
     setCurrent: setCurrentReducer,
     addRecipe: addRecipeReducer,

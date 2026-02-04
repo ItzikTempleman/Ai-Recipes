@@ -118,19 +118,19 @@ font-size: 20px;
   height: 40px !important;
   width: 40px !important;
   padding: 0 !important;
-  background: #e6ccf6d0!important;
-  border: 1px solid #711FA0 !important;
+  background: #1e80b120!important;
+  border: 1px solid #1e80b1 !important;
 }
 
 .GenerateImageSelector.off {
   background: white !important;
-  border: 1px solid #711FA0  !important;
+  border: 1px solid #1e80b1  !important;
 }
 
 .GenerateImageSelector svg {
   width: 22px;
   height: 22px;
-  color: #711FA0 ;
+  color: #1e80b1 ;
 }
 
 .RecipeTextField .MuiOutlinedInput-root {
@@ -226,7 +226,7 @@ font-size: 20px;
   display: inline-flex;
   align-items: center;
   border-radius: 8px !important;
-  background: #711FA0  !important;
+  background: #1e80b1  !important;
 }
 
 .GenerateRecipeBtn:hover {

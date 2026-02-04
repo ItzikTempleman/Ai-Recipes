@@ -38,7 +38,7 @@
 }
 
 .FilterPanelInnerSection .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-  border-left: 2px solid #711FA0 !important;
+  border-left: 2px solid #1e80b162 !important;
   margin-left: 0 !important; 
 }
 
@@ -71,11 +71,11 @@
 .FilterPanelInnerSection .MuiToggleButton-root {
   background: #ffffff;
   border-radius: 8px !important;
-  border:2px solid #711FA0; 
+  border:2px solid #1e80b162; 
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
-  background:#711FA0; 
+  background:#1e80b1; 
   color: #ffffff;
 }
 
@@ -104,12 +104,12 @@
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible{
- background: #711FA0;;
+ background: #1e80b1;;
   color: #ffffff !important;
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root:active{
-  background: #711FA0;
+  background: #1e80b162;
 }
 
 @media (max-width: 600px){

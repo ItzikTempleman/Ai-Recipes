@@ -42,6 +42,8 @@ const resources = {
         guestNoticeLine1: "Generate recipes freely",
         guestNoticeLine2: "Log in to save or view history",
         suggestions:"Featured today",
+        suggestions2:"Featured",
+        history:"History"
       },
       dataDeletion: {
         title: "Delete user data"
@@ -260,6 +262,8 @@ const resources = {
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה",
         suggestions:"המלצות היום",
+        suggestions2:"המלצות",
+        history:"היסטוריה"
       },
       dataDeletion: {
         title: "מחק נתוני משתמש"

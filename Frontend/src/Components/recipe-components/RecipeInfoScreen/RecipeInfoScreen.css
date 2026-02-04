@@ -2,38 +2,102 @@
   width: 100%;
   min-height: 100vh;
   margin: 0;
-  padding: 24px 16px 40px;   
+  padding: 24px 16px 40px;
   box-sizing: border-box;
-  overflow-y: auto;   
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative; 
-} 
+  position: relative;
+
+  /* colors only */
+  background: transparent;
+  color: var(--text);
+}
+
 .InfoScreenContainer {
   width: 100%;
-  max-width: 800px;              
+  max-width: 800px;
   margin: 0 auto;
   padding: 24px;
   box-sizing: border-box;
   text-align: left;
-   position: relative; 
-} 
+  position: relative;
+
+  /* colors only */
+  color: var(--text);
+}
 
 .TopRow{
   display: flex;
   flex-direction: row;
   width: 100%;
 }
+
 .BackBtnContainer {
   width: 100%;
   margin: 0 auto 16px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  color: black;
+
+  /* ✅ not hard black */
+  color: var(--text);
 }
 
 .BackBtnContainer:hover {
   cursor: pointer;
+  color: var(--brandDark);
+}
+
+/* ------------------------ */
+
+.RecipeCard {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  box-sizing: border-box;
+  overflow-x: visible;
+
+  /* color only */
+  color: var(--text);
+}
+
+.ClearFormDiv {
+  position: absolute;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+
+  /* color only */
+  color: var(--muted);
+}
+
+.ClearFormDiv.rtl {
+  right: 16px;
+  left: auto;
+}
+
+.ClearFormDiv.ltr {
+  right: 16px;
+  left: auto;
+}
+
+@media(max-width:600px){
+  .RecipeCard {
+    /* ✅ remove harsh border/shadow */
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.75);
+  }
 }

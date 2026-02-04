@@ -68,20 +68,20 @@
 
 .HomeScreenBtn p,
 .HomeScreenBtn svg {
-  color: #711fa0;
+  color: #1e80b1;
 }
 
 .HomeScreenBtn.active,
 .HomeScreenBtn:hover {
-  background: #cfb2da92;
-  border-color: #711FA0;
+  background: #1e80b112;
+  border-color: #1e80b1;
   transform: translateY(-1px);
 }
 
 .NewScreenBtn.active,
 .NewScreenBtn:hover {
-  background: rgba(239, 192, 116, 0.401);
-  border-color: rgba(233, 183, 66, 0.684) ;
+  background: #f4a32112;
+  border-color: #f4a321;
   transform: translateY(-1px);
 }
 
@@ -94,7 +94,7 @@
 }
 
 .LikesScreenBtn svg {
-  color: #ea1e76;
+  color: #da2775;
 }
 
 .LikesScreenBtn p {
@@ -103,8 +103,8 @@
 
 .LikesScreenBtn.active,
 .LikesScreenBtn:hover {
-  background: rgba(218, 143, 175, 0.331);
-  border-color: rgba(211, 75, 134, 0.45) ;
+  background: #da27750f;
+  border-color: #da2775;
   transform: translateY(-1px);
 
 }
@@ -138,6 +138,7 @@
   width: fit-content;
   align-items: center;
    margin: 0;
+   
 }
 
 .ReturnToRecipeSection.hasImage {
@@ -190,7 +191,7 @@
 }
 
 .LoginBtn {
- color: #000000;
+ color: #0db4e8;
  font-weight: 900;
  font-size: 16px;
 }
@@ -264,8 +265,11 @@
 .User {
   font-size: 18px;
   font-weight: 800;
-  color: #ffffff;
-  background: #343434;
+
+  color: #0f3b52;              /* dark text */
+  background: #cfefff;         /* light blue badge */
+  border: 1px solid rgba(30, 128, 177, 0.35);
+
   border-radius: 8px;
   padding: 6px 14px;
   margin: 4px;

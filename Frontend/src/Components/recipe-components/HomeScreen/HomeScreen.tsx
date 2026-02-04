@@ -4,14 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
-
 import "./HomeScreen.css";
 import { useTitle } from "../../../Utils/Utils";
 import { AppState } from "../../../Redux/Store";
 import { recipeService } from "../../../Services/RecipeService";
 import { resetGenerated, stashGuestRecipe } from "../../../Redux/RecipeSlice";
-import HistoryIcon from "@mui/icons-material/History";
-import AssistantIcon from "@mui/icons-material/Assistant";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { notify } from "../../../Utils/Notify";
 
@@ -83,7 +80,7 @@ export function HomeScreen() {
                 role="button"
                 tabIndex={0}
               >
-                <HistoryIcon />
+         <h4>{t("homeScreen.history")}</h4>
               </div>
 
               <div
@@ -92,7 +89,7 @@ export function HomeScreen() {
                 role="button"
                 tabIndex={0}
               >
-                <AssistantIcon />
+            <h4>{t("homeScreen.suggestions2")}</h4>
               </div>
             </div>
           )}
