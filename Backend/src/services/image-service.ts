@@ -1,4 +1,4 @@
-import { InputModel } from "../models/InputModel";
+import { InputModel } from "../models/input-model";
 import { GPTImage, openaiImages } from "../models/recipe-model";
 import fs from "fs/promises";
 import path from "path";

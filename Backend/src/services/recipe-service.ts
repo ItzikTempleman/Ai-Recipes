@@ -9,7 +9,7 @@ import { OkPacketParams } from "mysql2";
 import { dal } from "../utils/dal";
 import { mapDbRowToFullRecipe } from "../utils/map-recipe";
 import { DangerousRequestError, ResourceNotFound, ValidationError } from "../models/client-errors";
-import { InputModel } from "../models/InputModel";
+import { InputModel } from "../models/input-model";
 import { isLethalQuery } from "../utils/banned-filter";
 
 class RecipeService {

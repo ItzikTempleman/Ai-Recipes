@@ -1,5 +1,5 @@
 import { CaloryRestrictions, DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, QueryRestrictions, SugarRestriction } from "../models/filters";
-import { InputModel } from "../models/InputModel";
+import { InputModel } from "../models/input-model";
 import { Query } from "../models/recipe-model";
 import { getBreakDownInstructions, getInstructions } from "./gpt-instructions";
 

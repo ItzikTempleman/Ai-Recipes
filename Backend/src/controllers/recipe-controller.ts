@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response, Router } from "express";
 import { StatusCode } from "../models/status-code";
 import { AskModel, FullRecipeModel } from "../models/recipe-model";
 import { recipeService } from "../services/recipe-service";
-import { InputModel } from "../models/InputModel";
+import { InputModel } from "../models/input-model";
 import { verificationMiddleware } from "../middleware/verification-middleware";
 import { UserModel } from "../models/user-model";
 import { generateImage } from "../services/image-service";
@@ -26,7 +26,6 @@ class RecipeController {
         this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
         this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe.bind(this));
         this.router.get("/api/recipes/liked/count/:recipeId", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
-
         this.router.post("/api/recipe/:recipeId/ask", verificationMiddleware.verifyLoggedIn, this.askRecipeQuestion);
     };
 
