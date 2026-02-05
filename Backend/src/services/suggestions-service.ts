@@ -14,7 +14,9 @@ import { mapDbRowToFullRecipe } from "../utils/map-recipe";
 
 const ISRAEL_TZ = "Asia/Jerusalem";
 const DAILY_COUNT = 5;
-const SYSTEM_USER_ID = Number(process.env.SYSTEM_USER_ID ?? 43);
+
+
+type UserIdRow = { id: number };
 
 function israelDateStr(d = new Date()): string {
     return new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(d);
@@ -23,69 +25,71 @@ function israelDateStr(d = new Date()): string {
 type SuggestionCountRow = { suggestionCount: number };
 
 class SuggestionsService {
+public async generateToday(): Promise<void> {
 
-    public async generateToday(): Promise<void> {
+  const suggestionDateString = israelDateStr();
 
+  const countSql = "select count(*) as suggestionCount from dailySuggestions where suggestionDate = ?";
+  const countValues = [suggestionDateString];
+  const countRows = await dal.execute(countSql, countValues) as SuggestionCountRow[];
+  const existingSuggestionCount = countRows[0]?.suggestionCount ?? 0;
 
-        const suggestionDateString = israelDateStr();
+  if (existingSuggestionCount === DAILY_COUNT) return;
 
-        const countSql = "select count(*) as suggestionCount from dailySuggestions where suggestionDate = ?";
-        const countValues = [suggestionDateString];
-        const countRows = await dal.execute(countSql, countValues) as SuggestionCountRow[];
-        const existingSuggestionCount = countRows[0]?.suggestionCount ?? 0;
-        if (existingSuggestionCount === DAILY_COUNT) return;
+  const deleteSql = "delete from dailySuggestions where suggestionDate = ?";
+  const deleteValues = [suggestionDateString];
+  await dal.execute(deleteSql, deleteValues);
 
+  const systemUserId = await this.ensureSystemUserId();
 
-        const deleteSql = "delete from dailySuggestions where suggestionDate=?";
-        const deleteValues = [suggestionDateString];
-        await dal.execute(deleteSql, deleteValues);
+  for (let recipeIndex = 0; recipeIndex < DAILY_COUNT; recipeIndex++) {
 
-        for (let recipeIndex = 0; recipeIndex < DAILY_COUNT; recipeIndex++) {
-            const randomInput = this.createRandomDailyInputModel();
-            const generatedData = await recipeService.generateInstructions(randomInput, false);
+    const randomInput = this.createRandomDailyInputModel();
+    const generatedData = await recipeService.generateInstructions(randomInput, false);
 
-            const recipeToSave = new FullRecipeModel({
-                title: generatedData.title,
-                amountOfServings: generatedData.amountOfServings,
-                description: generatedData.description,
-                popularity: generatedData.popularity,
-                data: generatedData,
-                totalSugar: generatedData.totalSugar,
-                totalProtein: generatedData.totalProtein,
-                healthLevel: generatedData.healthLevel,
-                calories: generatedData.calories,
-                sugarRestriction: generatedData.sugarRestriction,
-                lactoseRestrictions: generatedData.lactoseRestrictions,
-                glutenRestrictions: generatedData.glutenRestrictions,
-                dietaryRestrictions: generatedData.dietaryRestrictions,
-                caloryRestrictions: generatedData.caloryRestrictions,
-                queryRestrictions: generatedData.queryRestrictions,
-                prepTime: generatedData.prepTime,
-                difficultyLevel: generatedData.difficultyLevel,
-                countryOfOrigin: String(generatedData.countryOfOrigin ?? ""),
-                imageName: null,
-                userId: SYSTEM_USER_ID
-            });
-            const savedRecipe = await recipeService.saveRecipe(recipeToSave, SYSTEM_USER_ID);
+    const recipeToSave = new FullRecipeModel({
+      title: generatedData.title,
+      amountOfServings: generatedData.amountOfServings,
+      description: generatedData.description,
+      popularity: generatedData.popularity,
+      data: generatedData,
+      totalSugar: generatedData.totalSugar,
+      totalProtein: generatedData.totalProtein,
+      healthLevel: generatedData.healthLevel,
+      calories: generatedData.calories,
+      sugarRestriction: generatedData.sugarRestriction,
+      lactoseRestrictions: generatedData.lactoseRestrictions,
+      glutenRestrictions: generatedData.glutenRestrictions,
+      dietaryRestrictions: generatedData.dietaryRestrictions,
+      caloryRestrictions: generatedData.caloryRestrictions,
+      queryRestrictions: generatedData.queryRestrictions,
+      prepTime: generatedData.prepTime,
+      difficultyLevel: generatedData.difficultyLevel,
+      countryOfOrigin: String(generatedData.countryOfOrigin ?? ""),
+      imageName: null,
+      userId: systemUserId
+    });
 
+    const savedRecipe = await recipeService.saveRecipe(recipeToSave, systemUserId);
 
-            const insertedRecipeId = savedRecipe.id;
-            if (!insertedRecipeId) {
-                throw new Error("Failed to insert daily recipe: missing inserted id");
-            }
+    const insertedRecipeId = savedRecipe.id;
+    if (!insertedRecipeId) {
+      throw new Error("Failed to insert daily recipe: missing inserted id");
+    }
 
-            const insertSuggestionSql = "insert into dailySuggestions (suggestionDate,recipeId) values (?,?)";
-            const insertSuggestionValues = [suggestionDateString, insertedRecipeId];
-            await dal.execute(insertSuggestionSql, insertSuggestionValues);
-        }
-    };
+    const insertSuggestionSql =
+      "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
+    const insertSuggestionValues = [suggestionDateString, insertedRecipeId];
+    await dal.execute(insertSuggestionSql, insertSuggestionValues);
+  }
+}
 
 
     public async getToday(): Promise<SuggestionsModel> {
         await this.generateToday();
         const suggestionDateString = israelDateStr();
 
-        const selectSql =   "select recipe.* from dailySuggestions join recipe on recipe.id = dailySuggestions.recipeId where dailySuggestions.suggestionDate = ? order by dailySuggestions.id asc";
+        const selectSql = "select recipe.* from dailySuggestions join recipe on recipe.id = dailySuggestions.recipeId where dailySuggestions.suggestionDate = ? order by dailySuggestions.id asc";
         const selectValues = [suggestionDateString];
         const recipeRows = await dal.execute(selectSql, selectValues) as DbRecipeRow[];
 
@@ -96,6 +100,7 @@ class SuggestionsService {
                 suggestionDate: suggestionDateString,
                 recipes: recipes
             } as unknown as SuggestionsModel);
+            suggestions.validate();
         return suggestions;
     };
 
@@ -134,6 +139,34 @@ class SuggestionsService {
 
         inputModel.validate();
         return inputModel;
+    }
+
+
+    private async ensureSystemUserId(): Promise<number> {
+
+        const systemEmail = "system.generator@smart-recipes.local";
+        const selectUserSql = "select id from user where email = ? limit 1";
+        const selectUserValues = [systemEmail];
+
+        const existingUserRows = await dal.execute(selectUserSql, selectUserValues) as UserIdRow[];
+        const existingUserId = existingUserRows[0]?.id;
+
+        if (existingUserId) return existingUserId;
+
+        const insertUserSql = "insert into user (firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        const insertUserValues = [
+            "System",
+            "Generator",
+            systemEmail,
+            "SYSTEM_GENERATED_NO_LOGIN",
+            null,
+            null,
+            null,
+            null
+        ];
+
+        const insertUserResult = await dal.execute(insertUserSql, insertUserValues) as { insertId: number };
+        return insertUserResult.insertId;
     }
 }
 
