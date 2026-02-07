@@ -1,4 +1,3 @@
-import { error } from "jquery";
 import { SuggestionsModel } from "../Models/SuggestionsModel";
 import { getRandomRecipes, setError, setIsLoading } from "../Redux/RecipeSlice";
 import { store } from "../Redux/Store";
@@ -19,15 +18,13 @@ const suggestions = response.data;
 store.dispatch(getRandomRecipes(suggestions));
   return suggestions;
         } catch (err: unknown) {
-            const message = error instanceof Error ? error.message : "Failed to load daily recipes";
+            const message = err instanceof Error ? err.message : "Failed to load daily recipes";
             store.dispatch(setError(message));
-            throw error;
+            throw err;
         } finally {
             store.dispatch(setIsLoading(false));
         }
     }
-
-
 
     public async generateToday(): Promise<SuggestionsModel> {
 
@@ -41,9 +38,9 @@ store.dispatch(getRandomRecipes(suggestions));
 
 
         } catch (err: unknown) {
-            const message = error instanceof Error ? error.message : "Failed to generate daily recipe";
+            const message = err instanceof Error ? err.message : "Failed to generate daily recipe";
             store.dispatch(setError(message));
-            throw error;
+            throw err;
         } finally {
             store.dispatch(setIsLoading(false));
         }
