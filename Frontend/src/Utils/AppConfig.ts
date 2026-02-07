@@ -24,5 +24,7 @@ class AppConfig {
   public readonly verifyResetTokenUrl = `${API}/auth/verify-reset-token`;
 
 public readonly askRecipeUrl = `${API}/recipe`;
+
+public readonly dailyRecipesUrl = `${API}/daily-recipes`;
 }
 export const appConfig = new AppConfig();

@@ -59,6 +59,8 @@ export type RecipeState = {
     guestStash?: RecipeModel | null; 
     loading: boolean;
     error?: string;
+    dailyRecipes?: RecipeModel[];
+    dailyRecipesDate?: string;
 }
 
 export enum SugarRestriction {

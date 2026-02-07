@@ -11,6 +11,7 @@ import { recipeService } from "../../../Services/RecipeService";
 import { resetGenerated, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { notify } from "../../../Utils/Notify";
+import { suggestionsService } from "../../../Services/SuggestionsService";
 
 export function HomeScreen() {
   useTitle("Home");
@@ -19,7 +20,9 @@ export function HomeScreen() {
   const navigate = useNavigate();
 
   const { items, current } = useSelector((state: AppState) => state.recipes);
-  const suggestedRecipeItem = useSelector((state: AppState) => state.suggestedRecipes);
+const suggestedRecipeItem = useSelector(
+  (state: AppState) => state.recipes.dailyRecipes
+);
   const user = useSelector((state: AppState) => state.user);
 
   const { t, i18n } = useTranslation();
@@ -37,6 +40,7 @@ export function HomeScreen() {
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (!token) return;
+    suggestionsService.getToday().catch(notify.error);
     recipeService.getAllRecipes().catch(notify.error);
   }, [token]);
 

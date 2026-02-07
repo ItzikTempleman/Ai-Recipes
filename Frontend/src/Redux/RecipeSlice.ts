@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RecipeModel, RecipeState } from "../Models/RecipeModel";
+import { SuggestionsModel } from "../Models/SuggestionsModel";
 
 
 const initialState: RecipeState = {
@@ -7,6 +8,8 @@ const initialState: RecipeState = {
   current: null,
   guestStash: null,
   loading: false,
+  dailyRecipes: [],
+  dailyRecipesDate: undefined
 };
 
 function stashGuestRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel | null>) {
@@ -58,9 +61,9 @@ function deleteRecipeReducer(state: RecipeState, action: PayloadAction<number>) 
   state.current = recipeToDelete;
 }
 
-function getRandomRecipesReducer(state: RecipeState, action: PayloadAction<number>){
-  void state;
-  void action;
+function getRandomRecipesReducer(state: RecipeState, action: PayloadAction<SuggestionsModel>){
+  state.dailyRecipes = action.payload.recipes;
+  state.dailyRecipesDate = action.payload.suggestionDate;
 }
 
 
