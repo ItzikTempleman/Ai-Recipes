@@ -31,16 +31,20 @@ const suggestedRecipeItem = useSelector(
 
   const [showSuggestions, setShowSuggestions] = useState(true);
 
+  
   useEffect(() => {
   
     setShowSuggestions(!user);
   }, [user]);
 
+useEffect(() => {
+  suggestionsService.getToday().catch(notify.error);
+}, []);
 
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (!token) return;
-    suggestionsService.getToday().catch(notify.error);
+  
     recipeService.getAllRecipes().catch(notify.error);
   }, [token]);
 
