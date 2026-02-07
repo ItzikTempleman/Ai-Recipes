@@ -10,6 +10,8 @@ import { healthController } from "./utils/health-controller";
 import fileUpload from "express-fileupload";
 import { resetPasswordController } from "./controllers/reset-password-controller";
 import { pdfController } from "./controllers/pdf-controller";
+import { suggestionsController } from "./controllers/suggestions-controller";
+import { startDailySuggestionsCron } from "./utils/daily-cron";
 
 export class App {
   public async start(): Promise<void> {
@@ -36,10 +38,15 @@ export class App {
     server.use("/api", userController.router);
     server.use(pdfController.router)
     server.use(recipeController.router);
+    server.use(suggestionsController.router);
     server.use("/api", resetPasswordController.router);
     server.use(healthController.router);
+    startDailySuggestionsCron();
+    
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);
+  
+    
     server.listen(appConfig.port, appConfig.serverHost, () => {
       console.log(`Listening to port ${appConfig.port}`);
     });
