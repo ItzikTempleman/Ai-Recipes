@@ -42,7 +42,7 @@ const resources = {
         guestNoticeLine1: "Generate recipes freely",
         guestNoticeLine2: "Log in to save or view history",
         suggestions:"Featured today",
-        suggestions2:"Featured",
+        suggestions2:"Featured today",
         history:"History"
       },
       dataDeletion: {

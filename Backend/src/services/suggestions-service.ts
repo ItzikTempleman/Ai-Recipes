@@ -42,10 +42,19 @@ public async generateToday(): Promise<void> {
 
         const systemUserId = await this.ensureSystemUserId();
 
-        for (let recipeIndex = 0; recipeIndex < DAILY_COUNT; recipeIndex++) {
+        const usedTitles = new Set<string>();
+        const usedImageNames = new Set<string>();
+
+        for (let recipeIndex = 0; recipeIndex < DAILY_COUNT; ) {
 
             const randomInput = this.createRandomDailyInputModel();
             const generatedData = await recipeService.generateInstructions(randomInput, true);
+
+            const normalizedTitle = String(generatedData.title ?? "").trim().toLowerCase();
+            if (!normalizedTitle) continue;
+
+            // Block duplicate titles:
+            if (usedTitles.has(normalizedTitle)) continue;
 
             let fileName: string | null = null;
             try {
@@ -67,6 +76,10 @@ public async generateToday(): Promise<void> {
             catch (e) {
                 console.error("Daily suggestion image generation failed:", e);
             }
+
+            // Block duplicate images (and also block null images to avoid fallback duplicates):
+            if (!fileName) continue;
+            if (usedImageNames.has(fileName)) continue;
 
             const recipeToSave = new FullRecipeModel({
                 title: generatedData.title,
@@ -98,7 +111,13 @@ public async generateToday(): Promise<void> {
             const insertSql = "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
             const insertValues = [suggestionDateString, savedRecipe.id];
             await dal.execute(insertSql, insertValues);
+
+            usedTitles.add(normalizedTitle);
+            usedImageNames.add(fileName);
+
+            recipeIndex++;
         }
+
     }
     finally {
         const releaseSql = "select RELEASE_LOCK(?) as released";
