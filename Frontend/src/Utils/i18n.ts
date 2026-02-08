@@ -27,9 +27,9 @@ const resources = {
         areYouSure: "Are you sure?",
         yes: "Ok",
         cancel: "Cancel",
-        confirmation:"Account deleted permanently. Good bye",
-        message:"Deleting this account is irreversible.",
-        message2:"All data will be wiped."
+        confirmation: "Account deleted permanently. Good bye",
+        message: "Deleting this account is irreversible.",
+        message2: "All data will be wiped."
       },
       homeScreen: {
         shareIntro: "Share your recipes",
@@ -41,14 +41,14 @@ const resources = {
         noRecipes: "Blank history",
         guestNoticeLine1: "Generate recipes freely",
         guestNoticeLine2: "Log in to save or view history",
-        suggestions:"Featured today",
-        suggestions2:"Featured today",
-        history:"History",
-ask: "Chatbot with the recipe",
-save: "Manage favorites",
-remember: "Recently viewed",
-freeWithLogin: "Free with login",
-unlockTitle: "Unlock features"
+        suggestions: "Featured today",
+        suggestions2: "Featured today",
+        history: "History",
+        ask: "Chatbot with the recipe",
+        save: "Manage favorites",
+        remember: "Recently viewed",
+        freeWithLogin: "Free with login",
+        unlockTitle: "Unlock features"
       },
       dataDeletion: {
         title: "Delete user data"
@@ -207,8 +207,8 @@ unlockTitle: "Unlock features"
         health: "Health",
         kcal: "kcal",
         time: "Prep time",
-        ask:"Ask the chef",
-        thinking:"Thinking..."
+        ask: "Ask the chef",
+        thinking: "Thinking..."
       },
       difficulty: {
         easy: "Easy",
@@ -251,9 +251,9 @@ unlockTitle: "Unlock features"
         areYouSure: "?האם אתה בטוח",
         yes: "כן",
         cancel: "ביטול",
-        confirmation:"המשתמש הוסר לצמיתות. להתראות",
-        message:"מחיקת המשתמש אינה ניתנת לביטול או שחזור.",
-         message2:"כל המידע ימחק"
+        confirmation: "המשתמש הוסר לצמיתות. להתראות",
+        message: "מחיקת המשתמש אינה ניתנת לביטול או שחזור.",
+        message2: "כל המידע ימחק"
       },
 
       homeScreen: {
@@ -266,14 +266,14 @@ unlockTitle: "Unlock features"
         noRecipes: "אין היסטוריה",
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה",
-        suggestions:"המלצות היום",
-        suggestions2:"המלצות היום",
-        history:"היסטוריה",
-        ask: "צ׳אט חכם",
-save: "ניהול מועדפים",
-remember: "נצפו לאחרונה",
-freeWithLogin: "חינם למשתמשים מחוברים",
-unlockTitle: "פתח פיצ׳רים",
+        suggestions: "המלצות היום",
+        suggestions2: "המלצות היום",
+        history: "היסטוריה",
+        ask: "צ׳טבוט חכם - דברו אם המתכון",
+        save: "ניהול מועדפים",
+        remember: "נצפו לאחרונה",
+        freeWithLogin: "חינם למשתמשים מחוברים",
+        unlockTitle: "פתח פיצ׳רים",
       },
       dataDeletion: {
         title: "מחק נתוני משתמש"
@@ -439,8 +439,8 @@ unlockTitle: "פתח פיצ׳רים",
         health: "בריאות",
         kcal: 'קק"ל',
         time: "זמן הכנה",
-        ask:"שאל את השף",
-        thinking:"...חושב"
+        ask: "שאל את השף",
+        thinking: "...חושב"
       },
       difficulty: {
         easy: "קל",
