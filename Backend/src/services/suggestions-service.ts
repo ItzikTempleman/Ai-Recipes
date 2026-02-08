@@ -41,7 +41,7 @@ class SuggestionsService {
       const existsValues = [suggestionDateString];
       const existing = await dal.execute(existsSql, existsValues) as any[];
 
-      if (existing.length > 0) return;
+      if (Number(existing[0]?.cnt ?? 0) >= DAILY_COUNT) return;
 
       const systemUserId = await this.ensureSystemUserId();
 
@@ -207,7 +207,7 @@ class SuggestionsService {
       sugarRestriction: SugarRestriction.DEFAULT,
       lactoseRestrictions: LactoseRestrictions.DEFAULT,
       glutenRestrictions: GlutenRestrictions.DEFAULT,
-      dietaryRestrictions: DietaryRestrictions.DEFAULT,
+      dietaryRestrictions: DietaryRestrictions.KOSHER,
       caloryRestrictions: CaloryRestrictions.DEFAULT,
       queryRestrictions: []
     } as unknown as InputModel);
