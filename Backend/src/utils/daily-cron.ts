@@ -3,12 +3,8 @@ import { suggestionsService } from "../services/suggestions-service";
 
 const ISRAEL_TZ = "Asia/Jerusalem";
 
-/**
- * Schedules generation of today's 5 suggestions every day at 00:00 Israel time.
- * Safe to call multiple times (generateToday() is already idempotent by date).
- */
 export function startDailySuggestionsCron() {
-  // Run at 00:00 every day, Israel time
+
   cron.schedule(
     "0 0 * * *",
     async () => {
