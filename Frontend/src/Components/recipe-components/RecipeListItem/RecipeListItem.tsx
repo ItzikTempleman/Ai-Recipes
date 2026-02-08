@@ -10,17 +10,25 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
+type RecipeListContext = "default" | "suggestions";
+
 type RecipeProps = {
     recipe: RecipeModel;
+    context?: RecipeListContext;
 }
 
-export function RecipeListItem({ recipe }: RecipeProps) {
-const { t } = useTranslation();
+export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
+    const { t } = useTranslation();
 
     const navigate = useNavigate();
 
     const user = useSelector((state: AppState) => state.user);
     const likes = useSelector((state: AppState) => state.likes);
+
+
+    const isSuggestions = context === "suggestions";
+
     const userId = user?.id;
     const isLiked = !!likes.find(
         (like) => like.userId === userId && like.recipeId === recipe.id
@@ -43,23 +51,24 @@ const { t } = useTranslation();
             <img className="CardImage" src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"} />
             <h3 className="RecipeName">{recipe.title}</h3>
             <div className="TopRightActions">
-                {user && (
+                {user && !isSuggestions && (
                     <IconButton className="LikeBtn" onClick={handleLikeState}>
-                        {isLiked ? <FavoriteIcon  /> : <FavoriteBorderIcon />}
+                        {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                     </IconButton>
                 )}
+                        {!isSuggestions && (
                 <IconButton className="DeleteBtn"
                     onClick={() => {
                         deleteRecipe(recipe.id)
                     }}>
                     <DeleteOutlineOutlinedIcon />
-                </IconButton>
+                </IconButton>)}
             </div>
             <Button className="MoreInfoBtn"
                 onClick={moveToInfo}
                 variant="contained">
                 {t("recipeUi.showRecipe")}
-          
+
             </Button>
         </div>
     );

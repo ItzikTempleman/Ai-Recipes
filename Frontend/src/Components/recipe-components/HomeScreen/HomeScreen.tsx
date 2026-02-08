@@ -116,7 +116,7 @@ useEffect(() => {
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
-              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} />
+              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe}  context={showingSuggestions ? "suggestions" : "default"}/>
             ))}
           </div>
         </div>

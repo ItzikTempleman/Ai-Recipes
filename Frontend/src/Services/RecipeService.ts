@@ -69,7 +69,7 @@ class RecipeService {
 
   public async getAllRecipes(): Promise<RecipeModel[]> {
     try {
-      const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl,  getAuth());
+      const { data } = await axios.get<RecipeModel[]>(appConfig.getAllRecipesUrl, getAuth());
       const list = Array.isArray(data) ? data : [];
       store.dispatch(getAllRecipes(list));
       return list;
@@ -81,19 +81,33 @@ class RecipeService {
 
   public async getSingleRecipe(id: number): Promise<RecipeModel> {
     const token = localStorage.getItem("token") ?? "";
-    const url = token ? `${appConfig.getSingleRecipeUrl}${id}`: `${import.meta.env.VITE_API_URL ?? "/api"}/recipe/public/${id}`;
-const { data } = await axios.get<RecipeModel>(url, getAuth());
-    return data;
-  };
+    const privateUrl = `${appConfig.getSingleRecipeUrl}${id}`;
+    const publicUrl = `${import.meta.env.VITE_API_URL ?? "/api"}/recipe/public/${id}`;
+    if (!token) {
+      const { data } = await axios.get<RecipeModel>(publicUrl, getAuth());
+      return data;
+    }
+    try {
+      const { data } = await axios.get<RecipeModel>(privateUrl, getAuth());
+      return data;
+    } catch (err: any) {
+      const status = err?.response?.status;
+      if (status === 404 || status === 403) {
+        const { data } = await axios.get<RecipeModel>(publicUrl, getAuth());
+        return data;
+      }
+      throw err;
+    }
+  }
 
   public async deleteRecipe(recipeId: number): Promise<void> {
-    await axios.delete(appConfig.getSingleRecipeUrl + recipeId,  getAuth());
+    await axios.delete(appConfig.getSingleRecipeUrl + recipeId, getAuth());
     store.dispatch(deleteRecipe(recipeId));
   };
 
   public async likeRecipe(recipeId: number): Promise<void> {
     try {
-      await axios.post(appConfig.likeUrl + recipeId, {},  getAuth());
+      await axios.post(appConfig.likeUrl + recipeId, {}, getAuth());
       const userId = store.getState().user?.id;
       if (!userId) return;
       store.dispatch(like({ userId, recipeId }));
@@ -104,7 +118,7 @@ const { data } = await axios.get<RecipeModel>(url, getAuth());
 
   public async unLikeRecipe(recipeId: number): Promise<void> {
     try {
-      await axios.delete(appConfig.likeUrl + recipeId,  getAuth());
+      await axios.delete(appConfig.likeUrl + recipeId, getAuth());
       const userId = store.getState().user?.id;
       if (!userId) return;
 
@@ -117,26 +131,26 @@ const { data } = await axios.get<RecipeModel>(url, getAuth());
   public async loadMyLikes(): Promise<void> {
     const userId = store.getState().user?.id;
     if (!userId) return;
-    const { data } = await axios.get<number[]>(appConfig.likeUrl,  getAuth());
+    const { data } = await axios.get<number[]>(appConfig.likeUrl, getAuth());
     store.dispatch(setLikes(data.map(recipeId => ({ userId, recipeId }))));
   }
 
 
-public async askRecipeQuestion(
-  recipe: RecipeModel,
-  question: string,
-  history: ChatMsg[] = []
-): Promise<string> {
-  const url = `${appConfig.askRecipeUrl}/${recipe.id}/ask`; 
+  public async askRecipeQuestion(
+    recipe: RecipeModel,
+    question: string,
+    history: ChatMsg[] = []
+  ): Promise<string> {
+    const url = `${appConfig.askRecipeUrl}/${recipe.id}/ask`;
 
-  const body = {
-    query: question,             
-    history: history.slice(-8), 
-  };
+    const body = {
+      query: question,
+      history: history.slice(-8),
+    };
 
-  const { data } = await axios.post<{ answer: string }>(url, body,  getAuth());
-  return data.answer;
-}
+    const { data } = await axios.post<{ answer: string }>(url, body, getAuth());
+    return data.answer;
+  }
 }
 
 export const recipeService = new RecipeService();

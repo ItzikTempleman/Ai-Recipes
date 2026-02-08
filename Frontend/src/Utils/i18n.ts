@@ -262,7 +262,7 @@ const resources = {
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה",
         suggestions:"המלצות היום",
-        suggestions2:"המלצות",
+        suggestions2:"המלצות היום",
         history:"היסטוריה"
       },
       dataDeletion: {
