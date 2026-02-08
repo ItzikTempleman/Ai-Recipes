@@ -15,7 +15,7 @@
   z-index: 1;
 }
 
-.HomeScreen.guest::before {
+/* .HomeScreen.guest::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -40,7 +40,7 @@
   background-position: center;
   opacity: 0.18;
   z-index: 0;
-}
+} */
 
 .HomeScreenTitleWrapper {
   width: 100%;

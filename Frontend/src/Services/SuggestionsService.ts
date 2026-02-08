@@ -4,6 +4,7 @@ import { store } from "../Redux/Store";
 import axios from "axios";
 import { appConfig } from "../Utils/AppConfig";
 import { getAuth } from "../Utils/GetAuthenticationToken";
+import { RecipeModel } from "../Models/RecipeModel";
 
 class SuggestionsService {
 
@@ -46,6 +47,12 @@ store.dispatch(getRandomRecipes(suggestions));
         }
     }
 
+public async getPublicRecipe(recipeId: number): Promise<RecipeModel> {
+  const response = await axios.get<RecipeModel>(
+    appConfig.getSingleRecipeUrl + "public/" + recipeId
+  );
+  return response.data;
+}
 
 }
 

@@ -11,6 +11,7 @@ import {
 } from "../models/filters";
 import { DbRecipeRow, FullRecipeModel } from "../models/recipe-model";
 import { mapDbRowToFullRecipe } from "../utils/map-recipe";
+import { generateImage } from "./image-service";
 
 const ISRAEL_TZ = "Asia/Jerusalem";
 const DAILY_COUNT = 5;
@@ -25,27 +26,64 @@ function israelDateStr(d = new Date()): string {
 type SuggestionCountRow = { suggestionCount: number };
 
 class SuggestionsService {
-public async generateToday(): Promise<void> {
 
+    public async generateToday(): Promise<void> {
   const suggestionDateString = israelDateStr();
 
-  const countSql = "select count(*) as suggestionCount from dailySuggestions where suggestionDate = ?";
-  const countValues = [suggestionDateString];
-  const countRows = await dal.execute(countSql, countValues) as SuggestionCountRow[];
-  const existingSuggestionCount = countRows[0]?.suggestionCount ?? 0;
+  const countRows = await dal.execute(
+    "select count(*) as suggestionCount from dailySuggestions where suggestionDate = ?",
+    [suggestionDateString]
+  ) as SuggestionCountRow[];
 
-  if (existingSuggestionCount === DAILY_COUNT) return;
+  const existingSuggestionCount = Number(countRows[0]?.suggestionCount ?? 0);
 
-  const deleteSql = "delete from dailySuggestions where suggestionDate = ?";
-  const deleteValues = [suggestionDateString];
-  await dal.execute(deleteSql, deleteValues);
+  if (existingSuggestionCount === DAILY_COUNT) {
+    const missingRows = await dal.execute(
+      `
+      select count(*) as missingCount
+      from dailySuggestions ds
+      join recipe r on r.id = ds.recipeId
+      where ds.suggestionDate = ?
+        and (r.imageName is null or r.imageName = '')
+      `,
+      [suggestionDateString]
+    ) as any[];
+
+    const missingCount = Number(missingRows[0]?.missingCount ?? 0);
+    if (missingCount === 0) return;
+  }
+
+  // ✅ delete only the suggestions rows (DO NOT delete recipes here)
+  await dal.execute(
+    "delete from dailySuggestions where suggestionDate = ?",
+    [suggestionDateString]
+  );
 
   const systemUserId = await this.ensureSystemUserId();
 
   for (let recipeIndex = 0; recipeIndex < DAILY_COUNT; recipeIndex++) {
-
     const randomInput = this.createRandomDailyInputModel();
-    const generatedData = await recipeService.generateInstructions(randomInput, false);
+    const generatedData = await recipeService.generateInstructions(randomInput, true);
+
+    let fileName: string | null = null;
+    try {
+      ({ fileName } = await generateImage({
+        query: randomInput.query,
+        quantity: generatedData.amountOfServings ?? 1,
+        sugarRestriction: generatedData.sugarRestriction,
+        lactoseRestrictions: generatedData.lactoseRestrictions,
+        glutenRestrictions: generatedData.glutenRestrictions,
+        dietaryRestrictions: generatedData.dietaryRestrictions,
+        caloryRestrictions: generatedData.caloryRestrictions,
+        queryRestrictions: generatedData.queryRestrictions,
+        title: generatedData.title,
+        description: generatedData.description,
+        ingredients: generatedData.ingredients,
+        instructions: generatedData.instructions
+      }));
+    } catch (e) {
+      console.error("Daily suggestion image generation failed:", e);
+    }
 
     const recipeToSave = new FullRecipeModel({
       title: generatedData.title,
@@ -66,21 +104,18 @@ public async generateToday(): Promise<void> {
       prepTime: generatedData.prepTime,
       difficultyLevel: generatedData.difficultyLevel,
       countryOfOrigin: String(generatedData.countryOfOrigin ?? ""),
-      imageName: null,
+      imageName: fileName,
       userId: systemUserId
     });
 
     const savedRecipe = await recipeService.saveRecipe(recipeToSave, systemUserId);
 
-    const insertedRecipeId = savedRecipe.id;
-    if (!insertedRecipeId) {
-      throw new Error("Failed to insert daily recipe: missing inserted id");
-    }
+    if (!savedRecipe.id) throw new Error("Failed to insert daily recipe: missing inserted id");
 
-    const insertSuggestionSql =
-      "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
-    const insertSuggestionValues = [suggestionDateString, insertedRecipeId];
-    await dal.execute(insertSuggestionSql, insertSuggestionValues);
+    await dal.execute(
+      "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)",
+      [suggestionDateString, savedRecipe.id]
+    );
   }
 }
 

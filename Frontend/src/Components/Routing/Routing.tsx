@@ -26,7 +26,7 @@ export function Routing() {
                 <Route path="/generate" element={<RecipeInputScreen />} />
                 <Route path="/about" element={<AboutScreen />} />
                 <Route path="/home" element={<HomeScreen />} />
-                <Route path="/recipe/:id" element={isLoggedIn ? <RecipeInfoScreen /> : < Navigate to="/home" replace />} />
+                <Route path="/recipe/:id" element={<RecipeInfoScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/registration" element={<RegistrationScreen />} />
                 <Route path="/profile" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home" replace />} />
