@@ -79,6 +79,36 @@ useEffect(() => {
             <AddIcon />
             {t("homeScreen.generate")}
           </Button>
+{!user && (
+  <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="FeatureUnlockHint__bubble">
+      <div className="FeatureUnlockHint__titleRow">
+        <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
+      </div>
+
+      <div className="FeatureUnlockHint__list">
+        <div className="FeatureUnlockHint__line">
+          <span className="FeatureUnlockHint__icon" aria-hidden>💬</span>
+          <span className="FeatureUnlockHint__label">{t("homeScreen.ask")}</span>
+        </div>
+
+        <div className="FeatureUnlockHint__line">
+          <span className="FeatureUnlockHint__icon" aria-hidden>❤️</span>
+          <span className="FeatureUnlockHint__label">{t("homeScreen.save")}</span>
+        </div>
+
+        <div className="FeatureUnlockHint__line">
+          <span className="FeatureUnlockHint__icon" aria-hidden>👀</span>
+          <span className="FeatureUnlockHint__label">{t("homeScreen.remember")}</span>
+        </div>
+      </div>
+
+      <div className="FeatureUnlockHint__ctaPill">
+        {t("homeScreen.freeWithLogin")}
+      </div>
+    </div>
+  </div>
+)}
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>

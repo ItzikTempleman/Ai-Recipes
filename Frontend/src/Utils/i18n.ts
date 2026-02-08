@@ -43,7 +43,12 @@ const resources = {
         guestNoticeLine2: "Log in to save or view history",
         suggestions:"Featured today",
         suggestions2:"Featured today",
-        history:"History"
+        history:"History",
+ask: "Chatbot with the recipe",
+save: "Manage favorites",
+remember: "Recently viewed",
+freeWithLogin: "Free with login",
+unlockTitle: "Unlock features"
       },
       dataDeletion: {
         title: "Delete user data"
@@ -263,11 +268,17 @@ const resources = {
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה",
         suggestions:"המלצות היום",
         suggestions2:"המלצות היום",
-        history:"היסטוריה"
+        history:"היסטוריה",
+        ask: "צ׳אט חכם",
+save: "ניהול מועדפים",
+remember: "נצפו לאחרונה",
+freeWithLogin: "חינם למשתמשים מחוברים",
+unlockTitle: "פתח פיצ׳רים",
       },
       dataDeletion: {
         title: "מחק נתוני משתמש"
       },
+
       privacy: {
         title: "מדיניות פרטיות",
         topSection: getPrivacyPolicyTopSectionHe(),
