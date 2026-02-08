@@ -23,10 +23,18 @@ function israelDateStr(d = new Date()): string {
 }
 
 class SuggestionsService {
+public async generateToday(): Promise<void> {
 
-    public async generateToday(): Promise<void> {
+    const suggestionDateString = israelDateStr();
 
-        const suggestionDateString = israelDateStr();
+    const lockSql = "select GET_LOCK(?, 10) as gotLock";
+    const lockValues = [`dailySuggestions:${suggestionDateString}`];
+    const lockRows = await dal.execute(lockSql, lockValues) as any[];
+    const gotLock = Number(lockRows[0]?.gotLock ?? 0);
+
+    if (gotLock !== 1) return;
+
+    try {
 
         const deleteSql = "delete from dailySuggestions where suggestionDate = ?";
         const deleteValues = [suggestionDateString];
@@ -92,6 +100,13 @@ class SuggestionsService {
             await dal.execute(insertSql, insertValues);
         }
     }
+    finally {
+        const releaseSql = "select RELEASE_LOCK(?) as released";
+        const releaseValues = [`dailySuggestions:${suggestionDateString}`];
+        await dal.execute(releaseSql, releaseValues);
+    }
+}
+
 
     public async getToday(): Promise<SuggestionsModel> {
 

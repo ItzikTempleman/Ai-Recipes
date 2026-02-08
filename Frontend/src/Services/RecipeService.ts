@@ -80,7 +80,9 @@ class RecipeService {
   }
 
   public async getSingleRecipe(id: number): Promise<RecipeModel> {
-    const { data } = await axios.get<RecipeModel>(`${appConfig.getSingleRecipeUrl}${id}`,  getAuth());
+    const token = localStorage.getItem("token") ?? "";
+    const url = token ? `${appConfig.getSingleRecipeUrl}${id}`: `${import.meta.env.VITE_API_URL ?? "/api"}/recipe/public/${id}`;
+const { data } = await axios.get<RecipeModel>(url, getAuth());
     return data;
   };
 
