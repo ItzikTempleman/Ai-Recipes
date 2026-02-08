@@ -70,11 +70,11 @@
   padding-bottom: 6px;
   display: block;
 
-  font-size: 56px;
+  font-size: 32px;
   font-weight: 900;
   line-height: 1.15;
 
-  color: #1e80b1;
+  color: #3f7089;
   text-shadow: 0 10px 30px rgba(90, 77, 255, 0.16);
 }
 
@@ -271,7 +271,7 @@ font-size: 20px;
   }
 
   .GuestTitle {
-    font-size: 40px;
+    font-size: 26px;
   }
 
   .HomeScreenTitle {

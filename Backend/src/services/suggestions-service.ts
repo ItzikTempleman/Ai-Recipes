@@ -3,11 +3,11 @@ import { SuggestionsModel } from "../models/suggestions-model";
 import { dal } from "../utils/dal";
 import { recipeService } from "./recipe-service";
 import {
-    SugarRestriction,
-    LactoseRestrictions,
-    GlutenRestrictions,
-    DietaryRestrictions,
-    CaloryRestrictions
+  SugarRestriction,
+  LactoseRestrictions,
+  GlutenRestrictions,
+  DietaryRestrictions,
+  CaloryRestrictions
 } from "../models/filters";
 import { DbRecipeRow, FullRecipeModel } from "../models/recipe-model";
 import { mapDbRowToFullRecipe } from "../utils/map-recipe";
@@ -17,198 +17,225 @@ const ISRAEL_TZ = "Asia/Jerusalem";
 const DAILY_COUNT = 5;
 
 type UserIdRow = { id: number };
+type DailyLang = "en" | "he";
 
 function israelDateStr(d = new Date()): string {
-    return new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(d);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(d);
 }
 
 class SuggestionsService {
-public async generateToday(): Promise<void> {
+
+  public async generateToday(lang: DailyLang = "en"): Promise<void> {
 
     const suggestionDateString = israelDateStr();
 
     const lockSql = "select GET_LOCK(?, 10) as gotLock";
     const lockValues = [`dailySuggestions:${suggestionDateString}`];
     const lockRows = await dal.execute(lockSql, lockValues) as any[];
-    const gotLock = Number(lockRows[0]?.gotLock ?? 0);
 
-    if (gotLock !== 1) return;
+    if (Number(lockRows[0]?.gotLock ?? 0) !== 1) return;
 
     try {
+      const existsSql =
+        "select 1 from dailySuggestions where suggestionDate = ? limit 1";
+      const existsValues = [suggestionDateString];
+      const existing = await dal.execute(existsSql, existsValues) as any[];
 
-        const deleteSql = "delete from dailySuggestions where suggestionDate = ?";
-        const deleteValues = [suggestionDateString];
-        await dal.execute(deleteSql, deleteValues);
+      if (existing.length > 0) return;
 
-        const systemUserId = await this.ensureSystemUserId();
+      const systemUserId = await this.ensureSystemUserId();
 
-        const usedTitles = new Set<string>();
-        const usedImageNames = new Set<string>();
+      const usedKeys = new Set<string>();
+      const usedImageNames = new Set<string>();
 
-        for (let recipeIndex = 0; recipeIndex < DAILY_COUNT; ) {
+      const maxAttempts = 60;
+      let attempts = 0;
 
-            const randomInput = this.createRandomDailyInputModel();
-            const generatedData = await recipeService.generateInstructions(randomInput, true);
+      for (let recipeIndex = 0; recipeIndex < DAILY_COUNT && attempts < maxAttempts; attempts++) {
+        try {
+          const input = this.createRandomDailyInputModel(lang);
+          const data = await recipeService.generateInstructions(input, true);
 
-            const normalizedTitle = String(generatedData.title ?? "").trim().toLowerCase();
-            if (!normalizedTitle) continue;
+          const normalizedTitle = String(data.title ?? "")
+            .trim()
+            .normalize("NFKC")
+            .replace(/\s+/g, " ")
+            .replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "")
+            .toLowerCase();
 
-            // Block duplicate titles:
-            if (usedTitles.has(normalizedTitle)) continue;
+          if (!normalizedTitle) continue;
 
-            let fileName: string | null = null;
-            try {
-                ({ fileName } = await generateImage({
-                    query: randomInput.query,
-                    quantity: generatedData.amountOfServings ?? 1,
-                    sugarRestriction: generatedData.sugarRestriction,
-                    lactoseRestrictions: generatedData.lactoseRestrictions,
-                    glutenRestrictions: generatedData.glutenRestrictions,
-                    dietaryRestrictions: generatedData.dietaryRestrictions,
-                    caloryRestrictions: generatedData.caloryRestrictions,
-                    queryRestrictions: generatedData.queryRestrictions,
-                    title: generatedData.title,
-                    description: generatedData.description,
-                    ingredients: generatedData.ingredients,
-                    instructions: generatedData.instructions
-                }));
-            }
-            catch (e) {
-                console.error("Daily suggestion image generation failed:", e);
-            }
+          const dedupeKey =
+            normalizedTitle +
+            "|" +
+            data.ingredients.map(i => i.ingredient).join(",");
 
-            // Block duplicate images (and also block null images to avoid fallback duplicates):
-            if (!fileName) continue;
-            if (usedImageNames.has(fileName)) continue;
+          if (usedKeys.has(dedupeKey)) continue;
 
-            const recipeToSave = new FullRecipeModel({
-                title: generatedData.title,
-                amountOfServings: generatedData.amountOfServings,
-                description: generatedData.description,
-                popularity: generatedData.popularity,
-                data: generatedData,
-                totalSugar: generatedData.totalSugar,
-                totalProtein: generatedData.totalProtein,
-                healthLevel: generatedData.healthLevel,
-                calories: generatedData.calories,
-                sugarRestriction: generatedData.sugarRestriction,
-                lactoseRestrictions: generatedData.lactoseRestrictions,
-                glutenRestrictions: generatedData.glutenRestrictions,
-                dietaryRestrictions: generatedData.dietaryRestrictions,
-                caloryRestrictions: generatedData.caloryRestrictions,
-                queryRestrictions: generatedData.queryRestrictions,
-                prepTime: generatedData.prepTime,
-                difficultyLevel: generatedData.difficultyLevel,
-                countryOfOrigin: String(generatedData.countryOfOrigin ?? ""),
-                imageName: fileName,
-                userId: systemUserId
-            });
+          let fileName: string | null = null;
+          try {
+            ({ fileName } = await generateImage({
+              query: input.query,
+              quantity: data.amountOfServings ?? 1,
+              sugarRestriction: data.sugarRestriction,
+              lactoseRestrictions: data.lactoseRestrictions,
+              glutenRestrictions: data.glutenRestrictions,
+              dietaryRestrictions: data.dietaryRestrictions,
+              caloryRestrictions: data.caloryRestrictions,
+              queryRestrictions: data.queryRestrictions,
+              title: data.title,
+              description: data.description,
+              ingredients: data.ingredients,
+              instructions: data.instructions
+            }));
+          } catch (e) {
+            console.error("Daily suggestion image generation failed:", e);
+          }
 
-            const savedRecipe = await recipeService.saveRecipe(recipeToSave, systemUserId);
+          if (fileName && usedImageNames.has(fileName)) continue;
 
-            if (!savedRecipe.id) throw new Error("Failed to insert daily recipe: missing inserted id");
+          const recipe = new FullRecipeModel({
+            title: data.title,
+            amountOfServings: data.amountOfServings,
+            description: data.description,
+            popularity: data.popularity,
+            data,
+            totalSugar: data.totalSugar,
+            totalProtein: data.totalProtein,
+            healthLevel: data.healthLevel,
+            calories: data.calories,
+            sugarRestriction: data.sugarRestriction,
+            lactoseRestrictions: data.lactoseRestrictions,
+            glutenRestrictions: data.glutenRestrictions,
+            dietaryRestrictions: data.dietaryRestrictions,
+            caloryRestrictions: data.caloryRestrictions,
+            queryRestrictions: data.queryRestrictions,
+            prepTime: data.prepTime,
+            difficultyLevel: data.difficultyLevel,
+            countryOfOrigin: String(data.countryOfOrigin ?? ""),
+            imageName: fileName,
+            userId: systemUserId
+          });
 
-            const insertSql = "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
-            const insertValues = [suggestionDateString, savedRecipe.id];
-            await dal.execute(insertSql, insertValues);
+          const saved = await recipeService.saveRecipe(recipe, systemUserId);
+          if (!saved.id) throw new Error("Recipe insert failed");
 
-            usedTitles.add(normalizedTitle);
-            usedImageNames.add(fileName);
+          const insertSql =
+            "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
+          const insertValues = [suggestionDateString, saved.id];
+          await dal.execute(insertSql, insertValues);
 
-            recipeIndex++;
+          usedKeys.add(dedupeKey);
+          if (fileName) usedImageNames.add(fileName);
+
+          recipeIndex++;
+        } catch (e) {
+          console.error("Daily suggestion iteration failed:", e);
         }
+      }
 
+    } finally {
+      const releaseSql = "select RELEASE_LOCK(?)";
+      const releaseValues = [`dailySuggestions:${suggestionDateString}`];
+      await dal.execute(releaseSql, releaseValues);
     }
-    finally {
-        const releaseSql = "select RELEASE_LOCK(?) as released";
-        const releaseValues = [`dailySuggestions:${suggestionDateString}`];
-        await dal.execute(releaseSql, releaseValues);
-    }
-}
+  }
 
+  public async getToday(): Promise<SuggestionsModel> {
 
-    public async getToday(): Promise<SuggestionsModel> {
+    const suggestionDateString = israelDateStr();
 
-        const suggestionDateString = israelDateStr();
+    const sql = `
+      select recipe.*
+      from dailySuggestions
+      join recipe on recipe.id = dailySuggestions.recipeId
+      where dailySuggestions.suggestionDate = ?
+      order by dailySuggestions.id asc
+      limit 5
+    `;
+    const values = [suggestionDateString];
 
-        const selectSql = "select recipe.* from dailySuggestions join recipe on recipe.id = dailySuggestions.recipeId where dailySuggestions.suggestionDate = ? order by dailySuggestions.id asc limit 5";
-        const selectValues = [suggestionDateString];
-        const recipeRows = await dal.execute(selectSql, selectValues) as DbRecipeRow[];
+    const rows = await dal.execute(sql, values) as DbRecipeRow[];
+    const recipes = rows.map(mapDbRowToFullRecipe);
 
-        const recipes = recipeRows.map(mapDbRowToFullRecipe);
+    const model = new SuggestionsModel({
+      suggestionDate: suggestionDateString,
+      recipes
+    } as unknown as SuggestionsModel);
 
-        const suggestions = new SuggestionsModel(
-            {
-                suggestionDate: suggestionDateString,
-                recipes: recipes
-            } as unknown as SuggestionsModel);
-        suggestions.validate();
-        return suggestions;
-    };
+    model.validate();
+    return model;
+  }
 
-    private createRandomDailyInputModel(): InputModel {
+  private createRandomDailyInputModel(lang: DailyLang = "en"): InputModel {
+    const ideasEn = [
+      "Popular real dinner recipe",
+      "Popular real breakfast recipe",
+      "Popular real lunch recipe",
+      "Popular real vegetarian recipe",
+      "Popular real chicken dish",
+      "Popular real pasta dish",
+      "Popular real salad recipe",
+      "Popular real soup recipe",
+      "Popular real Mediterranean dish",
+      "Popular real Israeli dish",
+      "Popular real Asian dish",
+      "Popular real dessert recipe"
+    ];
 
-        const queryIdeas: string[] = [
-            "Popular real dinner recipe",
-            "Popular real breakfast recipe",
-            "Popular real lunch recipe",
-            "Popular real vegetarian recipe",
-            "Popular real chicken dish",
-            "Popular real pasta dish",
-            "Popular real salad recipe",
-            "Popular real soup recipe",
-            "Popular real Mediterranean dish",
-            "Popular real Israeli dish",
-            "Popular real Asian dish",
-            "Popular real dessert recipe"
-        ];
+    const ideasHe = [
+      "מתכון אמיתי ופופולרי לארוחת ערב",
+      "מתכון אמיתי ופופולרי לארוחת בוקר",
+      "מתכון אמיתי ופופולרי לארוחת צהריים",
+      "מתכון צמחוני אמיתי ופופולרי",
+      "מנה אמיתית ופופולרית עם עוף",
+      "מנה אמיתית ופופולרית עם פסטה",
+      "מתכון אמיתי ופופולרי לסלט",
+      "מתכון אמיתי ופופולרי למרק",
+      "מנה ים־תיכונית אמיתית ופופולרית",
+      "מנה ישראלית אמיתית ופופולרית",
+      "מנה אסייתית אמיתית ופופולרית",
+      "מתכון אמיתי ופופולרי לקינוח"
+    ];
 
-        const randomIdeaIndex = Math.floor(Math.random() * queryIdeas.length);
-        const queryText = queryIdeas[randomIdeaIndex];
+    const ideas = lang === "he" ? ideasHe : ideasEn;
+    const query = ideas[Math.floor(Math.random() * ideas.length)];
 
-        const inputSeed = {
-            query: queryText,
-            quantity: 1,
-            sugarRestriction: SugarRestriction.DEFAULT,
-            lactoseRestrictions: LactoseRestrictions.DEFAULT,
-            glutenRestrictions: GlutenRestrictions.DEFAULT,
-            dietaryRestrictions: DietaryRestrictions.DEFAULT,
-            caloryRestrictions: CaloryRestrictions.DEFAULT,
-            queryRestrictions: []
-        };
+    const model = new InputModel({
+      query,
+      quantity: 1,
+      sugarRestriction: SugarRestriction.DEFAULT,
+      lactoseRestrictions: LactoseRestrictions.DEFAULT,
+      glutenRestrictions: GlutenRestrictions.DEFAULT,
+      dietaryRestrictions: DietaryRestrictions.DEFAULT,
+      caloryRestrictions: CaloryRestrictions.DEFAULT,
+      queryRestrictions: []
+    } as unknown as InputModel);
 
-        const inputModel = new InputModel(inputSeed as unknown as InputModel);
+    model.validate();
+    return model;
+  }
 
-        inputModel.validate();
-        return inputModel;
-    }
+  private async ensureSystemUserId(): Promise<number> {
 
-    private async ensureSystemUserId(): Promise<number> {
+    const selectSql = "select id from user where email = ? limit 1";
+    const selectValues = ["system.generator@smart-recipes.local"];
+    const rows = await dal.execute(selectSql, selectValues) as UserIdRow[];
 
-        const systemEmail = "system.generator@smart-recipes.local";
-        const selectUserSql = "select id from user where email = ? limit 1";
-        const selectUserValues = [systemEmail];
+    if (rows[0]?.id) return rows[0].id;
 
-        const existingUserRows = await dal.execute(selectUserSql, selectUserValues) as UserIdRow[];
-        const existingUserId = existingUserRows[0]?.id;
+    const insertSql =
+      "insert into user (firstName, familyName, email, password) values (?, ?, ?, ?)";
+    const insertValues = [
+      "System",
+      "Generator",
+      "system.generator@smart-recipes.local",
+      "SYSTEM_GENERATED_NO_LOGIN"
+    ];
 
-        if (existingUserId) return existingUserId;
-
-        const insertUserSql = "insert into user (firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName) values (?, ?, ?, ?, ?, ?, ?, ?)";
-        const insertUserValues = [
-            "System",
-            "Generator",
-            systemEmail,
-            "SYSTEM_GENERATED_NO_LOGIN",
-            null,
-            null,
-            null,
-            null
-        ];
-
-        const insertUserResult = await dal.execute(insertUserSql, insertUserValues) as { insertId: number };
-        return insertUserResult.insertId;
-    }
+    const result = await dal.execute(insertSql, insertValues) as { insertId: number };
+    return result.insertId;
+  }
 }
 
 export const suggestionsService = new SuggestionsService();
