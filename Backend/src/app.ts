@@ -11,12 +11,12 @@ import fileUpload from "express-fileupload";
 import { resetPasswordController } from "./controllers/reset-password-controller";
 import { pdfController } from "./controllers/pdf-controller";
 import { suggestionsController } from "./controllers/suggestions-controller";
-import { startDailySuggestionsCron } from "./utils/daily-cron";
+import { startDailySuggestionsCron } from "./utils/schedule-timing";
+import { suggestionsService } from "./services/suggestions-service";
 
 export class App {
   public async start(): Promise<void> {
     const server = express();
-
     server.use(
       cors({
         origin: true,
@@ -25,10 +25,8 @@ export class App {
         allowedHeaders: ["Content-Type", "Authorization"],
       })
     );
-
     server.use(express.json());
     server.use(fileUpload());
-    
     const imageDir = process.env.IMAGE_DIR || path.join(__dirname, "1-assets", "images");
     await fs.mkdir(imageDir, { recursive: true });
     const userImageDir = path.join(imageDir, "users");
@@ -42,11 +40,17 @@ export class App {
     server.use("/api", resetPasswordController.router);
     server.use(healthController.router);
     startDailySuggestionsCron();
-    
+    // if (process.env.NODE_ENV !== "production") {
+      try {
+        console.log("Ensuring daily suggestions exist...");
+        await suggestionsService.generateToday();
+        console.log("Daily suggestions ready");
+      } catch (err) {
+        console.error("Failed generating daily suggestions:", err);
+      }
+   // }
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);
-  
-    
     server.listen(appConfig.port, appConfig.serverHost, () => {
       console.log(`Listening to port ${appConfig.port}`);
     });

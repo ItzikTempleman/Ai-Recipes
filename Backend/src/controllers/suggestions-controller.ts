@@ -2,7 +2,8 @@ import express, { Request, Response, Router } from "express";
 import { StatusCode } from "../models/status-code";
 import { verificationMiddleware } from "../middleware/verification-middleware";
 import { suggestionsService } from "../services/suggestions-service";
-import { normalizeLang } from "../utils/daily-cron";
+import { normalizeLang } from "../utils/normalize-language";
+
 
 
 class SuggestionsController {
@@ -19,7 +20,6 @@ class SuggestionsController {
     };
 
 private async generateToday(request: Request, response: Response) {
-  // Prefer accept-language (CORS-safe). If you still want x-language, read it second.
   const lang = normalizeLang(
     request.header("accept-language") ?? request.header("x-language")
   );

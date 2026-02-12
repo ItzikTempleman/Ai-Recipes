@@ -36,8 +36,7 @@ class SuggestionsService {
     if (Number(lockRows[0]?.gotLock ?? 0) !== 1) return;
 
     try {
-      const existsSql =
-        "select 1 from dailySuggestions where suggestionDate = ? limit 1";
+      const existsSql =  "select count(*) as cnt from dailySuggestions where suggestionDate = ?";
       const existsValues = [suggestionDateString];
       const existing = await dal.execute(existsSql, existsValues) as any[];
 
@@ -121,7 +120,7 @@ class SuggestionsService {
           if (!saved.id) throw new Error("Recipe insert failed");
 
           const insertSql =
-            "insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
+            "insert ignore into dailySuggestions (suggestionDate, recipeId) values (?, ?)";
           const insertValues = [suggestionDateString, saved.id];
           await dal.execute(insertSql, insertValues);
 
