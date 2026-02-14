@@ -14,7 +14,7 @@ import { LactoseFilter } from "../Filters/LactoseFilter";
 import { SugarFilter } from "../Filters/SugarFilter";
 import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
-import { RecipeCard } from "../RecipeCard/RecipeCard";
+import { RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
 import {
   DietaryRestrictions,
   GlutenRestrictions,
@@ -317,7 +317,7 @@ export function RecipeInputScreen() {
 
       {recipe && (
         <div className="RecipeCardContainer">
-          <RecipeCard recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
+          <RecipeDataContainer recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
         </div>
       )}
     </div>

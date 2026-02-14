@@ -1,6 +1,6 @@
 import { ArrowBackIosNew } from "@mui/icons-material";
 import {DietaryRestrictions,GlutenRestrictions,LactoseRestrictions,RecipeModel,SugarRestriction} from "../../../Models/RecipeModel";
-import { Filters } from "../RecipeCard/RecipeCard";
+import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import { DataScreen } from "../DataScreen/DataScreen";
 import { notify } from "../../../Utils/Notify";
 import { recipeService } from "../../../Services/RecipeService";

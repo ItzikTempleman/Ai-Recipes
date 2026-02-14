@@ -7,15 +7,27 @@
   background-color: transparent;
 }
 
+.DataScreen .FilterBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
+
+.DataScreen .FilterBar[dir="rtl"] {
+  justify-content: flex-end !important;
+}
 
 .RecipeImage {
-  display: block;
-  margin: 0 auto;
-  width: 60%;
+  margin: 18px auto;
+  width: 70%;
+  border-radius: 0;
   height: auto;
   object-fit: cover;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
+     border: 1px solid #3e3e3ea4;
 }
 
 .ShareBtnContainer {
@@ -26,45 +38,34 @@
 }
 
 .AskModelDiv {
- border: 1px solid #1e80b1;
-  border-radius: 18px;
-  padding: 0 24px;
-   background: #ffffff !important;
+  border: 1px solid #3e3e3ea4;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #ffffff !important;
   display: flex;
+  align-items: center;
   width: 140px;
   margin-top: 8px;
-  align-items: center;
+  align-content: center;
   gap: 12px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .AskModelDiv:hover {
-     transform: translateY(-1px);
-     cursor: pointer;
+  transform: translateY(-1px);
+  cursor: pointer;
 }
 
 .ChefImage {
   width: 24px;
-  height:24px;
+  height: 24px;
 }
 
 .RecipeSneakPeakInfo {
   margin-top: 30px;
   display: flex;
   flex-direction: row;
-
 }
 
-.AskModelDiv.rtl {
-  margin-left: auto;   
-  
-  margin-right: 0;
-}
-
-.AskModelDiv.ltr {
-  margin-right: auto;  
-  margin-left: 0;
-}
 .CaloriesInnerText,
 .ProteinInnerText {
   display: flex;
@@ -77,8 +78,7 @@
 .Calories,
 .Sugar,
 .Protein,
-.Quantity,
-.Country {
+.Quantity {
   margin: 2px;
   border-radius: 8px;
   padding: 4px;
@@ -88,17 +88,16 @@
   align-items: center;
   text-align: center;
   width: 100%;
-  background-color: white;
   height: auto;
-  border: 1px solid rgba(130, 130, 130, 0.623);
 }
 
 .Calories p,
 .Sugar p,
 .Protein p,
-.Quantity p,
-.Country p {
-  margin: 0;
+.Quantity p {
+  margin: 4px;
+  font-size: 18px;
+  font-weight: 900;
 }
 
 .SendIconRtl {
@@ -114,10 +113,9 @@
 .Calories p:not(.Title),
 .Sugar p:not(.Title),
 .Protein p:not(.Title),
-.Quantity p:not(.Title),
-.Country p:not(.Title) {
+.Quantity p:not(.Title) {
   font-size: 14px;
-
+  font-weight: 200;
 }
 
 .ImageLoadingMessageAfterRecipeGenerated {
@@ -127,17 +125,13 @@
   text-align: center;
 }
 
-.AskTextField textarea {
-  min-height: 180px !important;
-  line-height: 1.4;
-}
+
 
 .RecipeStepsGrid,
 .IngredientsList,
 .InstructionsList {
   width: 100%;
 }
-
 
 .IngredientRow {
   width: 100%;
@@ -160,37 +154,12 @@
   height: 20px;
 }
 
-.CountryFlag {
-  font-size: 1.2rem;
-}
-
-.FilterBar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-html[dir="rtl"] .FilterBar {
-  justify-content: flex-end;
-}
-
 .FilterBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  padding: 4px 16px;
-  min-height: 32px;
-  border-radius: 4px;
-  font-size: 18px;
-  font-weight: bold;
-  background: rgb(255, 255, 255);
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  color: #3b3b3b;
+  margin: 8px;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #000000;
 }
 
 .LoadImageBtn {
@@ -321,20 +290,6 @@ html[dir="rtl"] .FilterBar {
   text-align: right !important;
 }
 
-.CountryFlag {
-  font-size: 1.2rem;
-  font-family:
-    system-ui,
-    sans-serif;
-  line-height: 1;
-}
-
-.CountryFlagImg {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-  vertical-align: middle;
-}
 
 @media (min-width: 780px) {
   .RecipePreparationWideView {
@@ -433,10 +388,17 @@ html[dir="rtl"] .FilterBar {
   text-align: left !important;
 }
 
+@media (min-width: 601px) {
+  .AskModelDiv.rtl,
+  .AskModelDiv.ltr {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
 @media (max-width: 600px) {
   .RecipeSneakPeakInfo {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    display: flex;
   }
 
   .RecipeTitle {
@@ -444,46 +406,42 @@ html[dir="rtl"] .FilterBar {
   }
 
   .RecipeImage {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;
     box-shadow: none;
-    width: 90%;
+    border: 1px solid rgba(65, 65, 65, 0.675);
+    display: block;
+  }
 
+  .DataScreen {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .Calories,
   .Sugar,
   .Protein,
-  .Quantity,
-  .Country {
-    width: 100%;
-    gap: 8px;
+  .Quantity {
+    width: 50%;
+    margin: 0;
     border-radius: 0;
-    border: none;
-    border-bottom: 0.5px solid grey !important;
-    background-color: transparent;
-
-
   }
 
-.AskModelDiv {
-margin: 12px  auto !important;
-}
-
-  .CaloriesInnerText,
-  .ProteinInnerText {
-    justify-content: center;
-    flex-wrap: wrap;
+  .AskModelDiv {
+    margin: 12px auto !important;
   }
+
 
   .DataScreen {
     max-width: 100%;
   }
 
-
   .IngredientRow {
     flex-direction: row;
   }
 }
-
 
 /* Keep your current transparent dialog look */
 .AskDialog .MuiPaper-root {
@@ -506,7 +464,8 @@ margin: 12px  auto !important;
   height: 180px !important;
   align-items: flex-start !important;
   position: relative !important;
-  overflow: hidden !important; /* important so conversation fits nicely */
+  overflow: hidden !important;
+  /* important so conversation fits nicely */
 }
 
 /* Text area styling stays the same */
@@ -516,7 +475,8 @@ margin: 12px  auto !important;
   min-height: 180px !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  padding: 14px 16px 48px 16px !important; /* keep room for send button */
+  padding: 14px 16px 48px 16px !important;
+  /* keep room for send button */
   color: #111 !important;
   -webkit-text-fill-color: #111 !important;
   caret-color: #111 !important;
@@ -535,6 +495,7 @@ margin: 12px  auto !important;
   direction: rtl !important;
   text-align: right !important;
 }
+
 .AskForm.rtl .AskTextField textarea::placeholder {
   direction: rtl !important;
   text-align: right !important;
@@ -547,14 +508,17 @@ margin: 12px  auto !important;
   right: 12px;
   margin: 0 !important;
 }
+
 .AskForm.rtl .AskAdornment {
   right: auto;
   left: 12px;
 }
+
 .AskSendIcon {
   color: #1bbeff !important;
   font-size: 24px !important;
 }
+
 .AskSendIcon.rtl {
   transform: rotate(180deg);
 }
@@ -566,8 +530,10 @@ margin: 12px  auto !important;
   border-radius: 22px;
   background: #fff;
   padding: 12px;
-  max-height: 240px;         /* scroll region height */
-  overflow-y: auto;          /* conversation scroll */
+  max-height: 240px;
+  /* scroll region height */
+  overflow-y: auto;
+  /* conversation scroll */
   box-shadow: none;
 }
 
@@ -591,8 +557,10 @@ margin: 12px  auto !important;
 
 /* Bot bubble - different color */
 .AskBubble.bot {
-  background: #ffeaea;       /* light red background */
-  color: #b10000;            /* red text */
+  background: #ffeaea;
+  /* light red background */
+  color: #b10000;
+  /* red text */
   margin-right: auto;
 }
 
@@ -609,6 +577,7 @@ margin: 12px  auto !important;
   margin-right: auto;
   text-align: right;
 }
+
 .AskConversation.rtl .AskBubble.bot,
 .AskConversation.rtl .AskBubble.error {
   margin-right: 0;

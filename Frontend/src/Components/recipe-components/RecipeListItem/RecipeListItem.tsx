@@ -31,7 +31,6 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     (like) => like.userId === userId && like.recipeId === recipe.id
   );
 
-  // Align based on recipe title language (Hebrew chars => RTL)
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
   const titleIsHebrew = hasHebrew(recipe.title);
   const titleDir: "rtl" | "ltr" = titleIsHebrew ? "rtl" : "ltr";
@@ -74,7 +73,7 @@ return (
         )}
       </div>
 
-      <h3 className={`RecipeName ${titleClass}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+      <h3 className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}` } dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
         {recipe.title}
       </h3>
 

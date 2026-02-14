@@ -3,7 +3,7 @@ import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeMod
 import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { DataScreen } from "../DataScreen/DataScreen";
-import "./RecipeCard.css";
+import "./RecipeDataContainer.css";
 import { useTranslation } from "react-i18next";
 
 export type Filters = {
@@ -20,7 +20,7 @@ type RecipeProps = {
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
 };
 
-export function RecipeCard({ recipe, filters ,loadImage}: RecipeProps) {
+export function RecipeDataContainer({ recipe, filters ,loadImage}: RecipeProps) {
 const {i18n } = useTranslation();
  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
@@ -43,7 +43,7 @@ const {i18n } = useTranslation();
   )
 
   return (
-<div className="RecipeCard">
+<div className="RecipeDataContainer">
   <div
     className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
     onClick={() => dispatch(resetGenerated())}

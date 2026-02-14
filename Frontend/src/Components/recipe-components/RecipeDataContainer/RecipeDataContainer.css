@@ -1,4 +1,4 @@
-.RecipeCard {
+.RecipeDataContainer {
  
   width: 100%;
   max-width: 700px;
@@ -34,9 +34,13 @@
 }
 
 @media(max-width:600px){
-.RecipeCard {
-   border: 0.5px solid rgb(112, 112, 112);
-   border-radius: 8px;
-   box-shadow: 0 10px 24px rgba(102, 102, 102, 0.75), inset 0 1px 0 rgba(255, 255, 255, .75);
+.RecipeDataContainer {
+   border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
 }
 }

@@ -1,7 +1,7 @@
 import "./DataScreen.css";
 import { formatAmount } from "../../../Utils/Utils";
 import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../../Utils/CountryFlag";
-import { Filters } from "../RecipeCard/RecipeCard";
+import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import chef from "../../../Assets/images/chef.png";
 import { FilterBadges } from "../../../Utils/FilterBadges";
 import { useTranslation } from "react-i18next";
@@ -149,31 +149,9 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
         {recipe.description}
       </p>
 
-      {localImgSrc ?  (
-        <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
-      ) : loadImage && (
-        isImageLoading ? (
-          <>
-            <h2 className="ImageLoadingMessageAfterRecipeGenerated">
-              {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-            </h2>
-            <IconButton className="ProgressBar" edge="end" disabled>
-              <Box>
-                <CircularProgress />
-              </Box>
-            </IconButton>
-          </>
-        ) : (
-          !shareMode && (
-            <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
-              <ImageSearchIcon />
-              {t("recipeUi.loadImage")}
-            </Button>
-          )
-        )
-      )}
+<FilterBadges filters={filters} isRTL={isRTL} />
 
-      <FilterBadges filters={filters} isRTL={isRTL} />
+
 
       <div className="RecipeSneakPeakInfo">
         <div className="Calories">
@@ -226,15 +204,6 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
             {recipe.prepTime} {t("units.minuteShort")}{" "}
           </p>
         </div>
-
-        <div className="Country">
-          <p className="Title">{recipe.countryOfOrigin}</p>
-          {shareMode && flag ? (
-            <img className="CountryFlagImg" src={flagEmojiToTwemojiUrl(flag)} />
-          ) : (
-            <span className="CountryFlag">{flag}</span>
-          )}
-        </div>
       </div>
 
       {user && (
@@ -246,6 +215,30 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
       <AskChefDialog open={open} onClose={handleClose} recipe={recipe} isRTL={isRTL} />
 
+      {localImgSrc ?  (
+        <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
+      ) : loadImage && (
+        isImageLoading ? (
+          <>
+            <h2 className="ImageLoadingMessageAfterRecipeGenerated">
+              {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+            </h2>
+            <IconButton className="ProgressBar" edge="end" disabled>
+              <Box>
+                <CircularProgress />
+              </Box>
+            </IconButton>
+          </>
+        ) : (
+          !shareMode && (
+            <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+              <ImageSearchIcon />
+              {t("recipeUi.loadImage")}
+            </Button>
+          )
+        )
+      )}
+      
       <div className="RecipePreparationWideView">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
           <div className={`IngredientsList ${layoutDir}`} dir={layoutDir}>
