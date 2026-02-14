@@ -9,11 +9,10 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
 import { useDispatch } from "react-redux";
 import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
-import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
+import { restoreGuestRecipe } from "../../Redux/RecipeSlice";
 import { userService } from "../../Services/UserService";
 import { DrawerLayout } from "../user-components/DrawerLayout/DrawerLayout";
 
