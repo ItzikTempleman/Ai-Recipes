@@ -2,74 +2,87 @@ import { useNavigate } from "react-router-dom";
 import "./RecipeListItem.css";
 import { RecipeModel } from "../../../Models/RecipeModel";
 import { Button } from "@mui/material";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import IconButton from '@mui/material/IconButton';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import IconButton from "@mui/material/IconButton";
 import { recipeService } from "../../../Services/RecipeService";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 type RecipeListContext = "default" | "suggestions";
 
 type RecipeProps = {
-    recipe: RecipeModel;
-    context?: RecipeListContext;
-}
+  recipe: RecipeModel;
+  context?: RecipeListContext;
+};
 
 export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const user = useSelector((state: AppState) => state.user);
+  const likes = useSelector((state: AppState) => state.likes);
 
-    const navigate = useNavigate();
+  const isSuggestions = context === "suggestions";
+  const userId = user?.id;
 
-    const user = useSelector((state: AppState) => state.user);
-    const likes = useSelector((state: AppState) => state.likes);
+  const isLiked = !!likes.find(
+    (like) => like.userId === userId && like.recipeId === recipe.id
+  );
 
+  // Align based on recipe title language (Hebrew chars => RTL)
+  const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
+  const titleIsHebrew = hasHebrew(recipe.title);
+  const titleDir: "rtl" | "ltr" = titleIsHebrew ? "rtl" : "ltr";
+  const titleClass = titleIsHebrew ? "rtl" : "ltr";
 
-    const isSuggestions = context === "suggestions";
+  async function moveToInfo(): Promise<void> {
+    navigate("/recipe/" + recipe.id);
+  }
 
-    const userId = user?.id;
-    const isLiked = !!likes.find(
-        (like) => like.userId === userId && like.recipeId === recipe.id
-    );
-    async function moveToInfo(): Promise<void> {
-        navigate("/recipe/" + recipe.id);
-    }
-    async function deleteRecipe(id: number) {
-        await recipeService.deleteRecipe(id)
-    }
-    async function handleLikeState(): Promise<void> {
-        if (!user) return;
-        if (isLiked) {
-            await recipeService.unLikeRecipe(recipe.id);
-        } else await recipeService.likeRecipe(recipe.id);
-    }
+  async function deleteRecipe(id: number) {
+    await recipeService.deleteRecipe(id);
+  }
 
-    return (
-        <div className="RecipeListItem">
-            <img className="CardImage" src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"} />
-            <h3 className="RecipeName">{recipe.title}</h3>
-            <div className="TopRightActions">
-                {user && !isSuggestions && (
-                    <IconButton className="LikeBtn" onClick={handleLikeState}>
-                        {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                    </IconButton>
-                )}
-                        {!isSuggestions && (
-                <IconButton className="DeleteBtn"
-                    onClick={() => {
-                        deleteRecipe(recipe.id)
-                    }}>
-                    <DeleteOutlineOutlinedIcon />
-                </IconButton>)}
-            </div>
-            <Button className="MoreInfoBtn"
-                onClick={moveToInfo}
-                variant="contained">
-                {t("recipeUi.showRecipe")}
+  async function handleLikeState(): Promise<void> {
+    if (!user) return;
+    if (isLiked) await recipeService.unLikeRecipe(recipe.id);
+    else await recipeService.likeRecipe(recipe.id);
+  }
 
-            </Button>
-        </div>
-    );
+return (
+  <div className="RecipeListItem">
+    <div className="RecipeMedia">
+      <img
+        className="CardImage"
+        src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
+        alt={recipe.title}
+      />
+
+      <div className="TopRightActions">
+        {user && !isSuggestions && (
+          <IconButton className="LikeBtn" onClick={handleLikeState}>
+            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+        )}
+
+        {!isSuggestions && (
+          <IconButton className="DeleteBtn" onClick={() => deleteRecipe(recipe.id)}>
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
+        )}
+      </div>
+
+      <h3 className={`RecipeName ${titleClass}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+        {recipe.title}
+      </h3>
+
+      <Button className="MoreInfoBtn FloatingBtn" onClick={moveToInfo} variant="contained">
+        {t("recipeUi.showRecipe")}
+      </Button>
+    </div>
+  </div>
+);
+
 }

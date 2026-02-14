@@ -11,38 +11,10 @@
   
 }
 
-
 .HomeScreen > * {
   position: relative;
   z-index: 1;
 }
-
-/* .HomeScreen.guest::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.14;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.18) 0.6px, transparent 0.6px);
-  background-size: 18px 18px;
-  z-index: 0;
-}
-
-.HomeScreen.guest::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 40vh;
-  height: 55vh;
-  pointer-events: none;
-  background-image: url("../../../Assets/images/wave.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.18;
-  z-index: 0;
-} */
 
 .HomeScreenTitleWrapper {
   width: 100%;
@@ -57,7 +29,6 @@
 
 .SelectionDiv {
   width: 100%;
-
 }
 
 .HomeScreenTitleContainer {
@@ -113,7 +84,6 @@
   border-radius: 0;
   display: block;
 }
-
 
 .GenerateBtn.MuiButton-root {
   display: flex;
@@ -234,20 +204,16 @@ font-size: 20px;
   min-width: 0;
 }
 
-/* Make the row explicitly LTR/RTL so logical props behave perfectly */
 .SelectListDiv.ltr { direction: ltr; }
 .SelectListDiv.rtl { direction: rtl; }
 
-/* Divider works best with no flex gap (we'll use padding instead) */
 .SelectListDiv { gap: 0; }
 
-/* Give both tabs nice spacing */
 .RecentlyViewedBtn,
 .SuggestionsBtn {
   padding: 6px 18px;
 }
 
-/* The divider: always at the "end" of the first tab (between the two) */
 .RecentlyViewedBtn {
   position: relative;
 }
@@ -257,11 +223,12 @@ font-size: 20px;
   position: absolute;
   top: 8px;
   bottom: 8px;
-  inset-inline-end: 0;          /* LTR: right edge, RTL: left edge */
+  inset-inline-end: 0;         
   width: 1px;
   background: rgba(0, 0, 0, 0.22);
   border-radius: 1px;
 }
+
 @media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 44px;
@@ -315,7 +282,7 @@ font-size: 20px;
 .FeatureUnlockHint{
   width: 100%;
   display: flex;
-  margin: 10px 0 0 0;
+  margin: 50px 0 0 0;
   justify-content: flex-start;
   box-sizing: border-box;
 }
@@ -364,7 +331,6 @@ font-size: 20px;
   direction: rtl;
 }
 
-.FeatureUnlockHint__lock,
 .FeatureUnlockHint__icon{
   font-size: 22px;
   line-height: 1;
@@ -374,20 +340,22 @@ font-size: 20px;
 }
 
 .FeatureUnlockHint__label{
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1.1;
   font-weight: 800;
 }
 
 .FeatureUnlockHint__ctaPill{
-  margin-top: 22px;
+  margin-top: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 12px;
+  padding: 4px;
+  gap:8px;
   color: #0e6290;
   font-weight: 900;
-  font-size: 18px;
+  font-size:22px;
+  cursor: pointer;
 }
 
 @media (min-width: 601px){

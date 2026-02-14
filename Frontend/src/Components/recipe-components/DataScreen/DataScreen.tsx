@@ -12,10 +12,10 @@ import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import { shareRecipeAsPdfWithToasts } from "../../../Services/ShareRecipeService";
-
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
+import { normalizedIngredients } from "../../../Utils/NormalizedIngredients";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -27,42 +27,28 @@ type RecipeProps = {
 
 export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
   const { t, i18n } = useTranslation();
-
   const [isImageLoading, setIsImageLoading] = useState(false);
   const shareOnceRef = useRef(false);
-
   const isRTL = (i18n.language ?? "").startsWith("he");
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
-
   const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
-
   const ingredients = recipe.data?.ingredients ?? [];
+  const ingredientsModified = normalizedIngredients(ingredients)
   const instructions = recipe.data?.instructions ?? [];
-
-  const recipeIsHebrew =
-    hasHebrew(recipe.title) ||
-    hasHebrew(recipe.description) ||
-    ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
-    instructions.some((x: any) => hasHebrew(x));
-
+  const recipeIsHebrew =hasHebrew(recipe.title) ||hasHebrew(recipe.description) ||ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||instructions.some((x: any) => hasHebrew(x));
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
-
-  // keep flag
   const flag = getCountryFlag(recipe.countryOfOrigin);
-
   const [open, setOpen] = useState(false);
   const user = useSelector((state: AppState) => state.user);
 
-  // bubble toggles dialog (open/close) - and it's USED
   const handleToggleAsk = (e?: any) => {
     if (e?.preventDefault) e.preventDefault();
     if (e?.stopPropagation) e.stopPropagation();
     setOpen(prev => !prev);
   };
 
-  // dialog close on backdrop/esc
   const handleClose = () => setOpen(false);
 
   const handleLoadImage = async () => {
@@ -132,44 +118,6 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
     return { ingredient, amount };
   }
 
-  const normalizedIngredients = (() => {
-    const out: typeof ingredients = [];
-    const isModifierLine = (text: string) =>
-      /^(finely|roughly|coarsely|thinly|freshly|cut|sliced|diced|minced|chopped|grated|shredded|cubed|peeled|crushed)\b/i.test(
-        text.trim()
-      );
-
-    const appendToPrev = (suffix: string) => {
-      if (out.length === 0) return;
-      const prev = out[out.length - 1] as any;
-      const prevText = String(prev.ingredient ?? "").trim();
-      const add = suffix.trim();
-      if (!add) return;
-
-      const lastPart = prevText.split(",").pop()?.trim().toLowerCase();
-      if (lastPart === add.toLowerCase()) return;
-
-      const parts = prevText.split(",").map((p: string) => p.trim().toLowerCase());
-      if (parts.includes(add.toLowerCase())) return;
-
-      prev.ingredient = `${prevText}, ${add}`;
-    };
-
-    for (const line of ingredients) {
-      const ingredientText = String((line as any)?.ingredient ?? "").trim();
-      const rawAmount = (line as any)?.amount;
-      const amountText = rawAmount === null || rawAmount === undefined ? "" : String(rawAmount).trim();
-
-      if (!ingredientText) continue;
-      if (!amountText && isModifierLine(ingredientText)) {
-        appendToPrev(ingredientText);
-        continue;
-      }
-      out.push(line);
-    }
-    return out;
-  })();
-
   return (
     <div className="DataScreen">
       <div className="RecipeHeaderRow">
@@ -185,25 +133,25 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
         )}
 
         <h2
-          className={`RecipeTitle ${shareMode ? headingDir : isRTL ? "rtl" : "ltr"}`}
-          dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
-          lang={shareMode ? headingLng : undefined}
+        className={`RecipeTitle ${headingDir}`}
+          dir={headingDir}
+        lang={headingLng}
         >
           {recipe.title}
         </h2>
       </div>
 
       <p
-        className={`Description ${shareMode ? headingDir : isRTL ? "rtl" : "ltr"}`}
-        dir={shareMode ? headingDir : isRTL ? "rtl" : "ltr"}
-        lang={shareMode ? headingLng : undefined}
+        className={`Description ${headingDir}`}
+        dir={headingDir}
+        lang={headingLng}
       >
         {recipe.description}
       </p>
 
-      {localImgSrc ? (
+      {localImgSrc ?  (
         <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
-      ) : loadImage ? (
+      ) : loadImage && (
         isImageLoading ? (
           <>
             <h2 className="ImageLoadingMessageAfterRecipeGenerated">
@@ -223,12 +171,10 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
             </Button>
           )
         )
-      ) : null}
+      )}
 
-      {/* ✅ KEEP FILTERS EXACTLY */}
       <FilterBadges filters={filters} isRTL={isRTL} />
 
-      {/* ✅ KEEP YOUR INFO BLOCK EXACTLY */}
       <div className="RecipeSneakPeakInfo">
         <div className="Calories">
           <p className="Title">{t("recipeUi.calories")}</p>
@@ -306,7 +252,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
             <h2 className={`IngredientsTitle ${layoutDir}`} dir={layoutDir}>
               {t("recipeUi.ingredients")}
             </h2>
-            {normalizedIngredients.map((line, index) => {
+            {ingredientsModified.map((line, index) => {
               const { ingredient, amount } = normalizeIngredientRow(line);
               return (
                 <div key={index} className="IngredientRow">

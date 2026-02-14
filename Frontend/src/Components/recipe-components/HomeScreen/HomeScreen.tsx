@@ -82,9 +82,7 @@ useEffect(() => {
 {!user && (
   <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
     <div className="FeatureUnlockHint__bubble">
-      <div className="FeatureUnlockHint__titleRow">
-        <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
-      </div>
+   
 
       <div className="FeatureUnlockHint__list">
         <div className="FeatureUnlockHint__line">
@@ -103,8 +101,10 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="FeatureUnlockHint__ctaPill">
+      <div className="FeatureUnlockHint__ctaPill"  onClick={() => navigate("/login")}>
+          <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
         {t("homeScreen.freeWithLogin")}
+        <span className="FeatureUnlockHint__lock" aria-hidden>{isRTL?"⬅️" : "➡️"}</span>
       </div>
     </div>
   </div>
