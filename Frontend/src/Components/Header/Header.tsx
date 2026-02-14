@@ -9,7 +9,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import AutoAwesome from "@mui/icons-material/AutoAwesome";
+
 import { useDispatch } from "react-redux";
 import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
@@ -34,12 +34,12 @@ export function Header() {
   const showUndo = isGuest && (hasCurrentRecipe || hasStashRecipe) && !isOnRecipeInputScreen;
   const returnImage = hasCurrentRecipe ? (currentRecipe?.imageUrl ?? ""): (guestStash?.imageUrl ?? "");
 
-  const handleGenerateClick = () => {
-    if (isGuest && hasCurrentRecipe) {
-      dispatch(stashGuestRecipe(currentRecipe!));
-    }
-    dispatch(resetGenerated()); 
-  };
+  // const handleGenerateClick = () => {
+  //   if (isGuest && hasCurrentRecipe) {
+  //     dispatch(stashGuestRecipe(currentRecipe!));
+  //   }
+  //   dispatch(resetGenerated()); 
+  // };
 
   const handleReturnClick = () => {
     if (isGuest && !hasCurrentRecipe) {
