@@ -1,6 +1,5 @@
 import "./DataScreen.css";
 import { formatAmount } from "../../../Utils/Utils";
-import { flagEmojiToTwemojiUrl, getCountryFlag } from "../../../Utils/CountryFlag";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import chef from "../../../Assets/images/chef.png";
 import { FilterBadges } from "../../../Utils/FilterBadges";
@@ -39,7 +38,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
-  const flag = getCountryFlag(recipe.countryOfOrigin);
+
   const [open, setOpen] = useState(false);
   const user = useSelector((state: AppState) => state.user);
 
@@ -238,7 +237,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
           )
         )
       )}
-      
+
       <div className="RecipePreparationWideView">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
           <div className={`IngredientsList ${layoutDir}`} dir={layoutDir}>
