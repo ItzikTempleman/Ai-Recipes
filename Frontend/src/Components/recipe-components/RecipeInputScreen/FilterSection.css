@@ -50,6 +50,8 @@
     color: #474747;
     font-weight: 800;
     gap: 10px;
+    box-shadow: none;
+    border: 1px solid #70707076;;
 }
 
 .FiltersDropdown {

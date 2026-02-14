@@ -33,7 +33,7 @@ const resources = {
       },
       homeScreen: {
         shareIntro: "Share your recipes",
-        generate: "Generate a recipe with AI",
+        generate: "New AI",
         siteTitle: "Ai recipe generator",
         hello: "Welcome, I'm your smart recipe assistant",
         guest: "Guest",
@@ -258,7 +258,7 @@ const resources = {
 
       homeScreen: {
         shareIntro: "שתף את המתכונים",
-        generate: " AI יצירת מתכון בעזרת",
+        generate: "חדש AI",
         siteTitle: "יוצר מתכונים חכם",
         hello: "היי, אני מייצר המתכונים החכם שלך ",
         guest: "אורח",

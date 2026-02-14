@@ -97,7 +97,7 @@
   text-transform: none !important;
   gap: 12px !important;
 
-  background: linear-gradient(180deg, #ffbe2e 0%, #f3a400 100%) !important;
+  background: white;
   box-shadow:
     0 18px 34px rgba(243, 164, 0, 0.3),
     0 10px 18px rgba(243, 164, 0, 0.22),
@@ -106,8 +106,8 @@
   font-size: 18px !important;
   font-weight: 800 !important;
   letter-spacing: 0.3px;
-  color: #6a6a6a !important;
-
+  color: #ffc54a !important;
+border: 2px solid #ffc54a;
   margin-top: 10px !important;
   margin-bottom: 0 !important;
 }
@@ -116,6 +116,7 @@
 .GenerateBtn.MuiButton-root:hover {
   background: linear-gradient(180deg, #ffc54a 0%, #f6ac00 100%) !important;
   transform: translateY(-1px);
+  color: white !important;
   box-shadow:
     0 24px 44px rgba(243, 164, 0, 0.34),
     0 12px 22px rgba(243, 164, 0, 0.26),

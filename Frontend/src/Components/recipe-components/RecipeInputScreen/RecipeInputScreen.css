@@ -63,10 +63,7 @@
   direction: rtl;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-notchedOutline {
-  text-align: right;
-}
-
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-notchedOutline,
 .RecipeTextFieldBar.rtl .RecipeTextField fieldset legend {
   text-align: right;
 }
@@ -79,10 +76,15 @@
   text-align: right !important;
 }
 
-.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined {
-  transform: translate(-14px, 9px) scale(1) !important;
+/* Center the label vertically when it's NOT shrunk (this is the "Generate recipe" text) */
+.RecipeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink) {
+  transform: translate(14px, 14px) scale(1) !important;
+}
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-outlined:not(.MuiInputLabel-shrink) {
+  transform: translate(-14px, 14px) scale(1) !important;
 }
 
+/* Keep your existing RTL shrink position */
 .RecipeTextFieldBar.rtl .RecipeTextField .MuiInputLabel-shrink {
   transform: translate(-14px, -7px) scale(0.85) !important;
 }
@@ -91,6 +93,19 @@
 .RecipeTextFieldBar.rtl .RecipeTextField input::placeholder {
   direction: rtl;
   text-align: right;
+}
+
+/* Keep the input vertically centered inside the 50px field */
+.RecipeTextField .MuiOutlinedInput-input {
+  height: 50px;
+  padding: 0 14px;
+  line-height: 50px;
+  box-sizing: border-box;
+
+}
+.RecipeTextField .MuiOutlinedInput-root {
+  border-radius: 18px !important;
+  height: 50px;
 }
 
 .LoadingWithoutImage,
@@ -114,38 +129,29 @@ font-size: 20px;
 }
 
 .GenerateImageSelector {
-  border-radius: 14px !important;
-  height: 40px !important;
-  width: 40px !important;
-  padding: 0 !important;
-  background: #1e80b120!important;
-  border: 1px solid #1e80b1 !important;
+  border-radius: 18px !important;
+  height: 50px !important;
+  width: 50px !important;
+  background: #1e80b1 !important;
 }
 
 .GenerateImageSelector.off {
   background: white !important;
-  border: 1px solid #1e80b1  !important;
+  border: 1px solid #1e80b1 !important;
 }
 
 .GenerateImageSelector svg {
   width: 22px;
   height: 22px;
-  color: #1e80b1 ;
+  color: white;
 }
 
+.GenerateImageSelector.off svg {
+  color: #1e80b1 !important;
+}
 .RecipeTextField .MuiOutlinedInput-root {
   border-radius: 8px;
-  background: rgba(255, 255, 255, .88);
-  backdrop-filter: blur(10px);
-   box-shadow: 0 10px 24px rgba(102, 102, 102, 0.75), inset 0 1px 0 rgba(255, 255, 255, .75);
-}
-
-.RecipeTextField .MuiOutlinedInput-notchedOutline {
-  border: 1px solid rgba(148, 163, 184, .55);
-}
-
-.RecipeTextField .MuiOutlinedInput-root.Mui-focused {
-  box-shadow: 0 18px 38px rgba(91, 91, 91, 0.64), inset 0 1px 0 rgba(255, 255, 255, .85);
+height: 50px;
 }
 
 .FilterBar{
@@ -233,28 +239,15 @@ font-size: 20px;
   transform: translateY(-1px);
 }
 
-.GenerateRecipeBtn:active {
-  transform: translateY(0px);
-}
-
-.GenerateRecipeBtn svg {
-  color: #fff;
-  font-size: 22px;
-}
-
 .GenerateRecipeBtn p {
   margin: 0;
   font-size: 14px;
   font-weight: 900;
 }
 
-.GenerateRecipeBtn.Mui-disabled {
-  background: #ffffff !important;
-  box-shadow: none !important;
-}
-
-.GenerateRecipeBtn .BtnIcon {
+.GenerateRecipeBtn, .GenerateRecipeBtn .BtnIcon{
   color: #fbc31d;
+  gap: 10px;
 }
 
 .RecipeCardContainer {

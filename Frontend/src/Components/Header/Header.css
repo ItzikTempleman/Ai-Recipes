@@ -80,17 +80,17 @@
 
 .NewScreenBtn.active,
 .NewScreenBtn:hover {
-  background: #f4a32112;
-  border-color: #f4a321;
+ 
+  border-color: #ffc54a;
   transform: translateY(-1px);
 }
 
 .NewScreenBtn svg {
-  color: #f4a321;
+  color: #ffc54a;
 }
 
 .NewScreenBtn p {
-  color: #f4a321;
+  color: #ffc54a;
 }
 
 .LikesScreenBtn svg {

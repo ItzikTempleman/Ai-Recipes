@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
 import "./HomeScreen.css";
 import { useTitle } from "../../../Utils/Utils";
@@ -12,39 +11,33 @@ import { resetGenerated, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { notify } from "../../../Utils/Notify";
 import { suggestionsService } from "../../../Services/SuggestionsService";
+import AutoAwesome from "@mui/icons-material/AutoAwesome";
 
 export function HomeScreen() {
   useTitle("Home");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { items, current } = useSelector((state: AppState) => state.recipes);
-const suggestedRecipeItem = useSelector(
-  (state: AppState) => state.recipes.dailyRecipes
-);
+  const suggestedRecipeItem = useSelector(
+    (state: AppState) => state.recipes.dailyRecipes
+  );
   const user = useSelector((state: AppState) => state.user);
-
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
-
-
   const [showSuggestions, setShowSuggestions] = useState(true);
 
-  
   useEffect(() => {
-  
     setShowSuggestions(!user);
   }, [user]);
 
-useEffect(() => {
-  suggestionsService.getToday().catch(notify.error);
-}, []);
+  useEffect(() => {
+    suggestionsService.getToday().catch(notify.error);
+  }, []);
 
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (!token) return;
-  
+
     recipeService.getAllRecipes().catch(notify.error);
   }, [token]);
 
@@ -56,7 +49,6 @@ useEffect(() => {
 
   const showingSuggestions = !user || showSuggestions;
   const activeList = showingSuggestions ? suggestionsList : recentlyViewedList;
-
   const handleGenerateClick = useCallback(() => {
     const isGuest = !user;
     if (isGuest && current?.title) {
@@ -70,45 +62,43 @@ useEffect(() => {
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
         {
-          !user &&(<h3 className="GuestTitle">{t("homeScreen.hello")}</h3>)
+          !user && (<h3 className="GuestTitle">{t("homeScreen.hello")}</h3>)
         }
-        
-
         <div className="SelectionDiv">
           <Button className="GenerateBtn" onClick={handleGenerateClick} variant="contained">
-            <AddIcon />
+            <AutoAwesome />
             {t("homeScreen.generate")}
           </Button>
-{!user && (
-  <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
-    <div className="FeatureUnlockHint__bubble">
-   
+          {!user && (
+            <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
+              <div className="FeatureUnlockHint__bubble">
 
-      <div className="FeatureUnlockHint__list">
-        <div className="FeatureUnlockHint__line">
-          <span className="FeatureUnlockHint__icon" aria-hidden>💬</span>
-          <span className="FeatureUnlockHint__label">{t("homeScreen.ask")}</span>
-        </div>
 
-        <div className="FeatureUnlockHint__line">
-          <span className="FeatureUnlockHint__icon" aria-hidden>❤️</span>
-          <span className="FeatureUnlockHint__label">{t("homeScreen.save")}</span>
-        </div>
+                <div className="FeatureUnlockHint__list">
+                  <div className="FeatureUnlockHint__line">
+                    <span className="FeatureUnlockHint__icon" aria-hidden>💬</span>
+                    <span className="FeatureUnlockHint__label">{t("homeScreen.ask")}</span>
+                  </div>
 
-        <div className="FeatureUnlockHint__line">
-          <span className="FeatureUnlockHint__icon" aria-hidden>👀</span>
-          <span className="FeatureUnlockHint__label">{t("homeScreen.remember")}</span>
-        </div>
-      </div>
+                  <div className="FeatureUnlockHint__line">
+                    <span className="FeatureUnlockHint__icon" aria-hidden>❤️</span>
+                    <span className="FeatureUnlockHint__label">{t("homeScreen.save")}</span>
+                  </div>
 
-      <div className="FeatureUnlockHint__ctaPill"  onClick={() => navigate("/login")}>
-          <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
-        {t("homeScreen.freeWithLogin")}
-        <span className="FeatureUnlockHint__lock" aria-hidden>{isRTL?"⬅️" : "➡️"}</span>
-      </div>
-    </div>
-  </div>
-)}
+                  <div className="FeatureUnlockHint__line">
+                    <span className="FeatureUnlockHint__icon" aria-hidden>👀</span>
+                    <span className="FeatureUnlockHint__label">{t("homeScreen.remember")}</span>
+                  </div>
+                </div>
+
+                <div className="FeatureUnlockHint__ctaPill" onClick={() => navigate("/login")}>
+                  <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
+                  {t("homeScreen.freeWithLogin")}
+                  <span className="FeatureUnlockHint__lock" aria-hidden>{isRTL ? "⬅️" : "➡️"}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
@@ -118,7 +108,7 @@ useEffect(() => {
                 role="button"
                 tabIndex={0}
               >
-         <h4>{t("homeScreen.history")}</h4>
+                <h4>{t("homeScreen.history")}</h4>
               </div>
 
               <div
@@ -127,7 +117,7 @@ useEffect(() => {
                 role="button"
                 tabIndex={0}
               >
-            <h4>{t("homeScreen.suggestions2")}</h4>
+                <h4>{t("homeScreen.suggestions2")}</h4>
               </div>
             </div>
           )}
@@ -146,7 +136,7 @@ useEffect(() => {
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
-              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe}  context={showingSuggestions ? "suggestions" : "default"}/>
+              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} context={showingSuggestions ? "suggestions" : "default"} />
             ))}
           </div>
         </div>

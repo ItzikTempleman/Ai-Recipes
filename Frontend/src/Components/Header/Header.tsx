@@ -1,26 +1,21 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
 import LanguageIcon from "@mui/icons-material/Language";
-
 import { useSelector } from "react-redux";
-
 import UndoIcon from "@mui/icons-material/Undo";
-
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import AddIcon from "@mui/icons-material/Add";
+import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { useDispatch } from "react-redux";
 import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
 import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
 import { userService } from "../../Services/UserService";
 import { DrawerLayout } from "../user-components/DrawerLayout/DrawerLayout";
-
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -80,15 +75,15 @@ export function Header() {
             )}
           </NavLink>
         )}
-
+{/* 
         <NavLink
           to="/generate"
           onClick={handleGenerateClick}
           className={({ isActive }) => `NewScreenBtn ${isActive ? "active" : ""}`}
         >
-          <AddIcon />
-          <p>{t("nav.generate")}</p>
-        </NavLink>
+          <AutoAwesome />
+          <p>{t("homeScreen.generate")}</p>
+        </NavLink> */}
 
         {showUndo && (
 <div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>

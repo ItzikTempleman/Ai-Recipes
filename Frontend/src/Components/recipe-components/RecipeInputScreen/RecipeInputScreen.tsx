@@ -86,7 +86,8 @@ export function RecipeInputScreen() {
 
     if (loading) {
       didResetAfterGenerateRef.current = false;
-    } else if (recipeHasData && !didResetAfterGenerateRef.current) {
+    }
+     else if (recipeHasData && !didResetAfterGenerateRef.current) {
       setFiltersOpen(false);
       setQuantity(1);
       setHasImage(false);
@@ -186,7 +187,7 @@ export function RecipeInputScreen() {
               />
 
               <IconButton
-                type="button" // ✅ prevents accidental form submit
+                type="button" 
                 className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
                 onClick={() => setHasImage((v) => !v)}
                 disabled={loading}
