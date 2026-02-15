@@ -365,7 +365,7 @@
   }
 }
 
-/* ===== STAT ROW HELPERS ===== */
+
 .StatValueRowRtl {
   display: flex;
   justify-content: center;
@@ -398,7 +398,7 @@
   text-align: left !important;
 }
 
-/* ===== DESKTOP CENTER ASK BUTTON ===== */
+
 @media (min-width: 601px) {
   .AskModelDiv.rtl,
   .AskModelDiv.ltr {
@@ -407,7 +407,7 @@
   }
 }
 
-/* ===== MOBILE ===== */
+
 @media (max-width: 600px) {
   .RecipeTitle {
     font-size: 30px;
@@ -452,7 +452,7 @@
   }
 }
 
-/* ===== ASK DIALOG STYLES (UNCHANGED) ===== */
+
 .AskDialog .MuiPaper-root {
   padding: 0 !important;
   background: transparent !important;

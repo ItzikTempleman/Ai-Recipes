@@ -141,10 +141,6 @@ const navigate = useNavigate();
     <div className="DataScreen" dir={isRTL ? "rtl" : "ltr"}>
       <div className="RecipeTopSection">
         <div className={`TopActions ${isRTL ? "rtl" : "ltr"}`}>
-        
-   
-
-  
             <Button
               className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`}
               variant="contained"
@@ -155,21 +151,15 @@ const navigate = useNavigate();
             </Button>
           
         </div>
-
-    
           <div
             className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
             onClick={()=>{
                navigate("/home");
             }
-              
             }
           >
             ❌
           </div>
-        
-
-        
           <h2
             className={`RecipeTitle ${headingDir}`}
             dir={headingDir}
@@ -177,8 +167,6 @@ const navigate = useNavigate();
           >
             {recipe.title}
           </h2>
-  
-
         <p
           className={`Description ${headingDir}`}
           dir={headingDir}
