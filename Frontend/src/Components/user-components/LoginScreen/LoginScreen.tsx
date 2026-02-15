@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
-import { ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
+import { ArrowBackIosNew, ArrowForwardIos,Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { Credentials } from "../../../Models/UserModel";
 import { useTitle } from "../../../Utils/Utils";
@@ -36,7 +36,7 @@ export function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [openSetPassword, setOpenSetPassword] = useState(false);
-
+const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Credentials>({ mode: "onChange" })
 
   const navigate = useNavigate();
@@ -52,9 +52,9 @@ export function LoginScreen() {
   }
 
   return (
-    <div className="LoginScreen">
+     <div className="LoginScreen" dir={isRTL ? "rtl" : "ltr"}>
       <form className="LoginForm" onSubmit={handleSubmit(send)}>
-        <ArrowBackIosNew className="BackIcon" onClick={returnToLogin} />
+         <BackArrowIcon className="BackIcon" onClick={returnToLogin}/>
 
         <h2 className="LoginScreenTitle">{t("auth.login.title")}</h2>
 

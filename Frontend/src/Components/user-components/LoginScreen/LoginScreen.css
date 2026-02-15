@@ -10,12 +10,12 @@
 }
 
 .LoginForm {
-  border-radius: 18px;
+  border-radius: 0;
   padding: 30px;
   width: 300px;
   margin: 20px;
   height: auto;
-  box-shadow: 1px 2px black, 0 6px 18px black;
+   box-shadow: 1px 2px rgba(89, 89, 89, 0.602), 0 6px 18px rgba(89, 89, 89, 0.602);
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -59,10 +59,7 @@
   gap: 20px;
 }
 
-html[dir="rtl"] .InputTextField .MuiInputBase-input {
-  text-align: right;
 
-}
 
 html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   margin-left: 0 !important;
@@ -93,35 +90,37 @@ html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
   box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
-.LoginScreenBtn.MuiButton-root:hover {
-  background: #1e80b1;
-  transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-}
-
-.LoginScreenBtn.MuiButton-root:active {
-  transform: translateY(0px);
-  box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
-}
-
-
-
 .LoginScreenBtn.MuiButton-root {
-  background: #1e80b1;
-  color: #ffffff !important;
-  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+  width: 100% !important;
+
+  padding: 0 50px !important;
+  height: 50px !important;
+  font-weight: 800 !important;
+  margin-top: 0;
+  background: white;
+  border: 2px solid #239dda;
+  border-radius: 18px !important;
+font-size: 18px;
+  color: #239dda !important;
+  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .LoginScreenBtn.MuiButton-root:hover {
-  background: #1e80b1;
+  color: #ffffff !important;
+ background: #239dda;
   transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(59, 111, 255, 0.26), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+  box-shadow: 0 14px 24px rgba(59, 193, 255, 0.325),
+    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .LoginScreenBtn.MuiButton-root:active {
   transform: translateY(0px);
-  box-shadow: 0 8px 14px rgba(59, 111, 255, 0.2), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+  box-shadow: 0 8px 14px rgba(59, 193, 255, 0.325),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
 }
+
+
 
 @media (max-width: 600px) {
 

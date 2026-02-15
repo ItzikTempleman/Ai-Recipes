@@ -58,7 +58,7 @@ const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
   return (
     <div className="RegistrationScreen" dir={isRTL ? "rtl" : "ltr"}>
       <form className="RegistrationForm" onSubmit={handleSubmit(send)} autoComplete="off">
-        <BackArrowIcon onClick={returnToLogin}/>
+        <BackArrowIcon className="BackIcon" onClick={returnToLogin}/>
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
         <div className={`NameRow ${isRTL ? "rtl" : "ltr"}`}>
           <TextField

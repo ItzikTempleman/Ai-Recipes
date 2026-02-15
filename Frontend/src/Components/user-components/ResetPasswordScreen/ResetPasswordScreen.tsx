@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button, IconButton, InputAdornment, TextField, } from "@mui/material";
-import { ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
+import { ArrowBackIosNew,ArrowForwardIos, Visibility, VisibilityOff } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import { useDispatch, useSelector } from "react-redux";
 import { useTitle } from "../../../Utils/Utils";
@@ -24,7 +24,7 @@ export function ResetPasswordScreen() {
     const [isRTL, setIsRTL] = useState<boolean>(() =>
         (i18n.language ?? "").startsWith("he")
     );
-
+const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
     const resetState = useSelector((state: AppState) => state.passwordReset);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -224,9 +224,9 @@ export function ResetPasswordScreen() {
     };
 
     return (
-        <div className="ResetPasswordScreen">
+        <div className="ResetPasswordScreen" dir={isRTL ? "rtl" : "ltr"}>
             <form className="ResetForm" onSubmit={handleSubmit(send)}>
-                <ArrowBackIosNew className="BackIcon" onClick={returnToLogin} />
+             <BackArrowIcon className="BackIcon" onClick={returnToLogin}/>
 
                 <h2 className="ResetTitle">{t("auth.login.reset")}</h2>
 
