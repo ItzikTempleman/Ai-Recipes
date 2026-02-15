@@ -1,4 +1,4 @@
-import { ArrowBackIosNew } from "@mui/icons-material";
+import { ArrowBackIosNew ,ArrowForwardIos} from "@mui/icons-material";
 import {DietaryRestrictions,GlutenRestrictions,LactoseRestrictions,RecipeModel,SugarRestriction} from "../../../Models/RecipeModel";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import { DataScreen } from "../DataScreen/DataScreen";
@@ -35,7 +35,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
 
-
+const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
   useEffect(() => {
     if (!recipeId) {
       navigate("/home");
@@ -75,15 +75,9 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   };
 
   return (
-    <div className="RecipeInfoScreen">
+<div className="RecipeInfoScreen" dir={isRTL ? "rtl" : "ltr"}>
+  <BackArrowIcon className="BackBtn" onClick={returnToList}/>
 
-
-        <div className={`BackBtnContainer ${isRTL ? "rtl" : "ltr"}`} onClick={returnToList}>
-          <ArrowBackIosNew />
-         
-        </div>
-
-  
         <div className="InfoScreenContainer">
           <DataScreen
             loadImage={loadImageHelper}

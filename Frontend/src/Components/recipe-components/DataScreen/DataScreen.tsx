@@ -1,8 +1,9 @@
 import "./DataScreen.css";
+import "./SneakPeak.css"
 import { formatAmount } from "../../../Utils/Utils";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import chef from "../../../Assets/images/chef.png";
-import { FilterBadges } from "../../../Utils/FilterBadges";
+import { FilterBadges } from "../../FilterBadges/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../../Models/RecipeModel";
@@ -152,58 +153,67 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
 
 
 
-      <div className="RecipeSneakPeakInfo">
-        <div className="Calories">
-          <p className="Title">{t("recipeUi.calories")}</p>
+<div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
+  <div className="Calories">
+    <p className="Title">{t("recipeUi.calories")}</p>
 
-          {isRTL ? (
-            <div className="CaloriesInnerText">
-              <p> ק ל100 גרם</p> <p>{recipe.calories}</p>
-            </div>
-          ) : (
-            <div>
-              <p>
-                {recipe.calories} {t("recipeUi.kcal")}
-              </p>
-            </div>
-          )}
-        </div>
+    {isRTL ? (
+      <p className="StatLine">
+        <span className="StatNum BidiIso">{recipe.calories}</span>
+        <span className="StatText"> קק״ל ל־</span>
+        <span className="BidiIso">100</span>
+        <span className="StatText"> גרם</span>
+      </p>
+    ) : (
+      <p className="StatLine">
+        {recipe.calories} {t("recipeUi.kcal")}
+      </p>
+    )}
+  </div>
 
-        <div className="Sugar">
-          <p className="Title">{t("recipeUi.sugar")}</p>
-          {Number(recipe.totalSugar) === 0 ? (
-            <p>0</p>
-          ) : isRTL ? (
-            <div>
-              <p> כפיות ל100 גרם </p> <p> {recipe.totalSugar}</p>
-            </div>
-          ) : (
-            <div>
-              <p>{recipe.totalSugar} table spoons (per 100 grams)</p>
-            </div>
-          )}
-        </div>
+  <div className="Sugar">
+    <p className="Title">{t("recipeUi.sugar")}</p>
 
-        <div className="Protein">
-          <p className="Title">{t("recipeUi.protein")}</p>
-          {isRTL ? (
-            <div className="ProteinInnerText">
-              <p> גרם ל100 גרם מאכל </p> <p> {recipe.totalProtein}</p>
-            </div>
-          ) : (
-            <div>
-              <p>{recipe.totalProtein} grams (per 100 grams)</p>
-            </div>
-          )}
-        </div>
+    {Number(recipe.totalSugar) === 0 ? (
+      <p className="StatLine">0</p>
+    ) : isRTL ? (
+      <p className="StatLine">
+        <span className="StatNum BidiIso">{recipe.totalSugar}</span>
+        <span className="StatText"> כפיות ל־</span>
+        <span className="BidiIso">100</span>
+        <span className="StatText"> גרם</span>
+      </p>
+    ) : (
+      <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
+    )}
+  </div>
 
-        <div className="Quantity">
-          <p className="Title">{t("recipeUi.time")}</p>
-          <p>
-            {recipe.prepTime} {t("units.minuteShort")}{" "}
-          </p>
-        </div>
-      </div>
+  <div className="Protein">
+    <p className="Title">{t("recipeUi.protein")}</p>
+
+    {isRTL ? (
+      <p className="StatLine">
+        <span className="StatNum BidiIso">{recipe.totalProtein}</span>
+        <span className="StatText"> גרם חלבון ל־</span>
+        <span className="BidiIso">100</span>
+        <span className="StatText"> גרם</span>
+      </p>
+    ) : (
+      <p className="StatLine">
+        {recipe.totalProtein} grams <br />
+        in 100 grams
+      </p>
+    )}
+  </div>
+
+  <div className="Quantity">
+    <p className="Title">{t("recipeUi.time")}</p>
+    <p className="StatLine">
+      <span className="StatNum BidiIso">{recipe.prepTime}</span>{" "}
+      <span className="StatText">{t("units.minuteShort")}</span>
+    </p>
+  </div>
+</div>
 
       {user && (
         <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>

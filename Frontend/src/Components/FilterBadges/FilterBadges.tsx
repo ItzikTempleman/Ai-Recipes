@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction } from "../Models/RecipeModel";
+import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction } from "../../Models/RecipeModel";
+import "./FilterBadges.css"
 
 type Filters = {
   sugarLevel: SugarRestriction;

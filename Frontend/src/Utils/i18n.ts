@@ -219,7 +219,7 @@ const resources = {
         gramShort: "g",
         tbspShort: "tbs",
         per100g: "| 100g",
-        minuteShort: "m",
+        minuteShort: "minutes",
       },
       notify: {
         genericError: "Some error, please try again.",

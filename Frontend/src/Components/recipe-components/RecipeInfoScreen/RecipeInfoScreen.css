@@ -7,12 +7,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: relative;
-
-  /* colors only */
-  background: transparent;
-  color: var(--text);
+ 
 }
 
 .InfoScreenContainer {
@@ -23,34 +18,7 @@
   box-sizing: border-box;
   text-align: left;
   position: relative;
-
-  /* colors only */
-  color: var(--text);
 }
-
-.TopRow{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-.BackBtnContainer {
-  width: 100%;
-  margin: 0 auto 16px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  /* ✅ not hard black */
-  color: var(--text);
-}
-
-.BackBtnContainer:hover {
-  cursor: pointer;
-  color: var(--brandDark);
-}
-
-/* ------------------------ */
 
 .RecipeDataContainer {
   width: 100%;
@@ -62,42 +30,7 @@
   align-items: stretch;
   position: relative;
   box-sizing: border-box;
-  overflow-x: visible;
+  
 
-  /* color only */
-  color: var(--text);
 }
 
-.ClearFormDiv {
-  position: absolute;
-  top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-
-  /* color only */
-  color: var(--muted);
-}
-
-.ClearFormDiv.rtl {
-  right: 16px;
-  left: auto;
-}
-
-.ClearFormDiv.ltr {
-  right: 16px;
-  left: auto;
-}
-
-@media(max-width:600px){
-  .RecipeDataContainer {
-    /* ✅ remove harsh border/shadow */
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.75);
-  }
-}

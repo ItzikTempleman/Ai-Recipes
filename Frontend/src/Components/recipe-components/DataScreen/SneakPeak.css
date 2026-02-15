@@ -1,0 +1,99 @@
+
+
+.RecipeSneakPeakInfo {
+  margin-top: 22px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+.Calories,
+.Sugar,
+.Protein,
+.Quantity {
+  position: relative;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 4px;
+box-shadow: 0 10px 18px rgba(83, 83, 83, 0.544);
+}
+
+
+
+.Calories .Title,
+.Sugar .Title,
+.Protein .Title,
+.Quantity .Title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(17, 24, 39, 0.72);
+  line-height: 1.1;
+}
+
+/* Value block */
+.Calories p:not(.Title),
+.Sugar p:not(.Title),
+.Protein p:not(.Title),
+.Quantity p:not(.Title) {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 1000;
+  color: #111827;
+  line-height: 1.15;
+}
+
+/* optional: second line / unit text looks nicer if present */
+.Calories p:not(.Title) + p:not(.Title),
+.Sugar p:not(.Title) + p:not(.Title),
+.Protein p:not(.Title) + p:not(.Title),
+.Quantity p:not(.Title) + p:not(.Title) {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(17, 24, 39, 0.60);
+}
+
+/* inner rows (your CaloriesInnerText / ProteinInnerText) */
+.CaloriesInnerText,
+.ProteinInnerText {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Keep your bidi helpers */
+/* ===== Responsive: 2x2 grid on mobile ===== */
+@media (max-width: 600px) {
+  .RecipeSneakPeakInfo {
+    margin-top: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .Calories,
+  .Sugar,
+  .Protein,
+  .Quantity {
+    border-radius: 14px;
+    padding: 12px 10px 10px;
+  }
+
+  .Calories p:not(.Title),
+  .Sugar p:not(.Title),
+  .Protein p:not(.Title),
+  .Quantity p:not(.Title) {
+    font-size: 18px;
+  }
+}

@@ -49,39 +49,47 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     if (isLiked) await recipeService.unLikeRecipe(recipe.id);
     else await recipeService.likeRecipe(recipe.id);
   }
+  function stopCardClick(e: React.MouseEvent) {
+    e.stopPropagation();
+  }
+  return (
+    <div className="RecipeListItem" onClick={moveToInfo} >
+      <div className="RecipeMedia">
+        <img
+          className="CardImage"
+          src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
 
-return (
-  <div className="RecipeListItem">
-    <div className="RecipeMedia">
-      <img
-        className="CardImage"
-        src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
-        alt={recipe.title}
-      />
+        />
 
-      <div className="TopRightActions">
-        {user && !isSuggestions && (
-          <IconButton className="LikeBtn" onClick={handleLikeState}>
-            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          </IconButton>
-        )}
+        <div className="TopRightActions">
+          {user && !isSuggestions && (
+            <IconButton className="LikeBtn" onClick={(e) => {
+              stopCardClick(e);
+              handleLikeState();
+            }}>
+              {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+          )}
 
-        {!isSuggestions && (
-          <IconButton className="DeleteBtn" onClick={() => deleteRecipe(recipe.id)}>
-            <DeleteOutlineOutlinedIcon />
-          </IconButton>
-        )}
+          {!isSuggestions && (
+            <IconButton className="DeleteBtn" onClick={(e) => {
+              stopCardClick(e);
+              deleteRecipe(recipe.id);
+            }}>
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          )}
+        </div>
+
+        <h3 className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+          {recipe.title}
+        </h3>
+
+        <Button className="MoreInfoBtn FloatingBtn" onClick={moveToInfo} variant="contained">
+          {t("recipeUi.showRecipe")}
+        </Button>
       </div>
-
-      <h3 className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}` } dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
-        {recipe.title}
-      </h3>
-
-      <Button className="MoreInfoBtn FloatingBtn" onClick={moveToInfo} variant="contained">
-        {t("recipeUi.showRecipe")}
-      </Button>
     </div>
-  </div>
-);
+  );
 
 }
