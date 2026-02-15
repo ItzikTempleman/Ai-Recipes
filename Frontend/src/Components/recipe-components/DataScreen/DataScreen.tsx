@@ -10,12 +10,14 @@ import { RecipeModel } from "../../../Models/RecipeModel";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
-import ReplyIcon from '@mui/icons-material/Reply';
+import ReplyIcon from "@mui/icons-material/Reply";
 import { shareRecipeAsPdfWithToasts } from "../../../Services/ShareRecipeService";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
-import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
+import {normalizedIngredients,normalizeIngredientRow} from "../../../Utils/NormalizedIngredients";
+import { useNavigate } from "react-router-dom";
+
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -23,7 +25,7 @@ type RecipeProps = {
   filters?: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
   shareMode?: boolean;
-  onClear?: () => void;
+
 };
 
 export function DataScreen({
@@ -32,25 +34,33 @@ export function DataScreen({
   filters,
   loadImage,
   shareMode,
-  onClear,
+
 }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
   const shareOnceRef = useRef(false);
+
   const isRTL = (i18n.language ?? "").startsWith("he");
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
+const navigate = useNavigate();
   const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
+
   const ingredients = recipe.data?.ingredients ?? [];
   const ingredientsModified = normalizedIngredients(ingredients);
+
   const instructions = recipe.data?.instructions ?? [];
+
   const recipeIsHebrew =
     hasHebrew(recipe.title) ||
     hasHebrew(recipe.description) ||
     ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
     instructions.some((x: any) => hasHebrew(x));
+
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
+
+
 
   const [open, setOpen] = useState(false);
   const user = useSelector((state: AppState) => state.user);
@@ -67,8 +77,10 @@ export function DataScreen({
     try {
       if (!loadImage || isImageLoading) return;
       setIsImageLoading(true);
+
       const updated = await loadImage(recipe);
       const url = (updated.imageUrl ?? "").trim();
+
       setLocalImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
     } catch (err) {
       notify.error(err);
@@ -83,6 +95,7 @@ export function DataScreen({
     if (shareOnceRef.current) return;
 
     shareOnceRef.current = true;
+
     try {
       await shareRecipeAsPdfWithToasts({
         ...recipe,
@@ -107,30 +120,31 @@ export function DataScreen({
     (window as any).__SHARE_READY__ = false;
 
     const raf = requestAnimationFrame(() => {
-      const img = document.querySelector<HTMLImageElement>("#share-root img.RecipeImage");
+      const img =
+        document.querySelector<HTMLImageElement>(
+          "#share-root img.RecipeImage"
+        );
+
       if (img && !img.complete) {
         img.onload = () => ((window as any).__SHARE_READY__ = true);
         img.onerror = () => ((window as any).__SHARE_READY__ = true);
         return;
       }
+
       (window as any).__SHARE_READY__ = true;
     });
 
     return () => cancelAnimationFrame(raf);
   }, [shareMode, localImgSrc, recipe]);
 
-
   return (
-    <div className="DataScreen">
+    <div className="DataScreen" dir={isRTL ? "rtl" : "ltr"}>
       <div className="RecipeTopSection">
-        {!shareMode && onClear && (
-          <div className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`} onClick={onClear}>
-            ❌
-          </div>
-        )}
+        <div className={`TopActions ${isRTL ? "rtl" : "ltr"}`}>
+        
+   
 
-        <div className="RecipeHeaderRow">
-          {!shareMode && (
+  
             <Button
               className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`}
               variant="contained"
@@ -139,14 +153,37 @@ export function DataScreen({
               <ReplyIcon />
               {t("recipeUi.share")}
             </Button>
-          )}
-
-          <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
-            {recipe.title}
-          </h2>
+          
         </div>
 
-        <p className={`Description ${headingDir}`} dir={headingDir} lang={headingLng}>
+    
+          <div
+            className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
+            onClick={()=>{
+               navigate("/home");
+            }
+              
+            }
+          >
+            ❌
+          </div>
+        
+
+        
+          <h2
+            className={`RecipeTitle ${headingDir}`}
+            dir={headingDir}
+            lang={headingLng}
+          >
+            {recipe.title}
+          </h2>
+  
+
+        <p
+          className={`Description ${headingDir}`}
+          dir={headingDir}
+          lang={headingLng}
+        >
           {recipe.description}
         </p>
 
@@ -183,7 +220,9 @@ export function DataScreen({
                 <span className="StatText"> גרם</span>
               </p>
             ) : (
-              <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
+              <p className="StatLine">
+                {recipe.totalSugar} table spoons in 100 grams
+              </p>
             )}
           </div>
 
@@ -215,22 +254,35 @@ export function DataScreen({
         </div>
 
         {user && (
-          <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
+          <div
+            className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`}
+            onClick={handleToggleAsk}
+          >
             <img className="ChefImage" src={chef} />
             <h4>{t("recipeUi.ask")}</h4>
           </div>
         )}
 
-        <AskChefDialog open={open} onClose={handleClose} recipe={recipe} isRTL={isRTL} />
+        <AskChefDialog
+          open={open}
+          onClose={handleClose}
+          recipe={recipe}
+          isRTL={isRTL}
+        />
 
         {localImgSrc ? (
-          <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
+          <img
+            className="RecipeImage"
+            src={localImgSrc}
+            onError={() => setLocalImgSrc("")}
+          />
         ) : (
           loadImage &&
           (isImageLoading ? (
             <>
               <h2 className="ImageLoadingMessageAfterRecipeGenerated">
-                {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                {t("generate.loadingWithImage")}{" "}
+                {t("generate.loadingWithImageLowerMessage")}
               </h2>
               <IconButton className="ProgressBar" edge="end" disabled>
                 <Box>
@@ -240,7 +292,11 @@ export function DataScreen({
             </>
           ) : (
             !shareMode && (
-              <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+              <Button
+                className="LoadImageBtn"
+                variant="contained"
+                onClick={handleLoadImage}
+              >
                 <ImageSearchIcon />
                 {t("recipeUi.loadImage")}
               </Button>
@@ -255,12 +311,15 @@ export function DataScreen({
             <h2 className={`IngredientsTitle ${layoutDir}`} dir={layoutDir}>
               {t("recipeUi.ingredients")}
             </h2>
+
             {ingredientsModified.map((line, index) => {
               const { ingredient, amount } = normalizeIngredientRow(line);
               return (
                 <div key={index} className="IngredientRow">
                   <span className="IngredientName">{ingredient}</span>
-                  <span className="IngredientAmount">{formatAmount(amount) ?? ""}</span>
+                  <span className="IngredientAmount">
+                    {formatAmount(amount) ?? ""}
+                  </span>
                 </div>
               );
             })}

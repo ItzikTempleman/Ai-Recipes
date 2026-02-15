@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../../Models/RecipeModel";
-import { useDispatch } from "react-redux";
-import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { DataScreen } from "../DataScreen/DataScreen";
 import "./RecipeDataContainer.css";
 
@@ -20,7 +18,7 @@ type RecipeProps = {
 
 export function RecipeDataContainer({ recipe, filters, loadImage }: RecipeProps) {
   const [imgSrc, setImgSrc] = useState<string>("");
-  const dispatch = useDispatch();
+
   useEffect(() => {
     const url = (recipe.imageUrl ?? "").trim();
     setImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
@@ -34,7 +32,7 @@ export function RecipeDataContainer({ recipe, filters, loadImage }: RecipeProps)
         recipe={recipe}
         imageSrc={imgSrc}
         loadImage={loadImage}
-        onClear={() => dispatch(resetGenerated())}
+
       />
     </div>
   );

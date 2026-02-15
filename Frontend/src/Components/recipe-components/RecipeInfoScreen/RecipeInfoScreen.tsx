@@ -1,4 +1,4 @@
-import { ArrowBackIosNew ,ArrowForwardIos} from "@mui/icons-material";
+
 import {DietaryRestrictions,GlutenRestrictions,LactoseRestrictions,RecipeModel,SugarRestriction} from "../../../Models/RecipeModel";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import { DataScreen } from "../DataScreen/DataScreen";
@@ -7,7 +7,6 @@ import { recipeService } from "../../../Services/RecipeService";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../../Utils/Utils";
-import { useTranslation } from "react-i18next";
 import "./RecipeInfoScreen.css";
 
 
@@ -19,23 +18,13 @@ type Props = {
 
 export function RecipeInfoScreen({ filters, loadImage }: Props) {
 
-  const { i18n } = useTranslation();
-  const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
-  const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
-
-  useEffect(() => {
-    const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
-    i18n.on("languageChanged", onLangChange);
-    return () => i18n.off("languageChanged", onLangChange);
-  }, [i18n]);
-
   useTitle("Info");
   const { id } = useParams();
   const recipeId = Number(id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
 
-const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
+
   useEffect(() => {
     if (!recipeId) {
       navigate("/home");
@@ -61,7 +50,6 @@ const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
     return updated;
   }
 
-
   const imgSrc = (() => {
     const url = (recipe.imageUrl ?? "").trim();
     return url && url !== "null" && url !== "undefined" ? url : "";
@@ -75,17 +63,15 @@ const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
   };
 
   return (
-<div className="RecipeInfoScreen" dir={isRTL ? "rtl" : "ltr"}>
-  <BackArrowIcon className="BackBtn" onClick={returnToList}/>
-
+<div className="RecipeInfoScreen">
         <div className="InfoScreenContainer">
           <DataScreen
             loadImage={loadImageHelper}
             recipe={recipe}
             imageSrc={imgSrc}
             filters={filters ?? filtersFromRecipe}
+            onBack={returnToList}
           />
-  
       </div>
  </div>
   );

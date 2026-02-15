@@ -33,4 +33,14 @@
   
 
 }
+@media (max-width: 600px) {
+  .RecipeInfoScreen {
+    padding: 0;
+  }
 
+  .InfoScreenContainer {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+}
