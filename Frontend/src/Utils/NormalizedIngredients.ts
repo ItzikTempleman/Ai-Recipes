@@ -39,3 +39,16 @@ import { IngredientLine } from "../Models/RecipeModel";
     }
     return out;
   };
+
+
+
+    export function normalizeIngredientRow(row: any) {
+    const ingredient = String(row?.ingredient ?? "").trim();
+    let amount = row?.amount == null ? "" : String(row.amount).trim();
+    if (!ingredient || !amount) return { ingredient, amount };
+
+    const escaped = ingredient.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(escaped, "gi");
+    amount = amount.replace(re, "").replace(/\s{2,}/g, " ").trim();
+    return { ingredient, amount };
+  }

@@ -82,8 +82,8 @@
 /* mobile */
 @media (max-width: 600px) {
   .DataScreen .FilterBar {
-    gap: 8px;
-    margin-top: 10px;
+    gap: 20px;
+    margin-top: 20px;
   }
 
   .FilterBadge {

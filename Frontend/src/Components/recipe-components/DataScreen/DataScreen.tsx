@@ -1,9 +1,9 @@
 import "./DataScreen.css";
-import "./SneakPeak.css"
+import "./SneakPeak.css";
 import { formatAmount } from "../../../Utils/Utils";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import chef from "../../../Assets/images/chef.png";
-import { FilterBadges } from "../../FilterBadges/FilterBadges";
+import { FilterBadges } from "../FilterBadges/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../../Models/RecipeModel";
@@ -15,7 +15,7 @@ import { shareRecipeAsPdfWithToasts } from "../../../Services/ShareRecipeService
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
-import { normalizedIngredients } from "../../../Utils/NormalizedIngredients";
+import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -23,9 +23,17 @@ type RecipeProps = {
   filters?: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
   shareMode?: boolean;
+  onClear?: () => void;
 };
 
-export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: RecipeProps) {
+export function DataScreen({
+  recipe,
+  imageSrc,
+  filters,
+  loadImage,
+  shareMode,
+  onClear,
+}: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
   const shareOnceRef = useRef(false);
@@ -33,9 +41,13 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
   const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
   const ingredients = recipe.data?.ingredients ?? [];
-  const ingredientsModified = normalizedIngredients(ingredients)
+  const ingredientsModified = normalizedIngredients(ingredients);
   const instructions = recipe.data?.instructions ?? [];
-  const recipeIsHebrew =hasHebrew(recipe.title) ||hasHebrew(recipe.description) ||ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||instructions.some((x: any) => hasHebrew(x));
+  const recipeIsHebrew =
+    hasHebrew(recipe.title) ||
+    hasHebrew(recipe.description) ||
+    ingredients.some((x: any) => hasHebrew(x?.ingredient ?? x)) ||
+    instructions.some((x: any) => hasHebrew(x));
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
@@ -46,7 +58,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
   const handleToggleAsk = (e?: any) => {
     if (e?.preventDefault) e.preventDefault();
     if (e?.stopPropagation) e.stopPropagation();
-    setOpen(prev => !prev);
+    setOpen((prev) => !prev);
   };
 
   const handleClose = () => setOpen(false);
@@ -107,146 +119,135 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode }: 
     return () => cancelAnimationFrame(raf);
   }, [shareMode, localImgSrc, recipe]);
 
-  function normalizeIngredientRow(row: any) {
-    const ingredient = String(row?.ingredient ?? "").trim();
-    let amount = row?.amount == null ? "" : String(row.amount).trim();
-    if (!ingredient || !amount) return { ingredient, amount };
-
-    const escaped = ingredient.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(escaped, "gi");
-    amount = amount.replace(re, "").replace(/\s{2,}/g, " ").trim();
-    return { ingredient, amount };
-  }
 
   return (
     <div className="DataScreen">
-      <div className="RecipeHeaderRow">
-        {!shareMode && (
-          <Button
-            className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`}
-            variant="contained"
-            onClick={handleShare}
-          >
-            <IosShareIcon />
-            {t("recipeUi.share")}
-          </Button>
+      <div className="RecipeTopSection">
+        {!shareMode && onClear && (
+          <div className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`} onClick={onClear}>
+            ❌
+          </div>
         )}
 
-        <h2
-        className={`RecipeTitle ${headingDir}`}
-          dir={headingDir}
-        lang={headingLng}
-        >
-          {recipe.title}
-        </h2>
-      </div>
-
-      <p
-        className={`Description ${headingDir}`}
-        dir={headingDir}
-        lang={headingLng}
-      >
-        {recipe.description}
-      </p>
-
-<FilterBadges filters={filters} isRTL={isRTL} />
-
-
-
-<div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
-  <div className="Calories">
-    <p className="Title">{t("recipeUi.calories")}</p>
-
-    {isRTL ? (
-      <p className="StatLine">
-        <span className="StatNum BidiIso">{recipe.calories}</span>
-        <span className="StatText"> קק״ל ל־</span>
-        <span className="BidiIso">100</span>
-        <span className="StatText"> גרם</span>
-      </p>
-    ) : (
-      <p className="StatLine">
-        {recipe.calories} {t("recipeUi.kcal")}
-      </p>
-    )}
-  </div>
-
-  <div className="Sugar">
-    <p className="Title">{t("recipeUi.sugar")}</p>
-
-    {Number(recipe.totalSugar) === 0 ? (
-      <p className="StatLine">0</p>
-    ) : isRTL ? (
-      <p className="StatLine">
-        <span className="StatNum BidiIso">{recipe.totalSugar}</span>
-        <span className="StatText"> כפיות ל־</span>
-        <span className="BidiIso">100</span>
-        <span className="StatText"> גרם</span>
-      </p>
-    ) : (
-      <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
-    )}
-  </div>
-
-  <div className="Protein">
-    <p className="Title">{t("recipeUi.protein")}</p>
-
-    {isRTL ? (
-      <p className="StatLine">
-        <span className="StatNum BidiIso">{recipe.totalProtein}</span>
-        <span className="StatText"> גרם חלבון ל־</span>
-        <span className="BidiIso">100</span>
-        <span className="StatText"> גרם</span>
-      </p>
-    ) : (
-      <p className="StatLine">
-        {recipe.totalProtein} grams <br />
-        in 100 grams
-      </p>
-    )}
-  </div>
-
-  <div className="Quantity">
-    <p className="Title">{t("recipeUi.time")}</p>
-    <p className="StatLine">
-      <span className="StatNum BidiIso">{recipe.prepTime}</span>{" "}
-      <span className="StatText">{t("units.minuteShort")}</span>
-    </p>
-  </div>
-</div>
-
-      {user && (
-        <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
-          <img className="ChefImage" src={chef} />
-          <h4>{t("recipeUi.ask")}</h4>
-        </div>
-      )}
-
-      <AskChefDialog open={open} onClose={handleClose} recipe={recipe} isRTL={isRTL} />
-
-      {localImgSrc ?  (
-        <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
-      ) : loadImage && (
-        isImageLoading ? (
-          <>
-            <h2 className="ImageLoadingMessageAfterRecipeGenerated">
-              {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-            </h2>
-            <IconButton className="ProgressBar" edge="end" disabled>
-              <Box>
-                <CircularProgress />
-              </Box>
-            </IconButton>
-          </>
-        ) : (
-          !shareMode && (
-            <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
-              <ImageSearchIcon />
-              {t("recipeUi.loadImage")}
+        <div className="RecipeHeaderRow">
+          {!shareMode && (
+            <Button
+              className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`}
+              variant="contained"
+              onClick={handleShare}
+            >
+              <IosShareIcon />
+              {t("recipeUi.share")}
             </Button>
-          )
-        )
-      )}
+          )}
+
+          <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
+            {recipe.title}
+          </h2>
+        </div>
+
+        <p className={`Description ${headingDir}`} dir={headingDir} lang={headingLng}>
+          {recipe.description}
+        </p>
+
+        <FilterBadges filters={filters} isRTL={isRTL} />
+
+        <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
+          <div className="Calories">
+            <p className="Title">{t("recipeUi.calories")}</p>
+
+            {isRTL ? (
+              <p className="StatLine">
+                <span className="StatNum BidiIso">{recipe.calories}</span>
+                <span className="StatText"> קק״ל ל־</span>
+                <span className="BidiIso">100</span>
+                <span className="StatText"> גרם</span>
+              </p>
+            ) : (
+              <p className="StatLine">
+                {recipe.calories} {t("recipeUi.kcal")}
+              </p>
+            )}
+          </div>
+
+          <div className="Sugar">
+            <p className="Title">{t("recipeUi.sugar")}</p>
+
+            {Number(recipe.totalSugar) === 0 ? (
+              <p className="StatLine">0</p>
+            ) : isRTL ? (
+              <p className="StatLine">
+                <span className="StatNum BidiIso">{recipe.totalSugar}</span>
+                <span className="StatText"> כפיות ל־</span>
+                <span className="BidiIso">100</span>
+                <span className="StatText"> גרם</span>
+              </p>
+            ) : (
+              <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
+            )}
+          </div>
+
+          <div className="Protein">
+            <p className="Title">{t("recipeUi.protein")}</p>
+
+            {isRTL ? (
+              <p className="StatLine">
+                <span className="StatNum BidiIso">{recipe.totalProtein}</span>
+                <span className="StatText"> גרם חלבון ל־</span>
+                <span className="BidiIso">100</span>
+                <span className="StatText"> גרם</span>
+              </p>
+            ) : (
+              <p className="StatLine">
+                {recipe.totalProtein} grams <br />
+                in 100 grams
+              </p>
+            )}
+          </div>
+
+          <div className="Quantity">
+            <p className="Title">{t("recipeUi.time")}</p>
+            <p className="StatLine">
+              <span className="StatNum BidiIso">{recipe.prepTime}</span>{" "}
+              <span className="StatText">{t("units.minuteShort")}</span>
+            </p>
+          </div>
+        </div>
+
+        {user && (
+          <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
+            <img className="ChefImage" src={chef} />
+            <h4>{t("recipeUi.ask")}</h4>
+          </div>
+        )}
+
+        <AskChefDialog open={open} onClose={handleClose} recipe={recipe} isRTL={isRTL} />
+
+        {localImgSrc ? (
+          <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
+        ) : (
+          loadImage &&
+          (isImageLoading ? (
+            <>
+              <h2 className="ImageLoadingMessageAfterRecipeGenerated">
+                {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+              </h2>
+              <IconButton className="ProgressBar" edge="end" disabled>
+                <Box>
+                  <CircularProgress />
+                </Box>
+              </IconButton>
+            </>
+          ) : (
+            !shareMode && (
+              <Button className="LoadImageBtn" variant="contained" onClick={handleLoadImage}>
+                <ImageSearchIcon />
+                {t("recipeUi.loadImage")}
+              </Button>
+            )
+          ))
+        )}
+      </div>
 
       <div className="RecipePreparationWideView">
         <div className={`RecipeStepsGrid ${isRTL ? "rtl" : "ltr"}`}>
