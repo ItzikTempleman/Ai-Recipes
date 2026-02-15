@@ -1,23 +1,39 @@
 import cron from "node-cron";
 import { suggestionsService } from "../services/suggestions-service";
 
-export function startDailySuggestionsCron() {
-  cron.schedule( "0 0 * * *", async () => {
+const ISRAEL_TZ = "Asia/Jerusalem";
+
+export function startSuggestionsSchedulers(): void {
+
+  void (async () => {
+    try {
+      await suggestionsService.generateToday();
+    } catch (err) {
+      console.error("[boot] failed generating daily suggestions:", err);
+    }
+  })();
+
+  cron.schedule(
+    "0 0 * * *",
+    async () => {
       try {
         await suggestionsService.generateToday();
       } catch (err) {
         console.error("[cron] failed generating daily suggestions:", err);
       }
-    }, { timezone: "Asia/Jerusalem" }
+    },
+    { timezone: ISRAEL_TZ }
+  );
+
+  cron.schedule(
+    "*/10 * * * *",
+    async () => {
+      try {
+        await suggestionsService.generateToday();
+      } catch (err) {
+        console.error("[cron] retry/self-heal failed:", err);
+      }
+    },
+    { timezone: ISRAEL_TZ }
   );
 }
-
-void(
-  async () => {
-      try {
-        await suggestionsService.generateToday();
-      } catch (err) {
-        console.error("[cron] failed generating daily suggestions:", err);
-      }
-    }
-  )();

@@ -1,10 +1,10 @@
 .RecipeTopSection {
   position: relative;
-  border: 2px solid rgba(128, 128, 127, 0.55);
-  border-radius: 0;
+  border: 1px solid rgba(177, 177, 176, 0.508);
+  border-radius: 4px;
   padding: 22px 22px 18px;
   background: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 24px rgba(90, 90, 90, 0.62);
 }
 
 .ClearFormDiv {
@@ -134,11 +134,13 @@
   background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   color: #ffffff !important;
   border-radius: 18px !important;
-  margin-top: 20px !important;
+  margin: 20px auto 0 !important;
   width: 30%;
   gap: 10px;
   height: 50px;
-  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .RecipeStepsGrid {
@@ -368,7 +370,10 @@
     padding: 16px 14px 14px;
   }
 
-
+  .LoadImageBtn {
+    width: 90% !important;
+  }
+  
   .RecipeImage {
     width: 100%;
     margin: 0;
