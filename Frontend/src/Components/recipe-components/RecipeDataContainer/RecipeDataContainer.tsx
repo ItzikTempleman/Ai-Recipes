@@ -4,14 +4,12 @@ import { useDispatch } from "react-redux";
 import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { DataScreen } from "../DataScreen/DataScreen";
 import "./RecipeDataContainer.css";
-import { useTranslation } from "react-i18next";
 
 export type Filters = {
   sugarLevel: SugarRestriction;
   hasLactose: LactoseRestrictions;
   hasGluten: GlutenRestrictions;
   dietType: DietaryRestrictions;
-  
 }
 
 type RecipeProps = {
@@ -20,20 +18,7 @@ type RecipeProps = {
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
 };
 
-export function RecipeDataContainer({ recipe, filters ,loadImage}: RecipeProps) {
-const {i18n } = useTranslation();
- const isHebrew = (lng?: string) => (lng ?? "").startsWith("he");
- const [isRTL, setIsRTL] = useState(() => isHebrew(i18n.language));
-
-  useEffect(() => {
-   const onLangChange = (lng: string) => setIsRTL(isHebrew(lng));
-    i18n.on("languageChanged", onLangChange);
-    return () => {
-      i18n.off("languageChanged", onLangChange);
-    };
-  }, [i18n]);
-
-
+export function RecipeDataContainer({ recipe, filters, loadImage }: RecipeProps) {
   const [imgSrc, setImgSrc] = useState<string>("");
   const dispatch = useDispatch();
   useEffect(() => {
