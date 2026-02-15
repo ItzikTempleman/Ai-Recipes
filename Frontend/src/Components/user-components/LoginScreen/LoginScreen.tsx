@@ -60,7 +60,7 @@ export function LoginScreen() {
 
         <TextField className="InputTextField"
           size="small"
-          autoComplete="email" label={t("auth.login.emailLabel")} placeholder={t("auth.login.emailPlaceholder")} fullWidth
+          autoComplete="email" placeholder={t("auth.login.emailPlaceholder")} fullWidth
           InputProps={{
             ...(isRTL
               ? {
@@ -93,7 +93,7 @@ export function LoginScreen() {
 
         <TextField className="InputTextField"
           autoComplete="password"
-          label={t("auth.login.passwordLabel")}
+        
           placeholder={t("auth.login.passwordPlaceholder")}
           fullWidth
           size="small"

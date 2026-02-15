@@ -89,27 +89,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 18px !important;
   padding: 8px 20px !important;
   height: 50px !important;
-
-  text-transform: none !important;
   gap: 12px !important;
-
   background: white;
-  box-shadow:
-    0 18px 34px rgba(243, 164, 0, 0.3),
-    0 10px 18px rgba(243, 164, 0, 0.22),
-    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-
   font-size: 18px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.3px;
+  font-weight: 900 !important;
   color: #ffc54a !important;
-border: 2px solid #ffc54a;
+  border: 2px solid #ffc54a;
   margin-top: 10px !important;
-  margin-bottom: 0 !important;
 }
 
 

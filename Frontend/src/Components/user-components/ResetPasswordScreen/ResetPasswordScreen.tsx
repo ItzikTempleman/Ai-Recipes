@@ -234,7 +234,7 @@ export function ResetPasswordScreen() {
                     <>
                         <TextField className="InputTextField"
                             size="small"
-                            autoComplete="email" label={t("auth.login.emailLabelToSendCode")} placeholder={t("auth.login.emailLabelToSendCode")} fullWidth
+                            autoComplete="email"  placeholder={t("auth.login.emailLabelToSendCode")} fullWidth
                             InputProps={{
                                 ...(isRTL
                                     ? {
@@ -313,7 +313,7 @@ export function ResetPasswordScreen() {
                         <div className="PasswordRow">
                             <TextField className="NewPasswordTextField"
                                 autoComplete="password"
-                                label={t("auth.login.passwordLabel")}
+                            
                                 placeholder={t("auth.login.newPassword")}
                                 fullWidth
                                 type={showPassword ? "text" : "password"}

@@ -1,8 +1,6 @@
 import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./RecipeInputScreen.css";
-import "./FilterSection.css";
-import "./ExcludeSection.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
@@ -170,13 +168,13 @@ export function RecipeInputScreen() {
             <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
           </div>
 
-          <form onSubmit={handleSubmit(send)}>
+          <form onSubmit={handleSubmit(send)} autoComplete="off">
             <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
               <TextField
                 dir={isRTL ? "rtl" : "ltr"}
                 className="RecipeTextField"
                 size="small"
-                label={t("generate.labelGenerate")}
+                placeholder={t("generate.labelGenerate")}
                 {...register("query", { required: `${t("generate.requiredTitle")}` })}
                 disabled={loading}
                 InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
@@ -264,7 +262,7 @@ export function RecipeInputScreen() {
                   <div>
                     <TextField
                       className="ExcludeTextField"
-                      label={t("generate.excludeIngredient")}
+                      placeholder={t("generate.excludeIngredient")}
                       size="small"
                       {...register("excludedIngredients.0")}
                     />

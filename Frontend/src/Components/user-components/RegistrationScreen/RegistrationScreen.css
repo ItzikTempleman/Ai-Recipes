@@ -1,28 +1,27 @@
 .RegistrationScreen {
   display: flex;
-  justify-content: center;   
-  align-items: start;   
+  justify-content: center;
+  align-items: start;
   height: 100vh;
   width: 100%;
   margin: 0;
-  padding-top: 30px; 
-  
+  padding-top: 30px;
 }
 
 .RegistrationForm {
-   background-color: white;
-  border-radius: 18px;
+  background-color: white;
+  border-radius: 0;
   padding: 30px;
   width: 310px;
   margin: 20px;
   height: auto;
-  box-shadow: 1px 2px black, 0 6px 18px black;
+  box-shadow: 1px 2px rgba(89, 89, 89, 0.602), 0 6px 18px rgba(89, 89, 89, 0.602);
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.RegistrationScreenTitle{
+.RegistrationScreenTitle {
   align-items: center;
   justify-content: center;
   color: #323232;
@@ -30,73 +29,45 @@
   font-size: 20px;
 }
 
-.NameRow{
+/* --- Name row flip only (as requested) --- */
+.NameRow {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 4px;               
-}
-html[dir="rtl"] .NameRow {
-  flex-direction: row-reverse;
+  gap: 4px;
 }
 
 
-html[dir="rtl"] .InputTextField .MuiInputBase-input {
-  text-align: right;
+
+.NameTF {
+  flex: 1;
+  min-width: 0;
 }
 
-.NameRow--he {
-  flex-direction: row-reverse;
-}
-
+/* Keep font inheritance on inputs */
 .NameRow .MuiInputBase-input {
   font-family: inherit !important;
   font-weight: 400 !important;
   font-size: inherit !important;
 }
 
-
-html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
-  margin-left: 0 !important;
-  margin-right: 8px !important;
-}
-.NameTF{
-  flex: 1;             
-  min-width: 0;          
+.InputTextField .MuiOutlinedInput-root {
+  border-radius: 18px !important;
+  min-height: 50px !important;
 }
 
-
-
-html[dir="rtl"] .InputTextField .MuiInputBase-input {
-  text-align: right;
+.InputTextField .MuiOutlinedInput-root fieldset {
+  border-radius: 18px !important;
 }
 
-html[dir="rtl"] .InputTextField .MuiInputAdornment-root {
-  margin-left: 0 !important;
-  margin-right: 8px !important;
+/* Make the input area match the 50px height */
+.InputTextField .MuiOutlinedInput-input {
+  padding: 0 14px !important;
+  height: 50px !important;
+  box-sizing: border-box;
 }
-
-
-.NameRow .MuiInputBase-input {
-  font-family: inherit !important;
-  font-weight: 400 !important;
-  font-size: inherit !important;
-}
-
-.NameRow--he {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input {
-  padding-inline-start: 0 !important;
-}
-
-html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input::placeholder {
-  color: rgba(0, 0, 0, 0.38) !important;
-  opacity: 1 !important;
-}
-
+/* --- Radio group --- */
 .FormController {
   display: flex;
   justify-content: center;
@@ -114,32 +85,38 @@ html[dir="rtl"] .NameRow--he > :first-child .MuiOutlinedInput-input::placeholder
   color: #1e80b1;
 }
 
+/* --- Submit button --- */
 .RegistrationScreenBtn.MuiButton-root {
   width: 100% !important;
-  border-radius: 8px !important;
+
   padding: 0 50px !important;
-  height: 40px !important;
+  height: 50px !important;
   font-weight: 800 !important;
   margin-top: 0;
-}
-
-.RegistrationScreenBtn.MuiButton-root {
-  background: #1e80b1;
-  color: #ffffff !important;
-  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+  background: white;
+  border: 2px solid #239dda;
+  border-radius: 18px;
+font-size: 18px;
+  color: #239dda !important;
+  box-shadow: 0 10px 18px rgba(59, 111, 255, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .RegistrationScreenBtn.MuiButton-root:hover {
-background: #1e80b1;
+  color: #ffffff !important;
+ background: #239dda;
   transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(59, 193, 255, 0.325), 0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+  box-shadow: 0 14px 24px rgba(59, 193, 255, 0.325),
+    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
 }
 
 .RegistrationScreenBtn.MuiButton-root:active {
   transform: translateY(0px);
-  box-shadow: 0 8px 14px rgba(59, 193, 255, 0.325), 0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
+  box-shadow: 0 8px 14px rgba(59, 193, 255, 0.325),
+    0 2px 0 rgba(255, 255, 255, 0.18) inset !important;
 }
 
+/* --- Optional fields divider --- */
 .Divider--clickable {
   cursor: pointer;
   user-select: none;
@@ -161,16 +138,15 @@ background: #1e80b1;
   flex-direction: column;
   gap: 16px;
 }
-@media (max-width: 600px) {
 
+/* --- Responsive --- */
+@media (max-width: 600px) {
   .RegistrationForm {
-    padding: 30px; 
+    padding: 30px;
   }
 
   .InputTextField {
-
-    margin: 4px 0;  
-    padding: 0;     
+    margin: 4px 0;
+    padding: 0;
   }
-
-  }
+}

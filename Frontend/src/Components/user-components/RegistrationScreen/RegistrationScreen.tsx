@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import { ArrowBackIosNew, Visibility, VisibilityOff } from "@mui/icons-material";
+import { ArrowBackIosNew, Visibility, VisibilityOff,ArrowForwardIos } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import Radio from '@mui/material/Radio';
@@ -35,7 +35,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
       i18n.off("languageChanged", onLangChange);
     };
   }, [i18n]);
-
+const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
   useTitle("Registration");
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<User>({
@@ -56,15 +56,15 @@ const toggleOptional = () => setShowOptional((s) => !s);
     navigate("/login");
   }
   return (
-    <div className="RegistrationScreen">
-      <form className="RegistrationForm" onSubmit={handleSubmit(send)}>
-         <ArrowBackIosNew className="BackIcon" onClick={returnToLogin}/>
+    <div className="RegistrationScreen" dir={isRTL ? "rtl" : "ltr"}>
+      <form className="RegistrationForm" onSubmit={handleSubmit(send)} autoComplete="off">
+        <BackArrowIcon onClick={returnToLogin}/>
         <h2 className="RegistrationScreenTitle">  {t("auth.registration.title")}</h2>
-        <div className={`NameRow ${isRTL ? "NameRow--he" : ""}`}>
+        <div className={`NameRow ${isRTL ? "rtl" : "ltr"}`}>
           <TextField
             size="small"
             className="InputTextField NameTF"
-            label={t("auth.registration.firstNameLabel")}
+           
             placeholder={t("auth.registration.firstNamePlaceholder")}
             {...register("firstName", {
               required: "First name is required",
@@ -93,7 +93,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
           <TextField
             size="small"
             className="InputTextField NameTF"
-            label={t("auth.registration.lastNameLabel")}
+            
             placeholder={t("auth.registration.lastNamePlaceholder")}
             {...register("familyName", {
               required: "Last name is required",
@@ -120,8 +120,8 @@ const toggleOptional = () => setShowOptional((s) => !s);
           />
         </div>
         <TextField className="InputTextField"
-          autoComplete="email"
-          label={t("auth.registration.emailLabel")}
+        
+          
           placeholder={t("auth.registration.emailPlaceholder")}
           fullWidth
             size="small"
@@ -153,8 +153,6 @@ const toggleOptional = () => setShowOptional((s) => !s);
         />
         <TextField className="InputTextField"
           size="small"
-          autoComplete="current-password"
-          label={t("auth.registration.passwordLabel")}
           placeholder={t("auth.registration.passwordPlaceholder")}
           fullWidth
           type={showPassword ? "text" : "password"}
@@ -218,7 +216,6 @@ const toggleOptional = () => setShowOptional((s) => !s);
 <Collapse in={showOptional} timeout={250} unmountOnExit>
   <div className="OptionalFields">
     <TextField className="InputTextField"
-      label={t("auth.registration.phoneLabel")}
       placeholder={t("auth.registration.phonePlaceholder")}
       fullWidth
         size="small"
@@ -265,7 +262,7 @@ const toggleOptional = () => setShowOptional((s) => !s);
           return true;
         }
       })}
-      label={t("auth.registration.birthDateLabel")}
+      placeholder={t("auth.registration.birthDateLabel")}
       InputLabelProps={{ shrink: true }}
       error={!!errors.birthDate}
       helperText={errors.birthDate?.message}
