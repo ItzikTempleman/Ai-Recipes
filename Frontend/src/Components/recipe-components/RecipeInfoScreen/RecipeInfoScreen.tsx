@@ -36,9 +36,7 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
       .catch((err) => notify.error(err));
   }, [recipeId, navigate]);
 
-  function returnToList() {
-    navigate("/home");
-  }
+
 
   if (!recipe) return null;
 
@@ -70,7 +68,6 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
             recipe={recipe}
             imageSrc={imgSrc}
             filters={filters ?? filtersFromRecipe}
-            onBack={returnToList}
           />
       </div>
  </div>
