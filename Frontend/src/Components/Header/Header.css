@@ -5,6 +5,9 @@
   padding: 0 20px;
   position: relative;
   padding-right: 64px;
+  background-color: #fff;
+  margin: 4px;
+  border-radius: 8px;
 }
 
 .Header p {
@@ -34,20 +37,18 @@
 .NewScreenBtn,
 .LikesScreenBtn,
 .HomeScreenBtn {
-  padding: 6px ;
-  border-radius: 18px ;
-
+  padding: 6px;
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-decoration: none;
   margin: 0;
   width: 40px;
-  height: 40px ;
+  height: 40px;
   justify-content: center;
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
-
 
 .ReturnToRecipeSvg,
 .ReturnToRecipeSection svg,
@@ -71,49 +72,18 @@
 }
 
 
-.LikesScreenBtn.active,
-.LikesScreenBtn:hover,
-.HomeScreenBtn.active,
-.HomeScreenBtn:hover {
-  background: #1e80b1;
-  color: white !important;
-}
-
-
-
-.LikesScreenBtn:hover p,
-.LikesScreenBtn.active p,
-.LikesScreenBtn:hover svg,
-.LikesScreenBtn.active svg,
-.HomeScreenBtn:hover p,
-.HomeScreenBtn.active p,
-.HomeScreenBtn:hover svg,
-.HomeScreenBtn.active svg {
-  color: #fff !important;
-}
-
-
+.LikesScreenBtn p,
 .LikesScreenBtn svg {
   color: #da2775;
 }
 
-.LikesScreenBtn p {
-  color: #da2775;
-}
-
-.LikesScreenBtn.active,
-.LikesScreenBtn:hover {
-  background: #da2775;
-  transform: translateY(-1px);
-
-}
 
 .ReturnToRecipeSection.active,
 .ReturnToRecipeSection:hover {
   background: rgba(223, 223, 223, 0.51);
-  border-color: rgba(46, 46, 46, 0.45) ;
+  border-color: rgba(46, 46, 46, 0.45);
   transform: translateY(-1px);
-  
+
 }
 
 .ReturnToRecipeSection svg {
@@ -123,7 +93,7 @@
 .ReturnToRecipeSection p {
   color: #575656;
   font-size: 8px;
-  font: weight 800px;
+  font: weight 900px;
 }
 
 .HeaderRight {
@@ -132,38 +102,28 @@
   gap: 10px;
 }
 
-.IdentityBadge {
-  display: flex;
-  width: fit-content;
-  align-items: center;
-   margin: 0;
-   
-}
+
 
 .ReturnToRecipeSection.hasImage {
-  width: 65px ;
-  height: 65px ;
-  padding: 0 ;
+  width: 65px;
+  height: 65px;
+  padding: 0;
 }
 
 .ReturnToRecipeSection.hasImage .ReturnToRecipeImage {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
   border-radius: 18px;
   display: block;
-  
-}
-.IdentityBadge.user:hover {
-  transform: translateY(-1px);
+
 }
 
 .Header.rtl .HeaderRight {
   flex-direction: row-reverse;
 }
 
-.LoginBtn,
-.LogoutBtn {
+.LoginBtn {
   cursor: pointer;
   font-size: 16px;
   margin-left: 6px;
@@ -171,41 +131,25 @@
 }
 
 
-.GuestBadgeRow{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;         
-}
-
-.Header.rtl .GuestBadgeRow{
-  flex-direction: row-reverse; 
-}
-
-.HeaderDiv{
+.HeaderDiv {
   width: 2px;
   height: 24px;
-  background: rgba(0, 0, 0, 0.736);
-
   padding: 0;
 }
 
 .LoginBtn {
- color: #1e80b1;
- font-weight: 900;
- font-size: 16px;
+  color: #393939;
+  font-weight: 900;
+  font-size: 14px;
 }
 
-.LoginBtn:hover {
-  transform: translateY(-1px);
+.LoginDivider {
+  display: inline-block;
+  margin: 0 14px; /* ✅ controls spacing around | */
 }
 
-.LogoutBtn {
-  color: rgba(203, 14, 14, 0.95) ;
-}
 
-.LogoutBtn:hover {
-  transform: translateY(-1px);
-}
+
 
 .LanguageLink {
   display: flex;
@@ -260,27 +204,19 @@
   cursor: pointer;
 }
 
+  .IdentityBadge{
+   text-decoration: none;
+     cursor: pointer;
+     color: #393939;
+     font-weight: 900;
+  }
 
-.User {
-  font-size: 18px;
-  font-weight: 800;
 
-  color: #0f3b52;              /* dark text */
-  background: #cfefff;         /* light blue badge */
-  border: 1px solid rgba(30, 128, 177, 0.35);
 
-  border-radius: 8px;
-  padding: 6px 14px;
-  margin: 4px;
-  cursor: pointer;
-}
 
-.Guest {
 
-  font-size: 18px;
-  color: #2d2d2d ;
-  cursor: default ;
-}
+
+
 
 @media (max-width: 670px) {
 
@@ -289,31 +225,13 @@
     grid-template-columns: 1fr auto auto auto;
     grid-template-rows: auto auto;
     align-items: center;
-    column-gap: 10px;
-    row-gap: 10px;
-    padding: 0 10px;
-    padding-right: 56px;
-    justify-content: unset;
-    position: relative;
-    overflow: visible;
   }
 
   .FamilyName {
     display: none;
   }
 
-  .Guest {
-cursor: none ;
-  font-size: 22px;
-
-}
-
-
-  .HeaderDiv{
-  background: rgba(0, 0, 0, 0);
-}
-
-    .ReturnToRecipeSection.hasImage {
+  .ReturnToRecipeSection.hasImage {
     width: 56px !important;
     height: 56px !important;
   }
@@ -353,8 +271,7 @@ cursor: none ;
     padding: 0 2px !important;
   }
 
-  .LoginBtn,
-  .LogoutBtn {
+  .LoginBtn {
     grid-column: 3;
     grid-row: 1;
     justify-self: end;
@@ -368,22 +285,12 @@ cursor: none ;
     justify-content: center;
   }
 
-  .LoginBtn h3,
-  .LogoutBtn h3 {
+  .LoginBtn h3{
     font-size: 15px;
     font-weight: bold !important;
   }
 
-  .MenuBtn {
-    position: absolute;
-    right: 10px;
-    top: 14px;
-    transform: none;
-    z-index: 4;
-  }
-
   .ReturnToRecipeSection,
-  .NewScreenBtn,
   .LikesScreenBtn,
   .HomeScreenBtn {
     width: 36px !important;
@@ -391,20 +298,17 @@ cursor: none ;
   }
 
   .ReturnToRecipeSection svg,
-  .NewScreenBtn svg,
   .LikesScreenBtn svg,
   .HomeScreenBtn svg {
     width: 26px !important;
     height: 26px !important;
   }
 
-  .NewScreenBtn p,
   .HomeScreenBtn p,
   .LikesScreenBtn p {
     font-size: 10px;
   }
 
-  .LogoutBtn.MuiButton-root,
   .LoginBtn.MuiButton-root {
     width: 90px !important;
     padding: 0 10px !important;
@@ -414,23 +318,9 @@ cursor: none ;
     margin: 0 !important;
   }
 
-  .IdentityBadge {
-    grid-row: 2;
-    grid-column: 1 / -1;
-    justify-self: start;
-    align-self: start;
-    margin-top: 2px;
-  }
-
-  .IdentityBadge .Guest,
-  .IdentityBadge .User {
-    margin: 0;
-    cursor: pointer;
-  }
-
   .Header.rtl {
     grid-template-columns: auto auto auto 1fr;
-    padding-bottom: 58px;
+ 
   }
 
   .Header.rtl .LogoutBtn,
@@ -452,19 +342,8 @@ cursor: none ;
     justify-self: end;
   }
 
-  .Header.rtl .IdentityBadge {
-    position: absolute;
-    right: 10px;                    
-    top: calc(14px + 40px + 10px);  
-    z-index: 3;
-    grid-column: auto !important;
-    grid-row: auto !important;
-    justify-self: auto !important;
-    margin: 0 !important;
-  }
 
-  .Header.rtl .IdentityBadge .Guest,
-  .Header.rtl .IdentityBadge .User {
-    margin: 0;
-  }
+
+
+
 }

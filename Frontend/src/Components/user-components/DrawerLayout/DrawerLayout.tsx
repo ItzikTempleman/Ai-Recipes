@@ -65,53 +65,73 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
       <IconButton onClick={() => setOpen(true)}>
         <MenuIcon fontSize="large" />
       </IconButton>
+
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
         anchor="right"
-        ModalProps={{ keepMounted: true }}>
+        ModalProps={{ keepMounted: true }}
+      >
         <aside className="DrawerMainContainer">
           <div className="CloseButton" onClick={() => setOpen(false)}>
             ❌
           </div>
-          <div className={`DrawerContent ${isLoggedIn ? "LoggedIn" : "LoggedOut"}`}>
 
+          <div className={`DrawerContent ${isLoggedIn ? "LoggedIn" : "LoggedOut"}`}>
             {isLoggedIn ? (
               <div>
                 <img className="ProfileImage" src={user?.imageUrl || "/person-21.png"} />
-                <h2 className="UserName">{user.firstName} {user.familyName}</h2>
+                <h2 className="UserName">
+                  {user.firstName} {user.familyName}
+                </h2>
 
-                <NavLink onClickCapture={() => setOpen(false)}
-                  to="/profile" className="ProfileBtn"
+                <NavLink
+                  onClickCapture={() => setOpen(false)}
+                  to="/profile"
+                  className="ProfileBtn"
                 >
                   <Person />
                   <p>{t("drawer.profile")}</p>
-
                 </NavLink>
+
+                <Button
+                  className="LogoutFromDrawerBtn"
+                  onClick={() => {
+          setIsOpen(false);
+                    setOpen(false);          
+                    userService.logout();
+                    navigate("/home");
+                  }}
+                >
+                  {t("drawer.logout")}
+                </Button>
               </div>
             ) : (
               <div>
-
                 <img className="NoProfileImage" src={"/person-21.png"} />
 
-                <Button className="LoginFromDrawerBtn"
-      
+                <Button
+                  className="LoginFromDrawerBtn"
                   onClick={() => {
-                    navigate("/login")
-                    setOpen(false)
-                  }}>
+                    navigate("/login");
+                    setOpen(false);
+                  }}
+                >
                   <p>{t("auth.login.title")}</p>
                 </Button>
               </div>
-            )
-            }
-            <NavLink onClickCapture={() => setOpen(false)} to="/about" className="AboutScreenBtn" >
+            )}
 
+            <NavLink
+              onClickCapture={() => setOpen(false)}
+              to="/about"
+              className="AboutScreenBtn"
+            >
               <InfoOutlinedIcon />
               <p>{t("nav.about")}</p>
             </NavLink>
 
-            {isLoggedIn ? (
+            {isLoggedIn && (
               <div className="MoreOptionsDropdown" ref={moreActionsRef}>
                 <Button
                   className="MoreBtn"
@@ -119,22 +139,22 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                     e.stopPropagation();
                     setIsOpen((v) => !v);
                   }}
-
                   startIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 >
                   {isOpen ? t("drawer.less") : t("drawer.more")}
-                
-      
                 </Button>
-                <div className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`} onClick={() => {
-                  askDeleteAccount(user.id)
-                }}>
-                  <PersonOffIcon />
-                  <h5> {t("drawer.deleteAccount")}</h5>
 
+                <div
+                  className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`}
+                  onClick={() => {
+                    askDeleteAccount(user.id);
+                  }}
+                >
+                  <PersonOffIcon />
+                  <h5>{t("drawer.deleteAccount")}</h5>
                 </div>
               </div>
-            ) : null}
+            )}
           </div>
         </aside>
       </Drawer>

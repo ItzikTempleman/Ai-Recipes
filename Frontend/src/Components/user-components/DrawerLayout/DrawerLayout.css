@@ -1,23 +1,15 @@
 .MuiDrawer-paper {
   width: 240px;
-  height: 460px !important;
+  height: 520px !important;
   margin: 8px;
   border-radius: 8px !important;
-  overflow: hidden;
-  background: rgb(255, 255, 255) !important;
-  
-  box-shadow: 0 18px 34px rgba(245, 194, 92, 0.248), 0 10px 18px rgba(243, 164, 0, 0.22),
-    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-}
-
-.MuiDrawer-paper:has(.DrawerContent.LoggedOut) {
-
-  height: 370px !important;
 
 }
+
 
 .MuiDrawer-paper:has(.MoreOptionsSection.open) {
-  height: 520px !important;
+  height: 560px !important;
+    overflow: hidden;
 }
 
 .DrawerMainContainer {
@@ -40,6 +32,7 @@
   box-sizing: border-box;
 }
 
+.LogoutFromDrawerBtn.MuiButton-root,
 .LoginFromDrawerBtn.MuiButton-root {
   font-size: 18px;
   display: flex;
@@ -48,7 +41,13 @@
   height: 36px !important;
   font-weight: 900;
   background: transparent;
-  color: #1e80b1;
+}
+
+.LoginFromDrawerBtn.MuiButton-root{
+ color: #1e80b1;
+}
+.LogoutFromDrawerBtn.MuiButton-root{
+color: #ff0000;
 }
 
 .LoginFromDrawerBtn.MuiButton-root:active,
@@ -57,6 +56,13 @@
   width: 90%;
   color: white;
 }
+.LogoutFromDrawerBtn.MuiButton-root:active,
+.LogoutFromDrawerBtn.MuiButton-root:hover {
+  background: #ff0000;    
+  width: 90%;
+  color: white;
+}
+
 
 .DrawerContent>div {
   width: 100%;
@@ -122,12 +128,24 @@
   transform: translateY(-1px);
 }
 
+
 .ProfileBtn {
   background: #1e80b1;
   color: #ffffff;
   font-weight: 700;
+
 }
 
+.AboutScreenBtn>p,
+.ProfileBtn >p{
+  flex: 1;           
+  text-align: center; 
+  margin: 0 36px 0 0;  
+}
+
+.AboutScreenBtn>p{
+   margin: 0 12px 0 0 !important; 
+}
 .ProfileBtn svg {
   color: #fff;
 }

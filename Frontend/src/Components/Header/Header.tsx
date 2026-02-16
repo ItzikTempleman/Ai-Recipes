@@ -13,7 +13,6 @@ import { useDispatch } from "react-redux";
 import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
 import { restoreGuestRecipe } from "../../Redux/RecipeSlice";
-import { userService } from "../../Services/UserService";
 import { DrawerLayout } from "../user-components/DrawerLayout/DrawerLayout";
 
 export function Header() {
@@ -27,127 +26,79 @@ export function Header() {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isOnRecipeInputScreen =location.pathname === "/generate" || location.pathname.startsWith("/generate/");
+  const isOnRecipeInputScreen = location.pathname === "/generate" || location.pathname.startsWith("/generate/");
   const hasCurrentRecipe = Boolean(currentRecipe?.title);
   const hasStashRecipe = Boolean(guestStash?.title);
   const showUndo = isGuest && (hasCurrentRecipe || hasStashRecipe) && !isOnRecipeInputScreen;
-  const returnImage = hasCurrentRecipe ? (currentRecipe?.imageUrl ?? ""): (guestStash?.imageUrl ?? "");
-
-  // const handleGenerateClick = () => {
-  //   if (isGuest && hasCurrentRecipe) {
-  //     dispatch(stashGuestRecipe(currentRecipe!));
-  //   }
-  //   dispatch(resetGenerated()); 
-  // };
+  const returnImage = hasCurrentRecipe ? (currentRecipe?.imageUrl ?? "") : (guestStash?.imageUrl ?? "");
 
   const handleReturnClick = () => {
     if (isGuest && !hasCurrentRecipe) {
       dispatch(restoreGuestRecipe());
     }
   };
-
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
       <div className="GeneralNavigation">
         <NavLink
           to="/home"
-          className={({ isActive }) => `HomeScreenBtn ${isActive ? "active" : ""}`}
-        >
+          className={({ isActive }) => `HomeScreenBtn ${isActive ? "active" : ""}`}>
           {({ isActive }) => (
-            <>
+            <div>
               {isActive ? <HomeIcon /> : <HomeOutlinedIcon />}
               <p>{t("nav.home")}</p>
-            </>
+            </div>
           )}
         </NavLink>
-
         {user && (
           <NavLink
             to="/likes"
-            className={({ isActive }) => `LikesScreenBtn ${isActive ? "active" : ""}`}
-          >
+            className={({ isActive }) => `LikesScreenBtn ${isActive ? "active" : ""}`}>
             {({ isActive }) => (
-              <>
+              <div>
                 {isActive ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 <p>{t("nav.likes")}</p>
-              </>
+              </div>
             )}
           </NavLink>
         )}
-{/* 
-        <NavLink
-          to="/generate"
-          onClick={handleGenerateClick}
-          className={({ isActive }) => `NewScreenBtn ${isActive ? "active" : ""}`}
-        >
-          <AutoAwesome />
-          <p>{t("homeScreen.generate")}</p>
-        </NavLink> */}
-
         {showUndo && (
-<div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
-  <NavLink to="/generate" onClick={handleReturnClick}>
-    {returnImage ? (
-      <img className="ReturnToRecipeImage" src={returnImage} />
-    ) : (
-      <UndoIcon className={`ReturnToRecipeSvg ${isRtl ? "rtl" : "ltr"}`} />
-    )}
-  </NavLink>
-</div>
+          <div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
+            <NavLink to="/generate" onClick={handleReturnClick}>
+              {returnImage ? (
+                <img className="ReturnToRecipeImage" src={returnImage} />
+              ) : (
+                <UndoIcon className={`ReturnToRecipeSvg ${isRtl ? "rtl" : "ltr"}`} />
+              )}
+            </NavLink>
+          </div>
         )}
       </div>
-
       <div className="HeaderRight">
-
-
         <div className="LanguageLink">
           <LanguageIcon />
           <select
             className="LanguageSelector"
             value={initialLanguage}
-            onChange={(e) => setLang(e.target.value as Language)}
-          >
+            onChange={(e) => setLang(e.target.value as Language)}>
             <option value="en">{t("drawer.english")}</option>
             <option value="he">{t("drawer.hebrew")}</option>
           </select>
         </div>
 
-        <div className={`IdentityBadge ${user ? "user" : "guest"}`}>
-          {isGuest ? (
-            <div className="GuestBadgeRow">
-  <div className="Guest">{t("homeScreen.guest")}</div>
-  <div className="HeaderDiv" />
-</div>
-          ) : (
-            <div className="User" onClick={() => {
-              navigate("/profile");
-            }}>
-              {user.firstName} <span className="FamilyName">{user.familyName}</span>
-            </div>
-          )}
-        </div>
-
         {!isGuest ? (
-          <div
-            className="LogoutBtn"
-            onClick={() => {
-              navigate("/home");
-              userService.logout();
-            }}
-          >
-            <h3>{t("drawer.logout")}</h3>
-          </div>
+          <NavLink to="/profile" className= {({ isActive }) => `IdentityBadge ${isActive ? "active" : ""}`}>{user.firstName} {user.familyName} </NavLink>
         ) : (
           <div className="LoginBtn" onClick={() => navigate("/login")}>
-            <h3>{t("drawer.login")}</h3>
+            <h3>{t("homeScreen.guest")} <span className="LoginDivider" aria-hidden="true">|</span> {t("drawer.login")}</h3>
           </div>
-        )}
+        )
+        }
 
         <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
         </div>
       </div>
-
     </div>
   );
 }
