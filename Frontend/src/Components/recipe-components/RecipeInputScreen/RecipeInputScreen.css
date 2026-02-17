@@ -39,11 +39,11 @@
   margin-top: 8px;
 }
 
-.RecipeTextFieldBar.ltr{
+.RecipeTextFieldBar.ltr {
   flex-direction: row;
 }
 
-.RecipeTextFieldBar.rtl{
+.RecipeTextFieldBar.rtl {
   flex-direction: row-reverse;
 }
 
@@ -70,18 +70,19 @@
 }
 
 .LoadingWithoutImage,
-.ImageLoadingMessage{
-      color: #666666 !important;
-font-size: 20px;
+.ImageLoadingMessage {
+  color: #666666 !important;
+  font-size: 20px;
   width: 100%;
   text-align: center;
 }
-.ProgressBar{
-    color: #666666 !important;
+
+.ProgressBar {
+  color: #666666 !important;
 }
 
 .ProgressBar .MuiCircularProgress-root,
-.ImageLoadingMessage{
+.ImageLoadingMessage {
   color: #545454 !important;
 }
 
@@ -106,9 +107,10 @@ font-size: 20px;
 .GenerateImageSelector.off svg {
   color: #1e80b1 !important;
 }
+
 .RecipeTextField .MuiOutlinedInput-root {
   border-radius: 8px;
-height: 50px;
+  height: 50px;
 }
 
 .ErrorText {
@@ -119,16 +121,16 @@ height: 50px;
 
 .Servings {
   width: auto;
-  margin: 4px 0 16px 0 ;
+  margin: 4px 0 16px 0;
   height: 50px;
-  padding: 0 ;
+  padding: 0;
   display: flex;
   align-items: center;
- justify-content: center;
+  justify-content: center;
   gap: 10px;
   border: 1px solid rgba(165, 165, 165, 0.676);
   width: 100%;
-border-radius: 18px;
+  border-radius: 18px;
   flex: 0 0 auto !important;
   white-space: nowrap;
 }
@@ -140,13 +142,13 @@ border-radius: 18px;
   color: #707070;
 }
 
-.Servings.ltr .QuantitySelector{
+.Servings.ltr .QuantitySelector {
   appearance: auto !important;
   -webkit-appearance: menulist !important;
   -moz-appearance: auto !important;
   text-align: center;
   text-align-last: center;
-  padding-right: 28px; 
+  padding-right: 28px;
   padding-left: 10px;
   background-image: none !important;
 }
@@ -182,33 +184,25 @@ border-radius: 18px;
 }
 
 .GenerateRecipeBtn {
-  height: 50px;
+  height: 44px;
   width: 50%;
+  max-width: 280px !important;
   text-transform: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border-radius: 18px !important;
-  background: #1e80b1 !important;
-  
-}
-
-.GenerateRecipeBtn:hover {
-  transform: translateY(-1px);
+  border-radius: 30px !important;
+  background: #125e84 !important;
 }
 
 .GenerateRecipeBtn.MuiButton-root {
-  margin: 0;
   font-size: 18px !important;
-  font-weight: 900;
 }
 
 .GenerateRecipeBtn svg {
-  color: #fbc31d !important;
+  color: #eab928 !important;
 }
-
-
 
 .RecipeCardContainer {
   width: 100%;
@@ -219,8 +213,7 @@ border-radius: 18px;
   padding: 0 12px;
 }
 
-.RecipeInputScreenWithPreviousData 
-.GenerateContainer {
+.RecipeInputScreenWithPreviousData .GenerateContainer {
   display: none;
 }
 
@@ -231,26 +224,25 @@ border-radius: 18px;
   align-items: center;
   gap: 10px;
   width: 100%;
-  
 }
-.ExcludeGroup > div{
+
+.ExcludeGroup>div {
   width: 50%;
 }
 
- .ExcludeTextField{ 
-  width:100%;
- }
-
- .FilterBar{
+.ExcludeTextField {
   width: 100%;
-  display: flex;
-  flex-direction: column;   
-  align-items: center;     
-  gap: 12px;              
 }
 
+.FilterBar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
 
-.FiltersSectionContainer{
+.FiltersSectionContainer {
   position: relative;
   width: 100%;
   overflow: visible;
@@ -260,26 +252,26 @@ border-radius: 18px;
   align-items: center;
 }
 
-.PanelState{
-  position: absolute;              
-  top: calc(100% + 10px);           
+.PanelState {
+  position: absolute;
+  top: calc(100% + 10px);
   left: 0;
   right: 0;
 }
 
-.PanelState.open{
+.PanelState.open {
   opacity: 1;
   pointer-events: auto;
 }
 
-.PanelState.closed{
+.PanelState.closed {
   opacity: 0;
   pointer-events: none;
 }
 
-.FilterPanelInnerSection{
-  margin: 0 auto;                  
-  width:55%;
+.FilterPanelInnerSection {
+  margin: 0 auto;
+  width: 55%;
   display: flex;
   flex-direction: column;
   box-shadow: 0 12px 22px rgba(53, 53, 53, 0.627), 0 2px 0 rgba(187, 187, 187, 0.355) inset;
@@ -291,65 +283,66 @@ border-radius: 18px;
 
 .FilterPanelInnerSection .MuiToggleButtonGroup-grouped:not(:first-of-type) {
   border-left: 2px solid #1e80b162 !important;
-  margin-left: 0 !important; 
+  margin-left: 0 !important;
 }
 
 .FilterBtn.MuiButton-root {
-    margin-top: 20px;
-    width: 50%;
-    border-radius: 18px;
-    background: #ffffff;
-    color: #474747;
-    font-weight: 800;
-    gap:50px;
-    height: 50px;
-    box-shadow: none;
-    border: 1px solid #70707076;;
+  margin-top: 20px;
+  width: 50%;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #474747;
+  font-weight: 800;
+  gap: 50px;
+  height: 50px;
+  box-shadow: none;
+  border: 1px solid #70707076;
+  ;
 }
 
 .FiltersDropdown {
-    position: relative;
-    overflow: visible;
-    flex: 0 0 auto;
-    white-space: nowrap;
-    width: 100%;
-    padding: 0;
-    box-sizing: border-box;
-    z-index: 2;
-    margin: 0;
+  position: relative;
+  overflow: visible;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 2;
+  margin: 0;
 }
 
 .FilterPanelInnerSection .MuiToggleButtonGroup-root {
-  gap: 12px;           
+  gap: 12px;
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root {
   background: #ffffff;
   border-radius: 8px !important;
-  border:2px solid #1e80b162; 
+  border: 2px solid #1e80b162;
 }
 
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected {
-  background:#1e80b1; 
+  background: #1e80b1;
   color: #ffffff;
 }
 
-.FilterPanelInnerSection > div{
+.FilterPanelInnerSection>div {
   position: relative;
   padding-bottom: 12px;
 }
 
-.FilterPanelInnerSection > div:not(:last-child)::after{
+.FilterPanelInnerSection>div:not(:last-child)::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 1px;
-  background: rgba(0,0,0,0.10);
+  background: rgba(0, 0, 0, 0.10);
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root{
+.FilterPanelInnerSection .MuiToggleButton-root {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -358,30 +351,33 @@ border-radius: 18px;
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible{
- background: #1e80b1;;
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible {
+  background: #1e80b1;
+  ;
   color: #ffffff !important;
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root:active{
+.FilterPanelInnerSection .MuiToggleButton-root:active {
   background: #1e80b162;
 }
 
-@media (max-width: 600px){
-  .GenerateRecipeBtn.MuiButton-root, .ExcludeGroup > div:first-child{
+@media (max-width: 600px) {
+
+  .GenerateRecipeBtn.MuiButton-root,
+  .ExcludeGroup>div {
     width: 60%;
   }
 
-    .FilterBtn.MuiButton-root{
+  .FilterBtn.MuiButton-root {
     width: 60%;
   }
 
-  .FilterPanelInnerSection{
+  .FilterPanelInnerSection {
     width: 90%;
     padding: 10px;
   }
 
-  .FilterPanelInnerSection .MuiToggleButtonGroup-root{
+  .FilterPanelInnerSection .MuiToggleButtonGroup-root {
     gap: 8px;
   }
 }

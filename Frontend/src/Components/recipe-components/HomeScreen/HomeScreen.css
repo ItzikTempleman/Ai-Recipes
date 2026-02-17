@@ -1,4 +1,3 @@
-
 .HomeScreen {
   position: relative;
   width: 100%;
@@ -8,10 +7,9 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  
 }
 
-.HomeScreen > * {
+.HomeScreen>* {
   position: relative;
   z-index: 1;
 }
@@ -38,17 +36,10 @@
 
 .GuestTitle {
   width: 100%;
-  text-align: center;
-  margin: 0 0 14px;
-  padding-bottom: 6px;
-  display: block;
-
+  font-weight: 200;
   font-size: 32px;
-  font-weight: 900;
-  line-height: 1.15;
-
-  color: #3f7089;
-  text-shadow: 0 10px 30px rgba(90, 77, 255, 0.16);
+  text-align: center;
+  color: #393939;
 }
 
 .HomeScreenTitle {
@@ -85,52 +76,6 @@
   display: block;
 }
 
-.GenerateBtn.MuiButton-root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 18px !important;
-  padding: 8px 20px !important;
-  height: 50px !important;
-  gap: 12px !important;
-  background: white;
-  font-size: 18px !important;
-  font-weight: 900 !important;
-  color: #ffc54a !important;
-  border: 2px solid #ffc54a;
-  margin-top: 10px !important;
-}
-
-
-.GenerateBtn.MuiButton-root:hover {
-  background: linear-gradient(180deg, #ffc54a 0%, #f6ac00 100%) !important;
-  transform: translateY(-1px);
-  color: white !important;
-  box-shadow:
-    0 24px 44px rgba(243, 164, 0, 0.34),
-    0 12px 22px rgba(243, 164, 0, 0.26),
-    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-}
-
-
-
-.HomeScreenTitleWrapper.ltr .GenerateBtn.MuiButton-root {
-  align-self: flex-start !important;
-  margin-left: 0 !important;
-  margin-right: auto !important;
-  margin-inline-start: 0 !important;
-  margin-inline-end: auto !important;
-}
-
-.HomeScreenTitleWrapper.rtl .GenerateBtn.MuiButton-root {
-  align-self: flex-end !important;
-  margin-left: auto !important;
-  margin-right: 0 !important;
-  margin-inline-start: auto !important;
-  margin-inline-end: 0 !important;
-}
-
-
 .SelectListDiv {
   display: flex;
   flex-direction: row;
@@ -143,13 +88,11 @@
   margin-top: 30px;
 }
 
-
 .SelectListDiv.ltr {
   margin-left: 30px;
   margin-right: auto;
   justify-content: flex-start;
 }
-
 
 .SelectListDiv.rtl {
   margin-right: 30px;
@@ -167,14 +110,14 @@
   margin: 0;
   height: 40px;
   cursor: pointer;
-  color: #0f3b52; 
+  color: #0f3b52;
 }
 
-
- .RecentlyViewedBtn.active, .SuggestionsBtn.active {
-font-size: 20px;
-  color: #0f3b52;  
-    color: #0f3b52;  
+.RecentlyViewedBtn.active,
+.SuggestionsBtn.active {
+  font-size: 20px;
+  color: #0f3b52;
+  color: #0f3b52;
 }
 
 .RecipeGrid {
@@ -190,14 +133,21 @@ font-size: 20px;
   overflow: visible;
 }
 
-.RecipeGrid > * {
+.RecipeGrid>* {
   min-width: 0;
 }
 
-.SelectListDiv.ltr { direction: ltr; }
-.SelectListDiv.rtl { direction: rtl; }
+.SelectListDiv.ltr {
+  direction: ltr;
+}
 
-.SelectListDiv { gap: 0; }
+.SelectListDiv.rtl {
+  direction: rtl;
+}
+
+.SelectListDiv {
+  gap: 0;
+}
 
 .RecentlyViewedBtn,
 .SuggestionsBtn {
@@ -213,13 +163,112 @@ font-size: 20px;
   position: absolute;
   top: 8px;
   bottom: 8px;
-  inset-inline-end: 0;         
+  inset-inline-end: 0;
   width: 1px;
   background: rgba(0, 0, 0, 0.22);
   border-radius: 1px;
 }
 
+
+.FeatureUnlockHint {
+  width: 100%;
+  display: flex;
+  margin: 50px 0 0 0;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.FeatureUnlockHint[dir="rtl"],
+.HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
+  justify-content: flex-end;
+}
+
+.FeatureUnlockHint__bubble {
+  width: fit-content;
+  max-width: min(360px, 100%);
+  padding: 12px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(84, 84, 84, 0.336);
+}
+
+.FeatureUnlockHint__titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FeatureUnlockHint__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.FeatureUnlockHint__line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: #0f3b52;
+  font-weight: 800;
+}
+
+.FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__line,
+.HomeScreenTitleWrapper.rtl .FeatureUnlockHint__line {
+  direction: rtl;
+}
+
+.FeatureUnlockHint__icon {
+  font-size: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FeatureUnlockHint__label {
+  font-size: 18px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.FeatureUnlockHint__ctaPill {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  gap: 8px;
+  color: #0e6290;
+  font-weight: 900;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+@media (min-width: 601px) {
+
+  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
+  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
 @media (max-width: 600px) {
+
+  .FeatureUnlockHint,
+  .FeatureUnlockHint[dir="rtl"],
+  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
+    justify-content: center !important;
+  }
+
+  .FeatureUnlockHint__bubble,
+  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
+  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
   .HomeScreen {
     padding: 18px 14px 44px;
   }
@@ -227,10 +276,6 @@ font-size: 20px;
   .HomeScreenTitleWrapper.ltr,
   .HomeScreenTitleWrapper.rtl {
     margin-top: 10px;
-  }
-
-  .GuestTitle {
-    font-size: 26px;
   }
 
   .HomeScreenTitle {
@@ -250,7 +295,6 @@ font-size: 20px;
     margin-top: 10px !important;
   }
 
-
   .SelectListDiv.ltr,
   .SelectListDiv.rtl {
     margin-left: auto;
@@ -263,104 +307,5 @@ font-size: 20px;
     grid-template-columns: minmax(0, 360px);
     justify-content: center;
     gap: 60px;
-  }
-}
-
-
-.FeatureUnlockHint{
-  width: 100%;
-  display: flex;
-  margin: 50px 0 0 0;
-  justify-content: flex-start;
-  box-sizing: border-box;
-}
-
-.FeatureUnlockHint[dir="rtl"],
-.HomeScreenTitleWrapper.rtl .FeatureUnlockHint{
-  justify-content: flex-end;
-}
-
-.FeatureUnlockHint__bubble{
-  width: fit-content;
-  max-width: min(360px, 100%);
-  padding: 12px 14px;
-  border-radius: 4px;
-  border: 1px solid rgba(84, 84, 84, 0.336);
-}
-
-.FeatureUnlockHint__titleRow{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.FeatureUnlockHint__list{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.FeatureUnlockHint__line{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  color: #0f3b52;
-  font-weight: 800;
-}
-
-.FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__line,
-.HomeScreenTitleWrapper.rtl .FeatureUnlockHint__line{
-  direction: rtl;
-}
-
-.FeatureUnlockHint__icon{
-  font-size: 22px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.FeatureUnlockHint__label{
-  font-size: 18px;
-  line-height: 1.1;
-  font-weight: 800;
-}
-
-.FeatureUnlockHint__ctaPill{
-  margin-top: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4px;
-  gap:8px;
-  color: #0e6290;
-  font-weight: 900;
-  font-size:22px;
-  cursor: pointer;
-}
-
-@media (min-width: 601px){
-  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble{
-    margin-left: auto;
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 600px){
-  .FeatureUnlockHint,
-  .FeatureUnlockHint[dir="rtl"],
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint{
-    justify-content: center !important;
-  }
-
-  .FeatureUnlockHint__bubble,
-  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble{
-    margin-left: auto !important;
-    margin-right: auto !important;
   }
 }

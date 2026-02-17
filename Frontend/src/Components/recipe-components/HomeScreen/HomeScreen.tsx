@@ -62,12 +62,16 @@ export function HomeScreen() {
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
         {
-          !user && (<h3 className="GuestTitle">{t("homeScreen.hello")}</h3>)
+          !user && (<div>
+            <h2 className="GuestTitle">{t("homeScreen.generate")}</h2>
+           <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
+          </div>)
         }
         <div className="SelectionDiv">
-          <Button className="GenerateBtn" onClick={handleGenerateClick} variant="contained">
-            <AutoAwesome />
+          <Button className="GenerateRecipeBtn" onClick={handleGenerateClick} variant="contained">
+          
             {t("homeScreen.generate")}
+              <AutoAwesome />
           </Button>
           {!user && (
             <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
