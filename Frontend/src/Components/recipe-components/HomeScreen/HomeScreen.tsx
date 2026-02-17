@@ -1,31 +1,32 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button } from "@mui/material";
+import { Button, Dialog } from "@mui/material";
 import "./HomeScreen.css";
 import { useTitle } from "../../../Utils/Utils";
 import { AppState } from "../../../Redux/Store";
 import { recipeService } from "../../../Services/RecipeService";
-import { resetGenerated, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { notify } from "../../../Utils/Notify";
 import { suggestionsService } from "../../../Services/SuggestionsService";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
+import { RecipeInputScreen } from "../RecipeInputScreen/RecipeInputScreen";
+import { resetGenerated } from "../../../Redux/RecipeSlice";
+import { useNavigate } from "react-router-dom";
 
 export function HomeScreen() {
   useTitle("Home");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { items, current } = useSelector((state: AppState) => state.recipes);
+
+  const { items } = useSelector((state: AppState) => state.recipes);
   const suggestedRecipeItem = useSelector(
     (state: AppState) => state.recipes.dailyRecipes
   );
+    const [open, setOpen] = useState(false);
   const user = useSelector((state: AppState) => state.user);
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
   const [showSuggestions, setShowSuggestions] = useState(true);
-
+const dispatch = useDispatch();
   useEffect(() => {
     setShowSuggestions(!user);
   }, [user]);
@@ -49,14 +50,6 @@ export function HomeScreen() {
 
   const showingSuggestions = !user || showSuggestions;
   const activeList = showingSuggestions ? suggestionsList : recentlyViewedList;
-  const handleGenerateClick = useCallback(() => {
-    const isGuest = !user;
-    if (isGuest && current?.title) {
-      dispatch(stashGuestRecipe(current));
-    }
-    dispatch(resetGenerated());
-    navigate("/generate");
-  }, [dispatch, navigate, user, current]);
 
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
@@ -68,42 +61,24 @@ export function HomeScreen() {
           </div>)
         }
         <div className="SelectionDiv">
-          <Button className="GenerateRecipeBtn" onClick={handleGenerateClick} variant="contained">
+          <Button className="GenerateRecipeBtnHomeScreen"  onClick={() => {
+    dispatch(resetGenerated());   
+    setOpen(true);
+  }} variant="contained">
           
             {t("homeScreen.generate")}
               <AutoAwesome />
           </Button>
-          {!user && (
-            <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
-              <div className="FeatureUnlockHint__bubble">
 
 
-                <div className="FeatureUnlockHint__list">
-                  <div className="FeatureUnlockHint__line">
-                    <span className="FeatureUnlockHint__icon" aria-hidden>💬</span>
-                    <span className="FeatureUnlockHint__label">{t("homeScreen.ask")}</span>
-                  </div>
-
-                  <div className="FeatureUnlockHint__line">
-                    <span className="FeatureUnlockHint__icon" aria-hidden>❤️</span>
-                    <span className="FeatureUnlockHint__label">{t("homeScreen.save")}</span>
-                  </div>
-
-                  <div className="FeatureUnlockHint__line">
-                    <span className="FeatureUnlockHint__icon" aria-hidden>👀</span>
-                    <span className="FeatureUnlockHint__label">{t("homeScreen.remember")}</span>
-                  </div>
-                </div>
-
-                <div className="FeatureUnlockHint__ctaPill" onClick={() => navigate("/login")}>
-                  <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
-                  {t("homeScreen.freeWithLogin")}
-                  <span className="FeatureUnlockHint__lock" aria-hidden>{isRTL ? "⬅️" : "➡️"}</span>
-                </div>
-              </div>
-            </div>
-          )}
-
+    <Dialog 
+    PaperProps={{ className: "generate_dialog_paper" }}
+        open={open}
+        onClose={() => setOpen(false)} 
+      >
+        <RecipeInputScreen onDone={() => setOpen(false)} />
+      </Dialog>
+      
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
               <div
@@ -148,3 +123,58 @@ export function HomeScreen() {
     </div>
   );
 }
+
+
+export function GenerateRoute() {
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(resetGenerated());
+    }, [dispatch]);
+
+    return (
+<Dialog
+  open
+  onClose={() => navigate("/home")}
+  fullWidth
+  maxWidth="md"
+  PaperProps={{ className: "GenerateDialogPaper" }}
+>
+  <RecipeInputScreen onDone={() => navigate("/home")} />
+</Dialog>
+    );
+}
+
+
+          // {!user && (
+          //   <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
+          //     <div className="FeatureUnlockHint__bubble">
+
+
+          //       <div className="FeatureUnlockHint__list">
+          //         <div className="FeatureUnlockHint__line">
+          //           <span className="FeatureUnlockHint__icon" aria-hidden>💬</span>
+          //           <span className="FeatureUnlockHint__label">{t("homeScreen.ask")}</span>
+          //         </div>
+
+          //         <div className="FeatureUnlockHint__line">
+          //           <span className="FeatureUnlockHint__icon" aria-hidden>❤️</span>
+          //           <span className="FeatureUnlockHint__label">{t("homeScreen.save")}</span>
+          //         </div>
+
+          //         <div className="FeatureUnlockHint__line">
+          //           <span className="FeatureUnlockHint__icon" aria-hidden>👀</span>
+          //           <span className="FeatureUnlockHint__label">{t("homeScreen.remember")}</span>
+          //         </div>
+          //       </div>
+
+          //       <div className="FeatureUnlockHint__ctaPill" onClick={() => navigate("/login")}>
+          //         <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
+          //         {t("homeScreen.freeWithLogin")}
+          //         <span className="FeatureUnlockHint__lock" aria-hidden>{isRTL ? "⬅️" : "➡️"}</span>
+          //       </div>
+          //     </div>
+          //   </div>
+          // )}

@@ -1,4 +1,4 @@
-import { IconButton, TextField, CircularProgress, Box, Button } from "@mui/material";
+import { IconButton, TextField, CircularProgress, Box, Button, DialogContent } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./RecipeInputScreen.css";
 import { useEffect, useState, useRef } from "react";
@@ -30,11 +30,15 @@ import TuneIcon from "@mui/icons-material/Tune";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
+type Props = {
+  onDone: () => void;
+};
+
 type RecipeStateType = {
   recipes: RecipeState;
 };
 
-export function RecipeInputScreen() {
+export function RecipeInputScreen({ onDone }: Props) {
   useTitle("Generate");
 
   const dispatch = useDispatch();
@@ -95,6 +99,7 @@ export function RecipeInputScreen() {
       setDietType(DietaryRestrictions.DEFAULT);
       setFiltersResetKey((k) => k + 1);
       reset({ query: "", excludedIngredients: [""] });
+       
       didResetAfterGenerateRef.current = true;
     }
 
@@ -147,8 +152,10 @@ export function RecipeInputScreen() {
         dietType,
         excludedList
       );
+         onDone();
     } catch (err: unknown) {
       notify.error(err);
+       onDone();
     }
   }
 
@@ -163,10 +170,8 @@ export function RecipeInputScreen() {
       }}
     >
       {!recipeHasData && (
+         <DialogContent>
         <div className="GenerateContainer">
-          <div>
-            <h2 className={`GenerateTitle ${isRTL ? "rtl" : "ltr"}`}>{t("generate.title")}</h2>
-          </div>
 
           <form onSubmit={handleSubmit(send)} autoComplete="off">
             <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
@@ -184,7 +189,9 @@ export function RecipeInputScreen() {
                 }}
               />
 
-              <IconButton
+      
+            </div>
+        <IconButton
                 type="button" 
                 className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
                 onClick={() => setHasImage((v) => !v)}
@@ -192,8 +199,6 @@ export function RecipeInputScreen() {
               >
                 {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
               </IconButton>
-            </div>
-
             {error && <div className="ErrorText">{error}</div>}
 
             <div className="FiltersSectionContainer">
@@ -306,13 +311,16 @@ export function RecipeInputScreen() {
               </IconButton>
             ) : (
               <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
-                {t("generate.go")}
+                {t("homeScreen.generate")}
                 <AutoAwesome className="BtnIcon" />
               </Button>
             )}
           </form>
         </div>
-      )}
+        </DialogContent>
+      )
+      
+      }
 
       {recipe && (
         <div className="RecipeCardContainer">

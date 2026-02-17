@@ -3,27 +3,27 @@ import { Page404 } from "../user-components/Page404/Page404";
 import { AboutScreen } from "../user-components/AboutScreen/AboutScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import { HomeScreen } from "../recipe-components/HomeScreen/HomeScreen";
+import { GenerateRoute, HomeScreen } from "../recipe-components/HomeScreen/HomeScreen";
 import { LoginScreen } from "../user-components/LoginScreen/LoginScreen";
 import { RecipeInfoScreen } from "../recipe-components/RecipeInfoScreen/RecipeInfoScreen";
 import { RegistrationScreen } from "../user-components/RegistrationScreen/RegistrationScreen";
 import { ProfileScreen } from "../user-components/ProfileScreen/ProfileScreen";
 import { LikesScreen } from "../recipe-components/LikesScreen/LikesScreen";
-import { RecipeInputScreen } from "../recipe-components/RecipeInputScreen/RecipeInputScreen";
 import { PrivacyPolicy } from "../user-components/PrivacyPolicy/PrivacyPolicy";
 import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
 import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
 import { PdfScreen } from "../recipe-components/PdfScreen/PdfScreen";
 
-
 export function Routing() {
+
     const user = useSelector((state: AppState) => state.user);
     const isLoggedIn = user && localStorage.getItem("token");
+    
     return (
         <div>
             <Routes>
                 <Route path="/" element={<HomeScreen />} />
-                <Route path="/generate" element={<RecipeInputScreen />} />
+                <Route path="/generate" element={<GenerateRoute />} />
                 <Route path="/about" element={<AboutScreen />} />
                 <Route path="/home" element={<HomeScreen />} />
                 <Route path="/recipe/:id" element={<RecipeInfoScreen />} />
@@ -41,3 +41,4 @@ export function Routing() {
         </div>
     );
 }
+

@@ -1,3 +1,7 @@
+/* =========================
+   HomeScreen.css (CLEAN)
+   ========================= */
+
 .HomeScreen {
   position: relative;
   width: 100%;
@@ -42,6 +46,10 @@
   color: #393939;
 }
 
+.GuestTitle2 {
+  text-align: center;
+}
+
 .HomeScreenTitle {
   margin: 14px 0 0;
   font-size: 22px;
@@ -53,7 +61,6 @@
   width: 100%;
   margin-top: 0;
   padding-top: 20px;
-  text-align: start;
 }
 
 .HomeScreenTitleWrapper.ltr .HomeScreenTitle.user {
@@ -64,50 +71,38 @@
   text-align: right;
 }
 
-.UserHello {
-  font-size: 26px;
-  font-weight: 700;
-  color: rgb(100, 100, 100);
-  padding: 0;
-  margin: 0 0 6px;
-  background: none;
-  border: none;
-  border-radius: 0;
-  display: block;
-}
-
+/* Tabs */
 .SelectListDiv {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 20px;
   width: fit-content;
   max-width: 100%;
   border-radius: 18px;
   padding: 8px;
   margin-top: 30px;
+  gap: 0;
 }
 
 .SelectListDiv.ltr {
   margin-left: 30px;
   margin-right: auto;
   justify-content: flex-start;
+  direction: ltr;
 }
 
 .SelectListDiv.rtl {
   margin-right: 30px;
   margin-left: auto;
   justify-content: flex-end;
+  direction: rtl;
 }
 
 .RecentlyViewedBtn,
 .SuggestionsBtn {
-  padding: 6px;
+  padding: 6px 18px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0;
   height: 40px;
   cursor: pointer;
   color: #0f3b52;
@@ -115,43 +110,11 @@
 
 .RecentlyViewedBtn.active,
 .SuggestionsBtn.active {
-  font-size: 20px;
-  color: #0f3b52;
-  color: #0f3b52;
-}
 
-.RecipeGrid {
-  width: 100%;
-  max-width: 1480px;
-  margin: 34px auto 0;
-  padding: 34px var(--edge-pad, 34px) 20px;
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 320px);
-  justify-content: center;
-  gap: 64px;
-  overflow: visible;
-}
-
-.RecipeGrid>* {
-  min-width: 0;
-}
-
-.SelectListDiv.ltr {
-  direction: ltr;
-}
-
-.SelectListDiv.rtl {
-  direction: rtl;
-}
-
-.SelectListDiv {
-  gap: 0;
-}
-
-.RecentlyViewedBtn,
-.SuggestionsBtn {
-  padding: 6px 18px;
+  margin: 0 0 0 4px;
+  color: #ff6f15;
+  border-bottom: 2px solid #ff6f15
+  ;
 }
 
 .RecentlyViewedBtn {
@@ -169,7 +132,25 @@
   border-radius: 1px;
 }
 
+/* Grid */
+.RecipeGrid {
+  width: 100%;
+  max-width: 1480px;
+  margin: 34px auto 0;
+  padding: 34px var(--edge-pad, 34px) 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 320px);
+  justify-content: center;
+  gap: 64px;
+  overflow: visible;
+}
 
+.RecipeGrid>* {
+  min-width: 0;
+}
+
+/* Guest “unlock” bubble */
 .FeatureUnlockHint {
   width: 100%;
   display: flex;
@@ -189,12 +170,6 @@
   padding: 12px 14px;
   border-radius: 4px;
   border: 1px solid rgba(84, 84, 84, 0.336);
-}
-
-.FeatureUnlockHint__titleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .FeatureUnlockHint__list {
@@ -245,30 +220,48 @@
   cursor: pointer;
 }
 
-@media (min-width: 601px) {
-
-  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble {
-    margin-left: auto;
-    margin-right: 0;
-  }
+.GenerateRecipeBtnHomeScreen {
+  width: 280px !important;
+  height: 44px;
+  margin-top: 20px !important;
+  border-radius: 36px !important;
+  background: #125e84 !important;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
+.GenerateRecipeBtnHomeScreen.MuiButton-root {
+  font-size: 18px !important;
+}
+
+.GenerateRecipeBtnHomeScreen svg {
+  color: #eab928 !important;
+}
+
+.generate_dialog_paper.MuiPaper-root {
+  border-radius: 16px !important;
+  width: 420px !important;
+  max-width: 95vw !important;
+  height: 700px !important;
+  overflow-x: hidden !important;
+}
+
+.generate_dialog_paper .MuiDialogContent-root {
+  padding: 8px !important;
+  overflow-x: hidden !important;
+}
+
+/* dialog font */
+.generate_dialog_paper,
+.generate_dialog_paper * {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+}
+
+/* Mobile */
 @media (max-width: 600px) {
-
-  .FeatureUnlockHint,
-  .FeatureUnlockHint[dir="rtl"],
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
-    justify-content: center !important;
-  }
-
-  .FeatureUnlockHint__bubble,
-  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
   .HomeScreen {
     padding: 18px 14px 44px;
   }
@@ -286,15 +279,6 @@
     padding-top: 8px;
   }
 
-  .HomeScreenTitleWrapper.ltr .GenerateBtn.MuiButton-root,
-  .HomeScreenTitleWrapper.rtl .GenerateBtn.MuiButton-root {
-    align-self: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-inline: auto !important;
-    margin-top: 10px !important;
-  }
-
   .SelectListDiv.ltr,
   .SelectListDiv.rtl {
     margin-left: auto;
@@ -307,5 +291,18 @@
     grid-template-columns: minmax(0, 360px);
     justify-content: center;
     gap: 60px;
+  }
+
+  .FeatureUnlockHint,
+  .FeatureUnlockHint[dir="rtl"],
+  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
+    justify-content: center !important;
+  }
+
+  .FeatureUnlockHint__bubble,
+  .FeatureUnlockHint[dir="rtl"] .FeatureUnlockHint__bubble,
+  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint__bubble {
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 }
