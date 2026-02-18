@@ -137,7 +137,7 @@
 .RecipeTitle {
   font-weight: 600;
   font-size: 36px;
-  margin-top: 60px; /* keep space for TopActions */
+  margin-top: 60px; 
   color: #2f2f2f;
 }
 
@@ -313,58 +313,6 @@
   text-align: right !important;
 }
 
-/* ===== WIDE VIEW ===== */
-@media (min-width: 780px) {
-  .RecipePreparationWideView {
-    margin-top: 12px;
-    width: calc(100vw - 4vw);
-    max-width: 1600px;
-    box-sizing: border-box;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: calc(-50vw + 2vw);
-    margin-right: calc(-50vw + 2vw);
-  }
-
-  html[dir="rtl"] .RecipePreparationWideView {
-    transform: translateX(-2vw);
-  }
-
-  .RecipeStepsGrid {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    width: 100%;
-    gap: 40px;
-    position: relative;
-  }
-
-  .RecipeStepsGrid.rtl {
-    flex-direction: row-reverse;
-  }
-
-  .RecipeStepsGrid > .IngredientsList,
-  .RecipeStepsGrid > .InstructionsList {
-    width: 50%;
-  }
-
-  .RecipeStepsGrid > .IngredientsList {
-    margin-top: 0;
-  }
-
-  .RecipeStepsGrid::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 1px;
-    background: rgba(0, 0, 0, 0.4);
-    transform: translateX(-0.5px);
-    pointer-events: none;
-  }
-}
 
 
 .StatValueRowRtl {
@@ -399,60 +347,28 @@
   text-align: left !important;
 }
 
-
-@media (min-width: 601px) {
-  .AskModelDiv.rtl,
-  .AskModelDiv.ltr {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
+.RecipeSneakPeakInfo {
+  margin-top: 22px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
 }
 
 
-@media (max-width: 600px) {
-  .RecipeTitle {
-    font-size: 30px;
-  }
-
-  .RecipeTopSection {
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-    padding: 0;
-    margin: 8px;
-    box-shadow: none;
-  
-    border: none;
-  }
-
-  .LoadImageBtn {
-    width: 40% !important;
-  }
-
-  .RecipeImage {
-    width: 100%;
-    margin: 0;
-    display: block;
-  }
-
-  .DataScreen {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .AskModelDiv {
-    margin: 60px auto 26px !important;
-  }
-
-  .DataScreen {
-    max-width: 100%;
-  }
-
-  .IngredientRow {
-    flex-direction: row;
-  }
+ .Title {
+  font-size: 16px !important;
+  font-weight: 1000 !important;
+  text-transform: uppercase;
+  color: #000000!important;
 }
 
+.StatLine{
+    font-size: 15px !important;
+  font-weight: 100 !important;
+   color: #464646!important;
+}
 
 .AskDialog .MuiPaper-root {
   padding: 0 !important;
@@ -575,4 +491,114 @@
   margin-right: 0;
   margin-left: auto;
   text-align: right;
+}
+
+
+
+@media (min-width: 780px) {
+  .RecipePreparationWideView {
+    margin-top: 12px;
+    width: calc(100vw - 4vw);
+    max-width: 1600px;
+    box-sizing: border-box;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: calc(-50vw + 2vw);
+    margin-right: calc(-50vw + 2vw);
+  }
+
+  html[dir="rtl"] .RecipePreparationWideView {
+    transform: translateX(-2vw);
+  }
+
+  .RecipeStepsGrid {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    gap: 40px;
+    position: relative;
+  }
+
+  .RecipeStepsGrid.rtl {
+    flex-direction: row-reverse;
+  }
+
+  .RecipeStepsGrid > .IngredientsList,
+  .RecipeStepsGrid > .InstructionsList {
+    width: 50%;
+  }
+
+  .RecipeStepsGrid > .IngredientsList {
+    margin-top: 0;
+  }
+
+  .RecipeStepsGrid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateX(-0.5px);
+    pointer-events: none;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .RecipeTitle {
+    font-size: 30px;
+  }
+
+    .AskModelDiv.rtl,
+  .AskModelDiv.ltr {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .RecipeTopSection {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 8px;
+    box-shadow: none;
+  
+    border: none;
+  }
+
+  .LoadImageBtn {
+    width: 40% !important;
+  }
+
+  .RecipeImage {
+    width: 100%;
+    margin: 0;
+    display: block;
+  }
+
+  .DataScreen {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .AskModelDiv {
+    margin: 60px auto 26px !important;
+  }
+
+  .DataScreen {
+    max-width: 100%;
+  }
+
+  .IngredientRow {
+    flex-direction: row;
+  }
+    .RecipeSneakPeakInfo {
+    margin-top: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
 }

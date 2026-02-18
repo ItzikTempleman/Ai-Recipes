@@ -104,16 +104,11 @@ const handleHomeClick = (e: React.MouseEvent) => {
           >
             {user.firstName} {user.familyName}
           </NavLink>
-        ) : (
+        ) : (<>
+          <div> {t("homeScreen.guest")}{" "} <span className="LoginDivider" aria-hidden="true">|</span>{" "}</div>
           <div className="LoginBtn" onClick={() => navigate("/login")}>
-            <h3>
-              {t("homeScreen.guest")}{" "}
-              <span className="LoginDivider" aria-hidden="true">
-                |
-              </span>{" "}
-              {t("drawer.login")}
-            </h3>
-          </div>
+            <h3> {t("drawer.login")} </h3></div>
+            </>
         )}
 
         <div className="MenuBtn">
