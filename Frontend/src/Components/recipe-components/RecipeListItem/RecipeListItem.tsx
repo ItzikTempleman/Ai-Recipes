@@ -10,7 +10,8 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { difficultyToString } from "../../../Utils/Utils";
 type RecipeListContext = "default" | "suggestions";
 
 type RecipeProps = {
@@ -35,7 +36,7 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
   const titleIsHebrew = hasHebrew(recipe.title);
   const titleDir: "rtl" | "ltr" = titleIsHebrew ? "rtl" : "ltr";
   const titleClass = titleIsHebrew ? "rtl" : "ltr";
-
+  
   async function moveToInfo(): Promise<void> {
     navigate("/recipe/" + recipe.id);
   }
@@ -80,15 +81,22 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
             </IconButton>
           )}
         </div>
-
-        <h3 className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
-          {recipe.title}
-        </h3>
-
-        <Button className="MoreInfoBtn FloatingBtn" onClick={moveToInfo} variant="contained">
-          {t("recipeUi.showRecipe")}
-        </Button>
       </div>
+
+      <h3 className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+        {recipe.title}
+      </h3>
+
+<div className={`TimeAndHardShipLevel ${titleClass}  ${isSuggestions ? "suggestions" : ""}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+
+
+<div><AccessTimeIcon/> {recipe.prepTime } {t("units.minuteShort")} • {difficultyToString(recipe.difficultyLevel) }</div>
+</div>
+
+      <Button className="MoreInfoBtn FloatingBtn" onClick={moveToInfo} variant="contained">
+        {t("recipeUi.showRecipe")}
+      </Button>
+
     </div>
   );
 

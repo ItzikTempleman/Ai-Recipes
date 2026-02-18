@@ -62,17 +62,17 @@ export function Header() {
             )}
           </NavLink>
         )}
-        {showUndo && (
-          <div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
-            <NavLink to="/generate" onClick={handleReturnClick}>
-              {returnImage ? (
-                <img className="ReturnToRecipeImage" src={returnImage} />
-              ) : (
-                <UndoIcon className={`ReturnToRecipeSvg ${isRtl ? "rtl" : "ltr"}`} />
-              )}
-            </NavLink>
-          </div>
-        )}
+{showUndo && (
+  <div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
+    <NavLink to="/home" onClick={handleReturnClick}>
+      {returnImage ? (
+        <img className="ReturnToRecipeImage" src={returnImage} />
+      ) : (
+        <UndoIcon className={`ReturnToRecipeSvg ${isRtl ? "rtl" : "ltr"}`} />
+      )}
+    </NavLink>
+  </div>
+)}
       </div>
       <div className="HeaderRight">
         <div className="LanguageLink">

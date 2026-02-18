@@ -76,3 +76,12 @@ export function getDifficultyLevel(level?: DifficultyLevel): Level {
       return { labelKey: "difficulty.easy", icon: "/easy.png" };
   }
 }
+
+export function difficultyToString(d?: DifficultyLevel) {
+  switch (d) {
+    case DifficultyLevel.EASY: return "Easy";
+    case DifficultyLevel.MID_LEVEL: return "Mid level";
+    case DifficultyLevel.PRO: return "Pro";
+    default: return "";
+  }
+}
