@@ -200,7 +200,6 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
-
                           <div
                 className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
             onClick={() => setListState(ListState.SUGGESTIONS)}
@@ -219,9 +218,6 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
               >
                 <h4>{t("homeScreen.history")}</h4>
               </div>
-
-  
-
               <div
                 className={`LikeBtn ${listState === ListState.FAVORITES ? "active" : ""}`}
             onClick={() => setListState(ListState.FAVORITES)}

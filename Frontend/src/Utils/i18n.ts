@@ -148,6 +148,10 @@ const resources = {
           emailNotFound: " Email not found"
         },
 
+
+likeScreen:{
+noLikes:"No liked recipes"
+},
         registration: {
           optionalFields: "Optional fields",
           title: "Registration",
@@ -271,7 +275,6 @@ const resources = {
         guestNoticeLine1: "ניתן ליצור מתכונים בלי להתחבר",
         guestNoticeLine2: "התחברות נדרשת לשמירה ולהיסטוריה",
         suggestions: "המלצות היום",
-        suggestions2: "המלצות היום",
         history: "היסטוריה",
         ask: "צ׳טבוט חכם - דברו אם המתכון",
         save: "ניהול מועדפים",
@@ -319,6 +322,7 @@ const resources = {
         loadingNoImage: "...מייצר מתכון",
       },
       likeScreen: {
+        noLikes:"אין מועדפים",
         likedTitle: "מועדפים"
       },
       filters: {

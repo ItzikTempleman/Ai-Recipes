@@ -25,6 +25,14 @@
   box-sizing: border-box;
 }
 
+/* ✅ MIN FIX: ensure logical margins flip in Hebrew */
+.HomeScreenTitleWrapper.ltr {
+  direction: ltr;
+}
+.HomeScreenTitleWrapper.rtl {
+  direction: rtl;
+}
+
 .SelectionDiv {
   width: 100%;
 }
@@ -223,7 +231,7 @@
 }
 
 .generate_dialog_root .MuiPaper-root {
-  margin-top: 100px !important; /* VERY low */
+  margin-top: 100px !important;
   margin-bottom: 24px !important;
   max-height: calc(100vh - 324px) !important;
 }
@@ -244,6 +252,15 @@
 
   .HomeScreenTitle.user {
     padding-top: 8px;
+  }
+
+  /* ✅ MIN FIX: guest title margin that flips correctly in RTL */
+  .HomeScreen.guest .HomeScreenTitle.user {
+    margin-block-start: 50px;   /* top */
+    margin-block-end: 0;
+    margin-inline-start: 50px;  /* left in LTR, right in RTL (because wrapper has direction) */
+    margin-inline-end: 0;
+    padding-top: 0;
   }
 
   .SelectListDiv.ltr,
