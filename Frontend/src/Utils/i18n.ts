@@ -341,7 +341,7 @@ const resources = {
           none: "ללא גלוטן",
         },
         diet: {
-          none: "ללא העדפות כשרות / טבעוניות",
+          none: "ללא העדפה",
           vegan: "טבעוני",
           kosher: "כשר"
         },
