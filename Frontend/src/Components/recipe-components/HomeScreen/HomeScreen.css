@@ -1,7 +1,3 @@
-/* =========================
-   HomeScreen.css (CLEAN)
-   ========================= */
-
 .HomeScreen {
   position: relative;
   width: 100%;
@@ -221,18 +217,21 @@
 }
 
 .GenerateRecipeBtnHomeScreen {
-  width: 280px !important;
+  width: 40% !important;
   height: 44px;
   margin-top: 20px !important;
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: flex !important;
+
   border-radius: 36px !important;
   background: #125e84 !important;
   text-transform: none;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
-
 .GenerateRecipeBtnHomeScreen.MuiButton-root {
   font-size: 18px !important;
 }
@@ -244,8 +243,7 @@
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 16px !important;
   width: 420px !important;
-  max-width: 95vw !important;
-  height: 700px !important;
+  height: 650px !important;
   overflow-x: hidden !important;
 }
 
@@ -254,16 +252,15 @@
   overflow-x: hidden !important;
 }
 
-/* dialog font */
 .generate_dialog_paper,
 .generate_dialog_paper * {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
 }
 
-/* Mobile */
+
 @media (max-width: 600px) {
   .HomeScreen {
-    padding: 18px 14px 44px;
+    padding: 18px 14px 2px;
   }
 
   .HomeScreenTitleWrapper.ltr,

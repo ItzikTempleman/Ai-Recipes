@@ -3,7 +3,7 @@ import { Page404 } from "../user-components/Page404/Page404";
 import { AboutScreen } from "../user-components/AboutScreen/AboutScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import { GenerateRoute, HomeScreen } from "../recipe-components/HomeScreen/HomeScreen";
+import { HomeScreen } from "../recipe-components/HomeScreen/HomeScreen";
 import { LoginScreen } from "../user-components/LoginScreen/LoginScreen";
 import { RecipeInfoScreen } from "../recipe-components/RecipeInfoScreen/RecipeInfoScreen";
 import { RegistrationScreen } from "../user-components/RegistrationScreen/RegistrationScreen";
@@ -13,6 +13,7 @@ import { PrivacyPolicy } from "../user-components/PrivacyPolicy/PrivacyPolicy";
 import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
 import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
 import { PdfScreen } from "../recipe-components/PdfScreen/PdfScreen";
+import { GenerateRoute } from "../../Utils/DialogRoute";
 
 export function Routing() {
 

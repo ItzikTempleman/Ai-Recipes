@@ -15,9 +15,8 @@ import { shareRecipeAsPdfWithToasts } from "../../../Services/ShareRecipeService
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
-import {normalizedIngredients,normalizeIngredientRow} from "../../../Utils/NormalizedIngredients";
+import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
 import { useNavigate } from "react-router-dom";
-
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -25,24 +24,18 @@ type RecipeProps = {
   filters?: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
   shareMode?: boolean;
-
+  onExitRecipe?: () => void;
 };
 
-export function DataScreen({
-  recipe,
-  imageSrc,
-  filters,
-  loadImage,
-  shareMode,
-
-}: RecipeProps) {
+export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, onExitRecipe }: RecipeProps) {
   const { t, i18n } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(false);
   const shareOnceRef = useRef(false);
 
   const isRTL = (i18n.language ?? "").startsWith("he");
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const [localImgSrc, setLocalImgSrc] = useState(imageSrc);
 
   const ingredients = recipe.data?.ingredients ?? [];
@@ -60,8 +53,6 @@ const navigate = useNavigate();
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
 
-
-
   const [open, setOpen] = useState(false);
   const user = useSelector((state: AppState) => state.user);
 
@@ -71,7 +62,9 @@ const navigate = useNavigate();
     setOpen((prev) => !prev);
   };
 
-  const handleClose = () => setOpen(false);
+  const handleCloseAskChef = () => {
+    setOpen(false);
+  };
 
   const handleLoadImage = async () => {
     try {
@@ -120,10 +113,7 @@ const navigate = useNavigate();
     (window as any).__SHARE_READY__ = false;
 
     const raf = requestAnimationFrame(() => {
-      const img =
-        document.querySelector<HTMLImageElement>(
-          "#share-root img.RecipeImage"
-        );
+      const img = document.querySelector<HTMLImageElement>("#share-root img.RecipeImage");
 
       if (img && !img.complete) {
         img.onload = () => ((window as any).__SHARE_READY__ = true);
@@ -141,37 +131,27 @@ const navigate = useNavigate();
     <div className="DataScreen" dir={isRTL ? "rtl" : "ltr"}>
       <div className="RecipeTopSection">
         <div className={`TopActions ${isRTL ? "rtl" : "ltr"}`}>
-            <Button
-              className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`}
-              variant="contained"
-              onClick={handleShare}
-            >
-              <ReplyIcon />
-              {t("recipeUi.share")}
-            </Button>
-          
+          <Button className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} variant="contained" onClick={handleShare}>
+            <ReplyIcon />
+            {t("recipeUi.share")}
+          </Button>
         </div>
-          <div
-            className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
-            onClick={()=>{
-               navigate("/home");
-            }
-            }
-          >
-            ❌
-          </div>
-          <h2
-            className={`RecipeTitle ${headingDir}`}
-            dir={headingDir}
-            lang={headingLng}
-          >
-            {recipe.title}
-          </h2>
-        <p
-          className={`Description ${headingDir}`}
-          dir={headingDir}
-          lang={headingLng}
+
+        <div
+          className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
+          onClick={() => {
+            onExitRecipe?.();
+            navigate("/home");
+          }}
         >
+          ❌
+        </div>
+
+        <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
+          {recipe.title}
+        </h2>
+
+        <p className={`Description ${headingDir}`} dir={headingDir} lang={headingLng}>
           {recipe.description}
         </p>
 
@@ -180,7 +160,6 @@ const navigate = useNavigate();
         <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
           <div className="Calories">
             <p className="Title">{t("recipeUi.calories")}</p>
-
             {isRTL ? (
               <p className="StatLine">
                 <span className="StatNum BidiIso">{recipe.calories}</span>
@@ -197,7 +176,6 @@ const navigate = useNavigate();
 
           <div className="Sugar">
             <p className="Title">{t("recipeUi.sugar")}</p>
-
             {Number(recipe.totalSugar) === 0 ? (
               <p className="StatLine">0</p>
             ) : isRTL ? (
@@ -208,15 +186,12 @@ const navigate = useNavigate();
                 <span className="StatText"> גרם</span>
               </p>
             ) : (
-              <p className="StatLine">
-                {recipe.totalSugar} table spoons in 100 grams
-              </p>
+              <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
             )}
           </div>
 
           <div className="Protein">
             <p className="Title">{t("recipeUi.protein")}</p>
-
             {isRTL ? (
               <p className="StatLine">
                 <span className="StatNum BidiIso">{recipe.totalProtein}</span>
@@ -242,35 +217,22 @@ const navigate = useNavigate();
         </div>
 
         {user && (
-          <div
-            className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`}
-            onClick={handleToggleAsk}
-          >
+          <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
             <img className="ChefImage" src={chef} />
             <h4>{t("recipeUi.ask")}</h4>
           </div>
         )}
 
-        <AskChefDialog
-          open={open}
-          onClose={handleClose}
-          recipe={recipe}
-          isRTL={isRTL}
-        />
+        <AskChefDialog open={open} onClose={handleCloseAskChef} recipe={recipe} isRTL={isRTL} />
 
         {localImgSrc ? (
-          <img
-            className="RecipeImage"
-            src={localImgSrc}
-            onError={() => setLocalImgSrc("")}
-          />
+          <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
         ) : (
           loadImage &&
           (isImageLoading ? (
             <>
               <h2 className="ImageLoadingMessageAfterRecipeGenerated">
-                {t("generate.loadingWithImage")}{" "}
-                {t("generate.loadingWithImageLowerMessage")}
+                {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
               </h2>
               <IconButton className="ProgressBar" edge="end" disabled>
                 <Box>
@@ -280,11 +242,7 @@ const navigate = useNavigate();
             </>
           ) : (
             !shareMode && (
-              <Button
-                className="LoadImageBtn"
-                variant="contained"
-                onClick={handleLoadImage}
-              >
+              <Button className="GenerateRecipeBtnHomeScreen" variant="contained" onClick={handleLoadImage}>
                 <ImageSearchIcon />
                 {t("recipeUi.loadImage")}
               </Button>
@@ -305,9 +263,7 @@ const navigate = useNavigate();
               return (
                 <div key={index} className="IngredientRow">
                   <span className="IngredientName">{ingredient}</span>
-                  <span className="IngredientAmount">
-                    {formatAmount(amount) ?? ""}
-                  </span>
+                  <span className="IngredientAmount">{formatAmount(amount) ?? ""}</span>
                 </div>
               );
             })}
@@ -322,10 +278,9 @@ const navigate = useNavigate();
               {instructions
                 .map((s) => String(s ?? "").trim())
                 .filter((s) => s.length > 0)
-                .map((step, index, arr) => (
+                .map((step, index) => (
                   <li className="InstructionLi" key={index}>
                     {step}
-                    {index !== arr.length - 1}
                   </li>
                 ))}
             </ol>

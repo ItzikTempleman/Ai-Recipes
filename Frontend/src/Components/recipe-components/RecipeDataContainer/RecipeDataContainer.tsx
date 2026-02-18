@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeModel, SugarRestriction } from "../../../Models/RecipeModel";
+import {
+  DietaryRestrictions,
+  GlutenRestrictions,
+  LactoseRestrictions,
+  RecipeModel,
+  SugarRestriction,
+} from "../../../Models/RecipeModel";
 import { DataScreen } from "../DataScreen/DataScreen";
 import "./RecipeDataContainer.css";
 
@@ -8,22 +14,22 @@ export type Filters = {
   hasLactose: LactoseRestrictions;
   hasGluten: GlutenRestrictions;
   dietType: DietaryRestrictions;
-}
+};
 
 type RecipeProps = {
   recipe: RecipeModel;
   filters: Filters;
   loadImage?: (recipe: RecipeModel) => Promise<RecipeModel>;
+  onExitRecipe?: () => void;
 };
 
-export function RecipeDataContainer({ recipe, filters, loadImage }: RecipeProps) {
+export function RecipeDataContainer({ recipe, filters, loadImage, onExitRecipe }: RecipeProps) {
   const [imgSrc, setImgSrc] = useState<string>("");
 
   useEffect(() => {
     const url = (recipe.imageUrl ?? "").trim();
     setImgSrc(url && url !== "null" && url !== "undefined" ? url : "");
-  }, [recipe.imageUrl]
-  )
+  }, [recipe.imageUrl]);
 
   return (
     <div className="RecipeDataContainer">
@@ -32,7 +38,7 @@ export function RecipeDataContainer({ recipe, filters, loadImage }: RecipeProps)
         recipe={recipe}
         imageSrc={imgSrc}
         loadImage={loadImage}
-
+        onExitRecipe={onExitRecipe}
       />
     </div>
   );

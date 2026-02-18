@@ -12,7 +12,6 @@ import { LactoseFilter } from "../Filters/LactoseFilter";
 import { SugarFilter } from "../Filters/SugarFilter";
 import { GlutenFilter } from "../Filters/GlutenFilter";
 import { DietaryFilter } from "../Filters/DietaryFilter";
-import { RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
 import {
   DietaryRestrictions,
   GlutenRestrictions,
@@ -29,16 +28,18 @@ import ImageIcon from "@mui/icons-material/Image";
 import TuneIcon from "@mui/icons-material/Tune";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 
 type Props = {
   onDone: () => void;
+  onFiltersReady?: (filters: Filters) => void;
 };
 
 type RecipeStateType = {
   recipes: RecipeState;
 };
 
-export function RecipeInputScreen({ onDone }: Props) {
+export function RecipeInputScreen({ onDone, onFiltersReady }: Props) {
   useTitle("Generate");
 
   const dispatch = useDispatch();
@@ -88,8 +89,7 @@ export function RecipeInputScreen({ onDone }: Props) {
 
     if (loading) {
       didResetAfterGenerateRef.current = false;
-    }
-     else if (recipeHasData && !didResetAfterGenerateRef.current) {
+    } else if (recipeHasData && !didResetAfterGenerateRef.current) {
       setFiltersOpen(false);
       setQuantity(1);
       setHasImage(false);
@@ -99,7 +99,7 @@ export function RecipeInputScreen({ onDone }: Props) {
       setDietType(DietaryRestrictions.DEFAULT);
       setFiltersResetKey((k) => k + 1);
       reset({ query: "", excludedIngredients: [""] });
-       
+
       didResetAfterGenerateRef.current = true;
     }
 
@@ -141,6 +141,7 @@ export function RecipeInputScreen({ onDone }: Props) {
 
       const used = { sugarLevel, hasLactose, hasGluten, dietType };
       setAppliedFilters(used);
+      onFiltersReady?.(used);
 
       await recipeService.generateRecipe(
         recipeTitle,
@@ -152,10 +153,11 @@ export function RecipeInputScreen({ onDone }: Props) {
         dietType,
         excludedList
       );
-         onDone();
+
+      onDone();
     } catch (err: unknown) {
       notify.error(err);
-       onDone();
+      onDone();
     }
   }
 
@@ -170,162 +172,133 @@ export function RecipeInputScreen({ onDone }: Props) {
       }}
     >
       {!recipeHasData && (
-         <DialogContent>
-        <div className="GenerateContainer">
+        <DialogContent>
+          <div className="GenerateContainer">
+            <form onSubmit={handleSubmit(send)} autoComplete="off">
+              <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
+                <TextField
+                  dir={isRTL ? "rtl" : "ltr"}
+                  className="RecipeTextField"
+                  size="small"
+                  placeholder={t("generate.labelGenerate")}
+                  {...register("query", { required: `${t("generate.requiredTitle")}` })}
+                  disabled={loading}
+                  InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
+                  inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
+                  InputLabelProps={{
+                    style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
+                  }}
+                />
+              </div>
 
-          <form onSubmit={handleSubmit(send)} autoComplete="off">
-            <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
-              <TextField
-                dir={isRTL ? "rtl" : "ltr"}
-                className="RecipeTextField"
-                size="small"
-                placeholder={t("generate.labelGenerate")}
-                {...register("query", { required: `${t("generate.requiredTitle")}` })}
-                disabled={loading}
-                InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
-                inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
-                InputLabelProps={{
-                  style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
-                }}
-              />
-
-      
-            </div>
-        <IconButton
-                type="button" 
+              <IconButton
+                type="button"
                 className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
                 onClick={() => setHasImage((v) => !v)}
                 disabled={loading}
               >
                 {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
               </IconButton>
-            {error && <div className="ErrorText">{error}</div>}
 
-            <div className="FiltersSectionContainer">
-              <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-                <div className="FiltersDropdown" ref={filtersWrapRef} dir={isRTL ? "rtl" : "ltr"}>
-                  <Button
-                    className="FilterBtn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setFiltersOpen((v) => !v);
-                    }}
-                    variant="contained"
-                    startIcon={<TuneIcon />}
-                    endIcon={filtersOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-                  >
-                    {t("generate.filters")}
-                  </Button>
+              {error && <div className="ErrorText">{error}</div>}
 
-                  <div className={`PanelState ${filtersOpen ? "open" : "closed"}`}>
-                    <div
-                      className="FilterPanelInnerSection"
+              <div className="FiltersSectionContainer">
+                <div className={`FilterBar ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+                  <div className="FiltersDropdown" ref={filtersWrapRef} dir={isRTL ? "rtl" : "ltr"}>
+                    <Button
+                      className="FilterBtn"
                       onClick={(e) => {
                         e.stopPropagation();
+                        setFiltersOpen((v) => !v);
                       }}
+                      variant="contained"
+                      startIcon={<TuneIcon />}
+                      endIcon={filtersOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     >
-                      <div>
-                        <DietaryFilter
-                          key={`diet-${filtersResetKey}`}
-                          onDietSelect={(v) => {
-                            setDietType(v);
-                          }}
-                        />
-                      </div>
+                      {t("generate.filters")}
+                    </Button>
 
-                      <div>
-                        <SugarFilter
-                          key={`sugar-${filtersResetKey}`}
-                          onSugarLevelSelect={(v) => {
-                            setSugarLevel(v);
-                          }}
-                        />
-                      </div>
+                    <div className={`PanelState ${filtersOpen ? "open" : "closed"}`}>
+                      <div
+                        className="FilterPanelInnerSection"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <div>
+                          <DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={(v) => setDietType(v)} />
+                        </div>
 
-                      <div>
-                        <LactoseFilter
-                          key={`lac-${filtersResetKey}`}
-                          onChange={(v) => {
-                            setHasLactose(v);
-                          }}
-                        />
-                      </div>
+                        <div>
+                          <SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={(v) => setSugarLevel(v)} />
+                        </div>
 
-                      <div>
-                        <GlutenFilter
-                          key={`glu-${filtersResetKey}`}
-                          onChange={(v) => {
-                            setHasGluten(v);
-                          }}
-                        />
+                        <div>
+                          <LactoseFilter key={`lac-${filtersResetKey}`} onChange={(v) => setHasLactose(v)} />
+                        </div>
+
+                        <div>
+                          <GlutenFilter key={`glu-${filtersResetKey}`} onChange={(v) => setHasGluten(v)} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
-                  <div>
-                    <TextField
-                      className="ExcludeTextField"
-                      placeholder={t("generate.excludeIngredient")}
-                      size="small"
-                      {...register("excludedIngredients.0")}
-                    />
-                  </div>
+                  <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
+                    <div>
+                      <TextField
+                        className="ExcludeTextField"
+                        placeholder={t("generate.excludeIngredient")}
+                        size="small"
+                        {...register("excludedIngredients.0")}
+                      />
+                    </div>
 
-                  <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-                    <p>{t("generate.quantitySelector")}</p>
-                    <select
-                      className="QuantitySelector"
-                      value={initialQuantity}
-                      onChange={(e) => setQuantity(Number(e.target.value))}
-                    >
-                      {[...Array(10)].map((_, i) => (
-                        <option key={i + 1} value={i + 1}>
-                          {i + 1}
-                        </option>
-                      ))}
-                    </select>
+                    <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+                      <p>{t("generate.quantitySelector")}</p>
+                      <select
+                        className="QuantitySelector"
+                        value={initialQuantity}
+                        onChange={(e) => setQuantity(Number(e.target.value))}
+                      >
+                        {[...Array(10)].map((_, i) => (
+                          <option key={i + 1} value={i + 1}>
+                            {i + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {loading && (
-              <div>
-                {hasImage ? (
-                  <h2 className="ImageLoadingMessage">
-                    {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-                  </h2>
-                ) : (
-                  <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
-                )}
-              </div>
-            )}
+              {loading && (
+                <div>
+                  {hasImage ? (
+                    <h2 className="ImageLoadingMessage">
+                      {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                    </h2>
+                  ) : (
+                    <h2 className="LoadingWithoutImage">{t("generate.loadingNoImage")}</h2>
+                  )}
+                </div>
+              )}
 
-            {loading ? (
-              <IconButton className="ProgressBar" edge="end" disabled>
-                <Box>
-                  <CircularProgress />
-                </Box>
-              </IconButton>
-            ) : (
-              <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
-                {t("homeScreen.generate")}
-                <AutoAwesome className="BtnIcon" />
-              </Button>
-            )}
-          </form>
-        </div>
+              {loading ? (
+                <IconButton className="ProgressBar" edge="end" disabled>
+                  <Box>
+                    <CircularProgress />
+                  </Box>
+                </IconButton>
+              ) : (
+                <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
+                  {t("homeScreen.generate")}
+                  <AutoAwesome className="BtnIcon" />
+                </Button>
+              )}
+            </form>
+          </div>
         </DialogContent>
-      )
-      
-      }
-
-      {recipe && (
-        <div className="RecipeCardContainer">
-          <RecipeDataContainer recipe={recipe} filters={appliedFilters} loadImage={loadImage} />
-        </div>
       )}
     </div>
   );
