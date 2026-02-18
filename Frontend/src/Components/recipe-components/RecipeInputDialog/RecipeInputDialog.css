@@ -208,13 +208,13 @@
   display: flex !important;
   flex-wrap: nowrap !important;
   justify-content: flex-start !important;
-  gap: 4px !important;
+  gap: 0 !important;
 
   overflow-x: auto !important;
   overflow-y: visible !important;
   -webkit-overflow-scrolling: touch;
 
-  padding: 2px 2px 8px;
+  padding: 0;
   box-sizing: border-box;
 }
 
