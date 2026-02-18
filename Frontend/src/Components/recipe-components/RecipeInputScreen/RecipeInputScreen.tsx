@@ -59,7 +59,7 @@ export function RecipeInputScreen({ onDone, onFiltersReady }: Props) {
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
   const filtersWrapRef = useRef<HTMLDivElement | null>(null);
-  const [appliedFilters, setAppliedFilters] = useState({
+  const [_appliedFilters, setAppliedFilters] = useState({
     sugarLevel: SugarRestriction.DEFAULT,
     hasLactose: LactoseRestrictions.DEFAULT,
     hasGluten: GlutenRestrictions.DEFAULT,
@@ -143,18 +143,25 @@ export function RecipeInputScreen({ onDone, onFiltersReady }: Props) {
       setAppliedFilters(used);
       onFiltersReady?.(used);
 
-      await recipeService.generateRecipe(
-        recipeTitle,
-        hasImage,
-        initialQuantity,
-        sugarLevel,
-        hasLactose,
-        hasGluten,
-        dietType,
-        excludedList
-      );
+const generated = await recipeService.generateRecipe(
+  recipeTitle,
+  hasImage,
+  initialQuantity,
+  sugarLevel,
+  hasLactose,
+  hasGluten,
+  dietType,
+  excludedList
+);
 
-      onDone();
+
+if (hasImage && generated && !generated.imageUrl) {
+  await loadImage(generated);
+}
+
+onDone();
+
+  
     } catch (err: unknown) {
       notify.error(err);
       onDone();

@@ -217,10 +217,10 @@
 }
 
 .GenerateRecipeBtnHomeScreen {
-  width: 40% !important;
+
   height: 44px;
   margin-top: 20px !important;
-
+width: 300px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   display: flex !important;
