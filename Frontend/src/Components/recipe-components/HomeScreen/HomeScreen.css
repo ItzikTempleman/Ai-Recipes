@@ -100,7 +100,7 @@
   justify-content: center;
   height: 40px;
   cursor: pointer;
-  color: #0f3b52;
+  color: #484949;
 }
 
 .RecentlyViewedBtn.active,
@@ -114,16 +114,6 @@
   position: relative;
 }
 
-.RecentlyViewedBtn::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  bottom: 8px;
-  inset-inline-end: 0;
-  width: 1px;
-  background: rgba(0, 0, 0, 0.22);
-  border-radius: 1px;
-}
 
 .RecipeGrid {
   width: 100%;
@@ -170,12 +160,13 @@
   color: #eab928 !important;
 }
 
-/* ✅ dialog sizing: desktop + mobile safe */
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 16px !important;
   width: 460px !important;
-height: 650px;
-  overflow: hidden !important;
+
+  height: auto !important;     
+  max-height: 90vh !important;  
+  overflow: visible !important; 
 }
 
 .generate_dialog_paper .MuiDialogContent-root {

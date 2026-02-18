@@ -160,7 +160,6 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
         excludedList
       );
 
-      // ✅ MUST: if image requested but backend didn't provide imageUrl, generate preview now
       if (hasImage && generated && !generated.imageUrl) {
         await loadImage(generated);
       }
@@ -174,14 +173,7 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
 
   return (
     <div
-      className={`RecipeInputDialog ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
-      onClickCapture={(e) => {
-        if (!filtersOpen) return;
-        const target = e.target as Node;
-        if (filtersWrapRef.current?.contains(target)) return;
-        setFiltersOpen(false);
-      }}
-    >
+      className={`RecipeInputDialog ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}>
       {!recipeHasData && (
         <DialogContent>
           <div className={`DialogHeaderRow ${isRTL ? "rtl" : "ltr"}`}>
@@ -192,7 +184,7 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
 
           <div className="GenerateContainer">
             <form onSubmit={handleSubmit(send)} autoComplete="off">
-              {/* ✅ text field is UNDER close button */}
+        
               <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
                 <TextField
                   dir={isRTL ? "rtl" : "ltr"}
