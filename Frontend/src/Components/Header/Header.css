@@ -34,8 +34,6 @@
 }
 
 .ReturnToRecipeSection,
-.NewScreenBtn,
-.LikesScreenBtn,
 .HomeScreenBtn {
   padding: 6px;
   display: flex;
@@ -43,27 +41,17 @@
   align-items: center;
   text-decoration: none;
   margin: 0;
-
   justify-content: center;
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 .ReturnToRecipeSvg,
 .ReturnToRecipeSection svg,
-
 .HomeScreenBtn svg {
   height: 30px;
   width: 30px;
 }
 
-   .LikesScreenBtn svg{
-        width: 20px !important;
-    height: 20px !important;
-   }
-
-   .LikesScreenBtn p{
-     font-size: 10px;
-   }
 .HomeScreenBtn p {
   font-size: 12px;
   font-weight: 800;
@@ -73,11 +61,6 @@
 .HomeScreenBtn p,
 .HomeScreenBtn svg {
   color: #0baadf;
-}
-
-.LikesScreenBtn p,
-.LikesScreenBtn svg {
-  color: #ed1b5d;
 }
 
 .ReturnToRecipeSection svg {
@@ -117,8 +100,6 @@
 .LoginBtn {
   cursor: pointer;
   font-size: 16px;
-  margin-left: 6px;
-  margin-right: 6px;
 }
 
 .HeaderDiv {
@@ -127,15 +108,9 @@
   padding: 0;
 }
 
-.LoginBtn {
-  color: #393939;
-  font-weight: 900;
-  font-size: 14px;
-}
-
 .LoginDivider {
   display: inline-block;
-  margin: 0 14px;
+  margin: 0 2px;
 }
 
 .LanguageLink {
@@ -144,6 +119,7 @@
   gap: 2px;
   height: 30px;
   padding: 0 6px;
+
 }
 
 .LanguageLink svg {
@@ -152,14 +128,14 @@
 
 .LanguageSelector {
   border: none;
-  background: transparent;
+  box-shadow: none !important;
+  background: white;
   outline: none;
   font-weight: 800;
   font-size: 14px;
   color: #393939;
   cursor: pointer;
   padding: 0 6px;
-  border-radius: 8px;
 }
 
 .Header.rtl .LanguageSelector {
@@ -266,7 +242,6 @@
   }
 
   .ReturnToRecipeSection,
- 
   .HomeScreenBtn {
     width: 36px !important;
     height: 36px !important;
@@ -274,13 +249,12 @@
 
 
   .ReturnToRecipeSection svg,
-
   .HomeScreenBtn svg {
     width: 26px !important;
     height: 26px !important;
   }
 
-  .HomeScreenBtn p{
+  .HomeScreenBtn p {
     font-size: 10px;
   }
 

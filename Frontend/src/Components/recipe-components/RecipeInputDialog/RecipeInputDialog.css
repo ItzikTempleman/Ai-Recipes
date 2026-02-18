@@ -65,23 +65,31 @@
   width: 100% !important;
   
 }
-
+/* ✅ TextFields: default border 1px #0baadf, on hover/focus 2px */
 .RecipeTextField .MuiOutlinedInput-root,
 .ExcludeTextField .MuiOutlinedInput-root,
 .ExcludeTextField .MuiOutlinedInput-root.MuiInputBase-sizeSmall {
   height: 50px !important;
-  border-radius: 8px !important;
-
+  border-radius: 18px !important;
 }
 
-.RecipeTextField .MuiOutlinedInput-input,
-.ExcludeTextField .MuiOutlinedInput-input,
-.ExcludeTextField .MuiOutlinedInput-inputSizeSmall {
-  height: 40px !important;
-  padding: 0 14px !important;
-  line-height: 40px !important;
-  box-sizing: border-box !important;
+.RecipeTextField .MuiOutlinedInput-notchedOutline,
+.ExcludeTextField .MuiOutlinedInput-notchedOutline {
+  border: 1px solid #0baadf !important; /* ✅ default */
 }
+
+/* hover -> 2px */
+.RecipeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+.ExcludeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border: 2px solid #0baadf !important;
+}
+
+/* focus -> 2px (when pressed/active typing) */
+.RecipeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
+.ExcludeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: 2px solid #0baadf !important;
+}
+
 
 /* ✅ icon inside the input edge */
 .GenerateImageSelector.MuiIconButton-root {
@@ -90,7 +98,7 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-radius: 8px !important;
+  border-radius: 18px !important;
   background: #f0b351 !important;
 }
 
@@ -142,15 +150,15 @@
 .FilterBtn.MuiButton-root {
   width: 100%;
   height: 50px;
-  border-radius: 8px;
+  border-radius: 18px;
   background: #fff;
   color: #393939;
   box-shadow: none;
-  border: 1px solid #bebebe;
-
+  border: 1px solid #0baadf !important;
+  margin: 30px 0 0 0;
   gap: 6px;
   justify-content: center;
-  margin: 0;
+ 
 }
 
 .FilterBtn .MuiButton-startIcon,
@@ -213,11 +221,9 @@
 .FilterPanelInnerSection .MuiToggleButton-root {
   flex: 0 0 auto !important;
   min-width: max-content !important;
-
   border-radius: 8px !important;
   border: 1px solid #0baadf !important;
   background: #fff !important;
-
   padding: 8px 14px !important;
   white-space: nowrap !important;
   box-shadow: none !important;
@@ -240,9 +246,9 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   align-items: stretch;
-  margin: 0;
+  margin: 30px 0 30px 0;
 }
 
 .ExcludeGroup > div {
@@ -258,13 +264,13 @@
 .Servings {
   width: 100%;
   height: 50px;
-  border-radius: 8px;
-  border: 1px solid rgba(165, 165, 165, 0.676);
+  border-radius: 18px;
+  border: 1px solid #0baadf;
 
   display: flex;
   align-items: center;
   justify-content: center;
-
+margin: 24px 0 0 0;
   padding: 0 12px;
   box-sizing: border-box;
   gap: 12px;
@@ -287,13 +293,14 @@
   color: #707070;
   cursor: pointer;
   border-radius: 12px;
+  
 }
 
 /* Generate button */
 .GenerateRecipeBtn {
   width: 100% !important;
   height: 50px;
-  border-radius: 36px !important;
+  border-radius: 18px !important;
   background: #0baadf !important;
   text-transform: none;
 
@@ -302,7 +309,7 @@
   justify-content: center;
   gap: 10px;
 
-  margin-top: 26px !important;
+  margin-top: 20px !important;
 }
 
 .GenerateRecipeBtn.MuiButton-root {

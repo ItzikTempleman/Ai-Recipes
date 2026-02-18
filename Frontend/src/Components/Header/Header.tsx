@@ -7,8 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import UndoIcon from "@mui/icons-material/Undo";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
 import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
@@ -86,19 +84,7 @@ const handleHomeClick = (e: React.MouseEvent) => {
       </div>
 
       <div className="HeaderRight">
-                {user && (
-          <NavLink
-            to="/likes"
-            className={({ isActive }) => `LikesScreenBtn ${isActive ? "active" : ""}`}
-          >
-            {({ isActive }) => (
-              <div>
-                {isActive ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-           
-              </div>
-            )}
-          </NavLink>
-        )}
+
         <div className="LanguageLink">
           <LanguageIcon />
           <select

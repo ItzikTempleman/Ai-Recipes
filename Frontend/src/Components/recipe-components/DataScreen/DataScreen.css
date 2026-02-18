@@ -3,7 +3,7 @@
   border: 1px solid rgba(177, 177, 176, 0.508);
   border-radius: 4px;
   padding: 22px 22px 18px;
-  background: rgba(255, 255, 255, 0.75);
+ 
   box-shadow: 0 10px 24px rgba(90, 90, 90, 0.62);
   
 }
@@ -175,7 +175,7 @@
   height: 20px;
 }
 
-/* ===== LOAD IMAGE BUTTON (CENTER) ===== */
+
 .LoadImageBtn {
   background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
   color: #ffffff !important;
@@ -202,7 +202,7 @@
 
 .InstructionLi {
   padding: 8px;
-  border-bottom: 1px solid rgb(95, 95, 95);
+  border-bottom: 1px solid rgb(189, 189, 189);
 }
 
 .IngredientsList,
@@ -219,8 +219,8 @@
   width: 100%;
   justify-content: space-between;
   gap: 12px;
-  padding: 4px 0;
-  border-bottom: 1px solid #747474;
+  padding: 8px 0;
+  border-bottom: 1px solid #dbdbdb;
   align-items: center;
   min-width: 0;
 }
@@ -281,7 +281,7 @@
 
 .IngredientsTitle,
 .InstructionsTitle {
-  color: #666666 !important;
+  color: #414141 !important;
 }
 
 .InstructionsTitle.ltr,
@@ -421,7 +421,7 @@
     padding: 0;
     margin: 8px;
     box-shadow: none;
-    background: white;
+  
     border: none;
   }
 

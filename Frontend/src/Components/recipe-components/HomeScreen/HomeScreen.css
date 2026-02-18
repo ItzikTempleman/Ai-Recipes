@@ -92,6 +92,24 @@
   direction: rtl;
 }
 
+
+.LikeBtn {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+
+  /* ✅ extra hard reset so it never looks like a pill/card */
+  padding: 6px 18px !important;
+}
+
+.LikeBtn * {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.LikeBtn ,
 .RecentlyViewedBtn,
 .SuggestionsBtn {
   padding: 6px 18px;
@@ -103,11 +121,28 @@
   color: #484949;
 }
 
+.LikeBtn.active,
 .RecentlyViewedBtn.active,
 .SuggestionsBtn.active {
-  margin: 0 0 0 4px;
   color: #ff6f15;
-  border-bottom: 2px solid #ff6f15;
+ 
+  margin: 0; 
+}
+
+.LikeBtn h4,
+.RecentlyViewedBtn h4,
+.SuggestionsBtn h4 {
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+}
+
+/* underline ONLY the active tab text */
+.LikeBtn.active h4,
+.RecentlyViewedBtn.active h4,
+.SuggestionsBtn.active h4 {
+  border-bottom-color: #ff6f15;
+  color: #ff6f15;
 }
 
 .RecentlyViewedBtn {
@@ -132,6 +167,13 @@
   min-width: 0;
 }
 
+
+.SelectListDiv.rtl .RecentlyViewedBtn.active,
+.SelectListDiv.rtl .SuggestionsBtn.active,
+.SelectListDiv.rtl .LikeBtn.active {
+  margin: 0 4px 0 0;
+}
+
 .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
   justify-content: flex-end;
 }
@@ -143,8 +185,7 @@
   margin-left: auto !important;
   margin-right: auto !important;
   display: flex !important;
-
-  border-radius: 36px !important;
+  border-radius: 18px !important;
   background: #0baadf !important;
   text-transform: none;
   align-items: center;
@@ -161,8 +202,8 @@
 }
 
 .generate_dialog_paper.MuiPaper-root {
-  border-radius: 8px !important;
-  width: 420px !important;
+  border-radius: 0 !important;
+  width: 380px !important;
 
   height: auto !important;     
   max-height: 90vh !important;  
@@ -185,7 +226,7 @@
 
 
 .generate_dialog_root .MuiPaper-root {
-  margin-top: 300px !important;   /* VERY low */
+  margin-top: 200px !important;   /* VERY low */
   margin-bottom: 24px !important;
   max-height: calc(100vh - 324px) !important;
 }

@@ -59,7 +59,7 @@ border-radius: 16px;
   z-index: 5;
 }
 
-.LikeBtn,
+.ListItemLikeBtn,
 .DeleteBtn {
   padding: 6px !important;
   border-radius: 12px !important;
@@ -72,13 +72,13 @@ border-radius: 16px;
   transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
-.LikeBtn:hover,
+.ListItemLikeBtn:hover,
 .DeleteBtn:hover {
   transform: translateY(-1px);
   box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
 }
 
-.LikeBtn svg {
+.ListItemLikeBtn svg {
   color: #ed1b5d;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.1));
 }

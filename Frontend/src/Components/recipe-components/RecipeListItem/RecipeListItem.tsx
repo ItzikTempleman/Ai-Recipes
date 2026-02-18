@@ -64,7 +64,7 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
 
         <div className="TopRightActions">
           {user && !isSuggestions && (
-            <IconButton className="LikeBtn" onClick={(e) => {
+            <IconButton className="ListItemLikeBtn" onClick={(e) => {
               stopCardClick(e);
               handleLikeState();
             }}>
