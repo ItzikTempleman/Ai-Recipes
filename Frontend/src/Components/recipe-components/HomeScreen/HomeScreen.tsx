@@ -114,6 +114,7 @@ export function HomeScreen() {
           </Button>
 
           <Dialog
+          className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}
             open={open}
             onClose={() => setOpen(false)}
@@ -121,7 +122,6 @@ export function HomeScreen() {
             <RecipeInputDialog
               onDone={() => setOpen(false)}
               onFiltersReady={setAppliedFilters}
-              close={() => setOpen(false)}
             />
           </Dialog>
 

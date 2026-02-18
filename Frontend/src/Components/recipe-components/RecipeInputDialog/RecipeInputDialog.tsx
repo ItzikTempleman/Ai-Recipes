@@ -31,8 +31,8 @@ import {
 } from "../../../Models/RecipeModel";
 import { resetGenerated, setCurrent } from "../../../Redux/RecipeSlice";
 import { AppState } from "../../../Redux/Store";
-import HideImageOutlinedIcon from "@mui/icons-material/HideImageOutlined";
-import ImageIcon from "@mui/icons-material/Image";
+import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
+import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 import TuneIcon from "@mui/icons-material/Tune";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -41,14 +41,14 @@ import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 type Props = {
   onDone: () => void;
   onFiltersReady?: (filters: Filters) => void;
-  close?: () => void; // ✅ optional: fixes TS2741 in DialogRoute.tsx
+
 };
 
 type RecipeStateType = {
   recipes: RecipeState;
 };
 
-export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
+export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
   useTitle("Generate");
 
   const dispatch = useDispatch();
@@ -80,10 +80,6 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
   const didResetOnEnterRef = useRef(false);
   const didResetAfterGenerateRef = useRef(false);
 
-  const handleClose = () => {
-    // close dialog if provided, otherwise fall back to onDone (prevents TS issues)
-    (close ?? onDone)();
-  };
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
@@ -176,11 +172,6 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
       className={`RecipeInputDialog ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}>
       {!recipeHasData && (
         <DialogContent>
-          <div className={`DialogHeaderRow ${isRTL ? "rtl" : "ltr"}`}>
-            <button type="button" className="CloseBtn" onClick={handleClose} aria-label="Close">
-              ❌
-            </button>
-          </div>
 
           <div className="GenerateContainer">
             <form onSubmit={handleSubmit(send)} autoComplete="off">
@@ -204,7 +195,7 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
                           disabled={loading}
                           edge="end"
                         >
-                          {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
+                          {hasImage ? <CameraEnhanceIcon /> : <NoPhotographyIcon />}
                         </IconButton>
                       </InputAdornment>
                     ),

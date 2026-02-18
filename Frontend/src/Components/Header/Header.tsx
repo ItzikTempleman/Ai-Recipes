@@ -94,7 +94,7 @@ const handleHomeClick = (e: React.MouseEvent) => {
             {({ isActive }) => (
               <div>
                 {isActive ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-              <p>{t("nav.likes")}</p>
+           
               </div>
             )}
           </NavLink>

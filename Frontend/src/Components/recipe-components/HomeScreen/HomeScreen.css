@@ -137,7 +137,7 @@
 }
 
 .GenerateRecipeBtnHomeScreen {
-  height: 44px;
+  height: 50px;
   margin-top: 20px !important;
   width: 300px !important;
   margin-left: auto !important;
@@ -145,7 +145,7 @@
   display: flex !important;
 
   border-radius: 36px !important;
-  background: #125e84 !important;
+  background: #0baadf !important;
   text-transform: none;
   align-items: center;
   justify-content: center;
@@ -161,8 +161,8 @@
 }
 
 .generate_dialog_paper.MuiPaper-root {
-  border-radius: 16px !important;
-  width: 460px !important;
+  border-radius: 8px !important;
+  width: 420px !important;
 
   height: auto !important;     
   max-height: 90vh !important;  
@@ -170,7 +170,7 @@
 }
 
 .generate_dialog_paper .MuiDialogContent-root {
-  padding: 6px !important;
+  padding: 4px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
@@ -179,7 +179,16 @@
 .generate_dialog_paper * {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
 }
+.generate_dialog_root .MuiDialog-container {
+  align-items: flex-start !important; 
+}
 
+
+.generate_dialog_root .MuiPaper-root {
+  margin-top: 300px !important;   /* VERY low */
+  margin-bottom: 24px !important;
+  max-height: calc(100vh - 324px) !important;
+}
 @media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 2px;
