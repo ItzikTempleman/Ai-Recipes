@@ -10,8 +10,8 @@ import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { notify } from "../../../Utils/Notify";
 import { suggestionsService } from "../../../Services/SuggestionsService";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
-import { RecipeInputScreen } from "../RecipeInputScreen/RecipeInputScreen";
-import { resetGenerated, setCurrent } from "../../../Redux/RecipeSlice";
+import { RecipeInputDialog } from "../RecipeInputDialog/RecipeInputDialog";
+import { resetGenerated, setCurrent, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
 import { RecipeModel } from "../../../Models/RecipeModel";
 
@@ -31,6 +31,9 @@ export function HomeScreen() {
   const [open, setOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
+
+  // ✅ minimal: keep guest filters so restored guest recipe can render again
+  const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
 
   useEffect(() => {
     setShowSuggestions(!user);
@@ -73,8 +76,15 @@ export function HomeScreen() {
     return updated;
   }
 
-  // ✅ one place that clears the generated card (used by ❌ in DataScreen)
+  const filtersToUse: Filters | null = appliedFilters ?? guestFiltersStash;
+
   const handleExitRecipe = () => {
+    // ✅ guest: stash recipe + stash filters before clearing
+    if (!user && current?.title) {
+      dispatch(stashGuestRecipe(current));
+      if (filtersToUse) setGuestFiltersStash(filtersToUse);
+    }
+
     dispatch(resetGenerated());
     setAppliedFilters(null);
   };
@@ -103,22 +113,17 @@ export function HomeScreen() {
             <AutoAwesome />
           </Button>
 
-          <Dialog
-            PaperProps={{ className: "generate_dialog_paper" }}
-            open={open}
-            onClose={() => setOpen(false)}
-          >
-            <RecipeInputScreen onDone={() => setOpen(false)} onFiltersReady={setAppliedFilters} />
+          <Dialog PaperProps={{ className: "generate_dialog_paper" }} open={open} onClose={() => setOpen(false)}>
+            <RecipeInputDialog
+              onDone={() => setOpen(false)}
+              onFiltersReady={setAppliedFilters}
+              close={() => setOpen(false)}
+            />
           </Dialog>
 
-          {current?.title && appliedFilters && !open && (
+          {current?.title && filtersToUse && !open && (
             <div className="RecipeCardContainer">
-              <RecipeDataContainer
-                recipe={current}
-                filters={appliedFilters}
-                loadImage={loadImage}
-                onExitRecipe={handleExitRecipe}
-              />
+              <RecipeDataContainer recipe={current} filters={filtersToUse} loadImage={loadImage} onExitRecipe={handleExitRecipe} />
             </div>
           )}
 
@@ -156,11 +161,7 @@ export function HomeScreen() {
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
-              <RecipeListItem
-                key={recipe.id ?? recipe.title}
-                recipe={recipe}
-                context={showingSuggestions ? "suggestions" : "default"}
-              />
+              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} context={showingSuggestions ? "suggestions" : "default"} />
             ))}
           </div>
         </div>
@@ -168,36 +169,3 @@ export function HomeScreen() {
     </div>
   );
 }
-
-
-
-          // {!user && (
-          //   <div className="FeatureUnlockHint" dir={isRTL ? "rtl" : "ltr"}>
-          //     <div className="FeatureUnlockHint__bubble">
-
-
-          //       <div className="FeatureUnlockHint__list">
-          //         <div className="FeatureUnlockHint__line">
-          //           <span className="FeatureUnlockHint__icon" aria-hidden>💬</span>
-          //           <span className="FeatureUnlockHint__label">{t("homeScreen.ask")}</span>
-          //         </div>
-
-          //         <div className="FeatureUnlockHint__line">
-          //           <span className="FeatureUnlockHint__icon" aria-hidden>❤️</span>
-          //           <span className="FeatureUnlockHint__label">{t("homeScreen.save")}</span>
-          //         </div>
-
-          //         <div className="FeatureUnlockHint__line">
-          //           <span className="FeatureUnlockHint__icon" aria-hidden>👀</span>
-          //           <span className="FeatureUnlockHint__label">{t("homeScreen.remember")}</span>
-          //         </div>
-          //       </div>
-
-          //       <div className="FeatureUnlockHint__ctaPill" onClick={() => navigate("/login")}>
-          //         <span className="FeatureUnlockHint__lock" aria-hidden>🔒</span>
-          //         {t("homeScreen.freeWithLogin")}
-          //         <span className="FeatureUnlockHint__lock" aria-hidden>{isRTL ? "⬅️" : "➡️"}</span>
-          //       </div>
-          //     </div>
-          //   </div>
-          // )}

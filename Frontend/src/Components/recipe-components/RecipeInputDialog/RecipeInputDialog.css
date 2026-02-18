@@ -1,13 +1,6 @@
-/* =========================
-   RecipeInputScreen.css
-   Stable width (open/closed)
-   Dialog-first layout
-   ========================= */
-
-/* ---------- Dialog (Paper + Content) ---------- */
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 16px !important;
-  width: 520px !important;          /* stable width in dialog */
+  width: 520px !important;         
   max-width: 95vw !important;
   max-height: 92vh !important;
   overflow: hidden !important;
@@ -18,19 +11,14 @@
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
 }
 
-/* Scroll lives here (prevents layout jumps + clipping) */
 .generate_dialog_paper .MuiDialogContent-root {
   padding: 12px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-
-  /* prevents “width change” when scrollbar appears */
   scrollbar-gutter: stable both-edges;
 }
 
-/* ---------- Screen root ---------- */
-/* IMPORTANT: stretch (not center) so children never shrink-to-fit */
-.RecipeInputScreen {
+.RecipeInputDialog {
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -39,14 +27,13 @@
 
   display: flex;
   flex-direction: column;
-  align-items: stretch;    /* critical */
+  align-items: stretch;   
   padding: 8px;
 }
 
-/* ---------- Main column (centered via margin) ---------- */
 .GenerateContainer {
   width: 100%;
-  max-width: 520px;        /* matches dialog width */
+  max-width: 520px;  
   margin: 0 auto;
   box-sizing: border-box;
 
@@ -55,12 +42,12 @@
   gap: 14px;
 }
 
-/* Make form take the full column width always */
+
 .GenerateContainer form {
   width: 100%;
 }
 
-/* ---------- TextField row ---------- */
+
 .RecipeTextFieldBar {
   width: 100%;
   display: flex;
@@ -72,7 +59,7 @@
 .RecipeTextFieldBar.ltr { flex-direction: row; }
 .RecipeTextFieldBar.rtl { flex-direction: row-reverse; }
 
-/* Force the actual MUI FormControl to be full width */
+
 .RecipeTextField,
 .RecipeTextField .MuiFormControl-root {
   width: 100% !important;
@@ -80,7 +67,7 @@
   min-width: 0;
 }
 
-/* TextField pill styling */
+
 .RecipeTextField .MuiOutlinedInput-root,
 .ExcludeTextField .MuiOutlinedInput-root,
 .ExcludeTextField .MuiOutlinedInput-root.MuiInputBase-sizeSmall {
@@ -97,7 +84,7 @@
   box-sizing: border-box !important;
 }
 
-/* ---------- Image selector (BELOW the input, centered) ---------- */
+
 .GenerateImageSelector.MuiIconButton-root {
   width: 40px !important;
   height: 40px !important;
@@ -127,14 +114,14 @@
   color: #1e80b1 !important;
 }
 
-/* ---------- Error ---------- */
+
 .ErrorText {
   margin: 0;
   color: #d32f2f;
   font-size: 0.9rem;
 }
 
-/* ---------- Filters ---------- */
+
 .FiltersSectionContainer {
   width: 100%;
   display: flex;
@@ -158,7 +145,7 @@
   position: relative;
 }
 
-/* Filters button (full width) */
+
 .FilterBtn.MuiButton-root {
   width: 100%;
   height: 40px;
@@ -178,9 +165,9 @@
   margin: 0 !important;
 }
 
-/* Panel open/close */
+
 .PanelState {
-  position: static !important; /* takes space; no overlay clipping */
+  position: static !important; 
   width: 100%;
   margin-top: 12px;
 }

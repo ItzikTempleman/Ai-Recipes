@@ -1,6 +1,6 @@
 import { IconButton, TextField, CircularProgress, Box, Button, DialogContent } from "@mui/material";
 import { useForm } from "react-hook-form";
-import "./RecipeInputScreen.css";
+import "./RecipeInputDialog.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
@@ -33,13 +33,14 @@ import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 type Props = {
   onDone: () => void;
   onFiltersReady?: (filters: Filters) => void;
+  close:()=>void;
 };
 
 type RecipeStateType = {
   recipes: RecipeState;
 };
 
-export function RecipeInputScreen({ onDone, onFiltersReady }: Props) {
+export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
   useTitle("Generate");
 
   const dispatch = useDispatch();
@@ -170,7 +171,7 @@ onDone();
 
   return (
     <div
-      className={`RecipeInputScreen ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
+      className={`RecipeInputDialog ${recipeHasData ? "RecipeInputScreenWithPreviousData" : ""}`}
       onClickCapture={(e) => {
         if (!filtersOpen) return;
         const target = e.target as Node;
@@ -180,7 +181,17 @@ onDone();
     >
       {!recipeHasData && (
         <DialogContent>
+                  <div
+          className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
+          onClick={() => {
+            close()
+          }}
+        >
+          ❌
+        </div>
           <div className="GenerateContainer">
+
+
             <form onSubmit={handleSubmit(send)} autoComplete="off">
               <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
                 <TextField

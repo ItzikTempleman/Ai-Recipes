@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetGenerated } from "../Redux/RecipeSlice";
 import { Dialog } from "@mui/material";
-import { RecipeInputScreen } from "../Components/recipe-components/RecipeInputScreen/RecipeInputScreen";
+import { RecipeInputDialog } from "../Components/recipe-components/RecipeInputDialog/RecipeInputDialog";
 
 export function GenerateRoute() {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ export function GenerateRoute() {
   maxWidth="md"
   PaperProps={{ className: "GenerateDialogPaper" }}
 >
-  <RecipeInputScreen onDone={() => navigate("/home")} />
+  <RecipeInputDialog onDone={() => navigate("/home")} />
 </Dialog>
     );
 }
