@@ -102,6 +102,7 @@
     display: inline-flex;
   align-items: center;
   height: 40px;
+
 }
 
 .LanguageSelector {
@@ -109,6 +110,8 @@
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
+    font-size: 14px;
+    font-weight: 900;
 }
 
 /* Bigger horizontal spacing between language selector and name */
@@ -236,27 +239,18 @@
     justify-content: center;
   }
 
-  .LoginBtn h3 {
-    font-size: 15px;
-    font-weight: bold !important;
-  }
 
-  .ReturnToRecipeSection,
-  .HomeScreenBtn {
+  .ReturnToRecipeSection{
     width: 36px !important;
     height: 36px !important;
   }
 
 
-  .ReturnToRecipeSection svg,
-  .HomeScreenBtn svg {
+  .ReturnToRecipeSection svg {
     width: 26px !important;
     height: 26px !important;
   }
 
-  .HomeScreenBtn p {
-    font-size: 10px;
-  }
 
   .LoginBtn.MuiButton-root {
     width: 90px !important;
