@@ -348,14 +348,25 @@
 }
 
 .RecipeSneakPeakInfo {
-  margin-top: 22px;
+  margin: 22px 0 22px 0;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   align-items: stretch;
+  
 }
 
+.Calories,
+.Sugar,
+.Protein,
+.Time{
+  border: 1px solid #aaaaaa;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  text-align: center; 
+}
 
  .Title {
   font-size: 16px !important;

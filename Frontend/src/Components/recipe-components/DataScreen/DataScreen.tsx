@@ -1,5 +1,4 @@
 import "./DataScreen.css";
-import "./SneakPeak.css";
 import { formatAmount } from "../../../Utils/Utils";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import chef from "../../../Assets/images/chef.png";
@@ -207,7 +206,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
             )}
           </div>
 
-          <div className="Quantity">
+          <div className="Time">
             <p className="Title">{t("recipeUi.time")}</p>
             <p className="StatLine">
               <span className="StatNum BidiIso">{recipe.prepTime}</span>{" "}
