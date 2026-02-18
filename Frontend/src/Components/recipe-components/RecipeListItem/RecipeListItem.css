@@ -132,8 +132,18 @@ background-color: white;
   gap: 6px;
 }
 
+
 .TimeAndHardShipLevel.rtl > div {
-  direction: rtl;
+  display: flex !important;          /* override inline-flex */
+  width: 100% !important;           /* fill the row */
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important; /* in row-reverse, flex-start == RIGHT */
+}
+
+/* also make the clock icon sit nicely in RTL */
+.TimeAndHardShipLevel.rtl svg {
+  margin-left: auto;   /* key line */
+  margin-right: 0;
 }
 
 .MoreInfoBtn {

@@ -179,9 +179,6 @@
   margin: 0 4px 0 0;
 }
 
-.HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
-  justify-content: flex-end;
-}
 
 .GenerateRecipeBtnHomeScreen {
   height: 50px;
@@ -207,7 +204,7 @@
 }
 
 .generate_dialog_paper.MuiPaper-root {
-  border-radius: 0 !important;
+  border-radius: 8px !important;
   width: 380px !important;
 
   height: auto !important;
@@ -271,10 +268,10 @@
   }
 
   .RecipeGrid {
-    padding: 18px 14px 20px;
-    grid-template-columns: minmax(0, 360px);
+    padding: 8px;
+    grid-template-columns: minmax(0, 280px);
     justify-content: center;
-    gap: 60px;
+    gap: 30px;
   }
 
   .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {

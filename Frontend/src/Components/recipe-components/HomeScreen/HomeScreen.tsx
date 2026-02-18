@@ -147,7 +147,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
 
     if (listState === ListState.SUGGESTIONS) return t("homeScreen.suggestions") || "Suggestions";
     if (listState === ListState.RECENTLY_VIEWED) return t("homeScreen.recentlyViewed") || "Recently viewed";
-    return t("likeScreen.likedTitle") || t("nav.likes") || "Likes";
+    return t("likeScreen.likedTitle") || t("likeScreen.noLikes");
   }, [user, listState, t]);
 
   
@@ -200,14 +200,14 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
-                          <div
-                className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
-            onClick={() => setListState(ListState.SUGGESTIONS)}
-                role="button"
-                tabIndex={0}
-              >
-                <h4>{t("homeScreen.suggestions2")}</h4>
-              </div>
+<div
+  className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
+  onClick={() => setListState(ListState.SUGGESTIONS)}
+  role="button"
+  tabIndex={0}
+>
+  <h4>{t("homeScreen.suggestions")}</h4> 
+</div>
 
               
               <div
@@ -216,7 +216,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
                 role="button"
                 tabIndex={0}
               >
-                <h4>{t("homeScreen.history")}</h4>
+                <h4>{t("homeScreen.recentlyViewed")}</h4>
               </div>
               <div
                 className={`LikeBtn ${listState === ListState.FAVORITES ? "active" : ""}`}
@@ -224,7 +224,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
                 role="button"
                 tabIndex={0}
               >
-                <h4>{t("nav.likes")}</h4>
+                <h4>{t("likeScreen.likedTitle")}</h4>
               </div>
 
             </div>

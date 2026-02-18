@@ -89,6 +89,7 @@ const resources = {
         loadingNoImage: "Generating a recipe...",
       },
       likeScreen: {
+         noLikes:"No favorites",
         likedTitle: "Favorites"
       },
       filters: {
@@ -147,11 +148,6 @@ const resources = {
           registerLink: "Register",
           emailNotFound: " Email not found"
         },
-
-
-likeScreen:{
-noLikes:"No liked recipes"
-},
         registration: {
           optionalFields: "Optional fields",
           title: "Registration",
@@ -184,6 +180,7 @@ noLikes:"No liked recipes"
           phoneRequired: "Phone number is required",
         },
       },
+      
       profile: {
         addPhoneNumber: "Add phone number",
         title: "Profile",
@@ -199,6 +196,7 @@ noLikes:"No liked recipes"
         userUpdated: "User has been updated",
         imageUpdated: "Profile image updated",
       },
+
       recipeUi: {
         share: "Share",
         instructions: "Instructions",

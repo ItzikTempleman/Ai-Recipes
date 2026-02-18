@@ -10,18 +10,18 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { difficultyToString } from "../../../Utils/Utils";
-type RecipeListContext = "default" | "suggestions"| "likes";;
+
+type RecipeListContext = "default" | "suggestions" | "likes";
 
 type RecipeProps = {
   recipe: RecipeModel;
   context?: RecipeListContext;
 };
 
-
 export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const user = useSelector((state: AppState) => state.user);
   const likes = useSelector((state: AppState) => state.likes);
@@ -33,11 +33,17 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     (like) => like.userId === userId && like.recipeId === recipe.id
   );
 
+  // Title direction based on title content (keep as-is)
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
   const titleIsHebrew = hasHebrew(recipe.title);
   const titleDir: "rtl" | "ltr" = titleIsHebrew ? "rtl" : "ltr";
   const titleClass = titleIsHebrew ? "rtl" : "ltr";
-  
+
+  // UI direction based on selected language (for time/difficulty row)
+  const isRTL = (i18n.language ?? "").startsWith("he");
+  const uiDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
+  const uiClass = isRTL ? "rtl" : "ltr";
+
   async function moveToInfo(): Promise<void> {
     navigate("/recipe/" + recipe.id);
   }
@@ -51,54 +57,73 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     if (isLiked) await recipeService.unLikeRecipe(recipe.id);
     else await recipeService.likeRecipe(recipe.id);
   }
+
   function stopCardClick(e: React.MouseEvent) {
     e.stopPropagation();
   }
+
   return (
-    <div className="RecipeListItem" onClick={moveToInfo} >
+    <div className="RecipeListItem" onClick={moveToInfo}>
       <div className="RecipeMedia">
         <img
           className="CardImage"
           src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
-
         />
 
         <div className="TopRightActions">
           {user && !isSuggestions && (
-            <IconButton className="ListItemLikeBtn" onClick={(e) => {
-              stopCardClick(e);
-              handleLikeState();
-            }}>
+            <IconButton
+              className="ListItemLikeBtn"
+              onClick={(e) => {
+                stopCardClick(e);
+                handleLikeState();
+              }}
+            >
               {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </IconButton>
           )}
 
           {canDelete && (
-            <IconButton className="DeleteBtn" onClick={(e) => {
-              stopCardClick(e);
-              deleteRecipe(recipe.id);
-            }}>
+            <IconButton
+              className="DeleteBtn"
+              onClick={(e) => {
+                stopCardClick(e);
+                deleteRecipe(recipe.id);
+              }}
+            >
               <DeleteOutlineOutlinedIcon />
             </IconButton>
           )}
         </div>
       </div>
 
-      <h3 className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+      <h3
+        className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}`}
+        dir={titleDir}
+        lang={titleIsHebrew ? "he" : "en"}
+      >
         {recipe.title}
       </h3>
 
-<div className={`TimeAndHardShipLevel ${titleClass}  ${isSuggestions ? "suggestions" : ""}`} dir={titleDir} lang={titleIsHebrew ? "he" : "en"}>
+      <div
+        className={`TimeAndHardShipLevel ${uiClass}  ${
+          isSuggestions ? "suggestions" : ""
+        }`}
+        dir={uiDir}
+        lang={isRTL ? "he" : "en"}
+      >
+        <div>
+        <div><AccessTimeIcon /> {recipe.prepTime} {t("units.minuteShort")} • {difficultyToString(recipe.difficultyLevel)}</div>
+        </div>
+      </div>
 
-
-<div><AccessTimeIcon/> {recipe.prepTime } {t("units.minuteShort")} • {difficultyToString(recipe.difficultyLevel) }</div>
-</div>
-
-      <Button className="MoreInfoBtn FloatingBtn" onClick={moveToInfo} variant="contained">
+      <Button
+        className="MoreInfoBtn FloatingBtn"
+        onClick={moveToInfo}
+        variant="contained"
+      >
         {t("recipeUi.showRecipe")}
       </Button>
-
     </div>
   );
-
 }
