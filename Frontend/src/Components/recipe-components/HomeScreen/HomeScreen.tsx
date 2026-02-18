@@ -113,7 +113,11 @@ export function HomeScreen() {
             <AutoAwesome />
           </Button>
 
-          <Dialog PaperProps={{ className: "generate_dialog_paper" }} open={open} onClose={() => setOpen(false)}>
+          <Dialog
+            PaperProps={{ className: "generate_dialog_paper" }}
+            open={open}
+            onClose={() => setOpen(false)}
+          >
             <RecipeInputDialog
               onDone={() => setOpen(false)}
               onFiltersReady={setAppliedFilters}
@@ -123,7 +127,12 @@ export function HomeScreen() {
 
           {current?.title && filtersToUse && !open && (
             <div className="RecipeCardContainer">
-              <RecipeDataContainer recipe={current} filters={filtersToUse} loadImage={loadImage} onExitRecipe={handleExitRecipe} />
+              <RecipeDataContainer
+                recipe={current}
+                filters={filtersToUse}
+                loadImage={loadImage}
+                onExitRecipe={handleExitRecipe}
+              />
             </div>
           )}
 
@@ -161,7 +170,11 @@ export function HomeScreen() {
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
-              <RecipeListItem key={recipe.id ?? recipe.title} recipe={recipe} context={showingSuggestions ? "suggestions" : "default"} />
+              <RecipeListItem
+                key={recipe.id ?? recipe.title}
+                recipe={recipe}
+                context={showingSuggestions ? "suggestions" : "default"}
+              />
             ))}
           </div>
         </div>

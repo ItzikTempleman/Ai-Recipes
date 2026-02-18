@@ -1,10 +1,4 @@
-.generate_dialog_paper.MuiPaper-root {
-  border-radius: 16px !important;
-  width: 520px !important;         
-  max-width: 95vw !important;
-  max-height: 92vh !important;
-  overflow: hidden !important;
-}
+/* Dialog sizing (works with HomeScreen.css PaperProps) */
 
 .generate_dialog_paper,
 .generate_dialog_paper * {
@@ -15,25 +9,47 @@
   padding: 12px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  scrollbar-gutter: stable both-edges;
 }
 
+/* Root */
 .RecipeInputDialog {
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
   position: relative;
-  isolation: isolate;
-
   display: flex;
   flex-direction: column;
-  align-items: stretch;   
-  padding: 8px;
 }
 
+/* ✅ header row so input sits below close button */
+.DialogHeaderRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.DialogHeaderRow.rtl {
+  justify-content: flex-start;
+}
+
+.CloseBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 42px;
+  padding: 0;
+}
+
+/* Main container */
 .GenerateContainer {
   width: 100%;
-  max-width: 520px;  
+  max-width: 520px;
   margin: 0 auto;
   box-sizing: border-box;
 
@@ -42,31 +58,23 @@
   gap: 14px;
 }
 
-
 .GenerateContainer form {
   width: 100%;
 }
 
-
+/* Text field row */
 .RecipeTextFieldBar {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
   margin: 0;
 }
-
-.RecipeTextFieldBar.ltr { flex-direction: row; }
-.RecipeTextFieldBar.rtl { flex-direction: row-reverse; }
-
 
 .RecipeTextField,
 .RecipeTextField .MuiFormControl-root {
   width: 100% !important;
-  flex: 1 1 auto;
   min-width: 0;
 }
-
 
 .RecipeTextField .MuiOutlinedInput-root,
 .ExcludeTextField .MuiOutlinedInput-root,
@@ -84,12 +92,12 @@
   box-sizing: border-box !important;
 }
 
-
+/* ✅ icon inside the input edge */
 .GenerateImageSelector.MuiIconButton-root {
-  width: 40px !important;
-  height: 40px !important;
+  width: 34px !important;
+  height: 34px !important;
   padding: 0 !important;
-  margin: 0 auto !important;
+  margin: 0 !important;
 
   display: inline-flex !important;
   align-items: center !important;
@@ -105,8 +113,8 @@
 }
 
 .GenerateImageSelector svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   color: #fff;
 }
 
@@ -114,14 +122,13 @@
   color: #1e80b1 !important;
 }
 
-
 .ErrorText {
   margin: 0;
   color: #d32f2f;
   font-size: 0.9rem;
 }
 
-
+/* Filters section */
 .FiltersSectionContainer {
   width: 100%;
   display: flex;
@@ -145,7 +152,6 @@
   position: relative;
 }
 
-
 .FilterBtn.MuiButton-root {
   width: 100%;
   height: 40px;
@@ -165,27 +171,28 @@
   margin: 0 !important;
 }
 
-
 .PanelState {
-  position: static !important; 
+  position: static !important;
   width: 100%;
   margin-top: 12px;
 }
 
-.PanelState.closed { display: none !important; }
-.PanelState.open { display: block !important; }
+.PanelState.closed {
+  display: none !important;
+}
+.PanelState.open {
+  display: block !important;
+}
 
-/* Panel layout */
 .FilterPanelInnerSection {
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding:  0;
+  padding: 0;
 }
 
-/* Each filter category block + separators */
 .FilterPanelInnerSection > div {
   position: relative;
   padding-bottom: 12px;
@@ -201,7 +208,7 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
-/* Toggle button groups: single row, horizontal scroll, no cut-off */
+/* Desktop/default: scroll row */
 .FilterPanelInnerSection .MuiToggleButtonGroup-root {
   width: 100% !important;
   display: flex !important;
@@ -217,13 +224,12 @@
   box-sizing: border-box;
 }
 
-/* Toggle buttons: never shrink; stronger border */
 .FilterPanelInnerSection .MuiToggleButton-root {
   flex: 0 0 auto !important;
   min-width: max-content !important;
 
   border-radius: 999px !important;
-  border: 2px solid #0f3b52 !important; /* stronger (fix weak left border look) */
+  border: 2px solid #0f3b52 !important;
   background: #fff !important;
 
   padding: 8px 14px !important;
@@ -231,27 +237,19 @@
   box-shadow: none !important;
 }
 
-.FilterPanelInnerSection .MuiToggleButton-root:hover {
-  border-color: #0b2c3d !important;
-}
-
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected,
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover,
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:active,
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus,
-.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:focus-visible {
+.FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover {
   background: #125e84 !important;
   color: #fff !important;
   border-color: #125e84 !important;
 }
 
-/* Remove grouped borders that can cause odd edges */
 .FilterPanelInnerSection .MuiToggleButtonGroup-grouped {
   margin: 0 !important;
   border: 0 !important;
 }
 
-/* ---------- Exclude + Servings ---------- */
+/* Exclude + Servings */
 .ExcludeGroup {
   width: 100%;
   display: flex;
@@ -270,7 +268,7 @@
   width: 100% !important;
 }
 
-/* Servings row */
+/* ✅ tighter like filter button */
 .Servings {
   width: 100%;
   height: 40px;
@@ -279,11 +277,11 @@
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
-  padding: 0 14px;
+  padding: 0 12px;
   box-sizing: border-box;
-  gap: 10px;
+  gap: 12px;
 }
 
 .Servings p {
@@ -295,7 +293,7 @@
 
 .QuantitySelector {
   height: 28px;
-  min-width: 110px;
+  min-width: 72px;
   border: none !important;
   outline: none;
   background: rgba(255, 255, 255, 0.9);
@@ -306,7 +304,7 @@
   border-radius: 12px;
 }
 
-/* ---------- Generate button ---------- */
+/* Generate button */
 .GenerateRecipeBtn {
   width: 100% !important;
   height: 44px;
@@ -330,7 +328,7 @@
   color: #eab928 !important;
 }
 
-/* ---------- Loading ---------- */
+/* Loading */
 .LoadingWithoutImage,
 .ImageLoadingMessage {
   margin: 0;
@@ -340,21 +338,42 @@
   text-align: center;
 }
 
-.ProgressBar { color: #666 !important; }
-.ProgressBar .MuiCircularProgress-root { color: #545454 !important; }
 
-/* Hide generate form when recipe exists */
+.ProgressBar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.ProgressBar .MuiCircularProgress-root {
+  color: #545454 !important;
+}
+
+/* Hide form if recipe exists */
 .RecipeInputScreenWithPreviousData .GenerateContainer {
   display: none;
 }
-
-/* ---------- Mobile ---------- */
+.DoNotExitText{
+  color: red;
+}
+/* ✅ Mobile fixes: no clipped pills ("Kosher") */
 @media (max-width: 600px) {
   .generate_dialog_paper.MuiPaper-root {
     width: 95vw !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
   }
 
   .GenerateContainer {
     max-width: 100%;
+  }
+
+  /* wrap pills instead of cutting them */
+  .FilterPanelInnerSection .MuiToggleButtonGroup-root {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    justify-content: center !important;
   }
 }

@@ -9,7 +9,7 @@
   flex-direction: column;
 }
 
-.HomeScreen>* {
+.HomeScreen > * {
   position: relative;
   z-index: 1;
 }
@@ -107,7 +107,7 @@
 .SuggestionsBtn.active {
   margin: 0 0 0 4px;
   color: #ff6f15;
-  border-bottom: 2px solid #ff6f15 ;
+  border-bottom: 2px solid #ff6f15;
 }
 
 .RecentlyViewedBtn {
@@ -138,23 +138,18 @@
   overflow: visible;
 }
 
-.RecipeGrid>* {
+.RecipeGrid > * {
   min-width: 0;
 }
-
-
 
 .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
   justify-content: flex-end;
 }
 
-
-
 .GenerateRecipeBtnHomeScreen {
-
   height: 44px;
   margin-top: 20px !important;
-width: 300px !important;
+  width: 300px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   display: flex !important;
@@ -166,6 +161,7 @@ width: 300px !important;
   justify-content: center;
   gap: 10px;
 }
+
 .GenerateRecipeBtnHomeScreen.MuiButton-root {
   font-size: 18px !important;
 }
@@ -174,15 +170,17 @@ width: 300px !important;
   color: #eab928 !important;
 }
 
+/* ✅ dialog sizing: desktop + mobile safe */
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 16px !important;
-  width: 420px !important;
-  height: 650px !important;
-  overflow-x: hidden !important;
+  width: 460px !important;
+height: 650px;
+  overflow: hidden !important;
 }
 
 .generate_dialog_paper .MuiDialogContent-root {
-  padding: 8px !important;
+  padding: 6px !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
 }
 
@@ -190,7 +188,6 @@ width: 300px !important;
 .generate_dialog_paper * {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
 }
-
 
 @media (max-width: 600px) {
   .HomeScreen {
@@ -228,9 +225,15 @@ width: 300px !important;
     justify-content: center !important;
   }
 
-
   .HomeScreenTitleWrapper.rtl {
     margin-left: auto !important;
     margin-right: auto !important;
+  }
+
+  /* ✅ force dialog to fit phone viewport */
+  .generate_dialog_paper.MuiPaper-root {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
   }
 }

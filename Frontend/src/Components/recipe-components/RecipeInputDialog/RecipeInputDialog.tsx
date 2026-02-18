@@ -1,4 +1,12 @@
-import { IconButton, TextField, CircularProgress, Box, Button, DialogContent } from "@mui/material";
+import {
+  IconButton,
+  TextField,
+  CircularProgress,
+  Box,
+  Button,
+  DialogContent,
+  InputAdornment,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./RecipeInputDialog.css";
 import { useEffect, useState, useRef } from "react";
@@ -33,7 +41,7 @@ import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 type Props = {
   onDone: () => void;
   onFiltersReady?: (filters: Filters) => void;
-  close:()=>void;
+  close?: () => void; // ✅ optional: fixes TS2741 in DialogRoute.tsx
 };
 
 type RecipeStateType = {
@@ -60,12 +68,6 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
   const [hasGluten, setHasGluten] = useState(GlutenRestrictions.DEFAULT);
   const [dietType, setDietType] = useState(DietaryRestrictions.DEFAULT);
   const filtersWrapRef = useRef<HTMLDivElement | null>(null);
-  const [_appliedFilters, setAppliedFilters] = useState({
-    sugarLevel: SugarRestriction.DEFAULT,
-    hasLactose: LactoseRestrictions.DEFAULT,
-    hasGluten: GlutenRestrictions.DEFAULT,
-    dietType: DietaryRestrictions.DEFAULT,
-  });
 
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(() => i18n.language?.startsWith("he"));
@@ -73,11 +75,15 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
   const [initialQuantity, setQuantity] = useState(1);
 
   const { loading, current, error } = useSelector((s: RecipeStateType) => s.recipes);
-  const recipe = current;
-  const recipeHasData = Boolean(recipe?.title);
+  const recipeHasData = Boolean(current?.title);
 
   const didResetOnEnterRef = useRef(false);
   const didResetAfterGenerateRef = useRef(false);
+
+  const handleClose = () => {
+    // close dialog if provided, otherwise fall back to onDone (prevents TS issues)
+    (close ?? onDone)();
+  };
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
@@ -140,29 +146,26 @@ export function RecipeInputDialog({ close, onDone, onFiltersReady }: Props) {
         .map((s) => s.trim())
         .filter(Boolean);
 
-      const used = { sugarLevel, hasLactose, hasGluten, dietType };
-      setAppliedFilters(used);
+      const used: Filters = { sugarLevel, hasLactose, hasGluten, dietType };
       onFiltersReady?.(used);
 
-const generated = await recipeService.generateRecipe(
-  recipeTitle,
-  hasImage,
-  initialQuantity,
-  sugarLevel,
-  hasLactose,
-  hasGluten,
-  dietType,
-  excludedList
-);
+      const generated = await recipeService.generateRecipe(
+        recipeTitle,
+        hasImage,
+        initialQuantity,
+        sugarLevel,
+        hasLactose,
+        hasGluten,
+        dietType,
+        excludedList
+      );
 
+      // ✅ MUST: if image requested but backend didn't provide imageUrl, generate preview now
+      if (hasImage && generated && !generated.imageUrl) {
+        await loadImage(generated);
+      }
 
-if (hasImage && generated && !generated.imageUrl) {
-  await loadImage(generated);
-}
-
-onDone();
-
-  
+      onDone();
     } catch (err: unknown) {
       notify.error(err);
       onDone();
@@ -181,18 +184,15 @@ onDone();
     >
       {!recipeHasData && (
         <DialogContent>
-                  <div
-          className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
-          onClick={() => {
-            close()
-          }}
-        >
-          ❌
-        </div>
+          <div className={`DialogHeaderRow ${isRTL ? "rtl" : "ltr"}`}>
+            <button type="button" className="CloseBtn" onClick={handleClose} aria-label="Close">
+              ❌
+            </button>
+          </div>
+
           <div className="GenerateContainer">
-
-
             <form onSubmit={handleSubmit(send)} autoComplete="off">
+              {/* ✅ text field is UNDER close button */}
               <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
                 <TextField
                   dir={isRTL ? "rtl" : "ltr"}
@@ -201,22 +201,28 @@ onDone();
                   placeholder={t("generate.labelGenerate")}
                   {...register("query", { required: `${t("generate.requiredTitle")}` })}
                   disabled={loading}
-                  InputProps={{ dir: isRTL ? "rtl" : "ltr" }}
+                  InputProps={{
+                    dir: isRTL ? "rtl" : "ltr",
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          type="button"
+                          className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
+                          onClick={() => setHasImage((v) => !v)}
+                          disabled={loading}
+                          edge="end"
+                        >
+                          {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
                   InputLabelProps={{
                     style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
                   }}
                 />
               </div>
-
-              <IconButton
-                type="button"
-                className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
-                onClick={() => setHasImage((v) => !v)}
-                disabled={loading}
-              >
-                {hasImage ? <ImageIcon /> : <HideImageOutlinedIcon />}
-              </IconButton>
 
               {error && <div className="ErrorText">{error}</div>}
 
@@ -303,11 +309,19 @@ onDone();
               )}
 
               {loading ? (
-                <IconButton className="ProgressBar" edge="end" disabled>
+                <div className="ProgressBar">
                   <Box>
                     <CircularProgress />
                   </Box>
-                </IconButton>
+                  <div className="DoNotExitText">
+                    <h3>
+                      {t("generate.warning1")}
+                      </h3>
+                  </div>
+                  <div>
+                    <h3>{t("generate.warning2")}</h3>
+                  </div>
+                </div>
               ) : (
                 <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
                   {t("homeScreen.generate")}
