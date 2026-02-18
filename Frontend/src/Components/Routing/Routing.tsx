@@ -8,7 +8,7 @@ import { LoginScreen } from "../user-components/LoginScreen/LoginScreen";
 import { RecipeInfoScreen } from "../recipe-components/RecipeInfoScreen/RecipeInfoScreen";
 import { RegistrationScreen } from "../user-components/RegistrationScreen/RegistrationScreen";
 import { ProfileScreen } from "../user-components/ProfileScreen/ProfileScreen";
-import { LikesScreen } from "../recipe-components/LikesScreen/LikesScreen";
+
 import { PrivacyPolicy } from "../user-components/PrivacyPolicy/PrivacyPolicy";
 import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
 import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
@@ -32,7 +32,7 @@ export function Routing() {
                 <Route path="/registration" element={<RegistrationScreen />} />
                 <Route path="/profile" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home" replace />} />
                 <Route path="/share-render/:recipeId" element={<PdfScreen />} />
-                <Route path="/likes" element={<LikesScreen />} />
+        
                 <Route path="/reset" element={<ResetPasswordScreen />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/data-deletion" element={<DataDeletion />} />

@@ -200,6 +200,17 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
+
+                          <div
+                className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
+            onClick={() => setListState(ListState.SUGGESTIONS)}
+                role="button"
+                tabIndex={0}
+              >
+                <h4>{t("homeScreen.suggestions2")}</h4>
+              </div>
+
+              
               <div
                 className={`RecentlyViewedBtn ${listState === ListState.RECENTLY_VIEWED ? "active" : ""}`}
                 onClick={() => setListState(ListState.RECENTLY_VIEWED)}
@@ -209,14 +220,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
                 <h4>{t("homeScreen.history")}</h4>
               </div>
 
-              <div
-                className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
-            onClick={() => setListState(ListState.SUGGESTIONS)}
-                role="button"
-                tabIndex={0}
-              >
-                <h4>{t("homeScreen.suggestions2")}</h4>
-              </div>
+  
 
               <div
                 className={`LikeBtn ${listState === ListState.FAVORITES ? "active" : ""}`}
@@ -247,7 +251,15 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
               <RecipeListItem
                 key={recipe.id ?? recipe.title}
                 recipe={recipe}
-             context={user && listState === ListState.SUGGESTIONS ? "suggestions" : "default"}
+            context={
+  !user
+    ? "suggestions"
+    : listState === ListState.SUGGESTIONS
+      ? "suggestions"
+      : listState === ListState.FAVORITES
+        ? "likes"
+        : "default"
+}
               />
             ))}
           </div>

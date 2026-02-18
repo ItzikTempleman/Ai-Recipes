@@ -7,7 +7,7 @@ import { FilterBadges } from "../FilterBadges/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../../Models/RecipeModel";
-import ImageSearchIcon from "@mui/icons-material/ImageSearch";
+import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
 import ReplyIcon from "@mui/icons-material/Reply";
@@ -243,7 +243,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
           ) : (
             !shareMode && (
               <Button className="GenerateRecipeBtnHomeScreen" variant="contained" onClick={handleLoadImage}>
-                <ImageSearchIcon />
+                <CameraEnhanceIcon />
                 {t("recipeUi.loadImage")}
               </Button>
             )

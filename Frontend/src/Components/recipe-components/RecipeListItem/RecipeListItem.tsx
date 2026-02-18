@@ -12,12 +12,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { difficultyToString } from "../../../Utils/Utils";
-type RecipeListContext = "default" | "suggestions";
+type RecipeListContext = "default" | "suggestions"| "likes";;
 
 type RecipeProps = {
   recipe: RecipeModel;
   context?: RecipeListContext;
 };
+
 
 export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
 
   const isSuggestions = context === "suggestions";
   const userId = user?.id;
-
+  const canDelete = !!user && context !== "suggestions" && context !== "likes";
   const isLiked = !!likes.find(
     (like) => like.userId === userId && like.recipeId === recipe.id
   );
@@ -72,7 +73,7 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
             </IconButton>
           )}
 
-          {!isSuggestions && (
+          {canDelete && (
             <IconButton className="DeleteBtn" onClick={(e) => {
               stopCardClick(e);
               deleteRecipe(recipe.id);

@@ -108,14 +108,14 @@
 }
 
 .AskModelDiv {
-  border: 1px solid #3e3e3ea4;
-  border-radius: 8px;
-  padding: 0 12px;
-  background: #ffffff !important;
+  border: 1px solid #868585a4;
+  border-radius: 4px;
+  padding: 0 8px;
+
   display: flex;
   align-items: center;
   width: 140px;
-  margin-top: 36px;
+  margin-top: 20px;
   align-content: center;
   gap: 12px;
 }

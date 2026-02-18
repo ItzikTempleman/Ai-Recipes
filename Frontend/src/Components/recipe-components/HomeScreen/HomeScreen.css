@@ -92,7 +92,6 @@
   direction: rtl;
 }
 
-
 .LikeBtn {
   background: transparent !important;
   box-shadow: none !important;
@@ -104,12 +103,13 @@
   padding: 6px 18px !important;
 }
 
+/* ✅ FIX: do NOT nuke borders on children, because the underline is a border-bottom on h4 */
 .LikeBtn * {
   background: transparent !important;
   box-shadow: none !important;
-  border: none !important;
 }
-.LikeBtn ,
+
+.LikeBtn,
 .RecentlyViewedBtn,
 .SuggestionsBtn {
   padding: 6px 18px;
@@ -125,8 +125,7 @@
 .RecentlyViewedBtn.active,
 .SuggestionsBtn.active {
   color: #ff6f15;
- 
-  margin: 0; 
+  margin: 0;
 }
 
 .LikeBtn h4,
@@ -149,7 +148,6 @@
   position: relative;
 }
 
-
 .RecipeGrid {
   width: 100%;
   max-width: 1480px;
@@ -166,7 +164,6 @@
 .RecipeGrid > * {
   min-width: 0;
 }
-
 
 .SelectListDiv.rtl .RecentlyViewedBtn.active,
 .SelectListDiv.rtl .SuggestionsBtn.active,
@@ -205,9 +202,9 @@
   border-radius: 0 !important;
   width: 380px !important;
 
-  height: auto !important;     
-  max-height: 90vh !important;  
-  overflow: visible !important; 
+  height: auto !important;
+  max-height: 90vh !important;
+  overflow: visible !important;
 }
 
 .generate_dialog_paper .MuiDialogContent-root {
@@ -220,16 +217,17 @@
 .generate_dialog_paper * {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
 }
+
 .generate_dialog_root .MuiDialog-container {
-  align-items: flex-start !important; 
+  align-items: flex-start !important;
 }
 
-
 .generate_dialog_root .MuiPaper-root {
-  margin-top: 200px !important;   /* VERY low */
+  margin-top: 200px !important; /* VERY low */
   margin-bottom: 24px !important;
   max-height: calc(100vh - 324px) !important;
 }
+
 @media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 2px;
