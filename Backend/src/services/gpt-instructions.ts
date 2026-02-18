@@ -378,27 +378,21 @@ TOTAL PROTEIN CALCULATION (CRITICAL — MUST FOLLOW):
   - If the recipe includes sauce and binders, values like 8–14 g/100g are common; 20 g/100g is suspicious unless it is nearly pure fish.
 
 "totalSugar":
-- The TOTAL SUGAR in the entire recipe (added + naturally occurring), in grams.
-- Estimate realistically based on ingredients:
+- The TOTAL SUGAR in the entire recipe from ALL ingredients combined (naturally occurring + added), in grams.
+- Estimate realistically based on ingredients (examples):
   - flour: ~1 g sugar per cup (approx)
-  - tomato sauce: often 4–10 g sugar per ½ cup depending on tomatoes
-  - vegetables: small natural sugars
-- If SugarRestriction = 2 (NONE): added sugar must be 0, but total sugar can still be > 0 due to natural sugars.
+  - tomato paste/sauce: often 4–10 g sugar per ½ cup depending on tomatoes
+  - onions and vegetables: small natural sugars
+  - dairy and plant milks may contain sugar depending on type
+- Whole fresh fruit pieces may be excluded from the estimate ("fruit sugar is not considered").
+- Fruit that is processed or concentrated MUST be counted (juice, puree, jam, syrup, dried fruit, concentrate, cooked fruit).
 
-  - If SugarRestriction = 0 (DEFAULT):
-      • Use and count added sugar normally when the dish requires it.
-      • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
-  - If SugarRestriction = 1 (LOW):
-      • Reduce added sugar compared to a standard recipe, but still include it if required.
-      • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
-  - If SugarRestriction = 2 (NONE):
-      • Do NOT include sugar in any ingredient.
-      • Set "totalSugar" = 0.
-  - If a sugar replacement is used:
-      • It must NOT be sugar.
-      • It must be explicitly named as a dietary sweetener
-        (e.g. "סוכרזית", "סטיביה", "ממתיק מלאכותי"),
-      • AND it must NOT increase "totalSugar".
+- If SugarRestriction = 0 (DEFAULT):
+    • Added sugar is allowed when appropriate; count it in the total.
+- If SugarRestriction = 1 (LOW):
+    • Reduce added sugar when possible; still compute the true total sugar.
+- If SugarRestriction = 2 (NONE):
+    • Added sugar and sweeteners must be 0, but total sugar may still be > 0 due to natural sugars (e.g., tomatoes).
 
    - "healthLevel":
      - An integer from 0 to 10 describing overall healthiness.
@@ -633,18 +627,20 @@ The example numbers below MUST be replaced with realistic values that follow rul
   The serving count is provided only in "amountOfServings".
 - When calculating protein level, return the actual real-life accurate protein level **per 100 grams** and do not make up random values.
 When calculating sugar:
- - "totalSugar" is the TOTAL ADDED sugar in the entire recipe, in TABLESPOONS.
+ - "totalSugar" is the TOTAL SUGAR in the entire recipe from ALL ingredients combined (naturally occurring + added), in GRAMS.
+ - It must be a realistic non-negative number and MUST NOT default to 0 when ingredients naturally contain sugar (e.g., tomato paste/sauce, onions, dairy, flour).
+ - Whole fresh fruit pieces (e.g., a sliced apple, fresh berries) may be treated as "fruit sugar is not considered" and EXCLUDED from the "totalSugar" estimate.
+ - Fruit that is processed or concentrated MUST be counted (fruit juice, puree, jam, syrup, dried fruit, fruit concentrate, cooked-down fruit).
  - If SugarRestriction = 0 (DEFAULT):
-    • Added sugar is allowed and should be used when appropriate.
-    • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
+    • Added sugar IS allowed when appropriate for the dish.
+    • "totalSugar" MUST reflect the true total sugar (natural + any added).
  - If SugarRestriction = 1 (LOW):
-    • Reduce added sugar compared to standard, but still include it if needed for the dish.
-    • "totalSugar" MUST reflect the actual added sugar used (do NOT default to 0).
+    • Reduce added sugar compared to standard when possible, but keep the dish valid.
+    • "totalSugar" MUST still reflect the true total sugar (natural + any added).
  - If SugarRestriction = 2 (NONE):
-    • Do NOT add sugar in any ingredient.
-    • Set "totalSugar" = 0.
- - If a dietary sweetener is used (e.g. סוכרזית/סטיביה/ממתיק מלאכותי),
-   it must be named explicitly and must NOT increase "totalSugar".
+    • Do NOT add sugar or any sweeteners (including honey/syrups/artificial sweeteners/sugar alcohols).
+    • "totalSugar" may still be > 0 due to natural sugars (e.g., tomatoes, onions), except whole fresh fruit which may be excluded as above.
+ - If a dietary sweetener is used (e.g. סוכרזית/סטיביה/ממתיק מלאכותי), it must be named explicitly and it must NOT increase "totalSugar".
   
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.
