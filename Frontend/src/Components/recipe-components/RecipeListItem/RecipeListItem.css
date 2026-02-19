@@ -4,25 +4,20 @@
   width: 100%;
   margin: 0;
   position: relative;
-border-radius: 16px;
-
+  border-radius: 16px;
   overflow: hidden;
-background-color: white;
+  background-color: white;
   box-shadow: 0 10px 18px 5px rgba(57, 59, 63, 0.625);
   transition: transform 160ms ease, box-shadow 160ms ease;
+
+  /* footer at bottom */
+  display: flex;
+  flex-direction: column;
 }
 
 .RecipeListItem:hover {
   cursor: pointer;
   transform: translateY(-2px);
-}
-
-/* Full card is the image */
-.RecipeMedia {
-  position: relative;
-  width: 100%;
-  height: auto;
-  overflow: hidden;
 }
 
 .CardImage {
@@ -32,30 +27,13 @@ background-color: white;
   object-fit: cover;
 }
 
-/* subtle readability layer at bottom (helps title + button) */
-.RecipeMedia::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.12) 35%,
-    rgba(0, 0, 0, 0) 70%
-  );
-}
-
-/* Actions on top-right over image */
 .TopRightActions {
   position: absolute;
   top: 12px;
   right: 12px;
-
   display: flex;
   align-items: center;
   gap: 8px;
-
   z-index: 5;
 }
 
@@ -63,10 +41,8 @@ background-color: white;
 .DeleteBtn {
   padding: 6px !important;
   border-radius: 12px !important;
-
   border: 1px solid rgba(202, 204, 207, 0.65) !important;
   background: rgba(255, 255, 255, 0.78) !important;
-
   backdrop-filter: blur(8px);
   box-shadow: 0 8px 14px rgba(57, 59, 63, 0.18);
   transition: transform 140ms ease, box-shadow 140ms ease;
@@ -88,11 +64,10 @@ background-color: white;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.08));
 }
 
-
 .RecipeName {
-    font-size: 22px;
-      color: #393939;
-      margin: 12px;
+  font-size: 22px;
+  color: #393939;
+  margin: 12px;
 }
 
 .RecipeName.ltr {
@@ -109,55 +84,78 @@ background-color: white;
   text-align: right;
 }
 
-.TimeAndHardShipLevel {
-  margin: 8px;
+/* ===== Footer (time + button at bottom) ===== */
+
+.CardFooter {
+  margin-top: auto; /* push to bottom */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
+  padding-bottom: 6px;
+}
+
+/* ===== Time row (FORCED centered + forced flip) ===== */
+
+.TimeAndHardShipLevel {
+  margin: 8px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;      /* vertical center */
+  justify-content: center !important;  /* horizontal center */
   font-size: 14px;
   color: #4b5563;
 }
 
-.TimeAndHardShipLevel.ltr {
-  justify-content: flex-start; /* left side */
+/* The row holding icon + text */
+.TimeRow {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+
+  /* stop bidi from doing weird stuff */
+  unicode-bidi: isolate !important;
+  direction: ltr !important; /* keep layout stable */
 }
 
-.TimeAndHardShipLevel.rtl {
-  justify-content: flex-end;   /* right side */
+/* Ensure both children behave as flex items */
+.TimeRow > * {
+  flex: 0 0 auto !important;
 }
 
-.TimeAndHardShipLevel > div{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* default: icon first */
+.TimeRow .ClockIcon {
+  order: 0 !important;
 }
 
-
-.TimeAndHardShipLevel.rtl > div {
-  display: flex !important;          /* override inline-flex */
-  width: 100% !important;           /* fill the row */
+/* RTL: flip order so ICON ends up on the other side */
+.TimeAndHardShipLevel.rtl .TimeRow {
   flex-direction: row-reverse !important;
-  justify-content: flex-start !important; /* in row-reverse, flex-start == RIGHT */
 }
 
-/* also make the clock icon sit nicely in RTL */
-.TimeAndHardShipLevel.rtl svg {
-  margin-left: auto;   /* key line */
-  margin-right: 0;
+/* HARD reset: kill any svg margin that can push alignment */
+.TimeRow svg {
+  margin: 0 !important;
 }
+
+/* text block */
+.TimeRow span {
+  unicode-bidi: isolate !important;
+}
+
+/* ===== Button ===== */
 
 .MoreInfoBtn {
   margin-top: 20px !important;
   margin-bottom: 8px !important;
   height: 36px !important;
   border-radius: 8px !important;
-background-color: white !important;
+  background-color: white !important;
   font-size: 18px !important;
   color: #393939 !important;
   text-shadow: none !important;
-    box-shadow: none !important;
+  box-shadow: none !important;
   z-index: 5;
-
 }
 
 .MoreInfoBtn:hover {
@@ -167,4 +165,31 @@ background-color: white !important;
     0 22px 44px rgba(243, 162, 0, 0.22),
     0 10px 20px rgba(15, 23, 42, 0.14),
     0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
+}
+
+@media (max-width: 600px) {
+  .CardImage {
+    height: 210px;
+  }
+    .RecipeName {
+    margin: 8px 12px;        /* was 12px */
+    font-size: 20px;         /* slightly smaller */
+    line-height: 1.15;
+  }
+
+  .CardFooter {
+    padding-bottom: 0px;     /* was 6px */
+  }
+
+  .TimeAndHardShipLevel {
+    margin: 4px 0 !important; /* was 8px */
+    font-size: 13px;
+  }
+
+  .MoreInfoBtn {
+    margin-top: 6px !important;  /* was 20px */
+    margin-bottom: 12px !important;/* was 8px */
+    height: 20px !important;      /* was 36px */
+    font-size: 16px !important;   /* was 18px */
+  }
 }

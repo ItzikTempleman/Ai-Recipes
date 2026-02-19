@@ -80,7 +80,6 @@
   align-items: center;
   width: fit-content;
   max-width: 100%;
-  border-radius: 18px;
   padding: 8px;
   margin-top: 30px;
   gap: 0;
@@ -182,7 +181,7 @@
 
 .GenerateRecipeBtnHomeScreen {
   height: 50px;
-  margin-top: 20px !important;
+  margin-top: 0 !important;
   width: 300px !important;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -259,6 +258,11 @@
     margin-inline-end: 0;
     padding-top: 0;
   }
+.SelectListDiv {
+ margin-top: 20px;
+  padding: 0;
+
+}
 
   .SelectListDiv.ltr,
   .SelectListDiv.rtl {
@@ -268,10 +272,10 @@
   }
 
   .RecipeGrid {
-    padding: 8px;
-    grid-template-columns: minmax(0, 280px);
+    padding: 0;
+    grid-template-columns: minmax(0, 320px);
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
   }
 
   .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
@@ -289,4 +293,9 @@
     max-width: 95vw !important;
     max-height: 90vh !important;
   }
+  .LikeBtn h4,
+.RecentlyViewedBtn h4,
+.SuggestionsBtn h4 {
+  font-size: 15px;
+}
 }

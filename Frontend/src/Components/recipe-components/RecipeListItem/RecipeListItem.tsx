@@ -105,25 +105,25 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
         {recipe.title}
       </h3>
 
-      <div
-        className={`TimeAndHardShipLevel ${uiClass}  ${
-          isSuggestions ? "suggestions" : ""
-        }`}
-        dir={uiDir}
-        lang={isRTL ? "he" : "en"}
-      >
-        <div>
-        <div><AccessTimeIcon /> {recipe.prepTime} {t("units.minuteShort")} • {difficultyToString(recipe.difficultyLevel)}</div>
+      <div className={`CardFooter ${uiClass}`} dir={uiDir} lang={isRTL ? "he" : "en"}>
+        <div className={`TimeAndHardShipLevel ${uiClass}`}>
+          <div className="TimeRow">
+            <AccessTimeIcon className="ClockIcon" />
+            <span>
+              {recipe.prepTime} {t("units.minuteShort")} •{" "}
+              {difficultyToString(recipe.difficultyLevel)}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <Button
-        className="MoreInfoBtn FloatingBtn"
-        onClick={moveToInfo}
-        variant="contained"
-      >
-        {t("recipeUi.showRecipe")}
-      </Button>
-    </div>
+        <Button
+          className="MoreInfoBtn FloatingBtn"
+          onClick={moveToInfo}
+          variant="contained"
+        >
+          {t("recipeUi.showRecipe")}
+        </Button>
+      </div>
+      </div>
   );
 }
