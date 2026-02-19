@@ -227,7 +227,7 @@
 }
 
 .generate_dialog_root .MuiPaper-root {
-  margin-top: 100px !important;
+  margin-top: 800px !important;
   margin-bottom: 24px !important;
   max-height: calc(100vh - 324px) !important;
 }
