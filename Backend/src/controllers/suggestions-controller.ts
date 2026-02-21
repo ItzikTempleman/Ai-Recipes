@@ -14,8 +14,12 @@ class SuggestionsController {
         this.router.post("/api/daily-recipes", verificationMiddleware.verifyOptional, this.generateToday);
     };
 
-    private async getToday(_: Request, response: Response) {
-        const suggestionsModel = await suggestionsService.getToday();
+    private async getToday(request: Request, response: Response) {
+          const lang = normalizeLang(
+      request.header("accept-language") ?? request.header("x-language")
+    );
+
+        const suggestionsModel = await suggestionsService.getToday(lang);
         response.status(StatusCode.OK).json(suggestionsModel);
     };
 
@@ -26,7 +30,7 @@ private async generateToday(request: Request, response: Response) {
 
   await suggestionsService.generateToday(lang);
 
-  const suggestionsModel = await suggestionsService.getToday();
+  const suggestionsModel = await suggestionsService.getToday(lang);
   response.status(StatusCode.Created).json(suggestionsModel);
 }
 };

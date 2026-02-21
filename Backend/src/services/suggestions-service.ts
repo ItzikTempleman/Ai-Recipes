@@ -15,13 +15,17 @@ import { generateImage } from "./image-service";
 import { getIdeas } from "../utils/normalize-language";
 
 const ISRAEL_TZ = "Asia/Jerusalem";
-const DAILY_COUNT = 5;
+const DAILY_TOTAL = 8;
+const DAILY_PER_LANG = 4;
+const DAILY_RETURN = 4;
 
-type UserIdRow = { id: number };
 type DailyLang = "en" | "he";
 
-
 class SuggestionsService {
+
+  private isHebrewText(s: string): boolean {
+    return /[\u0590-\u05FF]/.test(s);
+  }
 
   public async generateToday(lang: DailyLang = "en"): Promise<void> {
 
@@ -38,24 +42,41 @@ class SuggestionsService {
       const existsValues = [suggestionDateString];
       const existing = await dal.execute(existsSql, existsValues) as any[];
 
-      if (Number(existing[0]?.cnt ?? 0) >= DAILY_COUNT) return;
+      if (Number(existing[0]?.cnt ?? 0) >= DAILY_TOTAL) return;
 
       const systemUserId = await this.ensureSystemUserId();
 
       const usedKeys = new Set<string>();
       const usedImageNames = new Set<string>();
 
-      const maxAttempts = 60;
-      let attempts = 0;
+      const plan: DailyLang[] = [
+        ...Array(DAILY_PER_LANG).fill("en"),
+        ...Array(DAILY_PER_LANG).fill("he")
+      ];
 
-      for (let recipeIndex = 0; recipeIndex < DAILY_COUNT && attempts < maxAttempts; attempts++) {
+      const maxAttempts = 120;
+      let attempts = 0;
+      let recipeIndex = 0;
+
+      for (; recipeIndex < DAILY_TOTAL && attempts < maxAttempts; attempts++) {
         try {
-          const input = this.createRandomDailyInputModel(lang);
+          const plannedLang = plan[recipeIndex] ?? lang;
+
+          const input = this.createRandomDailyInputModel(plannedLang);
           const data = await recipeService.generateInstructions(input, true);
-          const normalizedTitle = String(data.title ?? "").trim().normalize(`NFKC`).replace(/\s+/g, " ").replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "").toLowerCase();
+
+          const normalizedTitle = String(data.title ?? "")
+            .trim()
+            .normalize("NFKC")
+            .replace(/\s+/g, " ")
+            .replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "")
+            .toLowerCase();
+
           if (!normalizedTitle) continue;
+
           const dedupeKey = normalizedTitle;
           if (usedKeys.has(dedupeKey)) continue;
+
           let fileName: string | null = null;
 
           try {
@@ -100,8 +121,7 @@ class SuggestionsService {
             countryOfOrigin: String(data.countryOfOrigin ?? ""),
             imageName: fileName,
             userId: systemUserId
-          }
-        );
+          });
 
           const saved = await recipeService.saveRecipe(recipe, systemUserId);
           if (!saved.id) throw new Error("Recipe insert failed");
@@ -114,6 +134,7 @@ class SuggestionsService {
           if (fileName) usedImageNames.add(fileName);
 
           recipeIndex++;
+
         } catch (e) {
           console.error(`Daily suggestion iteration failed:`, e);
         }
@@ -126,20 +147,42 @@ class SuggestionsService {
     }
   }
 
-  public async getToday(): Promise<SuggestionsModel> {
+  public async getToday(lang: DailyLang = "en"): Promise<SuggestionsModel> {
 
     const suggestionDateString = new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
 
-    const sql = `select recipe.* from dailySuggestions join recipe on recipe.id = dailySuggestions.recipeId where dailySuggestions.suggestionDate = ? order by dailySuggestions.id asc limit 5`;
+    const sql = `
+      select recipe.* 
+      from dailySuggestions 
+      join recipe on recipe.id = dailySuggestions.recipeId 
+      where dailySuggestions.suggestionDate = ? 
+      order by dailySuggestions.id asc 
+      limit 12
+    `;
     const values = [suggestionDateString];
     const rows = await dal.execute(sql, values) as DbRecipeRow[];
-    const recipes = rows.map(mapDbRowToFullRecipe);
+    const all = rows.map(mapDbRowToFullRecipe);
+
+    const wantHebrew = lang === "he";
+
+    const filtered = all.filter(r => {
+      const title = String((r as any).title ?? "");
+      const description = String((r as any).description ?? "");
+      const isHe = this.isHebrewText(title) || this.isHebrewText(description);
+      return wantHebrew ? isHe : !isHe;
+    });
+
+    const recipes =
+      filtered.length >= DAILY_RETURN
+        ? filtered.slice(0, DAILY_RETURN)
+        : [...filtered, ...all.filter(x => !filtered.includes(x))].slice(0, DAILY_RETURN);
 
     const model = new SuggestionsModel(
       {
         suggestionDate: suggestionDateString,
         recipes
-      } as unknown as SuggestionsModel);
+      } as unknown as SuggestionsModel
+    );
 
     model.validate();
     return model;
@@ -151,31 +194,28 @@ class SuggestionsService {
 
     const model = new InputModel(
       {
-      query,
-      quantity: 1,
-      sugarRestriction: SugarRestriction.DEFAULT,
-      lactoseRestrictions: LactoseRestrictions.DEFAULT,
-      glutenRestrictions: GlutenRestrictions.DEFAULT,
-      dietaryRestrictions: DietaryRestrictions.KOSHER,
-      caloryRestrictions: CaloryRestrictions.DEFAULT,
-      queryRestrictions: []
-    } as unknown as InputModel);
+        query,
+        quantity: 1,
+        sugarRestriction: SugarRestriction.DEFAULT,
+        lactoseRestrictions: LactoseRestrictions.DEFAULT,
+        glutenRestrictions: GlutenRestrictions.DEFAULT,
+        dietaryRestrictions: DietaryRestrictions.KOSHER,
+        caloryRestrictions: CaloryRestrictions.DEFAULT,
+        queryRestrictions: []
+      } as unknown as InputModel
+    );
     model.validate();
     return model;
   }
 
+  private async ensureSystemUserId(): Promise<number> {
+    const email = "system.generator@smart-recipes.local";
+    const sql = `insert into user (firstName, familyName, email, password)values (?, ?, ?, ?) on duplicate key update id = LAST_INSERT_ID(id)`;
+    const values = ["System", "Generator", email, "SYSTEM_GENERATED_NO_LOGIN"];
 
-private async ensureSystemUserId(): Promise<number> {
-  const email = "system.generator@smart-recipes.local";
-  const sql = `insert into user (firstName, familyName, email, password)values (?, ?, ?, ?) on duplicate key update id = LAST_INSERT_ID(id)
-  `;
-  const values = ["System", "Generator", email, "SYSTEM_GENERATED_NO_LOGIN"];
-
-  const result = await dal.execute(sql, values) as { insertId: number };
-  return result.insertId;
-}
-
-
+    const result = await dal.execute(sql, values) as { insertId: number };
+    return result.insertId;
+  }
 }
 
 export const suggestionsService = new SuggestionsService();

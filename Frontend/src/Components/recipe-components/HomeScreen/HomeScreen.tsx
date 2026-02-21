@@ -53,7 +53,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
 
   useEffect(() => {
     suggestionsService.getToday().catch(notify.error);
-  }, []);
+  }, [i18n.language]);
 
   const token = localStorage.getItem("token");
 
