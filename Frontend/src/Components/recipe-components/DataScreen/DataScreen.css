@@ -31,7 +31,7 @@
 }
 
 .ShareBtnContainer {
-  background: white !important;
+  background: transparent !important;
   color: #252525 !important;
   gap: 10px;
   box-shadow: none !important;
@@ -59,7 +59,7 @@
   justify-content: center;
   font-size: 22px;
   line-height: 1;
-  background: #fff;
+  background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 }
@@ -391,6 +391,7 @@
 
 .AskTextField {
   width: 100%;
+
 }
 
 .AskTextField .MuiOutlinedInput-root {
@@ -557,18 +558,18 @@
     pointer-events: none;
   }
 }
-
+    .AskModelDiv.rtl,
+  .AskModelDiv.ltr {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 
 @media (max-width: 600px) {
   .RecipeTitle {
     font-size: 30px;
   }
 
-    .AskModelDiv.rtl,
-  .AskModelDiv.ltr {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
+
 
   .RecipeTopSection {
     border-left: 0;
