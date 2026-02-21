@@ -65,6 +65,12 @@ class SuggestionsService {
           const input = this.createRandomDailyInputModel(plannedLang);
           const data = await recipeService.generateInstructions(input, true);
 
+          const titleRaw = String(data.title ?? "");
+const titleIsHe = this.isHebrewText(titleRaw);
+
+if (plannedLang === "he" && !titleIsHe) continue;
+if (plannedLang === "en" && titleIsHe) continue;
+
           const normalizedTitle = String(data.title ?? "")
             .trim()
             .normalize("NFKC")
@@ -72,6 +78,8 @@ class SuggestionsService {
             .replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "")
             .toLowerCase();
 
+
+            
           if (!normalizedTitle) continue;
 
           const dedupeKey = normalizedTitle;
@@ -167,8 +175,7 @@ class SuggestionsService {
 
     const filtered = all.filter(r => {
       const title = String((r as any).title ?? "");
-      const description = String((r as any).description ?? "");
-      const isHe = this.isHebrewText(title) || this.isHebrewText(description);
+      const isHe = this.isHebrewText(title);
       return wantHebrew ? isHe : !isHe;
     });
 
