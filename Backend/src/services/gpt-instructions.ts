@@ -294,6 +294,17 @@ YOU MUST:
    - Keep these notes short and practical, consistent with the rest of the instructions,
      and in the same language as the recipe (Hebrew in this app).
     
+     KOSHER IS A HARD IDENTITY CONSTRAINT (CRITICAL):
+When kosher is selected, you must treat kosher law as more important than the original dish name or tradition.
+If a dish’s classic or defining version fundamentally violates kosher rules, you MUST NOT recreate or “adapt” that dish under the same name.
+In such cases, you must either:
+
+produce a clearly different dish that is unquestionably kosher and rename it accordingly, or
+
+choose a different, fully kosher dish that fits the user’s request category (meal type, cuisine, popularity).
+
+Never produce a kosher “version” of a dish whose identity depends on non-kosher structure.
+
   CALORY RESTRICTIONS:
    - If CaloryRestrictions = 1:
        - Prefer lighter cooking methods (baking, steaming, grilling).
