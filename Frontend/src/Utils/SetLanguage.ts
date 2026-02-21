@@ -17,6 +17,17 @@ export function useLanguage() {
         if (i18n.language !== initialLanguage) i18n.changeLanguage(initialLanguage);
     }, []);
 
+    useEffect(() => {
+        const onLangChange = (lng: string) => {
+            const lang = (lng ?? "").startsWith("he") ? "he" : "en";
+            localStorage.setItem(LANGUAGE_KEY, lang);
+            setLanguage(lang);
+        };
+
+        i18n.on("languageChanged", onLangChange);
+        return () => i18n.off("languageChanged", onLangChange);
+    }, [i18n]);
+
     function setLang(language: Language) {
         setLanguage(language);
         localStorage.setItem(LANGUAGE_KEY, language);
