@@ -130,7 +130,7 @@ class SuggestionsService {
 
     const suggestionDateString = new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
 
-    const sql = `select recipe.* from dailySuggestions join recipe on recipe.id = dailySuggestions.recipeId where dailySuggestions.suggestionDate = ?order by dailySuggestions.id asclimit 5`;
+    const sql = `select recipe.* from dailySuggestions join recipe on recipe.id = dailySuggestions.recipeId where dailySuggestions.suggestionDate = ? order by dailySuggestions.id asc limit 5`;
     const values = [suggestionDateString];
     const rows = await dal.execute(sql, values) as DbRecipeRow[];
     const recipes = rows.map(mapDbRowToFullRecipe);
