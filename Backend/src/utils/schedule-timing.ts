@@ -3,7 +3,19 @@ import { suggestionsService } from "../services/suggestions-service";
 
 const ISRAEL_TZ = "Asia/Jerusalem";
 
+let started = false;
+
 export function startSuggestionsSchedulers(): void {
+ 
+  if (started) return;
+  started = true;
+
+ 
+  const enabled = String(process.env.ENABLE_SUGGESTIONS_SCHEDULER ?? "").toLowerCase() === "true";
+  if (!enabled) {
+    console.log("[scheduler] suggestions scheduler disabled (ENABLE_SUGGESTIONS_SCHEDULER!=true)");
+    return;
+  }
 
   void (async () => {
     try {
@@ -12,6 +24,7 @@ export function startSuggestionsSchedulers(): void {
       console.error("[boot] failed generating daily suggestions:", err);
     }
   })();
+
 
   cron.schedule(
     "0 0 * * *",
@@ -24,4 +37,6 @@ export function startSuggestionsSchedulers(): void {
     },
     { timezone: ISRAEL_TZ }
   );
+
+  console.log("[scheduler] suggestions scheduler started");
 }

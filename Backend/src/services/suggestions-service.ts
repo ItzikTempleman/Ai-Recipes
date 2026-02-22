@@ -188,45 +188,54 @@ class SuggestionsService {
     });
   }
 
-  public async getToday(lang: DailyLang = "en"): Promise<SuggestionsModel> {
-    const suggestionDateString = this.getTodayDateString();
+public async getToday(lang: DailyLang = "en"): Promise<SuggestionsModel> {
+  const suggestionDateString = new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
 
+  const fetchAll = async () => {
     const sql = `
-      select recipe.* 
-      from dailySuggestions 
-      join recipe on recipe.id = dailySuggestions.recipeId 
-      where dailySuggestions.suggestionDate = ? 
-      order by dailySuggestions.id asc 
+      select recipe.*
+      from dailySuggestions
+      join recipe on recipe.id = dailySuggestions.recipeId
+      where dailySuggestions.suggestionDate = ?
+      order by dailySuggestions.id asc
       limit 12
     `;
-    const rows = (await dal.execute(sql, [suggestionDateString])) as DbRecipeRow[];
-    const all = rows.map(mapDbRowToFullRecipe);
-
-    const wantHebrew = lang === "he";
-    const filtered = all.filter((r) => {
-      const title = String((r as any).title ?? "");
-      const isHe = this.isHebrewText(title);
-      return wantHebrew ? isHe : !isHe;
-    });
-
-    const recipes =
-      filtered.length >= DAILY_RETURN
-        ? filtered.slice(0, DAILY_RETURN)
-        : [...filtered, ...all.filter((x) => !filtered.includes(x))].slice(0, DAILY_RETURN);
-
-    const model = new SuggestionsModel({
-      suggestionDate: suggestionDateString,
-      recipes
-    } as unknown as SuggestionsModel);
-
-    model.validate();
-    return model;
+    const rows = await dal.execute(sql, [suggestionDateString]) as DbRecipeRow[];
+    return rows.map(mapDbRowToFullRecipe);
+  };
+  let all = await fetchAll();
+  if (all.length === 0) {
+    try {
+      await this.generateToday();  
+      all = await fetchAll();
+    } catch (e) {
+      console.error("[getToday] auto-generate failed:", e);
+    }
   }
 
+  const wantHebrew = lang === "he";
+  const filtered = all.filter(r => {
+    const title = String((r as any).title ?? "");
+    const isHe = this.isHebrewText(title);
+    return wantHebrew ? isHe : !isHe;
+  });
+
+  const recipes =
+    filtered.length >= DAILY_RETURN
+      ? filtered.slice(0, DAILY_RETURN)
+      : [...filtered, ...all.filter(x => !filtered.includes(x))].slice(0, DAILY_RETURN);
+  const model = new SuggestionsModel({
+    suggestionDate: suggestionDateString,
+    recipes
+  } as unknown as SuggestionsModel);
+  if (recipes.length > 0) {
+    model.validate();
+  }
+  return model;
+}
   private createRandomDailyInputModel(lang: DailyLang = "en"): InputModel {
     const ideas = getIdeas(lang);
     const query = ideas[Math.floor(Math.random() * ideas.length)];
-
     const model = new InputModel({
       query,
       quantity: 1,
