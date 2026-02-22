@@ -187,7 +187,7 @@
   margin-right: auto !important;
   display: flex !important;
   border-radius: 18px !important;
-  background: #0baadf !important;
+  background: #1376a3 !important;
   text-transform: none;
   align-items: center;
   justify-content: center;
@@ -250,11 +250,10 @@
     padding-top: 8px;
   }
 
-  /* ✅ MIN FIX: guest title margin that flips correctly in RTL */
   .HomeScreen.guest .HomeScreenTitle.user {
-    margin-block-start: 50px;   /* top */
+    margin-block-start: 50px;   
     margin-block-end: 0;
-    margin-inline-start: 50px;  /* left in LTR, right in RTL (because wrapper has direction) */
+    margin-inline-start: 50px; 
     margin-inline-end: 0;
     padding-top: 0;
   }
