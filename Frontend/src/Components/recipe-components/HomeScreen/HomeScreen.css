@@ -1,3 +1,7 @@
+/* =========================
+   Layout
+========================= */
+
 .HomeScreen {
   position: relative;
   width: 100%;
@@ -25,10 +29,10 @@
   box-sizing: border-box;
 }
 
-/* ✅ MIN FIX: ensure logical margins flip in Hebrew */
 .HomeScreenTitleWrapper.ltr {
   direction: ltr;
 }
+
 .HomeScreenTitleWrapper.rtl {
   direction: rtl;
 }
@@ -42,8 +46,13 @@
   box-sizing: border-box;
 }
 
+/* =========================
+   Guest titles
+========================= */
+
 .GuestTitle {
   width: 100%;
+  margin: 0;
   font-weight: 200;
   font-size: 32px;
   text-align: center;
@@ -51,9 +60,11 @@
 }
 
 .GuestTitle2 {
+  margin: 0;
   text-align: center;
 }
 
+/* The "Featured today / המלצות היום" H3 */
 .HomeScreenTitle {
   margin: 14px 0 0;
   font-size: 22px;
@@ -61,19 +72,28 @@
   color: rgb(100, 100, 100);
 }
 
+/* If you still sometimes render with className="HomeScreenTitle user",
+   keep styling here but do NOT force left/right. */
 .HomeScreenTitle.user {
   width: 100%;
-  margin-top: 0;
-  padding-top: 20px;
+  margin-top: 10px;
 }
 
-.HomeScreenTitleWrapper.ltr .HomeScreenTitle.user {
-  text-align: left;
+/* ✅ Guest mode: ALWAYS centered, regardless of rtl/ltr wrapper */
+.HomeScreen.guest .HomeScreenTitle,
+.HomeScreen.guest .HomeScreenTitle.user {
+  width: 100%;
+  text-align: center !important;
 }
 
-.HomeScreenTitleWrapper.rtl .HomeScreenTitle.user {
-  text-align: right;
+/* Logged-in mode can be aligned by wrapper if you ever re-enable it */
+.HomeScreen.user .HomeScreenTitle.user {
+  text-align: start;
 }
+
+/* =========================
+   Tabs row (user only)
+========================= */
 
 .SelectListDiv {
   display: flex;
@@ -83,6 +103,7 @@
   padding: 8px;
   margin-top: 30px;
   gap: 0;
+  box-sizing: border-box;
 }
 
 .SelectListDiv.ltr {
@@ -99,23 +120,7 @@
   direction: rtl;
 }
 
-.LikeBtn {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  outline: none !important;
-
-  /* ✅ extra hard reset so it never looks like a pill/card */
-  padding: 6px 18px !important;
-}
-
-/* ✅ FIX: do NOT nuke borders on children, because the underline is a border-bottom on h4 */
-.LikeBtn * {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
+/* Tab buttons */
 .LikeBtn,
 .RecentlyViewedBtn,
 .SuggestionsBtn {
@@ -126,8 +131,29 @@
   height: 40px;
   cursor: pointer;
   color: #484949;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  outline: none;
 }
 
+/* keep LikeBtn hard reset if you need it */
+.LikeBtn {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  padding: 6px 18px !important;
+}
+
+.LikeBtn * {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Active state */
 .LikeBtn.active,
 .RecentlyViewedBtn.active,
 .SuggestionsBtn.active {
@@ -135,15 +161,16 @@
   margin: 0;
 }
 
+/* Underline text only */
 .LikeBtn h4,
 .RecentlyViewedBtn h4,
 .SuggestionsBtn h4 {
   margin: 0;
+  font-size: 24px;
   padding-bottom: 8px;
   border-bottom: 2px solid transparent;
 }
 
-/* underline ONLY the active tab text */
 .LikeBtn.active h4,
 .RecentlyViewedBtn.active h4,
 .SuggestionsBtn.active h4 {
@@ -154,6 +181,17 @@
 .RecentlyViewedBtn {
   position: relative;
 }
+
+/* Minor rtl spacing when active */
+.SelectListDiv.rtl .RecentlyViewedBtn.active,
+.SelectListDiv.rtl .SuggestionsBtn.active,
+.SelectListDiv.rtl .LikeBtn.active {
+  margin: 0 4px 0 0;
+}
+
+/* =========================
+   Recipe grid
+========================= */
 
 .RecipeGrid {
   width: 100%;
@@ -172,19 +210,14 @@
   min-width: 0;
 }
 
-.SelectListDiv.rtl .RecentlyViewedBtn.active,
-.SelectListDiv.rtl .SuggestionsBtn.active,
-.SelectListDiv.rtl .LikeBtn.active {
-  margin: 0 4px 0 0;
-}
-
+/* =========================
+   Generate button
+========================= */
 
 .GenerateRecipeBtnHomeScreen {
   height: 50px;
-  margin-top: 0 !important;
   width: 300px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+  margin: 0 auto !important;
   display: flex !important;
   border-radius: 18px !important;
   background: #1376a3 !important;
@@ -202,10 +235,13 @@
   color: #eab928 !important;
 }
 
+/* =========================
+   Dialog (MUI)
+========================= */
+
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 8px !important;
   width: 380px !important;
-
   height: auto !important;
   max-height: 90vh !important;
   overflow: visible !important;
@@ -232,13 +268,16 @@
   max-height: calc(100vh - 324px) !important;
 }
 
+/* =========================
+   Mobile
+========================= */
+
 @media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 2px;
   }
 
-  .HomeScreenTitleWrapper.ltr,
-  .HomeScreenTitleWrapper.rtl {
+  .HomeScreenTitleWrapper {
     margin-top: 10px;
   }
 
@@ -246,22 +285,11 @@
     font-size: 20px;
   }
 
-  .HomeScreenTitle.user {
-    padding-top: 8px;
+  /* Tabs center on mobile */
+  .SelectListDiv {
+    margin-top: 20px;
+    padding: 0;
   }
-
-  .HomeScreen.guest .HomeScreenTitle.user {
-    margin-block-start: 50px;   
-    margin-block-end: 0;
-    margin-inline-start: 50px; 
-    margin-inline-end: 0;
-    padding-top: 0;
-  }
-.SelectListDiv {
- margin-top: 20px;
-  padding: 0;
-
-}
 
   .SelectListDiv.ltr,
   .SelectListDiv.rtl {
@@ -277,24 +305,21 @@
     gap: 20px;
   }
 
-  .HomeScreenTitleWrapper.rtl .FeatureUnlockHint {
+  /* Ensure FeatureHint centers on mobile (if needed) */
+  .FeatureUnlockHint {
     justify-content: center !important;
   }
 
-  .HomeScreenTitleWrapper.rtl {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  /* ✅ force dialog to fit phone viewport */
+  /* Dialog fits phone */
   .generate_dialog_paper.MuiPaper-root {
     width: 95vw !important;
     max-width: 95vw !important;
     max-height: 90vh !important;
   }
+
   .LikeBtn h4,
-.RecentlyViewedBtn h4,
-.SuggestionsBtn h4 {
-  font-size: 15px;
-}
+  .RecentlyViewedBtn h4,
+  .SuggestionsBtn h4 {
+    font-size: 17px;
+  }
 }

@@ -168,9 +168,16 @@
 }
 
 @media (max-width: 600px) {
-  .CardImage {
-    height: 210px;
+
+  .RecipeListItem{
+    width: 90%;
+    margin: 0 auto;
   }
+
+  .CardImage {
+    height: 190px;
+  }
+  
     .RecipeName {
     margin: 8px 12px;        /* was 12px */
     font-size: 20px;         /* slightly smaller */

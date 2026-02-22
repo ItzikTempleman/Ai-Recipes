@@ -146,6 +146,38 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
           ❌
         </div>
 
+
+        {localImgSrc ? (
+          <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
+        ) : (
+          loadImage &&
+          (isImageLoading ? (
+            <>
+              <h2 className="ImageLoadingMessageAfterRecipeGenerated">
+                {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+              </h2>
+              <IconButton className="ProgressBar" edge="end" disabled>
+                <Box>
+                  <CircularProgress />
+                </Box>
+              </IconButton>
+            </>
+          ) : (
+            !shareMode && (
+              <Button className="GenerateRecipeBtnHomeScreen" variant="contained" onClick={handleLoadImage}>
+                <CameraEnhanceIcon />
+                {t("recipeUi.loadImage")}
+              </Button>
+            )
+          ))
+        )}
+                {user && (
+          <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
+            <img className="ChefImage" src={chef} />
+            <h4>{t("recipeUi.ask")}</h4>
+          </div>
+        )}
+        
         <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
           {recipe.title}
         </h2>
@@ -215,39 +247,10 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
           </div>
         </div>
 
-        {user && (
-          <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
-            <img className="ChefImage" src={chef} />
-            <h4>{t("recipeUi.ask")}</h4>
-          </div>
-        )}
+
 
         <AskChefDialog open={open} onClose={handleCloseAskChef} recipe={recipe} isRTL={isRTL} />
 
-        {localImgSrc ? (
-          <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
-        ) : (
-          loadImage &&
-          (isImageLoading ? (
-            <>
-              <h2 className="ImageLoadingMessageAfterRecipeGenerated">
-                {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-              </h2>
-              <IconButton className="ProgressBar" edge="end" disabled>
-                <Box>
-                  <CircularProgress />
-                </Box>
-              </IconButton>
-            </>
-          ) : (
-            !shareMode && (
-              <Button className="GenerateRecipeBtnHomeScreen" variant="contained" onClick={handleLoadImage}>
-                <CameraEnhanceIcon />
-                {t("recipeUi.loadImage")}
-              </Button>
-            )
-          ))
-        )}
       </div>
 
       <div className="RecipePreparationWideView">

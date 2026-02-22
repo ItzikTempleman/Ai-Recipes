@@ -14,6 +14,7 @@ import { RecipeInputDialog } from "../RecipeInputDialog/RecipeInputDialog";
 import { resetGenerated, setCurrent, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
 import { RecipeModel } from "../../../Models/RecipeModel";
+import { FeatureHint } from "../../FeatureHint/FeatureHint";
 
 
 enum ListState {
@@ -28,7 +29,7 @@ export function HomeScreen() {
 
   const current = useSelector((s: AppState) => s.recipes.current);
   const user = useSelector((state: AppState) => state.user);
-const likes = useSelector((state: AppState) => state.likes);
+  const likes = useSelector((state: AppState) => state.likes);
 
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
@@ -37,13 +38,13 @@ const likes = useSelector((state: AppState) => state.likes);
   const [open, setOpen] = useState(false);
 
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
-const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
-  
+  const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
+
   const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
 
-   useEffect(() => {
+  useEffect(() => {
     if (!user) {
-     
+
       setListState(ListState.SUGGESTIONS);
     } else {
       setListState(ListState.RECENTLY_VIEWED);
@@ -64,18 +65,18 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
     recipeService.getAllRecipes().catch(notify.error);
   }, [token]);
 
-    useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || !user?.id) return;
     if (listState !== ListState.FAVORITES) return;
 
     if (!Array.isArray(items) || items.length === 0) {
-      recipeService.getAllRecipes().catch(() => {});
+      recipeService.getAllRecipes().catch(() => { });
     }
-    recipeService.loadMyLikes().catch(() => {});
+    recipeService.loadMyLikes().catch(() => { });
   }, [listState, user?.id]);
 
-  const recentlyViewedList = useMemo(() => (Array.isArray(items) ?[...items].reverse() : []), [items]);
+  const recentlyViewedList = useMemo(() => (Array.isArray(items) ? [...items].reverse() : []), [items]);
   const suggestionsList = useMemo(
     () => (Array.isArray(suggestedRecipeItem) ? suggestedRecipeItem : []),
     [suggestedRecipeItem]
@@ -96,7 +97,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
     return list.filter((r) => r.id != null && likedIds.has(r.id));
   }, [likes, items, user?.id]);
 
-    const activeList = useMemo(() => {
+  const activeList = useMemo(() => {
     if (!user) return suggestionsList;
 
     switch (listState) {
@@ -142,7 +143,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
     setAppliedFilters(null);
   };
 
-    const titleText = useMemo(() => {
+  const titleText = useMemo(() => {
     if (!user) return t("homeScreen.suggestions") || "Suggestions";
 
     if (listState === ListState.SUGGESTIONS) return t("homeScreen.suggestions") || "Suggestions";
@@ -150,7 +151,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
     return t("likeScreen.likedTitle") || t("likeScreen.noLikes");
   }, [user, listState, t]);
 
-  
+
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
@@ -174,6 +175,8 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
             {t("homeScreen.generate")}
             <AutoAwesome />
           </Button>
+
+          <FeatureHint />
 
           <Dialog
             className="generate_dialog_root"
@@ -200,16 +203,16 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
-<div
-  className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
-  onClick={() => setListState(ListState.SUGGESTIONS)}
-  role="button"
-  tabIndex={0}
->
-  <h4>{t("homeScreen.suggestions")}</h4> 
-</div>
+              <div
+                className={`SuggestionsBtn ${listState === ListState.SUGGESTIONS ? "active" : ""}`}
+                onClick={() => setListState(ListState.SUGGESTIONS)}
+                role="button"
+                tabIndex={0}
+              >
+                <h4>{t("homeScreen.suggestions")}</h4>
+              </div>
 
-              
+
               <div
                 className={`RecentlyViewedBtn ${listState === ListState.RECENTLY_VIEWED ? "active" : ""}`}
                 onClick={() => setListState(ListState.RECENTLY_VIEWED)}
@@ -220,7 +223,7 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
               </div>
               <div
                 className={`LikeBtn ${listState === ListState.FAVORITES ? "active" : ""}`}
-            onClick={() => setListState(ListState.FAVORITES)}
+                onClick={() => setListState(ListState.FAVORITES)}
                 role="button"
                 tabIndex={0}
               >
@@ -230,7 +233,10 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
             </div>
           )}
 
-      {user && listState === ListState.RECENTLY_VIEWED && recentlyViewedList.length === 0 ? (
+{!user && (
+  <h3 className="HomeScreenTitle user">{titleText}</h3>
+)}
+          {/* {user && listState === ListState.RECENTLY_VIEWED && recentlyViewedList.length === 0 ? (
             <div className="HomeScreenTitleContainer">
               <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
             </div>
@@ -240,22 +246,22 @@ const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
             </div>
           ) : (
             <h3 className="HomeScreenTitle user">{titleText}</h3>
-          )}
+          )} */}
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
               <RecipeListItem
                 key={recipe.id ?? recipe.title}
                 recipe={recipe}
-            context={
-  !user
-    ? "suggestions"
-    : listState === ListState.SUGGESTIONS
-      ? "suggestions"
-      : listState === ListState.FAVORITES
-        ? "likes"
-        : "default"
-}
+                context={
+                  !user
+                    ? "suggestions"
+                    : listState === ListState.SUGGESTIONS
+                      ? "suggestions"
+                      : listState === ListState.FAVORITES
+                        ? "likes"
+                        : "default"
+                }
               />
             ))}
           </div>
