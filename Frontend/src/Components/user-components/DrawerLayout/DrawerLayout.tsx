@@ -16,7 +16,7 @@ import PersonOffIcon from '@mui/icons-material/PersonOff';
 import { userService } from "../../../Services/UserService";
 import { notify } from "../../../Utils/Notify";
 import { DeleteDialog } from "../DeleteDialog/DeleteDialog";
-
+import CloseIcon from '@mui/icons-material/Close';
 type DrawerState = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -74,7 +74,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
       >
         <aside className="DrawerMainContainer">
           <div className="CloseButton" onClick={() => setOpen(false)}>
-            ❌
+            <CloseIcon/>
           </div>
 
           <div className={`DrawerContent ${isLoggedIn ? "LoggedIn" : "LoggedOut"}`}>

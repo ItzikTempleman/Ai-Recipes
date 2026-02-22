@@ -1,6 +1,4 @@
-/* =========================
-   Layout
-========================= */
+
 
 .HomeScreen {
   position: relative;
@@ -46,9 +44,6 @@
   box-sizing: border-box;
 }
 
-/* =========================
-   Guest titles
-========================= */
 
 .GuestTitle {
   width: 100%;
@@ -56,44 +51,39 @@
   font-weight: 200;
   font-size: 32px;
   text-align: center;
-  color: #393939;
+  color: #000000;
 }
 
 .GuestTitle2 {
   margin: 0;
   text-align: center;
+  color: #626262;
 }
 
-/* The "Featured today / המלצות היום" H3 */
+
 .HomeScreenTitle {
-  margin: 14px 0 0;
+  margin-top: 30px !important;
   font-size: 22px;
-  font-weight: 800;
-  color: rgb(100, 100, 100);
+  font-weight:900;
+  color: #ff6f15;
 }
 
-/* If you still sometimes render with className="HomeScreenTitle user",
-   keep styling here but do NOT force left/right. */
 .HomeScreenTitle.user {
   width: 100%;
   margin-top: 10px;
 }
 
-/* ✅ Guest mode: ALWAYS centered, regardless of rtl/ltr wrapper */
+
 .HomeScreen.guest .HomeScreenTitle,
 .HomeScreen.guest .HomeScreenTitle.user {
   width: 100%;
   text-align: center !important;
 }
 
-/* Logged-in mode can be aligned by wrapper if you ever re-enable it */
 .HomeScreen.user .HomeScreenTitle.user {
   text-align: start;
 }
 
-/* =========================
-   Tabs row (user only)
-========================= */
 
 .SelectListDiv {
   display: flex;
@@ -120,7 +110,7 @@
   direction: rtl;
 }
 
-/* Tab buttons */
+
 .LikeBtn,
 .RecentlyViewedBtn,
 .SuggestionsBtn {
@@ -138,7 +128,6 @@
   outline: none;
 }
 
-/* keep LikeBtn hard reset if you need it */
 .LikeBtn {
   background: transparent !important;
   box-shadow: none !important;
@@ -153,7 +142,6 @@
   box-shadow: none !important;
 }
 
-/* Active state */
 .LikeBtn.active,
 .RecentlyViewedBtn.active,
 .SuggestionsBtn.active {
@@ -161,7 +149,7 @@
   margin: 0;
 }
 
-/* Underline text only */
+
 .LikeBtn h4,
 .RecentlyViewedBtn h4,
 .SuggestionsBtn h4 {
@@ -182,16 +170,12 @@
   position: relative;
 }
 
-/* Minor rtl spacing when active */
 .SelectListDiv.rtl .RecentlyViewedBtn.active,
 .SelectListDiv.rtl .SuggestionsBtn.active,
 .SelectListDiv.rtl .LikeBtn.active {
   margin: 0 4px 0 0;
 }
 
-/* =========================
-   Recipe grid
-========================= */
 
 .RecipeGrid {
   width: 100%;
@@ -210,9 +194,6 @@
   min-width: 0;
 }
 
-/* =========================
-   Generate button
-========================= */
 
 .GenerateRecipeBtnHomeScreen {
   height: 50px;
@@ -235,9 +216,6 @@
   color: #eab928 !important;
 }
 
-/* =========================
-   Dialog (MUI)
-========================= */
 
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 8px !important;
@@ -268,9 +246,6 @@
   max-height: calc(100vh - 324px) !important;
 }
 
-/* =========================
-   Mobile
-========================= */
 
 @media (max-width: 600px) {
   .HomeScreen {

@@ -1,6 +1,6 @@
 .MuiDrawer-paper {
   width: 240px;
-  height: 520px !important;
+  height: 560px !important;
   margin: 8px;
   border-radius: 8px !important;
 
@@ -8,7 +8,7 @@
 
 
 .MuiDrawer-paper:has(.MoreOptionsSection.open) {
-  height: 580px !important;
+  height: 620px !important;
     overflow: hidden;
 }
 
@@ -37,14 +37,14 @@
   font-size: 18px;
   display: flex;
   margin: 10px auto 0;
-  border-radius: 18px;
-  height: 40px !important;
+  border-radius: 16px;
+  height: 50px !important;
   font-weight: 900;
   background: transparent;
 }
 
 .LoginFromDrawerBtn.MuiButton-root{
- color: #0baadf;
+ color: #1376a3;
 }
 .LogoutFromDrawerBtn.MuiButton-root{
 color: #ff0000;
@@ -52,7 +52,7 @@ color: #ff0000;
 
 .LoginFromDrawerBtn.MuiButton-root:active,
 .LoginFromDrawerBtn.MuiButton-root:hover {
-  background: #0baadf;    
+  background: #1376a3;    
   width: 90%;
   color: white;
 }
@@ -112,9 +112,9 @@ color: #ff0000;
   gap: 10px;
   padding: 12px;
   margin-top: 20px;
-  border-radius: 18px;
+  border-radius: 16px;
   text-decoration: none;
-  height: 40px;
+  height: 50px;
   box-sizing: border-box;
   transition: filter 120ms ease, transform 120ms ease;
 }
@@ -130,9 +130,9 @@ color: #ff0000;
 
 
 .ProfileBtn {
-  background: #0baadf;
+  background: #1376a3;
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 900;
 
 }
 
@@ -175,7 +175,7 @@ color: #ff0000;
 .MoreBtn.MuiButton-root {
   background: white;
   color: #5b5b5b;
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .MoreOptionsSection {
@@ -188,7 +188,7 @@ color: #ff0000;
 }
 
 .MoreOptionsSection.open {
-  max-height: 40px;
+  max-height: 50px;
   margin-top: 20px;
   opacity: 1;
   pointer-events: auto;

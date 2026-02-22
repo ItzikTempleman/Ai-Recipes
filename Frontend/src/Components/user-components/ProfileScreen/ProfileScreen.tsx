@@ -10,7 +10,7 @@ import { User } from "../../../Models/UserModel";
 import { userService } from "../../../Services/UserService";
 import { notify } from "../../../Utils/Notify";
 import { useNavigate } from "react-router-dom";
-
+import CloseIcon from '@mui/icons-material/Close';
 
 export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
@@ -90,14 +90,14 @@ export function ProfileScreen() {
 
 <div className="EditAndCloseSection">
    <Button className="EditProfileBtn"onClick={handleClickOpen} > {t("profile.edit")}</Button>
-        <div className="ReturnBtn" onClick={() => navigate("/home")}> ❌ </div>
+        <div className="ReturnBtn" onClick={() => navigate("/home")}>   <CloseIcon/> </div>
 </div>
 
 
         <Dialog open={open} onClose={handleClose} fullScreen={false}>
           <div className="DialogDiv">
             <div className="CloseDialogBtn" onClick={handleClose}>
-              ❌
+            <CloseIcon/>
             </div>
 
             <form className="EditProfileContainer" onSubmit={handleSubmit(send)}>

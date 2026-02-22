@@ -1,81 +1,63 @@
 .FeatureUnlockHint {
   width: 100%;
   display: flex;
-  box-sizing: border-box;
   margin: 16px 0 0 0;
+  justify-content: center;
 }
 
-/* Alignment ONLY (independent of dir) */
-.FeatureUnlockHint.align-left  { justify-content: flex-start; }
-.FeatureUnlockHint.align-right { justify-content: flex-end; }
-
-/* Bubble */
 .FeatureUnlockHint__bubble {
   background: #fff;
-  width: fit-content;
-  max-width: min(360px, 100%);
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(84, 84, 84, 0.336);
-  box-sizing: border-box;
+  width: 290px;
+  border-radius: 16px;
 }
 
-/* List */
 .FeatureUnlockHint__list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
-/* Follow direction from dir attribute */
 .FeatureUnlockHint__line {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
+  color: rgb(87, 87, 87);
+  padding: 10px ;
   border-radius: 12px;
-  color: #0f3b52;
-  font-weight: 800;
-  direction: inherit;
-  text-align: start;
+  font-weight: 200;
 }
 
 .FeatureUnlockHint__icon {
-  font-size: 22px;
-  line-height: 1;
-  display: inline-flex;
+  font-size: 16px;
   align-items: center;
   justify-content: center;
 }
 
 .FeatureUnlockHint__label {
+  flex: 1;              
+  text-align: center;
   font-size: 18px;
-  line-height: 1.1;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .FeatureUnlockHint__ctaPill {
-  margin-top: 8px;
-  display: inline-flex;
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  color: #1376a3;
   align-items: center;
-  justify-content: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  gap: 8px;
-  color: #0e6290;
   font-weight: 900;
   font-size: 22px;
   cursor: pointer;
-  user-select: none;
 }
 
-/* Mobile: always center */
-@media (max-width: 600px) {
-  .FeatureUnlockHint {
-    justify-content: center !important;
-  }
-
-  .FeatureUnlockHint__bubble {
-    max-width: 92%;
-  }
+.FeatureUnlockHint__lock,
+.FeatureUnlockHint__arrow {
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
 }
+
+.FeatureUnlockHint__ctaText {
+  flex: 1;              
+  text-align: center;
+}
+

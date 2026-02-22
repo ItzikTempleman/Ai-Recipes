@@ -16,6 +16,8 @@ import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
 import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -143,7 +145,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
             navigate("/home");
           }}
         >
-          ❌
+          <CloseIcon/>
         </div>
 
 
@@ -156,7 +158,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
               <h2 className="ImageLoadingMessageAfterRecipeGenerated">
                 {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
               </h2>
-              <IconButton className="ProgressBar" edge="end" disabled>
+              <IconButton className="ProgressBar" disabled>
                 <Box>
                   <CircularProgress />
                 </Box>
@@ -164,9 +166,9 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
             </>
           ) : (
             !shareMode && (
-              <Button className="GenerateRecipeBtnHomeScreen" variant="contained" onClick={handleLoadImage}>
-                <CameraEnhanceIcon />
-                {t("recipeUi.loadImage")}
+              <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
+      
+                {t("recipeUi.loadImage")}        <CameraEnhanceIcon />
               </Button>
             )
           ))

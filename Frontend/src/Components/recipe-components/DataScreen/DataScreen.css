@@ -5,7 +5,7 @@
   padding: 22px 22px 18px;
  
   box-shadow: 0 10px 24px rgba(90, 90, 90, 0.62);
-  
+  margin-top: 20px;
 }
 
 .TopActions {
@@ -177,23 +177,44 @@
 
 
 .LoadImageBtn {
-  background: linear-gradient(180deg, #48a9f4 0%, #48a9f4 100%) !important;
-  color: #ffffff !important;
+  border: 1px solid #1376a3 !important;
+  background: white !important;
+  color: #1376a3 !important;
   border-radius: 18px !important;
   margin-top: 20px !important;
-
   width: 30%;
   height: 50px;
-
   display: flex !important;
   align-items: center;
   justify-content: center;
-
   gap: 10px;
-
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+.GenerateRecipeBtnDataScreen {
+  height: 50px;
+  width: 180px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  border-radius: 18px !important;
+  background: white !important;
+  
+  text-transform: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.GenerateRecipeBtnDataScreen.MuiButton-root {
+  font-size: 18px !important;
+  color: rgb(82, 82, 82);
+}
+
+.GenerateRecipeBtnDataScreen svg {
+  color: #eab928 !important;
+}
+
 
 .RecipeStepsGrid {
   width: 100%;
@@ -446,7 +467,7 @@
 }
 
 .AskSendIcon {
-  color: #1bbeff !important;
+  color: #1376a3 !important;
   font-size: 24px !important;
 }
 
