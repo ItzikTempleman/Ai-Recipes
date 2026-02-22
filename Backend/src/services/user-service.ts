@@ -2,7 +2,7 @@ import { OkPacketParams, ResultSetHeader } from "mysql2";
 import { cyber } from "../utils/cyber";
 import { dal } from "../utils/dal";
 import { AuthorizationError, ResourceNotFound, ValidationError } from "../models/client-errors";
-import { CredentialsModel, UserModel } from "../models/user-model";
+import { CredentialsModel, Role, UserModel } from "../models/user-model";
 import { fileSaver } from "uploaded-file-saver";
 import { appConfig } from "../utils/app-config";
 import path from "path";
@@ -13,12 +13,18 @@ import axios from "axios";
 
 class UserService {
     public async register(user: UserModel): Promise<string> {
+         user.roleId = Role.User; 
         user.validate();
         this.normalizeOptionalFields(user);
         const imageName = user.image ? await this.saveNewUserImage(user.image as UploadedFile) : null;
         const emailTaken = await this.isEmailTaken(user.email);
         if (emailTaken) throw new ValidationError("Email already exists")
-        const sql = "insert into user(firstName,familyName,email,password,phoneNumber,Gender,birthDate,imageName) values (?,?,?,?,?,?,?,?)";
+        const sql = `
+insert into user
+(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName, roleId)
+values
+(?,?,?,?,?,?,?,?,?)
+`;
 
         user.password = cyber.hash(user.password);
 
@@ -30,7 +36,8 @@ class UserService {
             user.phoneNumber ?? null,
             user.gender ?? null,
             user.birthDate ?? null,
-            imageName
+            imageName,
+            user.roleId
         ];
         const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
         user.id = info.insertId!;
@@ -73,7 +80,7 @@ const values = [id];
         const values = [appConfig.baseUserImageUrl, id];
         const users = await dal.execute(sql, values) as UserModel[];
         const user = users[0];
-        if (!users) throw new ResourceNotFound(id);
+        if (!user) throw new ResourceNotFound(id);
         return user;
     }
 
@@ -136,8 +143,8 @@ const values = [id];
         const safeFamily = (familyName ?? "").trim();
         const tempPassword = cyber.hash(randomUUID());
         const imageName = pictureUrl ? await this.saveRemoteUserImage(pictureUrl) : null;
-        const insertSql = `insert into user(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName) values (?,?,?,?,?,?,?,?)`;
-        const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, imageName];
+        const insertSql = `insert into user(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName, roleId) values (?,?,?,?,?,?,?,?,?)`;
+const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, imageName, Role.User];
         const result = await dal.execute(insertSql, values) as OkPacketParams;
         const id = result.insertId!;
         const placeholder = this.googlePlaceHolderHash(id);
@@ -257,7 +264,7 @@ const values = [id];
     }
 
     private normalizeOptionalFields(user: UserModel): void {
-        // treat empty strings (common from forms) as NULLs
+    
         if ((user.phoneNumber as any) === "" || user.phoneNumber === undefined) {
             (user as any).phoneNumber = null;
         }

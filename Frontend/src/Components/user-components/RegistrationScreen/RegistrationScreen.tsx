@@ -3,7 +3,6 @@ import "./RegistrationScreen.css";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
 import { ArrowBackIosNew, Visibility, VisibilityOff,ArrowForwardIos } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
@@ -68,26 +67,11 @@ const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
             placeholder={t("auth.registration.firstNamePlaceholder")}
             {...register("firstName", {
               required: "First name is required",
-              minLength: { value: 3, message: "Minimum 3 characters required" },
+              minLength: { value: 2, message: "Minimum 3 characters required" },
             })}
             error={!!errors.firstName}
             helperText={errors.firstName?.message}
-            InputProps={{
-              ...(isRTL
-                ? {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon />
-                    </InputAdornment>
-                  )
-                }:{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <PersonIcon />
-                    </InputAdornment>
-                  )
-                })
-            }}
+
           />
 
           <TextField
@@ -97,26 +81,11 @@ const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
             placeholder={t("auth.registration.lastNamePlaceholder")}
             {...register("familyName", {
               required: "Last name is required",
-              minLength: { value: 3, message: "Minimum 3 characters required" },
+              minLength: { value: 2, message: "Minimum 3 characters required" },
             })}
             error={!!errors.familyName}
             helperText={errors.familyName?.message}
-            InputProps={{
-              ...(isRTL
-                ? {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon />
-                    </InputAdornment>
-                  )
-                } : {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <PersonIcon />
-                    </InputAdornment>
-                  )
-                })
-            }}
+
           />
         </div>
         <TextField className="InputTextField"

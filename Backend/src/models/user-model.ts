@@ -2,6 +2,18 @@ import { UploadedFile } from "express-fileupload";
 import Joi from "joi";
 import { ValidationError } from "./client-errors";
 
+export enum Gender {
+    MALE = "MALE",
+    FEMALE = "FEMALE",
+    OTHER = "OTHER"
+}
+
+export enum Role {
+    Admin=1,
+    User=2
+}
+
+
 export class UserModel {
     public id!: number;
     public firstName!: string;
@@ -15,6 +27,7 @@ export class UserModel {
     public image!: UploadedFile;
     public imageUrl!: string;
     public imageName!: string;
+    public roleId!: number;
 
     constructor(user: UserModel) {
         this.id = user.id;
@@ -29,6 +42,7 @@ export class UserModel {
         this.image = user.image;
         this.imageUrl = user.imageUrl;
         this.imageName = user.imageName;
+        this.roleId = user.roleId;
     }
 
 private static validationSchema = Joi.object({
@@ -44,6 +58,7 @@ private static validationSchema = Joi.object({
   image: Joi.object().optional(),
   imageUrl: Joi.string().optional().uri(),
   imageName: Joi.string().optional().max(50),
+roleId: Joi.number().valid(Role.Admin, Role.User).optional(),
 });
 
     public validate(): void {
@@ -52,11 +67,6 @@ private static validationSchema = Joi.object({
     }
 }
 
-export enum Gender {
-    MALE = "MALE",
-    FEMALE = "FEMALE",
-    OTHER = "OTHER"
-}
 
 export class CredentialsModel {
 

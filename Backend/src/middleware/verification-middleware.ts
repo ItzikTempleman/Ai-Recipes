@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthorizationError } from "../models/client-errors";
 import { appConfig } from "../utils/app-config";
-import { UserModel } from "../models/user-model";
+import { Role, UserModel } from "../models/user-model";
 import jwt from "jsonwebtoken";
 import { StatusCode } from "../models/status-code";
 import { userService } from "../services/user-service";
@@ -45,5 +45,28 @@ class VerificationMiddleware {
       next();
     }
   }
+
+  public verifyIsAdmin(request: Request, response: Response, next: NextFunction) {
+    try {
+      const authHeader = request.headers.authorization;
+      const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : undefined;
+
+      if (!token) {
+        return response.status(StatusCode.Unauthorized).send("Missing token");
+      };
+
+      const tokenUser = jwt.verify(token, appConfig.jwtSecretKey) as { user: UserModel };
+
+      if (tokenUser.user.roleId !== Role.Admin) {
+        return response.status(StatusCode.Forbidden).send("Admins only");
+      };
+
+      (request as any).user = tokenUser.user;
+      next();
+    } catch {
+      return response.status(StatusCode.Unauthorized).send("Unauthorized");
+    };
+  }
+
 }
 export const verificationMiddleware = new VerificationMiddleware();
