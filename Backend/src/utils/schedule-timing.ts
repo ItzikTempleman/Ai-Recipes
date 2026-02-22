@@ -24,16 +24,4 @@ export function startSuggestionsSchedulers(): void {
     },
     { timezone: ISRAEL_TZ }
   );
-
-  cron.schedule(
-    "*/10 * * * *",
-    async () => {
-      try {
-        await suggestionsService.generateToday();
-      } catch (err) {
-        console.error("[cron] retry/self-heal failed:", err);
-      }
-    },
-    { timezone: ISRAEL_TZ }
-  );
 }

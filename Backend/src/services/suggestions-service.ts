@@ -20,73 +20,107 @@ const DAILY_PER_LANG = 4;
 const DAILY_RETURN = 4;
 
 type DailyLang = "en" | "he";
+const generationMutexByDate = new Map<string, Promise<void>>();
 
 class SuggestionsService {
-
   private isHebrewText(s: string): boolean {
     return /[\u0590-\u05FF]/.test(s);
   }
 
-  public async generateToday(lang: DailyLang = "en"): Promise<void> {
+  private getTodayDateString(): string {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
+  }
 
-    const suggestionDateString = new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
+  private normalizeTitle(title: unknown): string {
+    return String(title ?? "")
+      .trim()
+      .normalize("NFKC")
+      .replace(/\s+/g, " ")
+      .replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "")
+      .toLowerCase();
+  }
 
-    const lockSql = `select GET_LOCK(?, 10) as gotLock`;
-    const lockValues = [`dailySuggestions:${suggestionDateString}`];
-    const lockRows = await dal.execute(lockSql, lockValues) as any[];
+  private async withDateMutex(dateKey: string, fn: () => Promise<void>): Promise<void> {
+    const existing = generationMutexByDate.get(dateKey);
+    if (existing) return existing;
 
-    if (Number(lockRows[0]?.gotLock ?? 0) !== 1) return;
+    const p = (async () => {
+      try {
+        await fn();
+      } finally {
+        generationMutexByDate.delete(dateKey);
+      }
+    })();
 
-    try {
-      const existsSql = `select count(*) as cnt from dailySuggestions where suggestionDate = ?`;
-      const existsValues = [suggestionDateString];
-      const existing = await dal.execute(existsSql, existsValues) as any[];
+    generationMutexByDate.set(dateKey, p);
+    return p;
+  }
 
-      if (Number(existing[0]?.cnt ?? 0) >= DAILY_TOTAL) return;
+  private async getExistingNormalizedTitlesForDate(suggestionDateString: string): Promise<Set<string>> {
+    const sql = `
+      select recipe.title as title
+      from dailySuggestions
+      join recipe on recipe.id = dailySuggestions.recipeId
+      where dailySuggestions.suggestionDate = ?
+    `;
+    const rows = (await dal.execute(sql, [suggestionDateString])) as Array<{ title: string }>;
+    const set = new Set<string>();
+    for (const r of rows) {
+      const key = this.normalizeTitle(r.title);
+      if (key) set.add(key);
+    }
+    return set;
+  }
 
+  private async countExistingForDate(suggestionDateString: string): Promise<number> {
+    const sql = `select count(*) as cnt from dailySuggestions where suggestionDate = ?`;
+    const rows = (await dal.execute(sql, [suggestionDateString])) as any[];
+    return Number(rows[0]?.cnt ?? 0);
+  }
+
+  private async titleAlreadySuggestedToday(suggestionDateString: string, normalizedTitle: string): Promise<boolean> {
+    const sql = `
+      select recipe.title as title
+      from dailySuggestions
+      join recipe on recipe.id = dailySuggestions.recipeId
+      where dailySuggestions.suggestionDate = ?
+    `;
+    const rows = (await dal.execute(sql, [suggestionDateString])) as Array<{ title: string }>;
+    for (const r of rows) {
+      if (this.normalizeTitle(r.title) === normalizedTitle) return true;
+    }
+    return false;
+  }
+
+  public async generateToday(_: DailyLang = "en"): Promise<void> {
+    const suggestionDateString = this.getTodayDateString();
+    return this.withDateMutex(suggestionDateString, async () => {
+      const existingCount = await this.countExistingForDate(suggestionDateString);
+      if (existingCount >= DAILY_TOTAL) return;
       const systemUserId = await this.ensureSystemUserId();
-
-      const usedKeys = new Set<string>();
+      const usedKeys = await this.getExistingNormalizedTitlesForDate(suggestionDateString);
       const usedImageNames = new Set<string>();
-
       const plan: DailyLang[] = [
         ...Array(DAILY_PER_LANG).fill("en"),
         ...Array(DAILY_PER_LANG).fill("he")
       ];
-
-      const maxAttempts = 120;
+      const maxAttempts = 180; 
       let attempts = 0;
-      let recipeIndex = 0;
+      let recipeIndex = existingCount;
 
       for (; recipeIndex < DAILY_TOTAL && attempts < maxAttempts; attempts++) {
         try {
-          const plannedLang = plan[recipeIndex] ?? lang;
-
+          const plannedLang = plan[recipeIndex] ?? "en";
           const input = this.createRandomDailyInputModel(plannedLang);
           const data = await recipeService.generateInstructions(input, true);
-
           const titleRaw = String(data.title ?? "");
-const titleIsHe = this.isHebrewText(titleRaw);
-
-if (plannedLang === "he" && !titleIsHe) continue;
-if (plannedLang === "en" && titleIsHe) continue;
-
-          const normalizedTitle = String(data.title ?? "")
-            .trim()
-            .normalize("NFKC")
-            .replace(/\s+/g, " ")
-            .replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "")
-            .toLowerCase();
-
-
-            
+          const titleIsHe = this.isHebrewText(titleRaw);
+          if (plannedLang === "he" && !titleIsHe) continue;
+          if (plannedLang === "en" && titleIsHe) continue;
+          const normalizedTitle = this.normalizeTitle(titleRaw);
           if (!normalizedTitle) continue;
-
-          const dedupeKey = normalizedTitle;
-          if (usedKeys.has(dedupeKey)) continue;
-
+          if (usedKeys.has(normalizedTitle)) continue;
           let fileName: string | null = null;
-
           try {
             ({ fileName } = await generateImage({
               query: input.query,
@@ -133,31 +167,29 @@ if (plannedLang === "en" && titleIsHe) continue;
 
           const saved = await recipeService.saveRecipe(recipe, systemUserId);
           if (!saved.id) throw new Error("Recipe insert failed");
+          const alreadySuggested = await this.titleAlreadySuggestedToday(suggestionDateString, normalizedTitle);
+          if (alreadySuggested) {
+            usedKeys.add(normalizedTitle);
+            if (fileName) usedImageNames.add(fileName);
+            continue;
+          }
 
-          const insertSql = `insert ignore into dailySuggestions (suggestionDate, recipeId) values (?, ?)`;
-          const insertValues = [suggestionDateString, saved.id];
-          await dal.execute(insertSql, insertValues);
+          const insertSql = `insert into dailySuggestions (suggestionDate, recipeId) values (?, ?)`;
+          await dal.execute(insertSql, [suggestionDateString, saved.id]);
 
-          usedKeys.add(dedupeKey);
+          usedKeys.add(normalizedTitle);
           if (fileName) usedImageNames.add(fileName);
 
           recipeIndex++;
-
         } catch (e) {
           console.error(`Daily suggestion iteration failed:`, e);
         }
       }
-
-    } finally {
-      const releaseSql = "select RELEASE_LOCK(?)";
-      const releaseValues = [`dailySuggestions:${suggestionDateString}`];
-      await dal.execute(releaseSql, releaseValues);
-    }
+    });
   }
 
   public async getToday(lang: DailyLang = "en"): Promise<SuggestionsModel> {
-
-    const suggestionDateString = new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
+    const suggestionDateString = this.getTodayDateString();
 
     const sql = `
       select recipe.* 
@@ -167,13 +199,11 @@ if (plannedLang === "en" && titleIsHe) continue;
       order by dailySuggestions.id asc 
       limit 12
     `;
-    const values = [suggestionDateString];
-    const rows = await dal.execute(sql, values) as DbRecipeRow[];
+    const rows = (await dal.execute(sql, [suggestionDateString])) as DbRecipeRow[];
     const all = rows.map(mapDbRowToFullRecipe);
 
     const wantHebrew = lang === "he";
-
-    const filtered = all.filter(r => {
+    const filtered = all.filter((r) => {
       const title = String((r as any).title ?? "");
       const isHe = this.isHebrewText(title);
       return wantHebrew ? isHe : !isHe;
@@ -182,14 +212,12 @@ if (plannedLang === "en" && titleIsHe) continue;
     const recipes =
       filtered.length >= DAILY_RETURN
         ? filtered.slice(0, DAILY_RETURN)
-        : [...filtered, ...all.filter(x => !filtered.includes(x))].slice(0, DAILY_RETURN);
+        : [...filtered, ...all.filter((x) => !filtered.includes(x))].slice(0, DAILY_RETURN);
 
-    const model = new SuggestionsModel(
-      {
-        suggestionDate: suggestionDateString,
-        recipes
-      } as unknown as SuggestionsModel
-    );
+    const model = new SuggestionsModel({
+      suggestionDate: suggestionDateString,
+      recipes
+    } as unknown as SuggestionsModel);
 
     model.validate();
     return model;
@@ -199,28 +227,29 @@ if (plannedLang === "en" && titleIsHe) continue;
     const ideas = getIdeas(lang);
     const query = ideas[Math.floor(Math.random() * ideas.length)];
 
-    const model = new InputModel(
-      {
-        query,
-        quantity: 1,
-        sugarRestriction: SugarRestriction.DEFAULT,
-        lactoseRestrictions: LactoseRestrictions.DEFAULT,
-        glutenRestrictions: GlutenRestrictions.DEFAULT,
-        dietaryRestrictions: DietaryRestrictions.KOSHER,
-        caloryRestrictions: CaloryRestrictions.DEFAULT,
-        queryRestrictions: []
-      } as unknown as InputModel
-    );
+    const model = new InputModel({
+      query,
+      quantity: 1,
+      sugarRestriction: SugarRestriction.DEFAULT,
+      lactoseRestrictions: LactoseRestrictions.DEFAULT,
+      glutenRestrictions: GlutenRestrictions.DEFAULT,
+      dietaryRestrictions: DietaryRestrictions.KOSHER,
+      caloryRestrictions: CaloryRestrictions.DEFAULT,
+      queryRestrictions: []
+    } as unknown as InputModel);
+
     model.validate();
     return model;
   }
 
   private async ensureSystemUserId(): Promise<number> {
     const email = "system.generator@smart-recipes.local";
-    const sql = `insert into user (firstName, familyName, email, password)values (?, ?, ?, ?) on duplicate key update id = LAST_INSERT_ID(id)`;
+    const sql = `insert into user (firstName, familyName, email, password)
+                 values (?, ?, ?, ?)
+                 on duplicate key update id = LAST_INSERT_ID(id)`;
     const values = ["System", "Generator", email, "SYSTEM_GENERATED_NO_LOGIN"];
 
-    const result = await dal.execute(sql, values) as { insertId: number };
+    const result = (await dal.execute(sql, values)) as { insertId: number };
     return result.insertId;
   }
 }
