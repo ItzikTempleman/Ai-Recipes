@@ -6,7 +6,7 @@ import { FilterBadges } from "../FilterBadges/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { RecipeModel } from "../../../Models/RecipeModel";
-import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
+import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
 import ReplyIcon from "@mui/icons-material/Reply";
@@ -16,8 +16,7 @@ import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
 import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
 import { useNavigate } from "react-router-dom";
-import CloseIcon from '@mui/icons-material/Close';
-
+import CloseIcon from "@mui/icons-material/Close";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -145,15 +144,14 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
             navigate("/home");
           }}
         >
-          <CloseIcon/>
+          <CloseIcon />
         </div>
-
 
         {localImgSrc ? (
           <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
         ) : (
           loadImage &&
-          (isImageLoading ? (
+          isImageLoading && (
             <>
               <h2 className="ImageLoadingMessageAfterRecipeGenerated">
                 {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
@@ -164,22 +162,16 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
                 </Box>
               </IconButton>
             </>
-          ) : (
-            !shareMode && (
-              <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
-      
-                {t("recipeUi.loadImage")}        <CameraEnhanceIcon />
-              </Button>
-            )
-          ))
+          )
         )}
-                {user && (
+
+        {user && (
           <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
             <img className="ChefImage" src={chef} />
             <h4>{t("recipeUi.ask")}</h4>
           </div>
         )}
-        
+
         <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
           {recipe.title}
         </h2>
@@ -249,10 +241,15 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
           </div>
         </div>
 
-
+        {!localImgSrc && loadImage && !isImageLoading && !shareMode && (
+          <div className="LoadImageCta">
+            <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
+              {t("recipeUi.loadImage")} <CameraEnhanceIcon />
+            </Button>
+          </div>
+        )}
 
         <AskChefDialog open={open} onClose={handleCloseAskChef} recipe={recipe} isRTL={isRTL} />
-
       </div>
 
       <div className="RecipePreparationWideView">

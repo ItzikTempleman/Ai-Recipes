@@ -25,6 +25,6 @@ export type Credentials = {
 }
 
 export enum RoleId {
-  User = 1,
-  Admin = 2,
+ Admin = 1,
+   User = 2,
 }

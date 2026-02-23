@@ -26,12 +26,12 @@ export function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onHome = location.pathname === "/home" || location.pathname === "/";
-  const isOnRecipeInputScreen =  location.pathname === "/generate" || location.pathname.startsWith("/generate/");
+  const isOnRecipeInputScreen = location.pathname === "/generate" || location.pathname.startsWith("/generate/");
   const hasCurrentRecipe = Boolean(currentRecipe?.title);
   const hasStashRecipe = Boolean(guestStash?.title);
   const showUndo = isGuest && (hasCurrentRecipe || hasStashRecipe) && !isOnRecipeInputScreen;
-const usage = useSelector((state: AppState) => state.usage);
-const isAdmin = Boolean(user && user.roleId === RoleId.Admin);
+  const usage = useSelector((state: AppState) => state.usage);
+  const isAdmin = Boolean(user && user.roleId === RoleId.Admin);
 
   const shouldShowBadge =
     !isAdmin && usage && !usage.unlimited && usage.remaining != null;
@@ -39,31 +39,37 @@ const isAdmin = Boolean(user && user.roleId === RoleId.Admin);
   useEffect(() => {
     usageService.refreshRecipeUsage();
   }, [user?.id]);
-  
+
   const returnImage = hasCurrentRecipe
     ? (currentRecipe?.imageUrl ?? "")
     : (guestStash?.imageUrl ?? "");
 
-  const handleReturnClick = () => {
+  const handleReturnClick = (e: React.MouseEvent) => {
+    // When already on /home, NavLink to /home can be a no-op.
+    // Prevent default and force a navigation update.
+    if (onHome) {
+      e.preventDefault();
+    }
 
     if (isGuest && !hasCurrentRecipe && hasStashRecipe) {
-
       dispatch(restoreGuestRecipe());
     }
+
+    // Force React Router to emit an update even if the path is the same
+    navigate("/home", { state: { _returnTs: Date.now() } });
   };
 
-const handleHomeClick = (e: React.MouseEvent) => {
-  if (onHome && hasCurrentRecipe) {
-    e.preventDefault();
-    if (isGuest) {
-      dispatch(stashGuestRecipe(currentRecipe!));
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (onHome && hasCurrentRecipe) {
+      e.preventDefault();
+      if (isGuest) {
+        dispatch(stashGuestRecipe(currentRecipe!));
+      }
+
+      dispatch(resetGenerated());
+      navigate("/home", { replace: true });
     }
-
-    dispatch(resetGenerated());
-    navigate("/home", { replace: true });
-  }
-};
-
+  };
 
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
@@ -81,7 +87,6 @@ const handleHomeClick = (e: React.MouseEvent) => {
           )}
         </NavLink>
 
-
         {showUndo && (
           <div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
             <NavLink to="/home" onClick={handleReturnClick}>
@@ -96,18 +101,19 @@ const handleHomeClick = (e: React.MouseEvent) => {
       </div>
 
       <div className="HeaderRight">
-{shouldShowBadge && (
-  <div
-    className={`UsageBadge ${usage!.remaining === 0 ? "danger" : ""}`}
-    title={
-      usage!.windowEndsAt
-        ? `Resets at ${new Date(usage!.windowEndsAt).toLocaleString()}`
-        : "Usage"
-    }
-  >
-    {usage!.remaining}/{usage!.limit ?? "∞"}
-  </div>
-)}
+        {shouldShowBadge && (
+          <div
+            className={`UsageBadge ${usage!.remaining === 0 ? "danger" : ""}`}
+            title={
+              usage!.windowEndsAt
+                ? `Resets at ${new Date(usage!.windowEndsAt).toLocaleString()}`
+                : "Usage"
+            }
+          >
+            {usage!.remaining} / 8
+          </div>
+        )}
+
         <div className="LanguageLink">
           <LanguageIcon />
           <select
@@ -127,11 +133,12 @@ const handleHomeClick = (e: React.MouseEvent) => {
           >
             {user.firstName} {user.familyName}
           </NavLink>
-        ) : (<>
-    
-          <div className="LoginBtn" onClick={() => navigate("/login")}>
-            <h3> {t("drawer.login")} </h3></div>
-            </>
+        ) : (
+          <>
+            <div className="LoginBtn" onClick={() => navigate("/login")}>
+              <h3>{t("drawer.login")}</h3>
+            </div>
+          </>
         )}
 
         <div className="MenuBtn">

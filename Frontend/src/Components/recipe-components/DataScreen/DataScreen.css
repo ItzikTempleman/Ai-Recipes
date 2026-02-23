@@ -3,7 +3,7 @@
   border: 1px solid rgba(177, 177, 176, 0.508);
   border-radius: 4px;
   padding: 22px 22px 18px;
- 
+
   box-shadow: 0 10px 24px rgba(90, 90, 90, 0.62);
   margin-top: 20px;
 }
@@ -23,7 +23,6 @@
   flex-direction: row;
 }
 
-
 .TopActions.rtl {
   right: 12px;
   left: auto;
@@ -41,11 +40,9 @@
   text-transform: none !important;
 }
 
-
 .TopActions.ltr .ShareBtnContainer svg {
   transform: scaleX(-1);
 }
-
 
 .ClearFormDiv {
   position: absolute;
@@ -81,7 +78,6 @@
   left: auto;
 }
 
-
 .DataScreen {
   width: 100%;
   display: flex;
@@ -98,7 +94,6 @@
   border-radius: 0;
   height: auto;
   object-fit: cover;
-
 }
 
 .Description {
@@ -137,7 +132,7 @@
 .RecipeTitle {
   font-weight: 600;
   font-size: 36px;
-  margin-top: 60px; 
+  margin-top: 60px;
   color: #2f2f2f;
 }
 
@@ -175,7 +170,6 @@
   height: 20px;
 }
 
-
 .LoadImageBtn {
   border: 1px solid #1376a3 !important;
   background: white !important;
@@ -199,7 +193,7 @@
   display: flex !important;
   border-radius: 18px !important;
   background: white !important;
-  
+
   text-transform: none;
   align-items: center;
   justify-content: center;
@@ -214,7 +208,6 @@
 .GenerateRecipeBtnDataScreen svg {
   color: #eab928 !important;
 }
-
 
 .RecipeStepsGrid {
   width: 100%;
@@ -334,8 +327,6 @@
   text-align: right !important;
 }
 
-
-
 .StatValueRowRtl {
   display: flex;
   justify-content: center;
@@ -375,31 +366,30 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   align-items: stretch;
-  
 }
 
 .Calories,
 .Sugar,
 .Protein,
-.Time{
+.Time {
   border: 1px solid #aaaaaa;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  text-align: center; 
+  text-align: center;
 }
 
- .Title {
+.Title {
   font-size: 16px !important;
   font-weight: 1000 !important;
   text-transform: uppercase;
-  color: #000000!important;
+  color: #000000 !important;
 }
 
-.StatLine{
-    font-size: 15px !important;
+.StatLine {
+  font-size: 15px !important;
   font-weight: 100 !important;
-   color: #464646!important;
+  color: #464646 !important;
 }
 
 .AskDialog .MuiPaper-root {
@@ -412,7 +402,6 @@
 
 .AskTextField {
   width: 100%;
-
 }
 
 .AskTextField .MuiOutlinedInput-root {
@@ -526,8 +515,6 @@
   text-align: right;
 }
 
-
-
 @media (min-width: 780px) {
   .RecipePreparationWideView {
     margin-top: 12px;
@@ -579,18 +566,23 @@
     pointer-events: none;
   }
 }
-    .AskModelDiv.rtl,
-  .AskModelDiv.ltr {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
+
+.AskModelDiv.rtl,
+.AskModelDiv.ltr {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.LoadImageCta {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
 
 @media (max-width: 600px) {
   .RecipeTitle {
     font-size: 30px;
   }
-
-
 
   .RecipeTopSection {
     border-left: 0;
@@ -599,7 +591,7 @@
     padding: 0;
     margin: 8px;
     box-shadow: none;
-  
+
     border: none;
   }
 
@@ -629,9 +621,14 @@
   .IngredientRow {
     flex-direction: row;
   }
-    .RecipeSneakPeakInfo {
+  .RecipeSneakPeakInfo {
     margin-top: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .LoadImageCta {
+    margin-top: 22px;
+    margin-bottom: 6px;
   }
 }
