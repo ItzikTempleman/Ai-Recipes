@@ -157,7 +157,7 @@ export function HomeScreen() {
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
         {!user && (
           <div>
-            <h2 className="GuestTitle">{t("homeScreen.generate")}</h2>
+            <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
             <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
           </div>
         )}

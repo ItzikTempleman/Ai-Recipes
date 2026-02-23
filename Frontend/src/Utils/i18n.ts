@@ -32,9 +32,10 @@ const resources = {
         message2: "All data will be wiped."
       },
       homeScreen: {
+         generateTitle: "AI recipes",
         shareIntro: "Share your recipes",
         generate: "Generate recipe",
-        generate2: "Turn a recipe idea into clear cooking steps",
+        generate2: "Turn a recipe idea into clear cooking steps with AI",
         siteTitle: "Ai recipe generator",
         hello: "Welcome, I'm your smart recipe assistant",
         guest: "Guest",
@@ -262,9 +263,10 @@ const resources = {
       },
 
       homeScreen: {
+            generateTitle: "מתכונים עם AI",
         shareIntro: "שתף את המתכונים",
         generate: "יצירת מתכון",
-        generate2: "הפוך רעיון למתכון לשלבי בישול ברורים ומסודרים",
+        generate2: "הפוך רעיון של מתכון לשלבי בישול מסודרים באמצעות AI",
         siteTitle: "יוצר מתכונים חכם",
         hello: "היי, אני מייצר המתכונים החכם שלך ",
         guest: "אורח",

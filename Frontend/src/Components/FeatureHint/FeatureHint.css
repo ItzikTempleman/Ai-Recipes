@@ -8,6 +8,8 @@
 .FeatureUnlockHint__bubble {
   background: #fff;
   width: 290px;
+  border:1px solid rgb(230, 230, 230);
+  padding: 4px;
   border-radius: 16px;
 }
 
