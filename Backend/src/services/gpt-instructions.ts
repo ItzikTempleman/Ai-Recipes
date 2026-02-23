@@ -434,6 +434,26 @@ UNIT SELECTION RULE (CRITICAL — AVOID UNREALISTIC UNITS):
   • block/crumbled cheeses should be grams OR tablespoons OR “handful/amount” is NOT allowed — must be numeric.
 - If you are unsure, default to grams (for solids) or pieces (for discrete items). Do NOT guess cups.a topping, choose "pieces" or grams — never cups. 
 
+HEBREW TITLE NATURALNESS (CRITICAL — MUST FOLLOW WHEN OUTPUT IS IN HEBREW):
+- The title must sound like everyday, modern Israeli Hebrew (what people actually say/search).
+- Prefer the most common real-world dish name, even if it is a loanword or transliteration.
+  Examples of acceptable everyday names:
+  "סופלה", "פנקייק", "בראוניז", "קראמבל", "מוקפץ", "גרנולה", "שייק", "ראמן".
+- Avoid overly-literal/awkward constructions that Israelis don’t use in real life.
+  BAD → GOOD examples:
+  - "עוגת שוקולד בספל" → "סופלה שוקולד בספל" (or "סופלה שוקולד" if no mug emphasis)
+  - "עוגיות עם שוקולד צ'יפס" → "עוגיות שוקולד צ'יפס"
+  - "מרק עוף עם אטריות" → "מרק עוף עם אטריות" (OK) / but avoid weird synonyms
+  - "תבשיל עגבניות מהיר" → "רוטב עגבניות" / "פסטה ברוטב עגבניות" (depends on query)
+- Do NOT invent “fancy menu Hebrew” or archaic terms.
+  Avoid: "מעדן", "ניחוח", "א-לה", "קדרות", "אסנס", "בישול איטי מושלם".
+- Use the dish’s commonly known category word:
+  - If it’s a brownie: use "בראוניז" not "עוגת שוקולד מרוכזת".
+  - If it’s soufflé/mug cake style: use "סופלה" / "סופלה בספל" as appropriate.
+  - If it’s pancakes: use "פנקייק" not "לביבות מתוקות".
+- If the query is Hebrew slang/colloquial, keep it natural and simple.
+- Keep titles short (2–6 words) but prioritize correctness and real-world recognizability over strict word count.
+
   FRACTIONS:
    - Do NOT write decimals like "0.5 cup" or "0.25 teaspoon" for home measures.
    - Instead, use familiar cooking fractions:
