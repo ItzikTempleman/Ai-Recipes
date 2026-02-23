@@ -190,3 +190,21 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-02-21 10:21:17
+DROP TABLE IF EXISTS `visitor_recipe_usage`;
+CREATE TABLE `visitor_recipe_usage` (
+  `visitorId` varchar(64) NOT NULL,
+  `windowEndsAt` datetime NOT NULL,
+  `used` int NOT NULL DEFAULT 0,
+  PRIMARY KEY (`visitorId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `user_recipe_usage`;
+CREATE TABLE `user_recipe_usage` (
+  `userId` int NOT NULL,
+  `windowEndsAt` datetime NOT NULL,
+  `used` int NOT NULL DEFAULT 0,
+  PRIMARY KEY (`userId`),
+  CONSTRAINT `fk_user_recipe_usage_user`
+    FOREIGN KEY (`userId`) REFERENCES `user`(`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

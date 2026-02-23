@@ -12,10 +12,13 @@ import { resetPasswordController } from "./controllers/reset-password-controller
 import { pdfController } from "./controllers/pdf-controller";
 import { suggestionsController } from "./controllers/suggestions-controller";
 import { startSuggestionsSchedulers } from "./utils/schedule-timing";
+import cookieParser from "cookie-parser";
+import { ensureVisitorId } from "./middleware/visitor-id-middleware";
 
 export class App {
   public async start(): Promise<void> {
     const server = express();
+
     server.use(
       cors({
         origin: true,
@@ -25,6 +28,8 @@ export class App {
       })
     );
     server.use(express.json());
+    server.use(cookieParser());
+    server.use(ensureVisitorId);
     server.use(fileUpload());
     const imageDir = process.env.IMAGE_DIR || path.join(__dirname, "1-assets", "images");
     await fs.mkdir(imageDir, { recursive: true });
@@ -33,7 +38,7 @@ export class App {
     server.use("/api/recipes/images", express.static(imageDir));
     server.use("/api/users/images", express.static(userImageDir));
     server.use("/api", userController.router);
-    server.use(pdfController.router)
+    server.use(pdfController.router);
     server.use(recipeController.router);
     server.use(suggestionsController.router);
     server.use("/api", resetPasswordController.router);

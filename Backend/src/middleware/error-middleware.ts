@@ -21,3 +21,12 @@ class ErrorMiddleware {
 }
 
 export const errorMiddleware = new ErrorMiddleware();
+
+export class RecipeUsageExceededError extends ClientErrors {
+  public constructor() {
+    super(
+      StatusCode.TooManyRequests,
+      "You reached the limit of 8 recipes every 3 days. Please try again later."
+    );
+  }
+}
