@@ -300,7 +300,7 @@
   .LikeBtn h4,
   .RecentlyViewedBtn h4,
   .SuggestionsBtn h4 {
-    font-size: 14px;
+    font-size: 13px !important;
      white-space: nowrap; 
   }
 }
