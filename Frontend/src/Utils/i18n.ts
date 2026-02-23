@@ -80,7 +80,7 @@ const resources = {
         youCanGenerateImageLater: "You can add an image later",
         guest: "Guest",
         title: "Generate recipes with AI",
-        labelGenerate: "Generate recipe",
+        labelGenerate: "Type what you want to make",
         quantitySelector: "Servings",
         requiredTitle: "title is required",
         go: "Go",
@@ -88,6 +88,7 @@ const resources = {
         loadingWithImage: "Generating an image…",
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe...",
+        servings:"SERVINGS"
       },
       likeScreen: {
          noLikes:"No favorites",
@@ -320,6 +321,7 @@ const resources = {
         loadingWithImage: "...מייצר תמונה",
         loadingWithImageLowerMessage: " ,זה יקח דקה ",
         loadingNoImage: "...מייצר מתכון",
+         servings:"מנות"
       },
       likeScreen: {
         noLikes:"אין מועדפים",

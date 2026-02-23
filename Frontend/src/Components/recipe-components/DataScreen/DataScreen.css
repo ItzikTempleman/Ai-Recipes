@@ -60,6 +60,7 @@
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 }
+
 .RecipeTopSection .ClearFormDiv {
   position: absolute;
   top: 12px;
@@ -379,6 +380,15 @@
   text-align: center;
 }
 
+.ServingsDiv {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.ServingsDiv h3{
+  color: #ea8628;
+}
+
 .Title {
   font-size: 16px !important;
   font-weight: 1000 !important;
@@ -545,12 +555,12 @@
     flex-direction: row-reverse;
   }
 
-  .RecipeStepsGrid > .IngredientsList,
-  .RecipeStepsGrid > .InstructionsList {
+  .RecipeStepsGrid>.IngredientsList,
+  .RecipeStepsGrid>.InstructionsList {
     width: 50%;
   }
 
-  .RecipeStepsGrid > .IngredientsList {
+  .RecipeStepsGrid>.IngredientsList {
     margin-top: 0;
   }
 
@@ -588,7 +598,8 @@
     border-left: 0;
     border-right: 0;
     border-radius: 0;
-    padding-top: 84px; /* ← ONLY CHANGE: push image/content below top buttons */
+    padding-top: 84px;
+    /* ← ONLY CHANGE: push image/content below top buttons */
     padding-left: 0;
     padding-right: 0;
     padding-bottom: 0;

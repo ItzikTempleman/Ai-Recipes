@@ -218,7 +218,7 @@
 
 
 .generate_dialog_paper.MuiPaper-root {
-  border-radius: 8px !important;
+  border-radius: 16px !important;
   width: 380px !important;
   height: auto !important;
   max-height: 90vh !important;
@@ -260,7 +260,7 @@
     font-size: 20px;
   }
 
-  /* Tabs center on mobile */
+
   .SelectListDiv {
     margin-top: 20px;
     padding: 0;
@@ -280,12 +280,12 @@
     gap: 20px;
   }
 
-  /* Ensure FeatureHint centers on mobile (if needed) */
+
   .FeatureUnlockHint {
     justify-content: center !important;
   }
 
-  /* Dialog fits phone */
+
   .generate_dialog_paper.MuiPaper-root {
     width: 95vw !important;
     max-width: 95vw !important;

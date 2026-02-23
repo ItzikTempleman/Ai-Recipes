@@ -206,7 +206,14 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                   }}
                 />
               </div>
-
+                    <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
+                      <TextField
+                        className="ExcludeTextField"
+                        placeholder={t("generate.excludeIngredient")}
+                        size="small"
+                        {...register("excludedIngredients.0")}
+                      />
+                    </div>
               {error && <div className="ErrorText">{error}</div>}
 
               <div className="FiltersSectionContainer">
@@ -252,14 +259,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                   </div>
 
                   <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
-                    <div>
-                      <TextField
-                        className="ExcludeTextField"
-                        placeholder={t("generate.excludeIngredient")}
-                        size="small"
-                        {...register("excludedIngredients.0")}
-                      />
-                    </div>
+
 
                     <div className={`Servings ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
                       <p>{t("generate.quantitySelector")}</p>

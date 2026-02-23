@@ -180,6 +180,9 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
           {recipe.description}
         </p>
 
+<div className="ServingsDiv" dir={isRTL ? "rtl" : "ltr"}>
+  <h3>{t("generate.servings")} : {recipe.amountOfServings}</h3>
+</div>
         <FilterBadges filters={filters} isRTL={isRTL} />
 
         <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
