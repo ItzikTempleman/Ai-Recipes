@@ -1,9 +1,9 @@
 .RecipeTopSection {
   position: relative;
-  border: 1px solid rgba(177, 177, 176, 0.508);
+
   border-radius: 4px;
   padding: 22px 22px 18px;
-
+background: white;
   box-shadow: 0 10px 24px rgba(90, 90, 90, 0.62);
   margin-top: 20px;
 }
