@@ -1,14 +1,15 @@
 .FeatureUnlockHint {
   width: 100%;
   display: flex;
-  margin: 16px 0 0 0;
+  margin: 16px 0;
   justify-content: center;
 }
-
+.RadioBtn{
+  display: none !important;
+}
 .FeatureUnlockHint__bubble {
   background: #fff;
   width: 290px;
-  border:1px solid rgb(230, 230, 230);
   padding: 4px;
   border-radius: 16px;
 }
@@ -22,7 +23,7 @@
   display: flex;
   align-items: center;
   color: rgb(87, 87, 87);
-  padding: 10px ;
+  padding: 10px;
   border-radius: 12px;
   font-weight: 200;
 }
@@ -31,13 +32,15 @@
   font-size: 16px;
   align-items: center;
   justify-content: center;
+ 
 }
 
 .FeatureUnlockHint__label {
-  flex: 1;              
+  flex: 1;
   text-align: center;
   font-size: 18px;
   font-weight: 900;
+  
 }
 
 .FeatureUnlockHint__ctaPill {
@@ -59,7 +62,32 @@
 }
 
 .FeatureUnlockHint__ctaText {
-  flex: 1;              
+  flex: 1;
   text-align: center;
 }
 
+
+@media (max-width: 600px) {
+
+  .FeatureUnlockHint__bubble {
+    background: transparent;
+    margin: 0  40px 0!important;
+
+    padding: 0;
+width: 100%;
+    border: none;
+  }
+  .RadioBtn{
+  display: flex !important;
+color: rgb(0, 0, 0);
+  align-self: center;
+}
+
+.FeatureUnlockHint__list {
+  display: flex;
+  flex-direction: row;
+}
+.FeatureUnlockHint__arrow{
+  display: none;
+}
+}

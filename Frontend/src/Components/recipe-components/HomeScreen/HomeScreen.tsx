@@ -163,6 +163,7 @@ export function HomeScreen() {
         )}
 
         <div className="SelectionDiv">
+          <FeatureHint />
           <Button
             className="GenerateRecipeBtnHomeScreen"
             onClick={() => {
@@ -176,7 +177,7 @@ export function HomeScreen() {
             <AutoAwesome />
           </Button>
 
-          <FeatureHint />
+  
 
           <Dialog
             className="generate_dialog_root"

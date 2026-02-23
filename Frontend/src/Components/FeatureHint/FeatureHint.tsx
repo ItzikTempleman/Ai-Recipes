@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import HistoryIcon from "@mui/icons-material/History";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
+
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -33,7 +33,7 @@ export function FeatureHint() {
                   {t("homeScreen.ask")}
                 </span>
               </div>
-
+<div className="RadioBtn">•</div>
               <div className="FeatureUnlockHint__line">
                 <span className="FeatureUnlockHint__icon" aria-hidden="true">
                   <FavoriteIcon />
@@ -42,13 +42,13 @@ export function FeatureHint() {
                   {t("homeScreen.save")}
                 </span>
               </div>
-
+<div className="RadioBtn">•</div>
               <div className="FeatureUnlockHint__line">
                 <span className="FeatureUnlockHint__icon" aria-hidden="true">
                   <HistoryIcon />
                 </span>
                 <span className="FeatureUnlockHint__label">
-                  {t("homeScreen.remember")}
+                  {t("homeScreen.history")}
                 </span>
               </div>
             </div>
@@ -63,9 +63,9 @@ export function FeatureHint() {
               }}
               aria-label={t("homeScreen.freeWithLogin")}
             >
-              <span className="FeatureUnlockHint__lock" aria-hidden="true">
+              {/* <span className="FeatureUnlockHint__lock" aria-hidden="true">
                 <LockOpenIcon />
-              </span>
+              </span> */}
 
               <span className="FeatureUnlockHint__ctaText">
                 {t("homeScreen.freeWithLogin")}
