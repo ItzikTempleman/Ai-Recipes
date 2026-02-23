@@ -584,28 +584,16 @@
     font-size: 30px;
   }
 
-
-  .RecipeImage {
-    margin-top: 64px;  
-  }
-
-
-  .ImageLoadingMessageAfterRecipeGenerated {
-    margin-top: 64px;
-  }
-
-  .ProgressBar {
-    margin-top: 12px;
-  }
-
   .RecipeTopSection {
     border-left: 0;
     border-right: 0;
     border-radius: 0;
-    padding: 0;
+    padding-top: 84px; /* ← ONLY CHANGE: push image/content below top buttons */
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
     margin: 8px;
     box-shadow: none;
-
     border: none;
   }
 
@@ -635,6 +623,7 @@
   .IngredientRow {
     flex-direction: row;
   }
+
   .RecipeSneakPeakInfo {
     margin-top: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
