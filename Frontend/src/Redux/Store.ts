@@ -5,12 +5,15 @@ import { User } from "../Models/UserModel";
 import { userSlice } from "./UserSlice";
 import { likesReducer } from "./LikeSlice";
 import { passwordResetReducer, PasswordResetState } from "./ResetSlice";
+import { RecipeUsage } from "../Models/UsageModel";
+import { usageReducer } from "./UsageSlice";
 
 export type AppState = {
     user: User | null;
     recipes: RecipeState;
     likes: LikeModel[];
     passwordReset: PasswordResetState,
+    usage: RecipeUsage | null;
 };
 
 
@@ -20,7 +23,8 @@ export const store = configureStore(
             user: userSlice.reducer,
             recipes: recipeReducer,
             likes: likesReducer,
-            passwordReset: passwordResetReducer
+            passwordReset: passwordResetReducer,
+            usage: usageReducer
         }
     }
 )

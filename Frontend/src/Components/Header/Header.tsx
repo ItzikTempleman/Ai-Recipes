@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageIcon from "@mui/icons-material/Language";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,8 @@ import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
 import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
 import { DrawerLayout } from "../user-components/DrawerLayout/DrawerLayout";
+import { usageService } from "../../Services/UsageService";
+import { RoleId } from "../../Models/UserModel";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -28,7 +30,16 @@ export function Header() {
   const hasCurrentRecipe = Boolean(currentRecipe?.title);
   const hasStashRecipe = Boolean(guestStash?.title);
   const showUndo = isGuest && (hasCurrentRecipe || hasStashRecipe) && !isOnRecipeInputScreen;
+const usage = useSelector((state: AppState) => state.usage);
+const isAdmin = Boolean(user && user.roleId === RoleId.Admin);
 
+  const shouldShowBadge =
+    !isAdmin && usage && !usage.unlimited && usage.remaining != null;
+
+  useEffect(() => {
+    usageService.refreshRecipeUsage();
+  }, [user?.id]);
+  
   const returnImage = hasCurrentRecipe
     ? (currentRecipe?.imageUrl ?? "")
     : (guestStash?.imageUrl ?? "");
@@ -52,6 +63,7 @@ const handleHomeClick = (e: React.MouseEvent) => {
     navigate("/home", { replace: true });
   }
 };
+
 
   return (
     <div className={`Header ${isRtl ? "rtl" : ""}`}>
@@ -84,7 +96,18 @@ const handleHomeClick = (e: React.MouseEvent) => {
       </div>
 
       <div className="HeaderRight">
-
+{shouldShowBadge && (
+  <div
+    className={`UsageBadge ${usage!.remaining === 0 ? "danger" : ""}`}
+    title={
+      usage!.windowEndsAt
+        ? `Resets at ${new Date(usage!.windowEndsAt).toLocaleString()}`
+        : "Usage"
+    }
+  >
+    {usage!.remaining}/{usage!.limit ?? "∞"}
+  </div>
+)}
         <div className="LanguageLink">
           <LanguageIcon />
           <select

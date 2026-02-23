@@ -7,6 +7,7 @@
     "description": "",
     "author": "Itzik Templeman",
     "scripts": {
+        "clean": "rm -rf dist",
         "start": "nodemon --exec ts-node src/app.ts --quiet",
         "build": "tsc -p tsconfig.json",
         "start:prod": "node dist/app.js"

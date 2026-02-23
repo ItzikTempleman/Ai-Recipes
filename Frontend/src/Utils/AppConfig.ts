@@ -26,5 +26,9 @@ class AppConfig {
 public readonly askRecipeUrl = `${API}/recipe`;
 
 public readonly dailyRecipesUrl = `${API}/daily-recipes`;
+
+public readonly recipeUsageUrl = `${API}/usage/recipes`;
+
 }
+
 export const appConfig = new AppConfig();

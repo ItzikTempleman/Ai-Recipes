@@ -10,6 +10,7 @@ export type User = {
      imageUrl?: string;
      image?: File;
      needsPasswordSetup: boolean;
+       roleId: number; 
 }
 
 export enum Gender {
@@ -23,3 +24,7 @@ export type Credentials = {
      password?: string;
 }
 
+export enum RoleId {
+  User = 1,
+  Admin = 2,
+}
