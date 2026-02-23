@@ -154,9 +154,10 @@
 .RecentlyViewedBtn h4,
 .SuggestionsBtn h4 {
   margin: 0;
-  font-size: 24px;
+  font-size: 16px !important;
   padding-bottom: 8px;
   border-bottom: 2px solid transparent;
+   text-transform: uppercase;
 }
 
 .LikeBtn.active h4,
@@ -164,6 +165,7 @@
 .SuggestionsBtn.active h4 {
   border-bottom-color: #ff6f15;
   color: #ff6f15;
+
 }
 
 .RecentlyViewedBtn {
@@ -263,7 +265,10 @@
 
   .SelectListDiv {
     margin-top: 20px;
-    padding: 0;
+    padding: 0 20px;              
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
   }
 
   .SelectListDiv.ltr,
@@ -295,6 +300,7 @@
   .LikeBtn h4,
   .RecentlyViewedBtn h4,
   .SuggestionsBtn h4 {
-    font-size: 17px;
+    font-size: 14px;
+     white-space: nowrap; 
   }
 }
