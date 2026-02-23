@@ -584,6 +584,20 @@
     font-size: 30px;
   }
 
+
+  .RecipeImage {
+    margin-top: 64px;  
+  }
+
+
+  .ImageLoadingMessageAfterRecipeGenerated {
+    margin-top: 64px;
+  }
+
+  .ProgressBar {
+    margin-top: 12px;
+  }
+
   .RecipeTopSection {
     border-left: 0;
     border-right: 0;
