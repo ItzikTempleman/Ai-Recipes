@@ -64,31 +64,71 @@
 
 
 @media (max-width: 600px) {
-
   .FeatureUnlockHint__bubble {
-    background: transparent;
-    margin: 0  40px 0!important;
-
+    background: none;
+    margin: 0 40px 0 !important;
+    border-radius: 0;
     padding: 0;
-width: 100%;
+    width: 100%;
     border: none;
   }
-  .RadioBtn{
-  display: flex !important;
-color: rgb(0, 0, 0);
-  align-self: center;
-}
 
-.FeatureUnlockHint__icon {
-margin: 4px;
-color: #eab928; 
-}
+  .FeatureUnlockHint__list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 
-.FeatureUnlockHint__list {
-  display: flex;
-  flex-direction: row;
-}
-.FeatureUnlockHint__arrow{
-  display: none;
-}
+  .FeatureUnlockHint__line {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;             
+  }
+
+  .FeatureUnlockHint__label {
+    flex: 0;
+    text-align: start;
+    line-height: 1;
+  }
+
+  .FeatureUnlockHint__icon {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .RadioBtn {
+    display: flex !important;
+    color: rgb(0, 0, 0);
+    align-self: center;
+    font-size: 28px;
+    margin: 0 14px;          
+    line-height: 1;
+  }
+
+  .FeatureUnlockHint__line--ask .FeatureUnlockHint__icon {
+    color: #74b9f6;
+    height: 16px;
+    width: 16px;
+  }
+
+  .FeatureUnlockHint__line--save .FeatureUnlockHint__icon {
+    color: #ed1b5d;
+    height: 16px;
+    width: 16px;
+  }
+
+  .FeatureUnlockHint__line--history .FeatureUnlockHint__icon {
+    color: #0e9f12;
+    height: 16px;
+    width: 16px;
+  }
+
+  .FeatureUnlockHint__arrow {
+    display: none;
+  }
 }

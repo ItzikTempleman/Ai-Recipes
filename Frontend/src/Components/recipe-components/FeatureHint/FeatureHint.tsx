@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import HistoryIcon from "@mui/icons-material/History";
-
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -26,7 +25,7 @@ export function FeatureHint() {
         <div className="FeatureUnlockHint" dir={dir}>
           <div className="FeatureUnlockHint__bubble">
             <div className="FeatureUnlockHint__list">
-              <div className="FeatureUnlockHint__line">
+              <div className="FeatureUnlockHint__line FeatureUnlockHint__line--ask">
                 <span className="FeatureUnlockHint__icon" aria-hidden="true">
                   <BubbleChartIcon />
                 </span>
@@ -34,8 +33,10 @@ export function FeatureHint() {
                   {t("homeScreen.ask")}
                 </span>
               </div>
-<div className="RadioBtn">•</div>
-              <div className="FeatureUnlockHint__line">
+
+              <div className="RadioBtn">•</div>
+
+              <div className="FeatureUnlockHint__line FeatureUnlockHint__line--save">
                 <span className="FeatureUnlockHint__icon" aria-hidden="true">
                   <FavoriteIcon />
                 </span>
@@ -43,8 +44,10 @@ export function FeatureHint() {
                   {t("homeScreen.save")}
                 </span>
               </div>
-<div className="RadioBtn">•</div>
-              <div className="FeatureUnlockHint__line">
+
+              <div className="RadioBtn">•</div>
+
+              <div className="FeatureUnlockHint__line FeatureUnlockHint__line--history">
                 <span className="FeatureUnlockHint__icon" aria-hidden="true">
                   <HistoryIcon />
                 </span>
@@ -64,10 +67,6 @@ export function FeatureHint() {
               }}
               aria-label={t("homeScreen.freeWithLogin")}
             >
-              {/* <span className="FeatureUnlockHint__lock" aria-hidden="true">
-                <LockOpenIcon />
-              </span> */}
-
               <span className="FeatureUnlockHint__ctaText">
                 {t("homeScreen.freeWithLogin")}
               </span>
