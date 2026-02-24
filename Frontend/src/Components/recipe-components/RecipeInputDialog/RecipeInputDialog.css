@@ -6,11 +6,13 @@
 .generate_dialog_paper .MuiDialogContent-root {
   padding: 4px !important;
   overflow-y: auto !important;
+  background-color: #ffffff00 !important;
   overflow-x: hidden !important;
   
 }
 
 .RecipeInputDialog {
+  
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -62,13 +64,11 @@
 }
 
 .RecipeTextField .MuiOutlinedInput-root,
-.ExcludeTextField .MuiOutlinedInput-root,
-.ExcludeTextField .MuiOutlinedInput-root.MuiInputBase-sizeSmall {
+.ExcludeTextField .MuiOutlinedInput-root{
   height: 50px !important;
   border-radius: 16px !important;
+  background-color: white;
 }
-
-
 
 .GenerateImageSelector.MuiIconButton-root {
   width: 48px !important;
@@ -239,15 +239,19 @@
   gap: 4px;          
   align-items: stretch;
   margin: 10px 0 10px 0;
+ 
 }
 
-.ExcludeGroup > div {
+.ExcludeGroup > div:last-child {
   width: 100%;
+
 }
+
 
 .ExcludeTextField,
 .ExcludeTextField .MuiFormControl-root {
   width: 100% !important;
+   
 }
 
 .Servings {
@@ -255,7 +259,7 @@
   height: 50px;
   border-radius: 16px;
     border: 1px solid #c1c1c1;
-
+    background: #fff !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,12 +295,10 @@
   border-radius: 18px !important;
   background: #1376a3 !important;
   text-transform: none;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-
   margin-top: 10px !important; 
 }
 

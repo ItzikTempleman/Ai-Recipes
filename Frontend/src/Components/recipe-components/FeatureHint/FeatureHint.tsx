@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import "./FeatureHint.css";
-import { AppState } from "../../Redux/Store";
+
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { AppState } from "../../../Redux/Store";
 
 export function FeatureHint() {
   const user = useSelector((state: AppState) => state.user);

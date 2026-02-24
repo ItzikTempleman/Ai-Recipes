@@ -295,6 +295,7 @@
     width: 95vw !important;
     max-width: 95vw !important;
     max-height: 90vh !important;
+      background-color: #ffffffe1 !important;
   }
 
   .LikeBtn h4,

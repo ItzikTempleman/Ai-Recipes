@@ -14,11 +14,6 @@
   border-radius: 16px;
 }
 
-.FeatureUnlockHint__list {
-  display: flex;
-  flex-direction: column;
-}
-
 .FeatureUnlockHint__line {
   display: flex;
   align-items: center;
@@ -26,6 +21,7 @@
   padding: 10px;
   border-radius: 12px;
   font-weight: 200;
+  
 }
 
 .FeatureUnlockHint__icon {
@@ -44,13 +40,13 @@
 }
 
 .FeatureUnlockHint__ctaPill {
-  margin-top: 12px;
+  margin-top: 6px;
   width: 100%;
   display: flex;
-  color: #1376a3;
+  color: #4d4d4d;
   align-items: center;
   font-weight: 900;
-  font-size: 22px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -81,6 +77,11 @@ width: 100%;
   display: flex !important;
 color: rgb(0, 0, 0);
   align-self: center;
+}
+
+.FeatureUnlockHint__icon {
+margin: 4px;
+color: #eab928; 
 }
 
 .FeatureUnlockHint__list {

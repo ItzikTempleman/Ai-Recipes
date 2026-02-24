@@ -14,7 +14,8 @@ import { RecipeInputDialog } from "../RecipeInputDialog/RecipeInputDialog";
 import { resetGenerated, setCurrent, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
 import { RecipeModel } from "../../../Models/RecipeModel";
-import { FeatureHint } from "../../FeatureHint/FeatureHint";
+import { FeatureHint } from "../FeatureHint/FeatureHint";
+
 
 
 enum ListState {
