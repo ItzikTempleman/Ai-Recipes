@@ -40,3 +40,8 @@ export function startSuggestionsSchedulers(): void {
 
   console.log("[scheduler] suggestions scheduler started");
 }
+
+
+  export function getTodayDateString(): string {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
+  }

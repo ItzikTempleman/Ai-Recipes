@@ -11,6 +11,8 @@ import { mapDbRowToFullRecipe } from "../utils/map-recipe";
 import { DangerousRequestError, ResourceNotFound, ValidationError } from "../models/client-errors";
 import { InputModel } from "../models/input-model";
 import { isLethalQuery } from "../utils/banned-filter";
+import { getTodayDateString } from "../utils/schedule-timing";
+import { SuggestionsModel } from "../models/suggestions-model";
 
 class RecipeService {
 
@@ -67,7 +69,7 @@ class RecipeService {
     return mapDbRowToFullRecipe(row);
   };
 
-  
+
   public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
     if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
@@ -238,33 +240,38 @@ class RecipeService {
     return likedRecipes.map(mapDbRowToFullRecipe);
   }
 
+  public async askAboutRecipe(recipeId: number, userId: number, query: string, history: { role: "user" | "assistant"; content: string }[] = []): Promise<string> {
+    let recipe: FullRecipeModel;
 
-public async askAboutRecipe(
-  recipeId: number,
-  userId: number,
-  query: string,
-  history: { role: "user" | "assistant"; content: string }[] = []
-): Promise<string> {
-  const recipe = await this.getSingleRecipe(recipeId, userId);
-
-  const recipeContext = {
-    title: recipe.title,
-    description: recipe.description,
-    amountOfServings: recipe.amountOfServings,
-    ingredients: recipe.data?.ingredients ?? [],
-    instructions: recipe.data?.instructions ?? [],
-    restrictions: {
-      sugarRestriction: recipe.sugarRestriction,
-      lactoseRestrictions: recipe.lactoseRestrictions,
-      glutenRestrictions: recipe.glutenRestrictions,
-      dietaryRestrictions: recipe.dietaryRestrictions,
-      caloryRestrictions: recipe.caloryRestrictions,
-      queryRestrictions: recipe.queryRestrictions ?? []
+    try {
+      recipe = await this.getSingleRecipe(recipeId, userId);
+    } catch (err: any) {
+      const sql = `select * from dailySuggestions where suggestionDate= ? and recipeId=? limit 1;`;
+      const values = [getTodayDateString(), recipeId];
+      const rows = (await dal.execute(sql, values)) as SuggestionsModel[];
+      const allowed = rows.length > 0;
+      if (!allowed) throw err;
+      recipe = await this.getRecipePublicById(recipeId);
     }
-  };
 
-  return await gptService.askRecipeQuestion(recipeContext, query, history);
-}
+    const recipeContext = {
+      title: recipe.title,
+      description: recipe.description,
+      amountOfServings: recipe.amountOfServings,
+      ingredients: recipe.data?.ingredients ?? [],
+      instructions: recipe.data?.instructions ?? [],
+      restrictions: {
+        sugarRestriction: recipe.sugarRestriction,
+        lactoseRestrictions: recipe.lactoseRestrictions,
+        glutenRestrictions: recipe.glutenRestrictions,
+        dietaryRestrictions: recipe.dietaryRestrictions,
+        caloryRestrictions: recipe.caloryRestrictions,
+        queryRestrictions: recipe.queryRestrictions ?? []
+      }
+    };
+
+    return await gptService.askRecipeQuestion(recipeContext, query, history);
+  }
 
 
 }

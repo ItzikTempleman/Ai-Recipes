@@ -13,6 +13,7 @@ import { DbRecipeRow, FullRecipeModel } from "../models/recipe-model";
 import { mapDbRowToFullRecipe } from "../utils/map-recipe";
 import { generateImage } from "./image-service";
 import { getIdeas } from "../utils/normalize-language";
+import { getTodayDateString } from "../utils/schedule-timing";
 
 const ISRAEL_TZ = "Asia/Jerusalem";
 const DAILY_TOTAL = 8;
@@ -27,9 +28,6 @@ class SuggestionsService {
     return /[\u0590-\u05FF]/.test(s);
   }
 
-  private getTodayDateString(): string {
-    return new Intl.DateTimeFormat("en-CA", { timeZone: ISRAEL_TZ }).format(new Date());
-  }
 
   private normalizeTitle(title: unknown): string {
     return String(title ?? "")
@@ -93,7 +91,7 @@ class SuggestionsService {
   }
 
   public async generateToday(_: DailyLang = "en"): Promise<void> {
-    const suggestionDateString = this.getTodayDateString();
+    const suggestionDateString = getTodayDateString();
     return this.withDateMutex(suggestionDateString, async () => {
       const existingCount = await this.countExistingForDate(suggestionDateString);
       if (existingCount >= DAILY_TOTAL) return;
