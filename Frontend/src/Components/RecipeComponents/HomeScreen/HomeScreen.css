@@ -1,5 +1,3 @@
-
-
 .HomeScreen {
   position: relative;
   width: 100%;
@@ -44,7 +42,6 @@
   box-sizing: border-box;
 }
 
-
 .GuestTitle {
   width: 100%;
   margin: 0;
@@ -60,11 +57,10 @@
   color: #626262;
 }
 
-
 .HomeScreenTitle {
   margin-top: 30px !important;
   font-size: 22px;
-  font-weight:900;
+  font-weight: 900;
   color: #ff6f15;
 }
 
@@ -72,7 +68,6 @@
   width: 100%;
   margin-top: 10px;
 }
-
 
 .HomeScreen.guest .HomeScreenTitle,
 .HomeScreen.guest .HomeScreenTitle.user {
@@ -83,7 +78,6 @@
 .HomeScreen.user .HomeScreenTitle.user {
   text-align: start;
 }
-
 
 .SelectListDiv {
   display: flex;
@@ -110,7 +104,6 @@
   direction: rtl;
 }
 
-
 .LikeBtn,
 .RecentlyViewedBtn,
 .SuggestionsBtn {
@@ -126,6 +119,9 @@
   box-shadow: none;
   border-radius: 0;
   outline: none;
+  min-width: 0;
+  max-width: 100%;
+  flex: 0 1 auto;
 }
 
 .LikeBtn {
@@ -149,15 +145,31 @@
   margin: 0;
 }
 
-
 .LikeBtn h4,
 .RecentlyViewedBtn h4,
 .SuggestionsBtn h4 {
   margin: 0;
-  font-size: 16px !important;
   padding-bottom: 8px;
   border-bottom: 2px solid transparent;
-   text-transform: uppercase;
+  text-transform: uppercase;
+  line-height: 1.1;
+  font-weight: 600;
+  font-size: 16px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.HomeScreenTitleWrapper.rtl .LikeBtn h4,
+.HomeScreenTitleWrapper.rtl .RecentlyViewedBtn h4,
+.HomeScreenTitleWrapper.rtl .SuggestionsBtn h4 {
+  font-size: 18px !important;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .LikeBtn.active h4,
@@ -165,7 +177,6 @@
 .SuggestionsBtn.active h4 {
   border-bottom-color: #ff6f15;
   color: #ff6f15;
-
 }
 
 .RecentlyViewedBtn {
@@ -177,7 +188,6 @@
 .SelectListDiv.rtl .LikeBtn.active {
   margin: 0 4px 0 0;
 }
-
 
 .RecipeGrid {
   width: 100%;
@@ -195,7 +205,6 @@
 .RecipeGrid > * {
   min-width: 0;
 }
-
 
 .GenerateRecipeBtnHomeScreen {
   height: 50px;
@@ -217,7 +226,6 @@
 .GenerateRecipeBtnHomeScreen svg {
   color: #eab928 !important;
 }
-
 
 .generate_dialog_paper.MuiPaper-root {
   border-radius: 16px !important;
@@ -248,7 +256,6 @@
   max-height: calc(100vh - 324px) !important;
 }
 
-
 @media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 2px;
@@ -262,10 +269,9 @@
     font-size: 20px;
   }
 
-
   .SelectListDiv {
     margin-top: 20px;
-    padding: 0 20px;              
+    padding: 0 20px;
     width: 100%;
     box-sizing: border-box;
     justify-content: center;
@@ -285,23 +291,37 @@
     gap: 20px;
   }
 
-
   .FeatureUnlockHint {
     justify-content: center !important;
   }
-
 
   .generate_dialog_paper.MuiPaper-root {
     width: 95vw !important;
     max-width: 95vw !important;
     max-height: 90vh !important;
-      background-color: #ffffffe1 !important;
+    background-color: #ffffffe1 !important;
   }
 
   .LikeBtn h4,
   .RecentlyViewedBtn h4,
   .SuggestionsBtn h4 {
     font-size: 13px !important;
-     white-space: nowrap; 
+    line-height: 1.05;
+  }
+
+  .HomeScreenTitleWrapper.rtl .LikeBtn h4,
+  .HomeScreenTitleWrapper.rtl .RecentlyViewedBtn h4,
+  .HomeScreenTitleWrapper.rtl .SuggestionsBtn h4 {
+    font-size: 17px !important;
+    font-weight: 800;
+    line-height: 1.1;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .LikeBtn,
+  .RecentlyViewedBtn,
+  .SuggestionsBtn {
+    padding: 6px 14px;
   }
 }

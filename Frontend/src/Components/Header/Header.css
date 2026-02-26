@@ -97,7 +97,7 @@
 .LanguageLink {
   background-color: transparent !important;
   box-shadow: none !important;
-    display: inline-flex;
+  display: inline-flex;
   align-items: center;
   height: 40px;
 }
@@ -107,12 +107,12 @@
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
-    font-size: 14px;
-    font-weight: 900;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .IdentityBadge {
-  margin-left: 18px; 
+  margin-left: 18px;
   margin-right: 0;
 }
 
@@ -122,16 +122,28 @@
 }
 
 
-.LoginBtn {
-  margin-left: 18px;
-  cursor: pointer;
-      color: #ff6f15;
-}
 
-.Header.rtl .LoginBtn {
-  margin-right: 18px;
-  margin-left: 0;
-}
+
+  .LoginBtn {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0 !important;
+    margin: 0 !important;
+    padding: 0 10px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+      margin-left: 18px;
+  cursor: pointer;
+  color: #000000;
+  height: 34px;
+  font-size: 12px;
+  border-radius: 999px;
+  border: 2px solid hsl(45, 82%, 54%);
+  }
+
 
 .HeaderDiv {
   width: 2px;
@@ -202,78 +214,21 @@
 }
 
 .LanguageLink {
-    height: 34px;
-border: 1px solid;
-border-radius: 999px;
-   background: rgba(57, 57, 57, 0.08) !important;
+  height: 34px;
+  border: 1px solid;
+  border-radius: 999px;
+  background: rgba(57, 57, 57, 0.08) !important;
   border: 1px solid rgba(57, 57, 57, 0.15);
-    font-size: 13px;
+  font-size: 13px;
   line-height: 1;
   cursor: pointer;
-
   font-weight: 900;
   color: #1f1f1f;
-
-}
-.LanguageSelector{
-   cursor: pointer;
 }
 
-@media (max-width: 670px) {
-  .Header {
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    grid-template-rows: auto auto;
-    align-items: center;
-  }
-
-  .ReturnToRecipeSection.hasImage {
-    width: 56px !important;
-    height: 56px !important;
-  }
-
-  .GeneralNavigation {
-    grid-column: 1;
-    grid-row: 1;
-    gap: 6px;
-    margin-top: 6px;
-  }
-
-  .HeaderRight {
-    display: contents;
-  }
-.Header.rtl .LanguageLink {
-  flex-direction: row-reverse;
+.LanguageSelector {
+  cursor: pointer;
 }
-
-
-  .LoginBtn {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    align-self: center;
-    margin-top: 0 !important;
-    margin: 0 !important;
-    padding: 0 10px !important;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-
-  .ReturnToRecipeSection{
-    width: 36px !important;
-    height: 36px !important;
-  }
-
-
-  .ReturnToRecipeSection svg {
-    width: 26px !important;
-    height: 26px !important;
-  }
-
-
   .LoginBtn.MuiButton-root {
     width: 90px !important;
     padding: 0 10px !important;
@@ -294,15 +249,3 @@ border-radius: 999px;
     justify-self: start;
   }
 
-  .Header.rtl .LanguageLink {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: start;
-  }
-
-  .Header.rtl .GeneralNavigation {
-    grid-column: 4;
-    grid-row: 1;
-    justify-self: end;
-  }
-}
