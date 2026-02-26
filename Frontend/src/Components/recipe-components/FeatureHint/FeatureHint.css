@@ -1,134 +1,63 @@
-.FeatureUnlockHint {
+.FeatureHint {
   width: 100%;
   display: flex;
-  margin: 16px 0;
+  margin: 12px 0;            
   justify-content: center;
-}
-.RadioBtn{
-  display: none !important;
-}
-.FeatureUnlockHint__bubble {
-  background: #fff;
-  width: 290px;
-  padding: 4px;
-  border-radius: 16px;
-}
-
-.FeatureUnlockHint__line {
-  display: flex;
+  flex-direction: column;
   align-items: center;
-  color: rgb(87, 87, 87);
-  padding: 10px;
-  border-radius: 12px;
-  font-weight: 200;
-  
+  gap: 18px;                  
 }
 
-.FeatureUnlockHint__icon {
+.FeatureRow {
+  width: 100%;
+  display: flex;
+  align-items: center;     
+  justify-content: center;    
+  gap: 12px;                 
+}
+
+.FeaterIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.ChatSection .FeaterIcon .MuiSvgIcon-root {
+  color: #1376a3;
+  font-size: 20px;
+}
+
+.FavoritesSection .FeaterIcon .MuiSvgIcon-root {
+  color: #ed1b5d;
+  font-size: 20px;
+}
+
+.HistorySection .FeaterIcon .MuiSvgIcon-root {
+  color: #0e9f12;
+  font-size: 20px;
+}
+
+.FeatureLabel {
+  text-align: center;
   font-size: 16px;
-  align-items: center;
-  justify-content: center;
- 
+  margin: 0;                 
+  color: #555555;
 }
 
-.FeatureUnlockHint__label {
-  flex: 1;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 900;
-  
+.FreeWithLoginBtn {
+font-size: 18px !important;
+  font-weight: 900 !important;
+  background: transparent !important;
+   color: #555555 !important;
+  padding: 10px 18px !important;
 }
 
-.FeatureUnlockHint__ctaPill {
-  margin-top: 6px;
-  width: 100%;
-  display: flex;
-  color: #4d4d4d;
-  align-items: center;
-  font-weight: 900;
-  font-size: 24px;
-  cursor: pointer;
+.FreeWithLoginBtn:active, .FreeWithLoginBtn:hover{
+  height: 50px;
+  width: 300px !important;
+  border-radius: 16px !important;
+  background-color: #eab928 !important;
+  color: #555555 !important;
 }
 
-.FeatureUnlockHint__lock,
-.FeatureUnlockHint__arrow {
-  align-items: center;
-  justify-content: center;
-  margin-top: 6px;
-}
-
-.FeatureUnlockHint__ctaText {
-  flex: 1;
-  text-align: center;
-}
-
-
-@media (max-width: 600px) {
-  .FeatureUnlockHint__bubble {
-    background: none;
-    margin: 0 40px 0 !important;
-    border-radius: 0;
-    padding: 0;
-    width: 100%;
-    border: none;
-  }
-
-  .FeatureUnlockHint__list {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .FeatureUnlockHint__line {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 6px;             
-  }
-
-  .FeatureUnlockHint__label {
-    flex: 0;
-    text-align: start;
-    line-height: 1;
-  }
-
-  .FeatureUnlockHint__icon {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .RadioBtn {
-    display: flex !important;
-    color: rgb(0, 0, 0);
-    align-self: center;
-    font-size: 28px;
-    margin: 0 14px;          
-    line-height: 1;
-  }
-
-  .FeatureUnlockHint__line--ask .FeatureUnlockHint__icon {
-    color: #74b9f6;
-    height: 16px;
-    width: 16px;
-  }
-
-  .FeatureUnlockHint__line--save .FeatureUnlockHint__icon {
-    color: #ed1b5d;
-    height: 16px;
-    width: 16px;
-  }
-
-  .FeatureUnlockHint__line--history .FeatureUnlockHint__icon {
-    color: #0e9f12;
-    height: 16px;
-    width: 16px;
-  }
-
-  .FeatureUnlockHint__arrow {
-    display: none;
-  }
-}
