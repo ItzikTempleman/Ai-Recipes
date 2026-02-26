@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetGenerated } from "../Redux/RecipeSlice";
 import { Dialog } from "@mui/material";
-import { RecipeInputDialog } from "../Components/recipe-components/RecipeInputDialog/RecipeInputDialog";
+import { RecipeInputDialog } from "../Components/RecipeComponents/RecipeInputDialog/RecipeInputDialog";
+
 
 export function GenerateRoute() {
     const navigate = useNavigate();

@@ -16,10 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useTitle } from "../../../Utils/Utils";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
-import { LactoseFilter } from "../Filters/LactoseFilter";
-import { SugarFilter } from "../Filters/SugarFilter";
-import { GlutenFilter } from "../Filters/GlutenFilter";
-import { DietaryFilter } from "../Filters/DietaryFilter";
+
 import {
   DietaryRestrictions,
   GlutenRestrictions,
@@ -37,6 +34,7 @@ import TuneIcon from "@mui/icons-material/Tune";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
+import { DietaryFilter, GlutenFilter, LactoseFilter, SugarFilter } from "../../../Utils/Filtering";
 
 type Props = {
   onDone: () => void;

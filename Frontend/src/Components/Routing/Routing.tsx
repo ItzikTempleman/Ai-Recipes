@@ -1,19 +1,22 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Page404 } from "../user-components/Page404/Page404";
-import { AboutScreen } from "../user-components/AboutScreen/AboutScreen";
+import { Page404 } from "../UserComponents/Page404/Page404";
+import { AboutScreen } from "../UserComponents/AboutScreen/AboutScreen";
 import { useSelector } from "react-redux";
 import { AppState } from "../../Redux/Store";
-import { HomeScreen } from "../recipe-components/HomeScreen/HomeScreen";
-import { LoginScreen } from "../user-components/LoginScreen/LoginScreen";
-import { RecipeInfoScreen } from "../recipe-components/RecipeInfoScreen/RecipeInfoScreen";
-import { RegistrationScreen } from "../user-components/RegistrationScreen/RegistrationScreen";
-import { ProfileScreen } from "../user-components/ProfileScreen/ProfileScreen";
 
-import { PrivacyPolicy } from "../user-components/PrivacyPolicy/PrivacyPolicy";
-import { DataDeletion } from "../user-components/DataDeletion/DataDeletion";
-import { ResetPasswordScreen } from "../user-components/ResetPasswordScreen/ResetPasswordScreen";
-import { PdfScreen } from "../recipe-components/PdfScreen/PdfScreen";
+import { LoginScreen } from "../UserComponents/LoginScreen/LoginScreen";
+
+import { RegistrationScreen } from "../UserComponents/RegistrationScreen/RegistrationScreen";
+import { ProfileScreen } from "../UserComponents/ProfileScreen/ProfileScreen";
+
+import { PrivacyPolicy } from "../UserComponents/PrivacyPolicy/PrivacyPolicy";
+import { DataDeletion } from "../UserComponents/DataDeletion/DataDeletion";
+import { ResetPasswordScreen } from "../UserComponents/ResetPasswordScreen/ResetPasswordScreen";
+
 import { GenerateRoute } from "../../Utils/DialogRoute";
+import { HomeScreen } from "../RecipeComponents/HomeScreen/HomeScreen";
+import { RecipeInfoScreen } from "../RecipeComponents/RecipeInfoScreen/RecipeInfoScreen";
+import { PdfScreen } from "../RecipeComponents/PdfScreen/PdfScreen";
 
 export function Routing() {
 

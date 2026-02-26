@@ -10,7 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Language, useLanguage } from "../../Utils/SetLanguage";
 import { AppState } from "../../Redux/Store";
 import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redux/RecipeSlice";
-import { DrawerLayout } from "../user-components/DrawerLayout/DrawerLayout";
+import { DrawerLayout } from "../UserComponents/DrawerLayout/DrawerLayout";
 import { usageService } from "../../Services/UsageService";
 import { RoleId } from "../../Models/UserModel";
 

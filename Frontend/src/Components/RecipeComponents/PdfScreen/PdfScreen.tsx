@@ -2,13 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { RecipeModel } from "../../../Models/RecipeModel";
-import { DataScreen } from "../../recipe-components/DataScreen/DataScreen";
 
-// This is the wrapper that your normal recipe page uses.
-// Without it, PdfScreen won't be 1:1 with DataScreen layout.
 import "../RecipeDataContainer/RecipeDataContainer.css";
 
 import "./PdfScreen.css";
+import { DataScreen } from "../DataScreen/DataScreen";
 
 export function PdfScreen() {
   const { i18n } = useTranslation();
