@@ -37,8 +37,6 @@ export function startSuggestionsSchedulers(): void {
     },
     { timezone: ISRAEL_TZ }
   );
-
-  console.log("[scheduler] suggestions scheduler started");
 }
 
 

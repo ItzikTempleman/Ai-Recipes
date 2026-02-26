@@ -9,9 +9,53 @@
   flex-direction: column;
 }
 
+.HomeScreenTitleWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 .HomeScreen > * {
   position: relative;
   z-index: 1;
+}
+
+.GuestHeader {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.HelloGuestMessage {
+  position: absolute;
+  top: calc(-48px - 28px);
+  z-index: 10000;
+  margin: 0;
+  padding: 4px 8px ;
+  background:  #fbc104;
+  border-radius: 8px;
+}
+
+.HelloGuestMessage.ltr {
+  left: 0;
+  right: auto;
+  direction: ltr;
+  text-align: left;
+}
+
+.HelloGuestMessage.rtl {
+  right: 0;
+  left: auto;
+  direction: rtl;
+  text-align: right;
+}
+
+.HelloGuestMessage p {
+  margin: 0;
+  font-weight: 900;
+  font-size: 16px;
+  color: white;
 }
 
 .HomeScreenTitleWrapper {
@@ -263,6 +307,10 @@
 
   .HomeScreenTitleWrapper {
     margin-top: 10px;
+  }
+
+  .HelloGuestMessage {
+    top: -28px;
   }
 
   .HomeScreenTitle {

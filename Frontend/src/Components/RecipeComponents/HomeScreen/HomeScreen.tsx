@@ -156,12 +156,18 @@ export function HomeScreen() {
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-        {!user && (
-          <div>
-            <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
-            <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
-          </div>
-        )}
+{!user && (
+  <div className={`GuestHeader ${isRTL ? "rtl" : "ltr"}`}>
+    <div className={`HelloGuestMessage ${isRTL ? "rtl" : "ltr"}`}>
+      <p>{t("generate.guest")}</p>
+    </div>
+
+    <div>
+      <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
+      <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
+    </div>
+  </div>
+)}
 
         <div className="SelectionDiv">
           <FeatureHint />
