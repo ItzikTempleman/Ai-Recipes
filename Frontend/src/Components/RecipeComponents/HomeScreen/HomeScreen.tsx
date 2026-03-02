@@ -1,33 +1,41 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, Dialog } from "@mui/material";
+import { Button, Chip, Dialog } from "@mui/material";
 import "./HomeScreen.css";
 import { useTitle } from "../../../Utils/Utils";
 import { AppState } from "../../../Redux/Store";
 import { recipeService } from "../../../Services/RecipeService";
 import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
 import { notify } from "../../../Utils/Notify";
-import { suggestionsService } from "../../../Services/SuggestionsService";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { RecipeInputDialog } from "../RecipeInputDialog/RecipeInputDialog";
 import { resetGenerated, setCurrent, stashGuestRecipe } from "../../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
-import { RecipeModel } from "../../../Models/RecipeModel";
+import { RecipeCategory, RecipeModel } from "../../../Models/RecipeModel";
 import { FeatureHint } from "../FeatureHint/FeatureHint";
 
-
-
 enum ListState {
-  SUGGESTIONS, RECENTLY_VIEWED, FAVORITES
+  SUGGESTIONS,
+  RECENTLY_VIEWED,
+  FAVORITES
 }
+
+const ALL_CATEGORIES: RecipeCategory[] = [
+  RecipeCategory.breakfast,
+  RecipeCategory.lunch,
+  RecipeCategory.supper,
+  RecipeCategory.deserts,
+  RecipeCategory.dairy,
+  RecipeCategory.vegan,
+  RecipeCategory.fish,
+  RecipeCategory.meat
+];
 
 export function HomeScreen() {
   useTitle("Home");
 
   const { items } = useSelector((state: AppState) => state.recipes);
-  const suggestedRecipeItem = useSelector((state: AppState) => state.recipes.dailyRecipes);
-
   const current = useSelector((s: AppState) => s.recipes.current);
   const user = useSelector((state: AppState) => state.user);
   const likes = useSelector((state: AppState) => state.likes);
@@ -43,44 +51,37 @@ export function HomeScreen() {
 
   const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
 
+  // Category filtering replaces "Suggested Today"
+  const [selectedCategories, setSelectedCategories] = useState<RecipeCategory[]>([]);
+
   useEffect(() => {
     if (!user) {
-
       setListState(ListState.SUGGESTIONS);
     } else {
       setListState(ListState.RECENTLY_VIEWED);
     }
   }, [user?.id]);
 
-
+  // Load catalog recipes for current language (public endpoint; returns 50 based on app language)
   useEffect(() => {
-    suggestionsService.getToday().catch(notify.error);
+    recipeService.getAllRecipes().catch(notify.error);
   }, [i18n.language]);
 
-  const token = localStorage.getItem("token");
-
-
-
   useEffect(() => {
-    if (!token) return;
-    recipeService.getAllRecipes().catch(notify.error);
-  }, [token]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || !user?.id) return;
+    // Favorites view still needs likes; keep behavior as close as possible
+    if (!user?.id) return;
     if (listState !== ListState.FAVORITES) return;
 
+    // Ensure catalog is present for mapping liked ids to recipes
     if (!Array.isArray(items) || items.length === 0) {
-      recipeService.getAllRecipes().catch(() => { });
+      recipeService.getAllRecipes().catch(() => {});
     }
-    recipeService.loadMyLikes().catch(() => { });
+    recipeService.loadMyLikes().catch(() => {});
   }, [listState, user?.id]);
 
-  const recentlyViewedList = useMemo(() => (Array.isArray(items) ? [...items].reverse() : []), [items]);
-  const suggestionsList = useMemo(
-    () => (Array.isArray(suggestedRecipeItem) ? suggestedRecipeItem : []),
-    [suggestedRecipeItem]
+  const recentlyViewedList = useMemo(
+    () => (Array.isArray(items) ? [...items].reverse() : []),
+    [items]
   );
 
   const likedList = useMemo(() => {
@@ -98,6 +99,20 @@ export function HomeScreen() {
     return list.filter((r) => r.id != null && likedIds.has(r.id));
   }, [likes, items, user?.id]);
 
+  const baseSuggestionsList = useMemo(() => {
+    const list = Array.isArray(items) ? items : [];
+
+    if (selectedCategories.length === 0) return list;
+
+    const selected = new Set(selectedCategories);
+    return list.filter((r) => {
+      const cats = (r.categories ?? []) as unknown as RecipeCategory[];
+      return Array.isArray(cats) && cats.some((c) => selected.has(c));
+    });
+  }, [items, selectedCategories]);
+
+  const suggestionsList = useMemo(() => baseSuggestionsList, [baseSuggestionsList]);
+
   const activeList = useMemo(() => {
     if (!user) return suggestionsList;
 
@@ -112,7 +127,6 @@ export function HomeScreen() {
         return suggestionsList;
     }
   }, [user, listState, suggestionsList, recentlyViewedList, likedList]);
-
 
   async function loadImage(recipeToLoad: RecipeModel): Promise<RecipeModel> {
     let updated: RecipeModel;
@@ -152,22 +166,28 @@ export function HomeScreen() {
     return t("likeScreen.likedTitle") || t("likeScreen.noLikes");
   }, [user, listState, t]);
 
+  const toggleCategory = (c: RecipeCategory) => {
+    setSelectedCategories((prev) => {
+      if (prev.includes(c)) return prev.filter((x) => x !== c);
+      return [...prev, c];
+    });
+  };
 
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-{!user && (
-  <div className={`GuestHeader ${isRTL ? "rtl" : "ltr"}`}>
-    <div className={`HelloGuestMessage ${isRTL ? "rtl" : "ltr"}`}>
-      <p>{t("generate.guest")}</p>
-    </div>
+        {!user && (
+          <div className={`GuestHeader ${isRTL ? "rtl" : "ltr"}`}>
+            <div className={`HelloGuestMessage ${isRTL ? "rtl" : "ltr"}`}>
+              <p>{t("generate.guest")}</p>
+            </div>
 
-    <div>
-      <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
-      <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
-    </div>
-  </div>
-)}
+            <div>
+              <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
+              <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
+            </div>
+          </div>
+        )}
 
         <div className="SelectionDiv">
           <FeatureHint />
@@ -184,28 +204,18 @@ export function HomeScreen() {
             <AutoAwesome />
           </Button>
 
-  
-
           <Dialog
             className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}
             open={open}
             onClose={() => setOpen(false)}
           >
-            <RecipeInputDialog
-              onDone={() => setOpen(false)}
-              onFiltersReady={setAppliedFilters}
-            />
+            <RecipeInputDialog onDone={() => setOpen(false)} onFiltersReady={setAppliedFilters} />
           </Dialog>
 
           {current?.title && filtersToUse && !open && (
             <div className="RecipeCardContainer">
-              <RecipeDataContainer
-                recipe={current}
-                filters={filtersToUse}
-                loadImage={loadImage}
-                onExitRecipe={handleExitRecipe}
-              />
+              <RecipeDataContainer recipe={current} filters={filtersToUse} loadImage={loadImage} onExitRecipe={handleExitRecipe} />
             </div>
           )}
 
@@ -219,7 +229,6 @@ export function HomeScreen() {
               >
                 <h4>{t("homeScreen.suggestions")}</h4>
               </div>
-
 
               <div
                 className={`RecentlyViewedBtn ${listState === ListState.RECENTLY_VIEWED ? "active" : ""}`}
@@ -237,24 +246,32 @@ export function HomeScreen() {
               >
                 <h4>{t("likeScreen.likedTitle")}</h4>
               </div>
-
             </div>
           )}
 
-{!user && (
-  <h3 className="HomeScreenTitle user">{titleText}</h3>
+          {!user && <h3 className="HomeScreenTitle user">{titleText}</h3>}
+
+
+  {listState === ListState.SUGGESTIONS && (
+  <div className="CategoryChipsContainer">
+    {ALL_CATEGORIES.map((c) => (
+      <Chip
+        key={c}
+        label={t(`categories.${c}`) || c}
+        clickable
+        color={selectedCategories.includes(c) ? "primary" : "default"}
+        onClick={() => toggleCategory(c)}
+      />
+    ))}
+    {selectedCategories.length > 0 && (
+      <Chip className="CategoryChipClear"
+        label={t("categories.clear") || "Clear"}
+        clickable
+        onClick={() => setSelectedCategories([])}
+      />
+    )}
+  </div>
 )}
-          {/* {user && listState === ListState.RECENTLY_VIEWED && recentlyViewedList.length === 0 ? (
-            <div className="HomeScreenTitleContainer">
-              <h3 className="HomeScreenTitle user">{t("homeScreen.noRecipes")}</h3>
-            </div>
-          ) : user && listState === ListState.FAVORITES && likedList.length === 0 ? (
-            <div className="HomeScreenTitleContainer">
-              <h3 className="HomeScreenTitle user">{t("likeScreen.noLikes") || t("homeScreen.noRecipes")}</h3>
-            </div>
-          ) : (
-            <h3 className="HomeScreenTitle user">{titleText}</h3>
-          )} */}
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
@@ -265,10 +282,10 @@ export function HomeScreen() {
                   !user
                     ? "suggestions"
                     : listState === ListState.SUGGESTIONS
-                      ? "suggestions"
-                      : listState === ListState.FAVORITES
-                        ? "likes"
-                        : "default"
+                    ? "suggestions"
+                    : listState === ListState.FAVORITES
+                    ? "likes"
+                    : "default"
                 }
               />
             ))}

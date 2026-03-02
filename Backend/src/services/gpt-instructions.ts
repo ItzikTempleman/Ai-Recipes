@@ -44,7 +44,7 @@ CONSTRAINTS & VALIDITY:
 - You MUST return ONLY a single valid JSON object that exactly matches the structure requested.
 - Do NOT add any text before or after the JSON.
 - Do NOT invent impossible or non-food items.
-- Do NOT include newline characters (\\n) inside ingredient names or amounts.
+- Do NOT include newline characters (\n) inside ingredient names or amounts.
 - Each ingredient item must describe exactly one ingredient line.
 - Keep the recipe realistic, consistent and internally coherent.
 
@@ -95,6 +95,66 @@ export function getBreakDownInstructions(
   caloryRestrictions: CaloryRestrictions,
   queryRestrictions: QueryRestrictions
 ): string {
+  const kosherSelected = dietaryRestrictions === DietaryRestrictions.KOSHER;
+
+  const kosherBlock = kosherSelected
+    ? `
+  DIETARY RESTRICTIONS — KOSHER (ONLY WHEN SELECTED):
+   - No pork or shellfish.
+   - Do NOT mix meat and dairy in the same recipe.
+   - For any recipe that contains meat (beef, chicken, turkey, lamb, etc.):
+       - Do NOT use dairy ingredients at all (no cheese, butter, cream, yogurt, milk).
+   - For any recipe that contains dairy (cheese, butter, cream, yogurt, milk):
+       - Do NOT use meat ingredients at all.
+   - When the original dish mixes meat + cheese (e.g., cheeseburger):
+       - You MUST choose ONE of the following kosher options:
+           • Keep a meat patty and use ONLY vegan/pareve cheese (no dairy anywhere).
+           • OR keep real dairy cheese and use a vegetarian patty (no meat).
+   - For burger recipes specifically:
+       - The final ingredients, description and instructions must NEVER include both meat and dairy together.
+       - Do NOT claim that the patty is "meatless" or "vegan" if the ingredients list contains meat.
+   - Use only fish that are commonly known to be kosher (e.g., salmon, tuna, cod, halibut, carp, herring, sardines), and do not guess about fish that might not be kosher.
+   - IMPORTANT: Do NOT use the term "kosher salt". Use "salt" instead.
+
+  KOSHER-SPECIFIC PREPARATION (ONLY WHEN SELECTED):
+   - Add simple, practical notes about checking for insects:
+     - For recipes using flour, either:
+       - write "קמח מנופה" as the ingredient, OR
+       - add a clear step at the beginning, e.g.
+         "לנפות את הקמח היטב כדי לוודא שאין חרקים" / "Sift the flour well to check for insects".
+     - For ingredients that are known to be insect-prone (such as certain leafy
+       greens, fresh herbs, etc.), add a short preparation step like:
+       "לשטוף היטב ולבדוק שאין חרקים" / "Wash well and check for insects".
+   - Keep these notes short and practical, consistent with the rest of the instructions,
+     and in the same language as the recipe.
+
+  KOSHER IS A HARD IDENTITY CONSTRAINT (ONLY WHEN SELECTED) (CRITICAL):
+   - When kosher is selected, you must treat kosher law as more important than the original dish name or tradition.
+   - If a dish’s classic or defining version fundamentally violates kosher rules,
+     you MUST NOT recreate or “adapt” that dish under the same name.
+   - In such cases, you must either:
+       • produce a clearly different dish that is unquestionably kosher and rename it accordingly, OR
+       • choose a different, fully kosher dish that fits the user’s request category (meal type, cuisine, popularity).
+   - Never produce a kosher “version” of a dish whose identity depends on non-kosher structure.
+`
+    : "";
+
+  const categoriesBlock = `
+CATEGORIES (CRITICAL REQUIREMENT):
+- You MUST output a field "categories" which is an array of enum strings.
+- Allowed values only:
+  "breakfast","lunch","supper","deserts","dairy","vegan","fish","meat"
+- Each recipe may include MULTIPLE categories when appropriate.
+- Categories must be accurate and based on the actual content:
+  - If it is a dessert → include "deserts".
+  - If it contains dairy (milk, butter, cheese, yogurt, cream) → include "dairy".
+  - If it contains fish → include "fish".
+  - If it contains meat/poultry → include "meat".
+  - If it is fully vegan → include "vegan" and DO NOT include "dairy" or "meat".
+  - If it is suitable as a meal time, add one or more of: "breakfast" / "lunch" / "supper".
+- Do NOT invent categories not in the allowed list.
+`;
+
   return `
 Create a concise home-cook recipe for "${query}".
 The number of servings is "${quantity}".
@@ -123,7 +183,7 @@ Examples:
 - מרק עדשים
 - מרק עדשים אדומות
 - מרק עדשים עם כמון
-  
+
 
 
 THESE VALUES ARE ALREADY DECIDED FOR THIS REQUEST:
@@ -146,6 +206,8 @@ YOU MUST:
  Do NOT change these numbers or modify the array.
 
 2. Make the RECIPE follow ALL restrictions exactly and intelligently:
+
+${categoriesBlock}
 
 3. Popularity & EXISTENCE (VERY IMPORTANT):
    - "popularity" must be an integer from 0 to 10.
@@ -217,7 +279,7 @@ YOU MUST:
        - Include bun toasting instructions and full assembly order.
        - Never write generic phrases like “make the patty” or “cook the patty in a pan”.
      Replace with precise, step-by-step culinary instructions.
-     
+
   NO SHORTCUT / STORE-BOUGHT COMPONENTS (VERY IMPORTANT):
    - Do NOT use vague, pre-made ingredients as the main component, such as:
        "1 vegan burger patty", "frozen burger patty", "store-bought meatballs",
@@ -228,7 +290,7 @@ YOU MUST:
        - For sauces: list their ingredients and steps instead of “use store-bought sauce”.
    - Only use store-bought shortcuts if the USER explicitly requests it
      (e.g., “with store-bought vegan patty” or “quick version using ready sauce”).
-     
+
   SUGAR RESTRICTIONS:
    - If SugarRestriction = 0 (DEFAULT):
        - Added sugar IS allowed when appropriate for the dish.
@@ -261,48 +323,8 @@ YOU MUST:
    - If DietaryRestrictions = 1 (VEGAN):
        - No meat, fish, eggs, dairy, gelatin, or animal-derived ingredients.
        - Use plant-based alternatives that maintain the flavor/concept.
-   - If DietaryRestrictions = 2 (KOSHER):
-       - No pork or shellfish.
-       - Do NOT mix meat and dairy in the same recipe.
-       - For any recipe that contains meat (beef, chicken, turkey, lamb, etc.):
-           - Do NOT use dairy ingredients at all (no cheese, butter, cream, yogurt, milk).
-       - For any recipe that contains dairy (cheese, butter, cream, yogurt, milk):
-           - Do NOT use meat ingredients at all.
-       - When the original dish mixes meat + cheese (e.g., cheeseburger):
-           - You MUST choose ONE of the following kosher options:
-               • Keep a meat patty and use ONLY vegan/pareve cheese (no dairy anywhere).
-               • OR keep real dairy cheese and use a vegetarian patty (no meat).
-       - For burger recipes specifically:
-           - The final ingredients, description and instructions must NEVER include both meat and dairy together.
-           - Do NOT claim that the patty is "meatless" or "vegan" if the ingredients list contains meat.
-       - Use only fish that are commonly known to be kosher (e.g., salmon, tuna, cod, halibut, carp, herring, sardines), and do not guess about fish that might not be kosher.
-       - IMPORTANT: Do NOT use the term "kosher salt". Use "salt" instead.
 
-
-  KOSHER-SPECIFIC PREPARATION (VERY IMPORTANT):
-
-   - When the user selects a kosher option, add simple, practical notes
-     about checking for insects:
-     - For recipes using flour, either:
-       - write "קמח מנופה" as the ingredient, OR
-       - add a clear step at the beginning, e.g.
-         "לנפות את הקמח היטב כדי לוודא שאין חרקים".
-     - For ingredients that are known to be insect-prone (such as certain leafy
-       greens, fresh herbs, etc.), add a short preparation step like:
-       "לשטוף היטב ולבדוק שאין חרקים".
-   - Keep these notes short and practical, consistent with the rest of the instructions,
-     and in the same language as the recipe (Hebrew in this app).
-    
-     KOSHER IS A HARD IDENTITY CONSTRAINT (CRITICAL):
-When kosher is selected, you must treat kosher law as more important than the original dish name or tradition.
-If a dish’s classic or defining version fundamentally violates kosher rules, you MUST NOT recreate or “adapt” that dish under the same name.
-In such cases, you must either:
-
-produce a clearly different dish that is unquestionably kosher and rename it accordingly, or
-
-choose a different, fully kosher dish that fits the user’s request category (meal type, cuisine, popularity).
-
-Never produce a kosher “version” of a dish whose identity depends on non-kosher structure.
+${kosherBlock}
 
   CALORY RESTRICTIONS:
    - If CaloryRestrictions = 1:
@@ -402,7 +424,7 @@ TOTAL PROTEIN CALCULATION (CRITICAL — MUST FOLLOW):
 - If SugarRestriction = 1 (LOW):
     • Reduce added sugar when possible; still compute the true total sugar.
 - If SugarRestriction = 2 (NONE):
-    • Added sugar and sweeteners must be 0, but total sugar may still be > 0 due to natural sugars (e.g., tomatoes).
+    • Added sugar and sweeteners must be 0, but total sugar may still be > 0 due to natural sugars (e.g., tomatoes, onions).
 
    - "healthLevel":
      - An integer from 0 to 10 describing overall healthiness.
@@ -505,7 +527,7 @@ CRITICAL SANITY & SAFETY RULES (MUST FOLLOW):
   - Preserve culturally essential ingredients for classic dishes whenever they are compatible with restrictions.
   - Example: For Bukharian-style "גיז׳גיז׳ה", include traditional flavor elements such as "קצח" when appropriate.
   - Do NOT omit key signature ingredients unless a restriction forbids it.
-  
+
   INSTRUCTIONS ARRAY FORMAT (VERY IMPORTANT):
 - In the "instructions" array, each item must be a plain sentence or sentences
   describing that step.
@@ -629,6 +651,7 @@ The example numbers below MUST be replaced with realistic values that follow rul
   "amountOfServings": ${quantity},
   "description": "string",
   "popularity": 7,
+  "categories": ["breakfast"],
   "ingredients": [
     { "ingredient": "string", "amount": "string|null" }
   ],
@@ -645,13 +668,15 @@ The example numbers below MUST be replaced with realistic values that follow rul
   "dietaryRestrictions": ${dietaryRestrictions},
   "caloryRestrictions": ${caloryRestrictions},
   "queryRestrictions": ${JSON.stringify(queryRestrictions)},
-    "prepTime": 30,
+  "prepTime": 30,
   "difficultyLevel": 1,
   "countryOfOrigin": "Italy"
-  - "prepTime" must be an integer (minutes), not text.
+}
+
+- "prepTime" must be an integer (minutes), not text.
 - "difficultyLevel" must be one of: 0 (EASY), 1 (MID_LEVEL), 2 (PRO).
 - "countryOfOrigin" must be a single country name as a string (e.g. "Italy").
-}
+- "categories" MUST be an array of allowed category enum strings (see CATEGORIES rules above).
 
 - "title" must NOT include the number of servings or phrases like "for 4", "for two people", etc.
   The serving count is provided only in "amountOfServings".
@@ -671,7 +696,7 @@ When calculating sugar:
     • Do NOT add sugar or any sweeteners (including honey/syrups/artificial sweeteners/sugar alcohols).
     • "totalSugar" may still be > 0 due to natural sugars (e.g., tomatoes, onions), except whole fresh fruit which may be excluded as above.
  - If a dietary sweetener is used (e.g. סוכרזית/סטיביה/ממתיק מלאכותי), it must be named explicitly and it must NOT increase "totalSugar".
-  
+
 Style example (for content ONLY — do NOT include the numbers in the JSON strings):
 1. Combine ingredients in a medium bowl and mix until evenly distributed.
 2. Preheat a 25 cm non-stick skillet over medium-high heat (about 190°C).

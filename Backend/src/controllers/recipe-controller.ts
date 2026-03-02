@@ -17,7 +17,7 @@ class RecipeController {
     public constructor() {
         this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeNoImage);
         this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeWithImage);
-        this.router.get("/api/recipes/all", verificationMiddleware.verifyLoggedIn, this.getRecipes);
+        this.router.get("/api/recipes/all", verificationMiddleware.verifyOptional, this.getRecipes);
         this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
         this.router.get("/api/recipes/images/:fileName", this.getImageFile);
         this.router.delete("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.deleteRecipe);
@@ -36,11 +36,12 @@ class RecipeController {
 
 
     private async getRecipes(request: Request, response: Response) {
-        const user = (request as any).user as UserModel;
-        const recipes = await recipeService.getRecipes(user.id);
+        const header = String(request.headers["accept-language"] ?? "");
+        const lang = header.toLowerCase().includes("he") ? "he" : "en";
+        const recipes = await recipeService.getCatalogRecipes(lang);
         response.json(recipes);
     }
-
+    
     private async getSingleRecipe(request: Request, response: Response) {
         const user = (request as any).user as UserModel;
         const recipeId = Number(request.params.recipeId)

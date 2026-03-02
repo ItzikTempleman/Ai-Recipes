@@ -10,10 +10,9 @@ import { healthController } from "./utils/health-controller";
 import fileUpload from "express-fileupload";
 import { resetPasswordController } from "./controllers/reset-password-controller";
 import { pdfController } from "./controllers/pdf-controller";
-import { suggestionsController } from "./controllers/suggestions-controller";
-import { startSuggestionsSchedulers } from "./utils/schedule-timing";
 import cookieParser from "cookie-parser";
 import { ensureVisitorId } from "./middleware/visitor-id-middleware";
+import { catalogController } from "./controllers/catalog-controller";
 
 export class App {
   public async start(): Promise<void> {
@@ -27,25 +26,30 @@ export class App {
         allowedHeaders: ["Content-Type", "Authorization"],
       })
     );
+
     server.use(express.json());
     server.use(cookieParser());
     server.use(ensureVisitorId);
     server.use(fileUpload());
+
     const imageDir = process.env.IMAGE_DIR || path.join(__dirname, "1-assets", "images");
     await fs.mkdir(imageDir, { recursive: true });
     const userImageDir = path.join(imageDir, "users");
     await fs.mkdir(userImageDir, { recursive: true });
+
     server.use("/api/recipes/images", express.static(imageDir));
     server.use("/api/users/images", express.static(userImageDir));
+
     server.use("/api", userController.router);
     server.use(pdfController.router);
     server.use(recipeController.router);
-    server.use(suggestionsController.router);
+    server.use(catalogController.router); // <-- NEW
     server.use("/api", resetPasswordController.router);
     server.use(healthController.router);
-    startSuggestionsSchedulers();
+
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);
+
     server.listen(appConfig.port, appConfig.serverHost, () => {
       console.log(`Listening to port ${appConfig.port}`);
     });

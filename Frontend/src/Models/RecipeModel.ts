@@ -37,6 +37,7 @@ export type RecipeModel = {
     prepTime?: number;
     difficultyLevel?: DifficultyLevel;
     countryOfOrigin?: string;
+    categories?: RecipeCategory[];
 };
 
 export enum DifficultyLevel {
@@ -54,13 +55,11 @@ export type GeneratedRecipeData = {
 };
 
 export type RecipeState = {
-    items: RecipeModel[];
-    current?: RecipeModel | null;
-    guestStash?: RecipeModel | null; 
-    loading: boolean;
-    error?: string;
-    dailyRecipes?: RecipeModel[];
-    dailyRecipesDate?: string;
+  items: RecipeModel[];
+  current?: RecipeModel | null;
+  guestStash?: RecipeModel | null;
+  loading: boolean;
+  error?: string;
 }
 
 export enum SugarRestriction {
@@ -104,5 +103,16 @@ export type AskRecipeBody = {
   };
   history?: { role: "user" | "assistant"; content: string }[];
 };
+
+export enum RecipeCategory {
+  breakfast = "breakfast",
+  lunch = "lunch",
+  supper = "supper",
+  deserts = "deserts",
+  dairy = "dairy",
+  vegan = "vegan",
+  fish = "fish",
+  meat = "meat"
+}
 
 export type ChatMsg = { role: "user" | "assistant"; content: string };

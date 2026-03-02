@@ -25,12 +25,30 @@ export type GeneratedRecipeData = {
     prepTime: number;
     difficultyLevel: DifficultyLevel;
     countryOfOrigin: String;
+    categories: RecipeCategory[];
 };
 
 export enum DifficultyLevel {
     EASY, MID_LEVEL, PRO,
     DEFAULT
 }
+
+export enum RecipeLang {
+    EN = "en",
+    HE = "he"
+}
+
+export enum RecipeCategory {
+    breakfast = "breakfast",
+    lunch = "lunch",
+    supper = "supper",
+    deserts = "deserts",
+    dairy = "dairy",
+    vegan = "vegan",
+    fish = "fish",
+    meat = "meat"
+}
+
 export type Query = {
     systemCommandDescription: string;
     userCommandDescription: string;
@@ -90,6 +108,9 @@ export type DbRecipeRow = {
     countryOfOrigin: String;
     imageName: string | null;
     userId: number | null;
+    lang: "en" | "he" | null;
+    pairKey: string | null;
+    categories: string;
 };
 
 export class FullRecipeModel {
@@ -116,6 +137,9 @@ export class FullRecipeModel {
     public imageUrl?: string;
     public imageName: string | null | undefined;
     public userId?: number;
+    public lang?: "en" | "he";
+    public pairKey?: string;
+    public categories?: RecipeCategory[];
 
     constructor(recipe: any) {
         if (!recipe) throw new ValidationError("Missing recipe data");
@@ -142,6 +166,9 @@ export class FullRecipeModel {
         this.imageUrl = recipe.imageUrl;
         this.imageName = recipe.imageName;
         this.userId = recipe.userId;
+            this.lang = recipe.lang;
+    this.pairKey = recipe.pairKey;
+    this.categories = recipe.categories;
     }
 
     private static validationSchema = Joi.object(
@@ -178,14 +205,14 @@ export class AskModel {
     private static validationSchema = Joi.object({
         query: Joi.string().trim().min(2).max(400).required(),
         history: Joi.array()
-          .items(
-            Joi.object({
-              role: Joi.string().valid("user", "assistant").required(),
-              content: Joi.string().trim().min(1).max(2000).required()
-            }).required()
-          )
-          .max(12)
-          .optional()
+            .items(
+                Joi.object({
+                    role: Joi.string().valid("user", "assistant").required(),
+                    content: Joi.string().trim().min(1).max(2000).required()
+                }).required()
+            )
+            .max(12)
+            .optional()
     });
 
     public validate(): void {

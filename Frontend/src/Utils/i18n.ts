@@ -32,7 +32,7 @@ const resources = {
         message2: "All data will be wiped."
       },
       homeScreen: {
-         generateTitle: "AI recipes",
+        generateTitle: "AI recipes",
         shareIntro: "Share your recipes",
         generate: "Generate recipe",
         generate2: "Turn a recipe idea into clear cooking steps with AI",
@@ -51,6 +51,17 @@ const resources = {
         remember: "Recently viewed",
         freeWithLogin: "Free with login",
         unlockTitle: "Unlock features"
+      },
+      categories: {
+        breakfast: "Breakfast",
+        lunch: "Lunch",
+        supper: "Supper",
+        deserts: "Desserts",
+        dairy: "Dairy",
+        vegan: "Vegan",
+        fish: "Fish",
+        meat: "Meat",
+        clear: "Clear"
       },
       dataDeletion: {
         title: "Delete user data"
@@ -88,10 +99,10 @@ const resources = {
         loadingWithImage: "Generating an image…",
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe...",
-        servings:"SERVINGS"
+        servings: "SERVINGS"
       },
       likeScreen: {
-         noLikes:"No favorites",
+        noLikes: "No favorites",
         likedTitle: "Favorites"
       },
       filters: {
@@ -182,7 +193,7 @@ const resources = {
           phoneRequired: "Phone number is required",
         },
       },
-      
+
       profile: {
         addPhoneNumber: "Add phone number",
         title: "Profile",
@@ -264,7 +275,7 @@ const resources = {
       },
 
       homeScreen: {
-            generateTitle: "מתכונים עם AI",
+        generateTitle: "מתכונים עם AI",
         shareIntro: "שתף את המתכונים",
         generate: "יצירת מתכון",
         generate2: "הפוך רעיון של מתכון לשלבי בישול מסודרים באמצעות AI",
@@ -282,6 +293,17 @@ const resources = {
         remember: "נצפו לאחרונה",
         freeWithLogin: "חינם למשתמשים מחוברים",
         unlockTitle: "פתח פיצ׳רים",
+      },
+      categories: {
+        breakfast: "ארוחת בוקר",
+        lunch: "ארוחת צהריים",
+        supper: "ארוחת ערב",
+        deserts: "קינוחים",
+        dairy: "חלבי",
+        vegan: "טבעוני",
+        fish: "דגים",
+        meat: "בשרי",
+        clear: "נקה"
       },
       dataDeletion: {
         title: "מחק נתוני משתמש"
@@ -321,10 +343,10 @@ const resources = {
         loadingWithImage: "...מייצר תמונה",
         loadingWithImageLowerMessage: " ,זה יקח דקה ",
         loadingNoImage: "...מייצר מתכון",
-         servings:"מנות"
+        servings: "מנות"
       },
       likeScreen: {
-        noLikes:"אין מועדפים",
+        noLikes: "אין מועדפים",
         likedTitle: "מועדפים"
       },
       filters: {

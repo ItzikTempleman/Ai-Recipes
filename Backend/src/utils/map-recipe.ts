@@ -1,6 +1,6 @@
 import { appConfig } from "./app-config";
-import {DbRecipeRow, DifficultyLevel,FullRecipeModel,GeneratedRecipeData,} from "../models/recipe-model";
-import { CaloryRestrictions,DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction} from "../models/filters";
+import { DbRecipeRow, DifficultyLevel, FullRecipeModel, GeneratedRecipeData, RecipeCategory, } from "../models/recipe-model";
+import { CaloryRestrictions, DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction } from "../models/filters";
 
 const parseAmounts = (s?: string | null): (string | null)[] => {
   if (!s) return [];
@@ -29,7 +29,25 @@ const parseQueryRestrictions = (v: unknown): unknown[] => {
       return [];
     }
   }
-  return[];
+  return [];
+};
+
+const parseCategories = (v: unknown): RecipeCategory[] => {
+  if (v == null) return [];
+  if (Array.isArray(v)) return v as RecipeCategory[];
+  if (typeof v === "string") {
+    const s = v.trim();
+    if (!s) return [];
+    try {
+      const parsed = JSON.parse(s);
+      if (!Array.isArray(parsed)) return [];
+      const allowed = new Set(Object.values(RecipeCategory));
+      return parsed.filter((x) => allowed.has(String(x) as any)) as RecipeCategory[];
+    } catch {
+      return [];
+    }
+  }
+  return [];
 };
 const toDifficultyEnum = (v: unknown): DifficultyLevel => {
   if (typeof v === "string") {
@@ -55,10 +73,13 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
     .filter(Boolean);
   const difficultyEnum = toDifficultyEnum(row.difficultyLevel);
   const queryRestrictions = parseQueryRestrictions(row.queryRestrictions);
+  const categories = parseCategories(row.categories);
   const data: GeneratedRecipeData = {
     ingredients: ingredientObjects,
     instructions,
+    categories,
   } as GeneratedRecipeData;
+
   return new FullRecipeModel({
     id: row.id,
     title: row.title,
@@ -82,5 +103,8 @@ export function mapDbRowToFullRecipe(row: DbRecipeRow): FullRecipeModel {
     imageUrl: row.imageName ? appConfig.baseImageUrl + row.imageName : "",
     imageName: row.imageName ?? undefined,
     userId: row.userId ?? undefined,
+    lang: row.lang ?? undefined,
+    pairKey: row.pairKey ?? undefined,
+    categories,
   });
 }

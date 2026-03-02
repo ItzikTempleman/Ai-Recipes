@@ -15,7 +15,7 @@
   flex-direction: column;
 }
 
-.HomeScreen > * {
+.HomeScreen>* {
   position: relative;
   z-index: 1;
 }
@@ -32,8 +32,8 @@
   top: calc(-48px - 28px);
   z-index: 10000;
   margin: 0;
-  padding: 4px 8px ;
-  background:  #fbc104;
+  padding: 4px 8px;
+  background: #fbc104;
   border-radius: 8px;
 }
 
@@ -246,7 +246,7 @@
   overflow: visible;
 }
 
-.RecipeGrid > * {
+.RecipeGrid>* {
   min-width: 0;
 }
 
@@ -298,6 +298,27 @@
   margin-top: 80px !important;
   margin-bottom: 24px !important;
   max-height: calc(100vh - 324px) !important;
+}
+
+.CategoryChipsContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.CategoryChipClear {
+  color: #d32f2f !important;
+  border: 1px solid #d32f2f !important;
+  background-color: transparent !important;
+  font-weight: 600;
+}
+
+.CategoryChipClear:hover {
+  background-color: rgba(211, 47, 47, 0.08) !important;
 }
 
 @media (max-width: 600px) {
@@ -371,5 +392,21 @@
   .RecentlyViewedBtn,
   .SuggestionsBtn {
     padding: 6px 14px;
+  }
+
+  .CategoryChipsContainer {
+    gap: 6px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .CategoryChipClear {
+    background-color: #d32f2f !important;
+    color: white !important;
+    font-weight: 700;
+  }
+
+  .CategoryChipClear:hover {
+    background-color: #b71c1c !important;
   }
 }

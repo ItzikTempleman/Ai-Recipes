@@ -5,8 +5,8 @@ import { GeneratedRecipeData, Query } from "../models/recipe-model";
 class GptService {
   public async getInstructions(query: Query, isWithImage: boolean): Promise<GeneratedRecipeData> {
 
-const modelToUse = appConfig.modelNumber;
-const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
+    const modelToUse = appConfig.modelNumber;
+    const keyToUse = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
 
     const body = {
       model: modelToUse,
@@ -32,6 +32,7 @@ const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
     const popularity = formattedResponse?.popularity;
     const ingredients = formattedResponse?.ingredients;
     const instructions = formattedResponse?.instructions;
+    const categories = formattedResponse?.categories;
     const totalSugar = formattedResponse?.totalSugar;
     const totalProtein = formattedResponse?.totalProtein;
     const healthLevel = formattedResponse?.healthLevel;
@@ -49,7 +50,8 @@ const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
       !title ||
       !Array.isArray(ingredients) ||
       !Array.isArray(instructions) ||
-      !Number.isFinite(calories)
+      !Number.isFinite(calories) ||
+      !Array.isArray(categories)
     ) {
       throw new Error("Invalid recipe JSON");
     }
@@ -72,20 +74,21 @@ const keyToUse   = isWithImage ? appConfig.apiKey : appConfig.freeNoImageApiKey;
       queryRestrictions,
       prepTime,
       difficultyLevel,
-      countryOfOrigin
+      countryOfOrigin,
+      categories
     };
 
   }
 
-public async askRecipeQuestion(
-  recipe: any,
-  userQuestion: string,
-  history: { role: "user" | "assistant"; content: string }[] = []
-): Promise<string> {
-  const modelToUse = appConfig.modelNumber;
-  const keyToUse = appConfig.freeNoImageApiKey;
+  public async askRecipeQuestion(
+    recipe: any,
+    userQuestion: string,
+    history: { role: "user" | "assistant"; content: string }[] = []
+  ): Promise<string> {
+    const modelToUse = appConfig.modelNumber;
+    const keyToUse = appConfig.freeNoImageApiKey;
 
-const system = `
+    const system = `
 You are Chef, a helpful cooking assistant.
 
 Hard rules:
@@ -101,37 +104,37 @@ Context:
 - Reference the recipe content whenever possible (ingredients/instructions/title/description/restrictions).
 `.trim();
 
-  const safeHistory = Array.isArray(history)
-    ? history
+    const safeHistory = Array.isArray(history)
+      ? history
         .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
         .slice(-12)
-    : [];
+      : [];
 
-  const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
-    { role: "system", content: system },
-    {
-      role: "user",
-      content: `RECIPE (JSON):\n${JSON.stringify(recipe)}`
-    },
-    ...safeHistory.map(m => ({ role: m.role, content: m.content })),
-    { role: "user", content: userQuestion }
-  ];
+    const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
+      { role: "system", content: system },
+      {
+        role: "user",
+        content: `RECIPE (JSON):\n${JSON.stringify(recipe)}`
+      },
+      ...safeHistory.map(m => ({ role: m.role, content: m.content })),
+      { role: "user", content: userQuestion }
+    ];
 
-  const body = {
-    model: modelToUse,
-    messages,
-    temperature: 0.3
-  };
+    const body = {
+      model: modelToUse,
+      messages,
+      temperature: 0.3
+    };
 
-  const response = await axios.post(appConfig.gptUrl, body, {
-    headers: {
-      Authorization: "Bearer " + keyToUse,
-      "Content-Type": "application/json"
-    }
-  });
+    const response = await axios.post(appConfig.gptUrl, body, {
+      headers: {
+        Authorization: "Bearer " + keyToUse,
+        "Content-Type": "application/json"
+      }
+    });
 
-  return String(response.data.choices[0].message.content ?? "").trim();
-}
+    return String(response.data.choices[0].message.content ?? "").trim();
+  }
 
 }
 

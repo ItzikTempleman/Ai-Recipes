@@ -11,8 +11,7 @@ import { mapDbRowToFullRecipe } from "../utils/map-recipe";
 import { DangerousRequestError, ResourceNotFound, ValidationError } from "../models/client-errors";
 import { InputModel } from "../models/input-model";
 import { isLethalQuery } from "../utils/banned-filter";
-import { getTodayDateString } from "../utils/schedule-timing";
-import { SuggestionsModel } from "../models/suggestions-model";
+
 
 class RecipeService {
 
@@ -69,6 +68,13 @@ class RecipeService {
     return mapDbRowToFullRecipe(row);
   };
 
+  public async getCatalogRecipes(lang: "en" | "he"): Promise<FullRecipeModel[]> {
+    const systemUserId = await this.ensureSystemUserId();
+    const sql = `select * from recipe where userId = ? and pairKey is not null and lang = ? order by id asc limit 50`;
+    const values = [systemUserId, lang];
+    const rows = await dal.execute(sql, values) as DbRecipeRow[];
+    return rows.map(mapDbRowToFullRecipe);
+  }
 
   public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
@@ -240,17 +246,18 @@ class RecipeService {
     return likedRecipes.map(mapDbRowToFullRecipe);
   }
 
-  public async askAboutRecipe(recipeId: number, userId: number, query: string, history: { role: "user" | "assistant"; content: string }[] = []): Promise<string> {
-    let recipe: FullRecipeModel;
+  public async askAboutRecipe(
+    recipeId: number,
+    userId: number,
+    query: string,
+    history: { role: "user" | "assistant"; content: string }[] = []
+  ): Promise<string> {
 
+    let recipe: FullRecipeModel;
     try {
       recipe = await this.getSingleRecipe(recipeId, userId);
-    } catch (err: any) {
-      const sql = `select * from dailySuggestions where suggestionDate= ? and recipeId=? limit 1;`;
-      const values = [getTodayDateString(), recipeId];
-      const rows = (await dal.execute(sql, values)) as SuggestionsModel[];
-      const allowed = rows.length > 0;
-      if (!allowed) throw err;
+    } catch {
+  
       recipe = await this.getRecipePublicById(recipeId);
     }
 
@@ -273,6 +280,15 @@ class RecipeService {
     return await gptService.askRecipeQuestion(recipeContext, query, history);
   }
 
+  private async ensureSystemUserId(): Promise<number> {
+    const email = "system.generator@smart-recipes.local";
+    const sql = `insert into user (firstName, familyName, email, password)
+                 values (?, ?, ?, ?)
+                 on duplicate key update id = LAST_INSERT_ID(id)`;
+    const values = ["System", "Generator", email, "SYSTEM_GENERATED_NO_LOGIN"];
+    const result = (await dal.execute(sql, values)) as { insertId: number };
+    return result.insertId;
+  }
 
 }
 export const recipeService = new RecipeService();
