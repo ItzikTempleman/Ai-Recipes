@@ -109,7 +109,6 @@ You will receive the following RESTRICTION FLAGS (numeric enums):
 - DietaryRestrictions: 0 = DEFAULT, 1 = VEGAN, 2 = KOSHER
 - CaloryRestrictions: 0 = DEFAULT, 1 = LOW
 
-
 The "title" must be a CLEANED and IMPROVED dish name.
 
 TITLE RULES (VERY IMPORTANT):
