@@ -8,13 +8,13 @@ class AppConfig {
 
   public readonly generateImageForSavedRecipeUrl = `${API}/recipes/`;
   public readonly generateImagePreviewUrl = `${API}/recipes/generate-image-preview`;
-
+  public readonly getMyRecipesUrl = `${API}/recipes`;
   public readonly registerUrl = `${API}/register/`;
   public readonly loginUrl = `${API}/login/`;
   public readonly userUrl = `${API}/users/`;
   public readonly googleLoginUrl = `${API}/auth/google`;
-  
-   public readonly setUserPasswordUrl = `${API}/users/set-password`;
+
+  public readonly setUserPasswordUrl = `${API}/users/set-password`;
 
   public readonly likeUrl = `${API}/recipes/liked/`;
   public readonly shareTokenUrl = `${API}/recipes/share-token`;
@@ -23,11 +23,11 @@ class AppConfig {
   public readonly resetPasswordUrl = `${API}/auth/reset-password`;
   public readonly verifyResetTokenUrl = `${API}/auth/verify-reset-token`;
 
-public readonly askRecipeUrl = `${API}/recipe`;
+  public readonly askRecipeUrl = `${API}/recipe`;
 
-public readonly dailyRecipesUrl = `${API}/daily-recipes`;
+  public readonly dailyRecipesUrl = `${API}/daily-recipes`;
 
-public readonly recipeUsageUrl = `${API}/usage/recipes`;
+  public readonly recipeUsageUrl = `${API}/usage/recipes`;
 
 }
 

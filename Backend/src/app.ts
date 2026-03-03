@@ -13,6 +13,7 @@ import { pdfController } from "./controllers/pdf-controller";
 import cookieParser from "cookie-parser";
 import { ensureVisitorId } from "./middleware/visitor-id-middleware";
 import { catalogController } from "./controllers/catalog-controller";
+import { seedCatalogIfNeeded } from "./utils/catalog-seeder";
 
 export class App {
   public async start(): Promise<void> {
@@ -23,7 +24,7 @@ export class App {
         origin: true,
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
+        allowedHeaders: ["Content-Type", "Authorization", "Accept-Language"],
       })
     );
 
@@ -43,7 +44,7 @@ export class App {
     server.use("/api", userController.router);
     server.use(pdfController.router);
     server.use(recipeController.router);
-    server.use(catalogController.router); // <-- NEW
+    server.use(catalogController.router);
     server.use("/api", resetPasswordController.router);
     server.use(healthController.router);
 
@@ -52,6 +53,10 @@ export class App {
 
     server.listen(appConfig.port, appConfig.serverHost, () => {
       console.log(`Listening to port ${appConfig.port}`);
+    });
+
+    seedCatalogIfNeeded().catch((err) => {
+      console.error("seedCatalogIfNeeded failed:", err);
     });
   }
 }

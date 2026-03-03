@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response, Router } from "express";
+import express, { Request, Response, Router } from "express";
 import { StatusCode } from "../models/status-code";
 import { AskModel, FullRecipeModel } from "../models/recipe-model";
 import { recipeService } from "../services/recipe-service";
@@ -9,53 +9,116 @@ import { generateImage } from "../services/image-service";
 import { visitorRecipeUsageService } from "../services/visitor-recipe-usage-service";
 import { userRecipeUsageService } from "../services/user-recipe-usage-service";
 import { consumeRecipeUsage, refundRecipeUsage, UsageConsumer } from "../utils/recipe-usage-helper";
-
+import { normalizeLang } from "../utils/normalize-language";
 
 class RecipeController {
     public router: Router = express.Router();
 
     public constructor() {
-        this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeNoImage);
-        this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeWithImage);
-        this.router.get("/api/recipes/all", verificationMiddleware.verifyOptional, this.getRecipes);
-        this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
+        this.router.post("/api/generate-free-recipe-without-image/:amount",  verificationMiddleware.verifyOptional,  this.generateRecipeNoImage);
+        this.router.post("/api/generate-recipe-with-image/:amount",verificationMiddleware.verifyOptional,  this.generateRecipeWithImage);
+        this.router.get("/api/recipes/all",  verificationMiddleware.verifyOptional,   this.getCatalogRecipes);
+        this.router.get("/api/recipes", verificationMiddleware.verifyLoggedIn, this.getUserRecipes  );
+        this.router.get("/api/recipe/:recipeId",verificationMiddleware.verifyLoggedIn,this.getSingleRecipe);
         this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-        this.router.delete("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.deleteRecipe);
-        this.router.post("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.likeRecipe);
-        this.router.delete("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.unlikeRecipe);
-        this.router.get("/api/recipes/liked/:recipeId", verificationMiddleware.verifyLoggedIn, this.isRecipeLikedByUser);
-        this.router.get("/api/recipes/liked", verificationMiddleware.verifyLoggedIn, this.getMyLikedRecipeIds);
-        this.router.get("/api/recipes/liked/full-recipe", verificationMiddleware.verifyLoggedIn, this.getLikedRecipesByUserId);
-        this.router.post("/api/recipes/:recipeId/generate-image", verificationMiddleware.verifyLoggedIn, this.generateImageForSavedRecipe);
-        this.router.post("/api/recipes/generate-image-preview", verificationMiddleware.verifyOptional, this.generateImagePreview);
-        this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe.bind(this));
-        this.router.get("/api/recipes/liked/count/:recipeId", verificationMiddleware.verifyLoggedIn, this.getRecipesTotalLikeCount);
-        this.router.post("/api/recipe/:recipeId/ask", verificationMiddleware.verifyLoggedIn, this.askRecipeQuestion);
-        this.router.get("/api/usage/recipes", verificationMiddleware.verifyOptional, this.getRecipeUsageStatus);
+
+        this.router.delete(
+            "/api/recipe/:recipeId",
+            verificationMiddleware.verifyLoggedIn,
+            this.deleteRecipe
+        );
+
+        this.router.post(
+            "/api/recipes/liked/:recipeId",
+            verificationMiddleware.verifyLoggedIn,
+            this.likeRecipe
+        );
+
+        this.router.delete(
+            "/api/recipes/liked/:recipeId",
+            verificationMiddleware.verifyLoggedIn,
+            this.unlikeRecipe
+        );
+
+        this.router.get(
+            "/api/recipes/liked/:recipeId",
+            verificationMiddleware.verifyLoggedIn,
+            this.isRecipeLikedByUser
+        );
+
+        this.router.get(
+            "/api/recipes/liked",
+            verificationMiddleware.verifyLoggedIn,
+            this.getMyLikedRecipeIds
+        );
+
+        this.router.get(
+            "/api/recipes/liked/full-recipe",
+            verificationMiddleware.verifyLoggedIn,
+            this.getLikedRecipesByUserId
+        );
+
+        this.router.post(
+            "/api/recipes/:recipeId/generate-image",
+            verificationMiddleware.verifyLoggedIn,
+            this.generateImageForSavedRecipe
+        );
+
+        this.router.post(
+            "/api/recipes/generate-image-preview",
+            verificationMiddleware.verifyOptional,
+            this.generateImagePreview
+        );
+
+        this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe);
+
+        this.router.get(
+            "/api/recipes/liked/count/:recipeId",
+            verificationMiddleware.verifyLoggedIn,
+            this.getRecipesTotalLikeCount
+        );
+
+        this.router.post(
+            "/api/recipe/:recipeId/ask",
+            verificationMiddleware.verifyLoggedIn,
+            this.askRecipeQuestion
+        );
+
+        this.router.get(
+            "/api/usage/recipes",
+            verificationMiddleware.verifyOptional,
+            this.getRecipeUsageStatus
+        );
+    }
+
+      private async getUserRecipes(request: Request, response: Response) {
+    const user = (request as any).user as UserModel;
+    const recipes = await recipeService.getRecipes(user.id);
+    response.status(StatusCode.OK).json(recipes);
+  }
+
+      private async getSingleRecipe (request: Request, response: Response)  {
+        const user = (request as any).user as UserModel;
+        const recipeId = Number(request.params.recipeId);
+        const recipe = await recipeService.getSingleRecipe(recipeId, user.id);
+        response.status(StatusCode.OK).json(recipe);
+    };
+    
+    private async getCatalogRecipes (request: Request, response: Response)  {
+        const lang = normalizeLang(request.headers["accept-language"] as any);
+        const recipes = await recipeService.getCatalogRecipes(lang);
+        response.status(StatusCode.OK).json(recipes);
     };
 
 
-    private async getRecipes(request: Request, response: Response) {
-        const header = String(request.headers["accept-language"] ?? "");
-        const lang = header.toLowerCase().includes("he") ? "he" : "en";
-        const recipes = await recipeService.getCatalogRecipes(lang);
-        response.json(recipes);
-    }
-    
-    private async getSingleRecipe(request: Request, response: Response) {
-        const user = (request as any).user as UserModel;
-        const recipeId = Number(request.params.recipeId)
-        const recipes = await recipeService.getSingleRecipe(recipeId, user.id);
-        response.json(recipes);
-    }
 
-    public async getLikedRecipesByUserId(request: Request, response: Response) {
+    public async getLikedRecipesByUserId  (request: Request, response: Response)  {
         const userId = (request as any).user.id;
         const likedRecipes = await recipeService.getLikedRecipesByUserId(userId);
         response.status(StatusCode.OK).json(likedRecipes);
-    }
+    };
 
-    private async generateRecipeNoImage(request: Request, response: Response): Promise<void> {
+    private async generateRecipeNoImage(request: Request, response: Response): Promise<void>{
         const user = (request as any).user as UserModel | undefined;
         const visitorId = (request as any).visitorId as string;
 
@@ -74,7 +137,6 @@ class RecipeController {
         } as InputModel);
 
         try {
-
             consumed = await consumeRecipeUsage(user, visitorId);
 
             const data = await recipeService.generateInstructions(inputModel, false);
@@ -112,14 +174,14 @@ class RecipeController {
 
             response.status(StatusCode.OK).json(noImageRecipe);
         } catch (err) {
-
             try {
                 await refundRecipeUsage(consumed, user, visitorId);
             } catch { }
             throw err;
         }
-    }
-    private async generateRecipeWithImage(request: Request, response: Response): Promise<void> {
+    };
+
+    private async generateRecipeWithImage(request: Request, response: Response): Promise<void>  {
         const user = (request as any).user as UserModel | undefined;
         const visitorId = (request as any).visitorId as string;
 
@@ -138,7 +200,6 @@ class RecipeController {
         } as InputModel);
 
         try {
-
             consumed = await consumeRecipeUsage(user, visitorId);
 
             const data = await recipeService.generateInstructions(inputModel, true);
@@ -196,16 +257,19 @@ class RecipeController {
             } catch { }
             throw err;
         }
-    }
+    };
 
-    private async generateImageForSavedRecipe(request: Request, response: Response) {
+    private async generateImageForSavedRecipe  (request: Request, response: Response) {
         const user = (request as any).user as UserModel;
         const recipeId = Number(request.params.recipeId);
+
         const recipe = await recipeService.getSingleRecipe(recipeId, user.id);
+
         if (recipe.imageName && recipe.imageName.trim() !== "") {
-            response.json(recipe);
+            response.status(StatusCode.OK).json(recipe);
             return;
         }
+
         const { fileName, url } = await generateImage({
             query: recipe.title,
             quantity: recipe.amountOfServings,
@@ -220,23 +284,28 @@ class RecipeController {
             ingredients: recipe.data?.ingredients ?? [],
             instructions: recipe.data?.instructions ?? []
         });
+
         await recipeService.setRecipeImageName(recipeId, user.id, fileName);
         const updated = await recipeService.getSingleRecipe(recipeId, user.id);
         updated.imageUrl = url;
-        response.status(StatusCode.OK).json(updated);
-    }
 
-    private async generateImagePreview(request: Request, response: Response) {
+        response.status(StatusCode.OK).json(updated);
+    };
+
+    private generateImagePreview = async (request: Request, response: Response) => {
         const body = request.body ?? {};
         const title = String(body.title ?? "").trim();
         const description = String(body.description ?? "").trim();
         const amountOfServings = Number(body.amountOfServings ?? 1) || 1;
+
         if (!title) {
             response.status(StatusCode.BadRequest).send("Missing recipe title");
             return;
         }
+
         const ingredients = body.data?.ingredients ?? body.ingredients ?? [];
         const instructions = body.data?.instructions ?? body.instructions ?? [];
+
         const { fileName, url } = await generateImage({
             query: title,
             quantity: amountOfServings,
@@ -251,106 +320,120 @@ class RecipeController {
             ingredients,
             instructions
         });
-        response.status(StatusCode.OK).json({ imageName: fileName, imageUrl: url });
-    }
 
-    private async getPublicRecipe(request: Request, response: Response) {
+        response.status(StatusCode.OK).json({ imageName: fileName, imageUrl: url });
+    };
+
+
+    private async getPublicRecipe (request: Request, response: Response)  {
         const recipeId = Number(request.params.recipeId);
+
         if (Number.isNaN(recipeId) || recipeId <= 0) {
             response.status(StatusCode.BadRequest).send("Invalid recipeId");
             return;
-        };
+        }
+
         const recipe = await recipeService.getRecipePublicById(recipeId);
         response.status(StatusCode.OK).json(recipe);
-    }
+    };
 
 
-
-    private async getImageFile(request: Request, response: Response) {
+    private async getImageFile  (request: Request, response: Response)  {
         try {
             const { fileName } = request.params;
 
             if (Array.isArray(fileName) || typeof fileName !== "string") {
-                return response.status(StatusCode.BadRequest).json({ message: "Invalid fileName" });
+                response.status(StatusCode.BadRequest).json({ message: "Invalid fileName" });
+                return;
             }
 
             const imagePath = await recipeService.getImageFilePath(fileName);
-            return response.sendFile(imagePath);
-        } catch (err) {
-            return response.status(StatusCode.NotFound).json({ message: "Image not found" });
+            response.sendFile(imagePath);
+        } catch {
+            response.status(StatusCode.NotFound).json({ message: "Image not found" });
         }
-    }
+    };
 
-    private async deleteRecipe(request: Request, response: Response) {
+    private async deleteRecipe  (request: Request, response: Response) {
         const recipeId = Number(request.params.recipeId);
         await recipeService.deleteRecipe(recipeId);
         response.sendStatus(StatusCode.NoContent);
-    }
+    };
 
-    private async getMyLikedRecipeIds(request: Request, response: Response) {
+    private async getMyLikedRecipeIds  (request: Request, response: Response) {
         const userId = (request as any).user.id;
         const recipeIds = await recipeService.getLikedRecipeIdsByUser(userId);
         response.status(StatusCode.OK).json(recipeIds);
-    }
+    };
 
-    public async isRecipeLikedByUser(request: Request, response: Response) {
+    public async isRecipeLikedByUser  (request: Request, response: Response)  {
         const userId = (request as any).user.id;
         const recipeId = Number(request.params.recipeId);
         const isRecipeLiked = await recipeService.isRecipeLikedByUser(userId, recipeId);
         response.status(StatusCode.OK).json(isRecipeLiked);
-    }
+    };
 
-    private async likeRecipe(request: Request, response: Response) {
+    private  async likeRecipe  (request: Request, response: Response)  {
         const userId = (request as any).user.id;
         const recipeId = Number(request.params.recipeId);
+
         if (Number.isNaN(recipeId) || recipeId <= 0) {
             response.status(StatusCode.BadRequest).send("Route param recipe id must be a positive number");
             return;
         }
+
         const success = await recipeService.likeRecipe(userId, recipeId);
-        response.json(success ? "liked" : "already liked");
-    }
+        response.status(StatusCode.OK).json(success ? "liked" : "already liked");
+    };
 
-    private async unlikeRecipe(request: Request, response: Response) {
+    private unlikeRecipe = async (request: Request, response: Response) => {
         const userId = (request as any).user.id;
         const recipeId = Number(request.params.recipeId);
+
         if (Number.isNaN(recipeId) || recipeId <= 0) {
             response.status(StatusCode.BadRequest).send("Route param recipe id must be a positive number");
             return;
         }
-        const success = await recipeService.unlikeRecipe(userId, recipeId);
-        response.json(success ? "un-liked" : "not liked");
-    }
 
-    private async getRecipesTotalLikeCount(request: Request, response: Response) {
+        const success = await recipeService.unlikeRecipe(userId, recipeId);
+        response.status(StatusCode.OK).json(success ? "un-liked" : "not liked");
+    };
+
+    private async getRecipesTotalLikeCount  (request: Request, response: Response)  {
         const recipeId = Number(request.params.recipeId);
+
         if (Number.isNaN(recipeId) || recipeId <= 0) {
-            response
-                .status(StatusCode.BadRequest)
-                .send("Route param recipe id must be a positive number");
+            response.status(StatusCode.BadRequest).send("Route param recipe id must be a positive number");
             return;
         }
-        const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
-        response.json(likedCount);
-    }
 
-    private async askRecipeQuestion(request: Request, response: Response) {
+        const likedCount = await recipeService.getRecipesTotalLikeCount(recipeId);
+        response.status(StatusCode.OK).json(likedCount);
+    };
+
+    private async askRecipeQuestion (request: Request, response: Response)  {
         const user = (request as any).user as UserModel;
         const recipeId = Number(request.params.recipeId);
+
         if (Number.isNaN(recipeId) || recipeId <= 0) {
             response.status(StatusCode.BadRequest).send("Invalid recipeId");
             return;
         }
+
         const ask = new AskModel({ query: request.body.query, history: request.body.history } as any);
         ask.validate();
 
-        const answer = await recipeService.askAboutRecipe(recipeId, user.id, ask.query, ask.history ?? []);
-
+        const answer = await recipeService.askAboutRecipe(
+            recipeId,
+            user.id,
+            ask.query,
+            ask.history ?? []
+        );
 
         response.status(StatusCode.OK).json({ answer });
-    }
+    };
 
-    private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
+    private async getRecipeUsageStatus  (request: Request, response: Response): Promise<void>  {
         const user = (request as any).user as UserModel | undefined;
         const visitorId = (request as any).visitorId as string;
 
@@ -375,7 +458,7 @@ class RecipeController {
             remaining: status.remaining,
             windowEndsAt: status.windowEndsAt
         });
-    }
+    };
 }
 
 export const recipeController = new RecipeController();

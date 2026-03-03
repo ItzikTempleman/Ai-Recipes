@@ -12,7 +12,6 @@ import { DangerousRequestError, ResourceNotFound, ValidationError } from "../mod
 import { InputModel } from "../models/input-model";
 import { isLethalQuery } from "../utils/banned-filter";
 
-
 class RecipeService {
 
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
@@ -58,7 +57,6 @@ class RecipeService {
     return mapDbRowToFullRecipe(row);
   };
 
-
   public async getRecipePublicById(id: number): Promise<FullRecipeModel> {
     const sql = "select * from recipe where id=?";
     const values = [id];
@@ -78,7 +76,12 @@ class RecipeService {
 
   public async saveRecipe(recipe: FullRecipeModel, userId: number): Promise<FullRecipeModel> {
     let imageName: string | null = null;
-    if (recipe.image) { imageName = await fileSaver.add(recipe.image) } else if (recipe.imageName) { imageName = recipe.imageName };
+    if (recipe.image) {
+      imageName = await fileSaver.add(recipe.image);
+    } else if (recipe.imageName) {
+      imageName = recipe.imageName;
+    }
+
     const title = recipe.title.slice(0, 100);
     const description = recipe.description;
     const amountOfServings = recipe.amountOfServings;
@@ -99,9 +102,7 @@ class RecipeService {
     const difficultyEnum = recipe.difficultyLevel ?? DifficultyLevel.MID_LEVEL;
     const difficultyLevel = DifficultyLevel[difficultyEnum];
     const countryOfOrigin = recipe.countryOfOrigin ?? "";
-    const queryRestrictionsJson = JSON.stringify(
-      recipe.queryRestrictions ?? []
-    );
+    const queryRestrictionsJson = JSON.stringify(recipe.queryRestrictions ?? []);
 
     const sql = `insert into recipe(
         title,
@@ -125,8 +126,9 @@ class RecipeService {
         difficultyLevel,
         countryOfOrigin,
         imageName,
-        userId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        `;
+        userId
+      ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
     const values = [
       title,
       amountOfServings,
@@ -151,6 +153,7 @@ class RecipeService {
       imageName,
       userId
     ];
+
     const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
     recipe.id = info.insertId;
     recipe.image = undefined;
@@ -182,12 +185,8 @@ class RecipeService {
     if (info.affectedRows === 0) throw new ResourceNotFound(id);
 
     if (imageToDelete) {
-      try {
-        const imagePath = await this.getImageFilePath(imageToDelete);
-        await fs.unlink(imagePath);
-      } catch (err) {
-        throw new Error("Could not delete image");
-      }
+      const imagePath = await this.getImageFilePath(imageToDelete);
+      await fs.unlink(imagePath);
     }
   }
 
@@ -221,7 +220,7 @@ class RecipeService {
     const values = [userId, recipeId];
     type likes = { userId: number, recipeId: number };
     const match = await dal.execute(sql, values) as likes[];
-    return match.length === 1
+    return match.length === 1;
   }
 
   public async likeRecipe(userId: number, recipeId: number): Promise<boolean> {
@@ -240,7 +239,7 @@ class RecipeService {
   }
 
   public async getLikedRecipesByUserId(userId: number): Promise<FullRecipeModel[]> {
-    const sql = "select r.* from recipe r inner join likes l on l.recipeId=r.id where l.userId=?"
+    const sql = "select r.* from recipe r inner join likes l on l.recipeId=r.id where l.userId=?";
     const values = [userId];
     const likedRecipes = await dal.execute(sql, values) as DbRecipeRow[];
     return likedRecipes.map(mapDbRowToFullRecipe);
@@ -257,7 +256,6 @@ class RecipeService {
     try {
       recipe = await this.getSingleRecipe(recipeId, userId);
     } catch {
-  
       recipe = await this.getRecipePublicById(recipeId);
     }
 
@@ -290,5 +288,139 @@ class RecipeService {
     return result.insertId;
   }
 
+  public async saveCatalogRecipe(
+    recipe: any,
+    lang: "en" | "he",
+    pairKey: string
+  ): Promise<void> {
+
+    const ingredientsArr =
+      recipe?.ingredients ??
+      recipe?.data?.ingredients ??
+      [];
+
+    const instructionsArr =
+      recipe?.instructions ??
+      recipe?.data?.instructions ??
+      [];
+
+    if (!Array.isArray(ingredientsArr) || ingredientsArr.length === 0) {
+      throw new Error(
+        `saveCatalogRecipe: recipe has no ingredients array. Keys: ${Object.keys(recipe ?? {}).join(", ")}`
+      );
+    }
+
+    if (!Array.isArray(instructionsArr) || instructionsArr.length === 0) {
+      throw new Error(
+        `saveCatalogRecipe: recipe has no instructions array. Keys: ${Object.keys(recipe ?? {}).join(", ")}`
+      );
+    }
+
+    const systemUserId = await this.ensureSystemUserId();
+
+    const title = String(recipe.title ?? "").slice(0, 100);
+    const description = String(recipe.description ?? "");
+    const amountOfServings = Number(recipe.amountOfServings ?? recipe.amountOfServing ?? 1);
+    const popularity = Number(recipe.popularity ?? 5);
+
+    const ingredients = ingredientsArr
+      .map((i: any) => String(i?.ingredient ?? "").trim())
+      .filter(Boolean)
+      .join(", ")
+      .slice(0, 350);
+
+    const instructions = instructionsArr
+      .map((s: any) => String(s ?? "").trim())
+      .filter(Boolean)
+      .join(" | ")
+      .slice(0, 1000);
+
+    const amounts = JSON.stringify(
+      ingredientsArr.map((i: any) => (i?.amount ?? null))
+    );
+
+    const totalSugar = Number(recipe.totalSugar ?? 0);
+    const totalProtein = Number(recipe.totalProtein ?? 0);
+    const healthLevel = Number(recipe.healthLevel ?? 0);
+    const calories = Number(recipe.calories ?? 0);
+
+    const sugarRestriction = Number(recipe.sugarRestriction ?? 0);
+    const lactoseRestrictions = Number(recipe.lactoseRestrictions ?? 0);
+    const glutenRestrictions = Number(recipe.glutenRestrictions ?? 0);
+    const dietaryRestrictions = Number(recipe.dietaryRestrictions ?? 0);
+    const caloryRestrictions = Number(recipe.caloryRestrictions ?? 0);
+
+    const prepTime = Number(recipe.prepTime ?? 0);
+    const difficultyLevel = String(recipe.difficultyLevel ?? "MID_LEVEL");
+    const countryOfOrigin = String(recipe.countryOfOrigin ?? "");
+
+    const queryRestrictionsJson = JSON.stringify(recipe.queryRestrictions ?? []);
+
+    const categoriesValue = recipe.categories ?? [];
+    const categoriesJson = Array.isArray(categoriesValue)
+      ? JSON.stringify(categoriesValue)
+      : String(categoriesValue);
+
+    const imageName = recipe.imageName ?? null;
+
+    const sql = `insert into recipe(
+      title,
+      amountOfServings,
+      description,
+      popularity,
+      ingredients,
+      instructions,
+      totalSugar,
+      totalProtein,
+      healthLevel,
+      calories,
+      amounts,
+      sugarRestriction,
+      lactoseRestrictions,
+      glutenRestrictions,
+      dietaryRestrictions,
+      caloryRestrictions,
+      queryRestrictions,
+      prepTime,
+      difficultyLevel,
+      countryOfOrigin,
+      imageName,
+      userId,
+      lang,
+      pairKey,
+      categories
+    ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+    const values = [
+      title,
+      amountOfServings,
+      description,
+      popularity,
+      ingredients,
+      instructions,
+      totalSugar,
+      totalProtein,
+      healthLevel,
+      calories,
+      amounts,
+      sugarRestriction,
+      lactoseRestrictions,
+      glutenRestrictions,
+      dietaryRestrictions,
+      caloryRestrictions,
+      queryRestrictionsJson,
+      prepTime,
+      difficultyLevel,
+      countryOfOrigin,
+      imageName,
+      systemUserId,
+      lang,
+      pairKey,
+      categoriesJson
+    ];
+
+    await dal.execute(sql, values);
+  }
 }
+
 export const recipeService = new RecipeService();

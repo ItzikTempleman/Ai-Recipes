@@ -3,6 +3,7 @@ import { RecipeModel, RecipeState } from "../Models/RecipeModel";
 
 const initialState: RecipeState = {
   items: [],
+  catalogItems: [],
   current: null,
   guestStash: null,
   loading: false
@@ -37,8 +38,12 @@ function setErrorReducer(state: RecipeState, action: PayloadAction<string | unde
   state.error = action.payload;
 }
 
-function getAllRecipesReducer(state: RecipeState, action: PayloadAction<RecipeModel[]>) {
+function getMyRecipesReducer(state: RecipeState, action: PayloadAction<RecipeModel[]>) {
   state.items = Array.isArray(action.payload) ? action.payload : [];
+}
+
+function getCatalogRecipesReducer(state: RecipeState, action: PayloadAction<RecipeModel[]>) {
+  state.catalogItems = Array.isArray(action.payload) ? action.payload : [];
 }
 
 function addRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>) {
@@ -48,7 +53,10 @@ function addRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>
 
 function deleteRecipeReducer(state: RecipeState, action: PayloadAction<number>) {
   const idOfRecipeToDelete = action.payload;
-  state.items = state.items.filter(recipe => recipe.id !== idOfRecipeToDelete);
+
+  state.items = state.items.filter((recipe) => recipe.id !== idOfRecipeToDelete);
+  state.catalogItems = state.catalogItems.filter((recipe) => recipe.id !== idOfRecipeToDelete);
+
   if (state.current?.id === idOfRecipeToDelete) state.current = null;
 }
 
@@ -59,7 +67,8 @@ const recipeSlice = createSlice({
     resetGenerated: resetGeneratedReducer,
     setIsLoading: setIsLoadingReducer,
     setError: setErrorReducer,
-    getAllRecipes: getAllRecipesReducer,
+    getMyRecipes: getMyRecipesReducer,
+    getCatalogRecipes: getCatalogRecipesReducer,
     setCurrent: setCurrentReducer,
     addRecipe: addRecipeReducer,
     deleteRecipe: deleteRecipeReducer,
@@ -72,7 +81,8 @@ export const {
   resetGenerated,
   setIsLoading,
   setError,
-  getAllRecipes,
+  getMyRecipes,
+  getCatalogRecipes,
   addRecipe,
   setCurrent,
   deleteRecipe,

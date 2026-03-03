@@ -32,10 +32,23 @@ const ALL_CATEGORIES: RecipeCategory[] = [
   RecipeCategory.meat
 ];
 
+function normalizeCategories(input: unknown): RecipeCategory[] {
+  if (Array.isArray(input)) return input as RecipeCategory[];
+  if (typeof input === "string") {
+    try {
+      const parsed = JSON.parse(input);
+      return Array.isArray(parsed) ? (parsed as RecipeCategory[]) : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 export function HomeScreen() {
   useTitle("Home");
 
-  const { items } = useSelector((state: AppState) => state.recipes);
+  const { items, catalogItems } = useSelector((state: AppState) => state.recipes);
   const current = useSelector((s: AppState) => s.recipes.current);
   const user = useSelector((state: AppState) => state.user);
   const likes = useSelector((state: AppState) => state.likes);
@@ -45,37 +58,28 @@ export function HomeScreen() {
   const isRTL = (i18n.language ?? "").startsWith("he");
 
   const [open, setOpen] = useState(false);
-
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
   const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
-
   const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
-
-  // Category filtering replaces "Suggested Today"
   const [selectedCategories, setSelectedCategories] = useState<RecipeCategory[]>([]);
 
   useEffect(() => {
-    if (!user) {
-      setListState(ListState.SUGGESTIONS);
-    } else {
-      setListState(ListState.RECENTLY_VIEWED);
-    }
+    setListState(user ? ListState.RECENTLY_VIEWED : ListState.SUGGESTIONS);
   }, [user?.id]);
 
-  // Load catalog recipes for current language (public endpoint; returns 50 based on app language)
   useEffect(() => {
     recipeService.getAllRecipes().catch(notify.error);
   }, [i18n.language]);
 
   useEffect(() => {
-    // Favorites view still needs likes; keep behavior as close as possible
+    if (!user?.id) return;
+    recipeService.getMyRecipes().catch(() => {});
+  }, [user?.id]);
+
+  useEffect(() => {
     if (!user?.id) return;
     if (listState !== ListState.FAVORITES) return;
 
-    // Ensure catalog is present for mapping liked ids to recipes
-    if (!Array.isArray(items) || items.length === 0) {
-      recipeService.getAllRecipes().catch(() => {});
-    }
     recipeService.loadMyLikes().catch(() => {});
   }, [listState, user?.id]);
 
@@ -100,16 +104,16 @@ export function HomeScreen() {
   }, [likes, items, user?.id]);
 
   const baseSuggestionsList = useMemo(() => {
-    const list = Array.isArray(items) ? items : [];
+    const list = Array.isArray(catalogItems) ? catalogItems : [];
 
     if (selectedCategories.length === 0) return list;
 
     const selected = new Set(selectedCategories);
     return list.filter((r) => {
-      const cats = (r.categories ?? []) as unknown as RecipeCategory[];
-      return Array.isArray(cats) && cats.some((c) => selected.has(c));
+      const cats = normalizeCategories((r as any).categories);
+      return cats.some((c) => selected.has(c));
     });
-  }, [items, selectedCategories]);
+  }, [catalogItems, selectedCategories]);
 
   const suggestionsList = useMemo(() => baseSuggestionsList, [baseSuggestionsList]);
 
@@ -138,7 +142,7 @@ export function HomeScreen() {
       updated = {
         ...recipeToLoad,
         imageUrl: preview.imageUrl,
-        imageName: preview.imageName ?? recipeToLoad.imageName ?? null,
+        imageName: preview.imageName ?? recipeToLoad.imageName ?? null
       };
     }
 
@@ -158,13 +162,17 @@ export function HomeScreen() {
     setAppliedFilters(null);
   };
 
-  const titleText = useMemo(() => {
-    if (!user) return t("homeScreen.suggestions") || "Suggestions";
+  const featuredFallback = isRTL ? "המלצות" : "Featured";
 
-    if (listState === ListState.SUGGESTIONS) return t("homeScreen.suggestions") || "Suggestions";
+  const titleText = useMemo(() => {
+    const featured = t("homeScreen.suggestions") || t("homeScreen.suggestions") || featuredFallback;
+
+    if (!user) return featured;
+
+    if (listState === ListState.SUGGESTIONS) return featured;
     if (listState === ListState.RECENTLY_VIEWED) return t("homeScreen.recentlyViewed") || "Recently viewed";
     return t("likeScreen.likedTitle") || t("likeScreen.noLikes");
-  }, [user, listState, t]);
+  }, [user, listState, t, featuredFallback]);
 
   const toggleCategory = (c: RecipeCategory) => {
     setSelectedCategories((prev) => {
@@ -215,7 +223,12 @@ export function HomeScreen() {
 
           {current?.title && filtersToUse && !open && (
             <div className="RecipeCardContainer">
-              <RecipeDataContainer recipe={current} filters={filtersToUse} loadImage={loadImage} onExitRecipe={handleExitRecipe} />
+              <RecipeDataContainer
+                recipe={current}
+                filters={filtersToUse}
+                loadImage={loadImage}
+                onExitRecipe={handleExitRecipe}
+              />
             </div>
           )}
 
@@ -227,7 +240,7 @@ export function HomeScreen() {
                 role="button"
                 tabIndex={0}
               >
-                <h4>{t("homeScreen.suggestions")}</h4>
+                <h4>{t("homeScreen.suggestions") || t("homeScreen.suggestions") || featuredFallback}</h4>
               </div>
 
               <div
@@ -238,6 +251,7 @@ export function HomeScreen() {
               >
                 <h4>{t("homeScreen.recentlyViewed")}</h4>
               </div>
+
               <div
                 className={`LikeBtn ${listState === ListState.FAVORITES ? "active" : ""}`}
                 onClick={() => setListState(ListState.FAVORITES)}
@@ -251,27 +265,27 @@ export function HomeScreen() {
 
           {!user && <h3 className="HomeScreenTitle user">{titleText}</h3>}
 
-
-  {listState === ListState.SUGGESTIONS && (
-  <div className="CategoryChipsContainer">
-    {ALL_CATEGORIES.map((c) => (
-      <Chip
-        key={c}
-        label={t(`categories.${c}`) || c}
-        clickable
-        color={selectedCategories.includes(c) ? "primary" : "default"}
-        onClick={() => toggleCategory(c)}
-      />
-    ))}
-    {selectedCategories.length > 0 && (
-      <Chip className="CategoryChipClear"
-        label={t("categories.clear") || "Clear"}
-        clickable
-        onClick={() => setSelectedCategories([])}
-      />
-    )}
-  </div>
-)}
+          {listState === ListState.SUGGESTIONS && (
+            <div className="CategoryChipsContainer">
+              {ALL_CATEGORIES.map((c) => (
+                <Chip
+                  key={c}
+                  label={t(`categories.${c}`) || c}
+                  clickable
+                  color={selectedCategories.includes(c) ? "primary" : "default"}
+                  onClick={() => toggleCategory(c)}
+                />
+              ))}
+              {selectedCategories.length > 0 && (
+                <Chip
+                  className="CategoryChipClear"
+                  label={t("categories.clear") || "Clear"}
+                  clickable
+                  onClick={() => setSelectedCategories([])}
+                />
+              )}
+            </div>
+          )}
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (
