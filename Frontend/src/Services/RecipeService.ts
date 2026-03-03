@@ -19,6 +19,7 @@ import {
   setCurrent,
   deleteRecipe
 } from "../Redux/RecipeSlice";
+import { usageService } from "./UsageService";
 import { like, setLikes, unlike } from "../Redux/LikeSlice";
 import { getAuth } from "../Utils/GetAuthenticationToken";
 
@@ -52,7 +53,7 @@ class RecipeService {
 
 
       store.dispatch(setCurrent(data));
-
+usageService.refreshRecipeUsage();
   
       const token = localStorage.getItem("token");
       if (token && data?.id) {

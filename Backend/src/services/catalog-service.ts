@@ -1,17 +1,21 @@
 import { dal } from "../utils/dal";
 import { recipeService } from "./recipe-service";
-import { FullRecipeModel, RecipeCategory } from "../models/recipe-model";
+import { DbRecipeRow, FullRecipeModel, RecipeCategory } from "../models/recipe-model";
 import { SugarRestriction, LactoseRestrictions, GlutenRestrictions, DietaryRestrictions, CaloryRestrictions } from "../models/filters";
 import { InputModel } from "../models/input-model";
 import { getIdeas } from "../utils/normalize-language";
 import crypto from "crypto";
 import { appConfig } from "../utils/app-config";
 import axios from "axios";
+import { mapDbRowToFullRecipe } from "../utils/map-recipe";
+import { generateImage } from "./image-service";
 
 type Lang = "en" | "he";
 const TOTAL_PAIRS = 50;
 
 class CatalogService {
+
+  
   private normalizeTitle(title: unknown): string {
     return String(title ?? "")
       .trim()
@@ -261,6 +265,54 @@ Return EXACT schema including "categories".
 
     return { createdPairs, createdRows };
   }
+  public async attachMissingImages(limit: number = 20): Promise<{ processed: number; updated: number }> {
+  const systemUserId = await this.ensureSystemUserId();
+
+  const sql = `
+    select *
+    from recipe
+    where userId = ?
+      and pairKey is not null
+      and (imageName is null or trim(imageName) = '')
+    order by id asc
+    limit ?
+  `;
+  const rows = (await dal.execute(sql, [systemUserId, limit])) as DbRecipeRow[];
+
+  let updated = 0;
+
+  for (const row of rows) {
+    try {
+      const recipe = mapDbRowToFullRecipe(row);
+
+      const { fileName } = await generateImage({
+        query: recipe.title,
+        quantity: recipe.amountOfServings,
+        sugarRestriction: recipe.sugarRestriction,
+        lactoseRestrictions: recipe.lactoseRestrictions,
+        glutenRestrictions: recipe.glutenRestrictions,
+        dietaryRestrictions: recipe.dietaryRestrictions,
+        caloryRestrictions: recipe.caloryRestrictions,
+        queryRestrictions: recipe.queryRestrictions,
+        title: recipe.title,
+        description: recipe.description,
+        ingredients: recipe.data?.ingredients ?? [],
+        instructions: recipe.data?.instructions ?? []
+      });
+
+      if (!fileName) continue;
+
+      // This checks userId in WHERE; for catalog it's the system userId, so it works.
+      await recipeService.setRecipeImageName(Number(row.id), systemUserId, fileName);
+      updated++;
+    } catch (e) {
+      console.error("[attachMissingImages] failed for recipeId:", (row as any)?.id, e);
+    }
+  }
+
+  return { processed: rows.length, updated };
+}
+
 }
 
 export const catalogService = new CatalogService();

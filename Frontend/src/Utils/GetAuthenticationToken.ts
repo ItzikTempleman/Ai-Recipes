@@ -11,5 +11,5 @@ export function getAuth(): AxiosRequestConfig {
 
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  return { headers };
+return { headers, withCredentials: true };
 }

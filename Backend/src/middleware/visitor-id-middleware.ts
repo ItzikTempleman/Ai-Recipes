@@ -10,10 +10,10 @@ export function ensureVisitorId(req: Request, res: Response, next: NextFunction)
   }
 
   const newId = uuidv4();
-
+const isProd = process.env.NODE_ENV === "production";
   res.cookie("visitorId", newId, {
     httpOnly: true,
-    sameSite: "lax",
+     sameSite: isProd ? "none" : "lax",
     secure: false, // set true when you are on HTTPS
     maxAge: 1000 * 60 * 60 * 24 * 365,
   });

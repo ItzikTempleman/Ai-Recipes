@@ -433,32 +433,36 @@ class RecipeController {
         response.status(StatusCode.OK).json({ answer });
     };
 
-    private async getRecipeUsageStatus  (request: Request, response: Response): Promise<void>  {
-        const user = (request as any).user as UserModel | undefined;
-        const visitorId = (request as any).visitorId as string;
+private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
+  const user = (request as any).user as UserModel | undefined;
+  const visitorId = (request as any).visitorId as string;
 
-        if (user?.roleId === 1) {
-            response.status(StatusCode.OK).json({ unlimited: true });
-            return;
-        }
+  const roleId = Number((user as any)?.roleId);
 
-        if (user?.id && user.roleId === 2) {
-            const status = await userRecipeUsageService.getStatus(user.id);
-            response.status(StatusCode.OK).json({
-                type: "user",
-                remaining: status.remaining,
-                windowEndsAt: status.windowEndsAt
-            });
-            return;
-        }
+  if (roleId === 1) {
+    response.status(StatusCode.OK).json({ unlimited: true });
+    return;
+  }
 
-        const status = await visitorRecipeUsageService.getStatus(visitorId);
-        response.status(StatusCode.OK).json({
-            type: "visitor",
-            remaining: status.remaining,
-            windowEndsAt: status.windowEndsAt
-        });
-    };
+  // Any logged-in non-admin uses USER quota:
+  if (user?.id) {
+    const status = await userRecipeUsageService.getStatus(user.id);
+    response.status(StatusCode.OK).json({
+      type: "user",
+      remaining: status.remaining,
+      windowEndsAt: status.windowEndsAt
+    });
+    return;
+  }
+
+  // Guest uses VISITOR quota:
+  const status = await visitorRecipeUsageService.getStatus(visitorId);
+  response.status(StatusCode.OK).json({
+    type: "visitor",
+    remaining: status.remaining,
+    windowEndsAt: status.windowEndsAt
+  });
+}
 }
 
 export const recipeController = new RecipeController();

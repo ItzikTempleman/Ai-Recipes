@@ -63,9 +63,9 @@ export function HomeScreen() {
   const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<RecipeCategory[]>([]);
 
-  useEffect(() => {
-    setListState(user ? ListState.RECENTLY_VIEWED : ListState.SUGGESTIONS);
-  }, [user?.id]);
+useEffect(() => {
+  setListState(ListState.SUGGESTIONS);
+}, [user?.id]);
 
   useEffect(() => {
     recipeService.getAllRecipes().catch(notify.error);

@@ -4,20 +4,27 @@ import { userRecipeUsageService } from "../services/user-recipe-usage-service";
 
 export type UsageConsumer = "none" | "user" | "visitor";
 
+function toNum(v: unknown): number {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export async function consumeRecipeUsage(
   user: UserModel | undefined,
   visitorId: string
 ): Promise<UsageConsumer> {
+  const roleId = toNum((user as any)?.roleId);
 
-  if (user?.roleId === 1) {
-    return "none";
-  }
+  // Admin => unlimited
+  if (roleId === 1) return "none";
 
-  if (user?.id && user.roleId === 2) {
+  // Any logged-in non-admin => consume USER usage
+  if (user?.id) {
     await userRecipeUsageService.consume(user.id);
     return "user";
   }
 
+  // Guest => consume VISITOR usage
   await visitorRecipeUsageService.consume(visitorId);
   return "visitor";
 }
@@ -29,8 +36,7 @@ export async function refundRecipeUsage(
 ): Promise<void> {
   if (consumed === "user" && user?.id) {
     await userRecipeUsageService.refund(user.id);
-  }
-  if (consumed === "visitor") {
+  } else if (consumed === "visitor") {
     await visitorRecipeUsageService.refund(visitorId);
   }
 }
