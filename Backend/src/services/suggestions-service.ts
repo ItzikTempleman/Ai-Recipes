@@ -25,14 +25,10 @@ class SuggestionsService {
       .trim()
       .normalize("NFKC")
       .replace(/\s+/g, " ")
-      // keep this list, but also remove other punctuation safely
       .replace(/[’'"״׳“”\-–—.,:;!()?[\]{}]/g, "")
       .toLowerCase();
   }
 
-  /**
-   * Stable stringify (sorted keys) so content hashing is deterministic.
-   */
   private stableStringify(value: unknown): string {
     const seen = new WeakSet<object>();
     const normalize = (v: any): any => {
@@ -51,10 +47,6 @@ class SuggestionsService {
     return JSON.stringify(normalize(value));
   }
 
-  /**
-   * Content hash used ONLY for de-duping.
-   * NOTE: We do NOT store it in pairKey because pairKey is used to link EN<->HE.
-   */
   private buildContentHash(enRecipeLike: any): string {
     const canonical = {
       title: String(enRecipeLike?.title ?? "").trim(),
@@ -65,7 +57,7 @@ class SuggestionsService {
         amount: i?.amount ?? null
       })),
       instructions: (enRecipeLike?.instructions ?? []).map((s: any) => String(s ?? "").trim()),
-      // categories matter for content equality
+
       categories: (enRecipeLike?.categories ?? []).map((c: any) => String(c))
     };
 
@@ -104,17 +96,9 @@ class SuggestionsService {
     return Number(rows[0]?.cnt ?? 0);
   }
 
-  /**
-   * Fetch existing keys to prevent duplicates:
-   * - normalized titles
-   * - content hashes (stored in queryRestrictions as a special marker, to avoid schema change)
-   *
-   * If you prefer a DB column (recommended), tell me and I’ll switch this to use it.
-   */
   private async getUsedKeys(): Promise<{ usedTitles: Set<string>; usedContentHashes: Set<string> }> {
     const systemUserId = await this.ensureSystemUserId();
 
-    // We need enough fields to reconstruct the same canonical structure we hash from.
     const sql = `
       select title, description, amountOfServings, ingredients, instructions, amounts, queryRestrictions, categories
       from recipe
@@ -138,9 +122,6 @@ class SuggestionsService {
     for (const r of rows) {
       const nt = this.normalizeTitle(r.title);
       if (nt) usedTitles.add(nt);
-
-      // Option 1: If we already stored the content-hash marker in queryRestrictions, parse it
-      // Marker format: "__CONTENT_HASH__:abcdef..."
       try {
         const qr = JSON.parse(String(r.queryRestrictions ?? "[]"));
         if (Array.isArray(qr)) {
@@ -151,10 +132,9 @@ class SuggestionsService {
           }
         }
       } catch {
-        // ignore
+
       }
 
-      // Otherwise reconstruct from stored fields (best effort)
       const ingredientNames = String(r.ingredients ?? "")
         .split(",")
         .map((s) => s.trim())
@@ -199,10 +179,6 @@ class SuggestionsService {
     return { usedTitles, usedContentHashes };
   }
 
-  /**
-   * Ensure generateImage() always results in a string, or return null.
-   * Also retries a bit (image generation can be flaky).
-   */
   private async generateRequiredImage(payload: Parameters<typeof generateImage>[0], retries = 3): Promise<string | null> {
     for (let i = 0; i < retries; i++) {
       try {
@@ -210,28 +186,25 @@ class SuggestionsService {
         const fileName = typeof res?.fileName === "string" ? res.fileName.trim() : "";
         if (fileName) return fileName;
       } catch {
-        // ignore and retry
+  
       }
     }
     return null;
   }
 
-  private async insertCatalogRecipe(args: {
+  private async insertSuggestionRecipe(args: {
     systemUserId: number;
     pairKey: string;
     lang: Lang;
     recipe: FullRecipeModel;
   }): Promise<void> {
     const r = args.recipe;
-
-    // HARD: no undefineds in SQL values, and imageName MUST exist
     const imageName: string = (typeof r.imageName === "string" && r.imageName.trim())
       ? r.imageName.trim()
       : "";
 
     if (!imageName) {
-      // This should never happen because generator enforces it, but keep it hard.
-      throw new Error("insertCatalogRecipe: imageName is required");
+      throw new Error("insertSuggestionRecipe: imageName is required");
     }
 
     const title = String(r.title ?? "").slice(0, 160);
@@ -278,8 +251,6 @@ class SuggestionsService {
       pairKey,
       categories
     ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-
-    // IMPORTANT: ensure no undefined in values
     const values = [
       title,
       amountOfServings,
@@ -366,8 +337,6 @@ Return EXACT schema including "categories".
 
       const normalizedTitle = this.normalizeTitle(data.title);
       if (!normalizedTitle || usedTitles.has(normalizedTitle)) continue;
-
-      // Content hash dedupe (based on EN source recipe content)
       const contentHash = this.buildContentHash({
         title: data.title,
         description: data.description,
@@ -377,8 +346,6 @@ Return EXACT schema including "categories".
         categories: data.categories ?? []
       });
       if (usedContentHashes.has(contentHash)) continue;
-
-      // HARD REQUIREMENT: image must exist (generate once per pair)
       const fileName = await this.generateRequiredImage({
         query: input.query,
         quantity: data.amountOfServings ?? 1,
@@ -395,14 +362,10 @@ Return EXACT schema including "categories".
       });
 
       if (!fileName) {
-        // if image fails, skip this candidate completely
         continue;
       }
 
-      // Pair key stays as the EN<->HE link
       const pairKey = crypto.randomBytes(16).toString("hex");
-
-      // Store content hash marker inside queryRestrictions (no schema change)
       const qrWithHash = Array.isArray(data.queryRestrictions) ? [...data.queryRestrictions] : [];
       qrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
 
@@ -431,8 +394,6 @@ Return EXACT schema including "categories".
       });
 
       const heJson = await this.translateRecipeToHebrew(data);
-
-      // Keep the SAME content hash marker in HE too (still no schema change)
       const heQrWithHash = Array.isArray(heJson.queryRestrictions) ? [...heJson.queryRestrictions] : [];
       heQrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
 
@@ -460,9 +421,8 @@ Return EXACT schema including "categories".
         categories: heJson.categories
       });
 
-      // Insert both — insert will throw if imageName is missing (hard)
-      await this.insertCatalogRecipe({ systemUserId, pairKey, lang: "en", recipe: en });
-      await this.insertCatalogRecipe({ systemUserId, pairKey, lang: "he", recipe: he });
+      await this.insertSuggestionRecipe({ systemUserId, pairKey, lang: "en", recipe: en });
+      await this.insertSuggestionRecipe({ systemUserId, pairKey, lang: "he", recipe: he });
 
       usedTitles.add(normalizedTitle);
       usedContentHashes.add(contentHash);
