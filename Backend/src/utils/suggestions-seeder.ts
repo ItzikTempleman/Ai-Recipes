@@ -15,27 +15,13 @@ function hasHebrewLetters(s: string): boolean {
   return /[\u0590-\u05FF]/.test(s);
 }
 
-function normalizeToStringArray(x: any): string[] {
-  if (!x) return [];
-  if (Array.isArray(x)) return x.map((v) => String(v ?? "").trim()).filter(Boolean);
-  if (typeof x === "string") {
-    const parts = x.split("\n").map((s) => s.trim()).filter(Boolean);
-    return parts.length ? parts : [x.trim()];
-  }
-  return [String(x).trim()].filter(Boolean);
-}
-
 function extractJsonObject(s: string): any | null {
   if (!s) return null;
   const start = s.indexOf("{");
   const end = s.lastIndexOf("}");
   if (start < 0 || end < 0 || end <= start) return null;
   const candidate = s.slice(start, end + 1);
-  try {
-    return JSON.parse(candidate);
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(candidate); } catch { return null; }
 }
 
 async function ensureSystemUserId(): Promise<number> {
@@ -52,28 +38,20 @@ async function countSeededRows(systemUserId: number): Promise<number> {
   return Number(rows?.[0]?.c ?? 0);
 }
 
-async function postJson(systemPrompt: string, userPayload: any, retries = 3): Promise<any> {
+async function postJson(systemPrompt: string, userPayload: any, retries = 4): Promise<any> {
   const modelToUse = appConfig.modelNumber;
   const keyToUse = appConfig.freeNoImageApiKey;
   if (!keyToUse) throw new Error("NO_IMAGE_API_KEY is missing (freeNoImageApiKey)");
   let lastErr: any = null;
-
   for (let i = 0; i < retries; i++) {
     try {
       const body = {
         model: modelToUse,
         response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: JSON.stringify(userPayload) }
-        ],
+        messages: [{ role: "system", content: systemPrompt }, { role: "user", content: JSON.stringify(userPayload) }],
         temperature: 0
       };
-
-      const resp = await axios.post(appConfig.gptUrl, body, {
-        headers: { Authorization: "Bearer " + keyToUse, "Content-Type": "application/json" }
-      });
-
+      const resp = await axios.post(appConfig.gptUrl, body, { headers: { Authorization: "Bearer " + keyToUse, "Content-Type": "application/json" } });
       const content: string = resp.data?.choices?.[0]?.message?.content ?? "";
       const parsed = extractJsonObject(content);
       if (parsed) return parsed;
@@ -82,50 +60,32 @@ async function postJson(systemPrompt: string, userPayload: any, retries = 3): Pr
       lastErr = e;
     }
   }
-
-  throw lastErr ?? new Error("Failed to call translation model");
-}
-
-function hebrewRatio(arr: string[]): number {
-  if (!arr.length) return 0;
-  const heb = arr.filter(hasHebrewLetters).length;
-  return heb / arr.length;
+  throw lastErr ?? new Error("Failed to call model");
 }
 
 async function translateTitleToHebrew(titleEn: string): Promise<string> {
-  const system = `Translate the recipe title from English to Hebrew. Output ONLY JSON: {"title":"..."} . Rules: Hebrew letters required, same dish, no extra words, no explanations, no transliteration in Latin letters.`;
-  const parsed = await postJson(system, { title: titleEn }, 5);
+  const system = 'Translate the recipe title from English to Hebrew. Output ONLY JSON: {"title":"..."} Rules: Hebrew letters required, same dish, no extra words, no explanations, no Latin transliteration.';
+  const parsed = await postJson(system, { title: titleEn }, 6);
   const he = String(parsed?.title ?? "").trim();
   if (!he || !hasHebrewLetters(he)) throw new Error(`Bad Hebrew title for "${titleEn}"`);
   return he;
 }
 
-async function translateDescriptionToHebrew(descEn: string): Promise<string> {
-  const system = `Translate the recipe description from English to Hebrew. Output ONLY JSON: {"description":"..."} . Rules: Hebrew letters required, same meaning, keep numbers, no explanations, no Latin transliteration.`;
-  const parsed = await postJson(system, { description: descEn }, 5);
-  const he = String(parsed?.description ?? "").trim();
-  if (!he || !hasHebrewLetters(he)) throw new Error("Bad Hebrew description");
-  return he;
+async function translateCategoriesToHebrew(categories: any): Promise<string[] | null> {
+  if (!categories || !Array.isArray(categories) || categories.length === 0) return null;
+  const system = 'Translate recipe category labels to Hebrew. Input is an array of short category strings. Output ONLY JSON: {"categories":["..."]}. Rules: Hebrew letters required for each element, keep same length/order, no explanations.';
+  const parsed = await postJson(system, { categories }, 4);
+  const out = parsed?.categories;
+  if (!Array.isArray(out) || out.length !== categories.length) return null;
+  const clean = out.map((x: any) => String(x ?? "").trim());
+  if (!clean.every((s: string) => s && hasHebrewLetters(s))) return null;
+  return clean;
 }
 
-async function translateListToHebrew(kind: "ingredients" | "instructions", linesEn: string[]): Promise<string[]> {
-  const system = `Translate ${kind} from English to Hebrew. Output ONLY JSON: {"lines":[...]} . Rules: Return an array of strings in Hebrew. Keep quantities and numbers. No explanations. No Latin transliteration.`;
-  const parsed = await postJson(system, { lines: linesEn }, 5);
-  const lines = normalizeToStringArray(parsed?.lines);
-  if (!lines.length) throw new Error(`Empty Hebrew ${kind}`);
-  const ratio = hebrewRatio(lines);
-  if (ratio < 0.5) throw new Error(`Not enough Hebrew in ${kind}`);
-  return lines;
-}
-
-async function translateRecipeToHebrew(en: any): Promise<any> {
-  const title = await translateTitleToHebrew(String(en.title ?? ""));
-  const description = await translateDescriptionToHebrew(String(en.description ?? ""));
-  const ingredientsEn = normalizeToStringArray(en.ingredients);
-  const instructionsEn = normalizeToStringArray(en.instructions);
-  const ingredients = await translateListToHebrew("ingredients", ingredientsEn);
-  const instructions = await translateListToHebrew("instructions", instructionsEn);
-  return { ...en, title, description, ingredients, instructions };
+function pickServings(recipe: any, fallback: number): number {
+  const n = Number(recipe?.amountOfServings);
+  if (Number.isFinite(n) && n > 0) return Math.floor(n);
+  return fallback;
 }
 
 export async function seedSuggestionRecipeIfNeeded(): Promise<void> {
@@ -141,7 +101,7 @@ export async function seedSuggestionRecipeIfNeeded(): Promise<void> {
   let madePairs = 0;
   let attempts = 0;
 
-  while (madePairs < missingPairs && attempts < missingPairs * 50) {
+  while (madePairs < missingPairs && attempts < missingPairs * 60) {
     attempts++;
 
     const pairKey = crypto.randomBytes(16).toString("hex");
@@ -165,11 +125,13 @@ export async function seedSuggestionRecipeIfNeeded(): Promise<void> {
       continue;
     }
 
+    const servings = pickServings(en, Number(inputEn.quantity ?? 2));
+
     let imageName: string | undefined;
     try {
       const img = await generateImage({
         query: inputEn.query,
-        quantity: en.amountOfServings ?? 2,
+        quantity: servings,
         sugarRestriction: en.sugarRestriction,
         lactoseRestrictions: en.lactoseRestrictions,
         glutenRestrictions: en.glutenRestrictions,
@@ -188,16 +150,50 @@ export async function seedSuggestionRecipeIfNeeded(): Promise<void> {
 
     if (!imageName) continue;
 
-    let he: any;
+    let heTitle: string;
     try {
-      he = await translateRecipeToHebrew(en);
+      heTitle = await translateTitleToHebrew(String(en.title ?? ""));
     } catch {
       continue;
     }
 
+    const inputHe = new InputModel({
+      query: heTitle,
+      quantity: servings,
+      sugarRestriction: en.sugarRestriction ?? SugarRestriction.DEFAULT,
+      lactoseRestrictions: en.lactoseRestrictions ?? LactoseRestrictions.DEFAULT,
+      glutenRestrictions: en.glutenRestrictions ?? GlutenRestrictions.DEFAULT,
+      dietaryRestrictions: DietaryRestrictions.KOSHER,
+      caloryRestrictions: en.caloryRestrictions ?? CaloryRestrictions.DEFAULT,
+      queryRestrictions: en.queryRestrictions ?? []
+    } as any);
+
+    let he: any;
     try {
-      await recipeService.saveSuggestionRecipe({ ...en, amountOfServings: 2, imageName } as any, "en", pairKey);
-      await recipeService.saveSuggestionRecipe({ ...he, amountOfServings: 2, imageName } as any, "he", pairKey);
+      he = await recipeService.generateInstructions(inputHe, false);
+    } catch {
+      continue;
+    }
+
+    let heCategoriesDisplay: string[] | null = null;
+    try {
+      heCategoriesDisplay = await translateCategoriesToHebrew(en.categories ?? he.categories);
+    } catch {
+      heCategoriesDisplay = null;
+    }
+
+    const enToSave = { ...en, amountOfServings: servings, imageName } as any;
+    const heToSave = { ...he, title: heTitle, amountOfServings: servings, imageName } as any;
+
+    if (heCategoriesDisplay) {
+      if ("categoriesDisplay" in heToSave) heToSave.categoriesDisplay = heCategoriesDisplay;
+      if ("categoryDisplay" in heToSave && typeof heToSave.categoryDisplay !== "undefined") heToSave.categoryDisplay = heCategoriesDisplay.join(", ");
+      if ("categoryName" in heToSave && typeof heToSave.categoryName !== "undefined") heToSave.categoryName = heCategoriesDisplay[0];
+    }
+
+    try {
+      await recipeService.saveSuggestionRecipe(enToSave, "en", pairKey);
+      await recipeService.saveSuggestionRecipe(heToSave, "he", pairKey);
       madePairs++;
     } catch {
       continue;
