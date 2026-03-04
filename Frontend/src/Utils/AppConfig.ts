@@ -25,7 +25,7 @@ class AppConfig {
 
   public readonly askRecipeUrl = `${API}/recipe`;
 
-  public readonly dailyRecipesUrl = `${API}/daily-recipes`;
+public readonly suggestionsUrl = `${API}/suggestions`;
 
   public readonly recipeUsageUrl = `${API}/usage/recipes`;
 

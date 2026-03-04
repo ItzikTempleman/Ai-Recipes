@@ -12,8 +12,9 @@ import { resetPasswordController } from "./controllers/reset-password-controller
 import { pdfController } from "./controllers/pdf-controller";
 import cookieParser from "cookie-parser";
 import { ensureVisitorId } from "./middleware/visitor-id-middleware";
-import { catalogController } from "./controllers/catalog-controller";
-import { seedCatalogIfNeeded } from "./utils/catalog-seeder";
+import { suggestionsController } from "./controllers/suggestions-controller";
+import { seedSuggestionRecipeIfNeeded } from "./utils/suggestions-seeder";
+
 
 export class App {
   public async start(): Promise<void> {
@@ -44,7 +45,7 @@ export class App {
     server.use("/api", userController.router);
     server.use(pdfController.router);
     server.use(recipeController.router);
-    server.use(catalogController.router);
+    server.use(suggestionsController.router);
     server.use("/api", resetPasswordController.router);
     server.use(healthController.router);
 
@@ -55,7 +56,7 @@ export class App {
       console.log(`Listening to port ${appConfig.port}`);
     });
 
-    seedCatalogIfNeeded().catch((err) => {
+    seedSuggestionRecipeIfNeeded().catch((err) => {
       console.error("seedCatalogIfNeeded failed:", err);
     });
   }

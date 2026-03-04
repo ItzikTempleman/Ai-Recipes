@@ -288,7 +288,7 @@ class RecipeService {
     return result.insertId;
   }
 
-  public async saveCatalogRecipe(
+  public async saveSuggestionRecipe(
     recipe: any,
     lang: "en" | "he",
     pairKey: string
