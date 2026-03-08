@@ -268,13 +268,13 @@ useEffect(() => {
           {listState === ListState.SUGGESTIONS && (
             <div className="CategoryChipsContainer">
               {ALL_CATEGORIES.map((c) => (
-                <Chip
-                  key={c}
-                  label={t(`categories.${c}`) || c}
-                  clickable
-                  color={selectedCategories.includes(c) ? "primary" : "default"}
-                  onClick={() => toggleCategory(c)}
-                />
+<Chip
+  className={`Chip ${selectedCategories.includes(c) ? "selected" : ""}`}
+  key={c}
+  label={t(`categories.${c}`) || c}
+  clickable
+  onClick={() => toggleCategory(c)}
+/>
               ))}
               {selectedCategories.length > 0 && (
                 <Chip

@@ -92,20 +92,21 @@
   font-weight: 200;
   font-size: 32px;
   text-align: center;
-  color: #000000;
+  color: #555555;
 }
 
 .GuestTitle2 {
   margin: 0;
+  font-size: 20px;
   text-align: center;
-  color: #626262;
+  color: #555555;
 }
 
 .HomeScreenTitle {
   margin-top: 30px !important;
   font-size: 22px;
   font-weight: 900;
-  color: #ff6f15;
+  color: white;
 }
 
 .HomeScreenTitle.user {
@@ -147,6 +148,7 @@
   justify-content: flex-end;
   direction: rtl;
 }
+
 
 .LikeBtn,
 .RecentlyViewedBtn,
@@ -300,6 +302,48 @@
   max-height: calc(100vh - 324px) !important;
 }
 
+.Chip,
+.CategoryChipClear {
+  border-radius: 8px !important;
+  background: white !important;
+  font-size: 16px;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* regular category chip */
+.MuiChip-root.Chip {
+  border: 1px solid #e4e4e4 !important;
+  color: #4b4b4b !important;
+  font-weight: 500 !important;
+}
+
+.MuiChip-root.MuiChip-clickable.Chip:hover {
+  background-color: #f3f4f6 !important;
+  border-color: #d6d6d6 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* selected category chip */
+.MuiChip-root.Chip.selected {
+  background-color: #f6cd52 !important;
+  border: 2px solid #f6cd52 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(246, 205, 82, 0.28);
+}
+
+.MuiChip-root.Chip.selected .MuiChip-label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* selected hover must be DIFFERENT */
+.MuiChip-root.MuiChip-clickable.Chip.selected:hover {
+  background-color: #e5b932 !important;
+  border-color: #e5b932 !important;
+  box-shadow: 0 6px 14px rgba(229, 185, 50, 0.34);
+  transform: translateY(-1px);
+}
 .CategoryChipsContainer {
   width: 100%;
   display: flex;
@@ -312,13 +356,13 @@
 
 .CategoryChipClear {
   color: #d32f2f !important;
-  border: 1px solid #d32f2f !important;
-  background-color: transparent !important;
+  border: 3px solid #d32f2f !important;
+  background-color: white !important;
   font-weight: 600;
 }
 
 .CategoryChipClear:hover {
-  background-color: rgba(211, 47, 47, 0.08) !important;
+  background-color: rgb(245, 222, 222) !important;
 }
 
 @media (max-width: 600px) {
