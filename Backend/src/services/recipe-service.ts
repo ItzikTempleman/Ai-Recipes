@@ -1,4 +1,4 @@
-import { FullRecipeModel, GPTImage, GeneratedRecipeData, DbRecipeRow, openaiImages, DifficultyLevel } from "../models/recipe-model";
+import { FullRecipeModel, GeneratedRecipeData, DbRecipeRow, DifficultyLevel, RecipeCategory } from "../models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -13,6 +13,45 @@ import { InputModel } from "../models/input-model";
 import { isLethalQuery } from "../utils/banned-filter";
 
 class RecipeService {
+  private sanitizeQueryRestrictions(values: unknown): string[] {
+    if (!Array.isArray(values)) return [];
+
+    const seen = new Set<string>();
+    const out: string[] = [];
+
+    for (const value of values) {
+      const normalized = String(value ?? "").trim();
+      if (!normalized) continue;
+      if (normalized.startsWith("__CONTENT_HASH__:")) continue;
+
+      const key = normalized.toLowerCase();
+      if (seen.has(key)) continue;
+
+      seen.add(key);
+      out.push(normalized);
+    }
+
+    return out;
+  }
+
+  private normalizeCategories(values: unknown): RecipeCategory[] {
+    if (!Array.isArray(values)) return [];
+
+    const allowed = new Set(Object.values(RecipeCategory));
+    const seen = new Set<string>();
+    const out: RecipeCategory[] = [];
+
+    for (const value of values) {
+      const normalized = String(value ?? "").trim() as RecipeCategory;
+      if (!allowed.has(normalized)) continue;
+      if (seen.has(normalized)) continue;
+
+      seen.add(normalized);
+      out.push(normalized);
+    }
+
+    return out;
+  }
 
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
     input.validate();
@@ -31,7 +70,14 @@ class RecipeService {
     if (popularity === 0 || desc.startsWith("fictional dish")) {
       throw new ValidationError("Non existing dish");
     }
-    return { ...data, amountOfServings: input.quantity };
+
+    return {
+      ...data,
+      prepTime: safePrepTime,
+      amountOfServings: input.quantity,
+      queryRestrictions: this.sanitizeQueryRestrictions(data.queryRestrictions),
+      categories: this.normalizeCategories(data.categories)
+    };
   }
 
   public async setRecipeImageName(recipeId: number, userId: number, imageName: string): Promise<void> {
@@ -55,7 +101,7 @@ class RecipeService {
     const row = rows[0];
     if (!row) throw new ResourceNotFound(id);
     return mapDbRowToFullRecipe(row);
-  };
+  }
 
   public async getRecipePublicById(id: number): Promise<FullRecipeModel> {
     const sql = "select * from recipe where id=?";
@@ -64,11 +110,19 @@ class RecipeService {
     const row = rows[0];
     if (!row) throw new ResourceNotFound(id);
     return mapDbRowToFullRecipe(row);
-  };
+  }
 
   public async getCatalogRecipes(lang: "en" | "he"): Promise<FullRecipeModel[]> {
     const systemUserId = await this.ensureSystemUserId();
-    const sql = `select * from recipe where userId = ? and pairKey is not null and lang = ? order by id asc limit 50`;
+    const sql = `
+      select *
+      from recipe
+      where userId = ?
+        and pairKey is not null
+        and lang = ?
+      order by pairKey asc, lang asc, id asc
+      limit 50
+    `;
     const values = [systemUserId, lang];
     const rows = await dal.execute(sql, values) as DbRecipeRow[];
     return rows.map(mapDbRowToFullRecipe);
@@ -82,27 +136,31 @@ class RecipeService {
       imageName = recipe.imageName;
     }
 
-    const title = recipe.title.slice(0, 100);
-    const description = recipe.description;
-    const amountOfServings = recipe.amountOfServings;
-    const popularity = recipe.popularity;
-    const ingredients = recipe.data.ingredients.map(i => i.ingredient).join(", ").slice(0, 350);
-    const instructions = recipe.data.instructions.join(" | ").slice(0, 1000);
-    const totalSugar = recipe.totalSugar;
-    const totalProtein = recipe.totalProtein;
-    const healthLevel = recipe.healthLevel;
-    const amounts = JSON.stringify(recipe.data.ingredients.map(i => i.amount ?? null));
-    const calories = recipe.calories;
+    const normalizedQueryRestrictions = this.sanitizeQueryRestrictions(recipe.queryRestrictions ?? []);
+    const normalizedCategories = this.normalizeCategories(recipe.categories ?? recipe.data?.categories ?? []);
+
+    const title = String(recipe.title ?? "").slice(0, 100);
+    const description = String(recipe.description ?? "");
+    const amountOfServings = Number(recipe.amountOfServings ?? 1);
+    const popularity = Number(recipe.popularity ?? 0);
+    const ingredients = (recipe.data?.ingredients ?? []).map(i => i.ingredient).join(", ").slice(0, 350);
+    const instructions = (recipe.data?.instructions ?? []).join(" | ").slice(0, 1000);
+    const totalSugar = Number(recipe.totalSugar ?? 0);
+    const totalProtein = Number(recipe.totalProtein ?? 0);
+    const healthLevel = Number(recipe.healthLevel ?? 0);
+    const amounts = JSON.stringify((recipe.data?.ingredients ?? []).map(i => i.amount ?? null));
+    const calories = Number(recipe.calories ?? 0);
     const sugarRestriction = recipe.sugarRestriction;
     const lactoseRestrictions = recipe.lactoseRestrictions;
     const glutenRestrictions = recipe.glutenRestrictions;
     const dietaryRestrictions = recipe.dietaryRestrictions;
     const caloryRestrictions = recipe.caloryRestrictions;
-    const prepTime = recipe.prepTime ?? 0;
+    const prepTime = Number(recipe.prepTime ?? 0);
     const difficultyEnum = recipe.difficultyLevel ?? DifficultyLevel.MID_LEVEL;
     const difficultyLevel = DifficultyLevel[difficultyEnum];
-    const countryOfOrigin = recipe.countryOfOrigin ?? "";
-    const queryRestrictionsJson = JSON.stringify(recipe.queryRestrictions ?? []);
+    const countryOfOrigin = String(recipe.countryOfOrigin ?? "");
+    const queryRestrictionsJson = JSON.stringify(normalizedQueryRestrictions);
+    const categoriesJson = JSON.stringify(normalizedCategories);
 
     const sql = `insert into recipe(
         title,
@@ -126,8 +184,9 @@ class RecipeService {
         difficultyLevel,
         countryOfOrigin,
         imageName,
-        userId
-      ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        userId,
+        categories
+      ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
     const values = [
       title,
@@ -151,14 +210,23 @@ class RecipeService {
       difficultyLevel,
       countryOfOrigin,
       imageName,
-      userId
+      userId,
+      categoriesJson
     ];
 
-    const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    const info = await dal.execute(sql, values) as OkPacketParams;
     recipe.id = info.insertId;
     recipe.image = undefined;
+    recipe.imageName = imageName ?? undefined;
     recipe.imageUrl = imageName ? appConfig.baseImageUrl + imageName : "";
     recipe.userId = userId;
+    recipe.queryRestrictions = normalizedQueryRestrictions;
+    recipe.categories = normalizedCategories;
+
+    if (recipe.data) {
+      recipe.data.categories = normalizedCategories;
+    }
+
     return recipe;
   }
 
@@ -181,7 +249,7 @@ class RecipeService {
     const imageToDelete = row[0].imageName;
     const sql = "delete from recipe where id = ?";
     const values = [id];
-    const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    const info = await dal.execute(sql, values) as OkPacketParams;
     if (info.affectedRows === 0) throw new ResourceNotFound(id);
 
     if (imageToDelete) {
@@ -218,8 +286,8 @@ class RecipeService {
   private async isLikedRecipe(userId: number, recipeId: number): Promise<boolean> {
     const sql = "select userId, recipeId from likes where userId=? and recipeId=? limit 1";
     const values = [userId, recipeId];
-    type likes = { userId: number, recipeId: number };
-    const match = await dal.execute(sql, values) as likes[];
+    type LikeRow = { userId: number; recipeId: number };
+    const match = await dal.execute(sql, values) as LikeRow[];
     return match.length === 1;
   }
 
@@ -227,14 +295,14 @@ class RecipeService {
     if (await this.isLikedRecipe(userId, recipeId)) return false;
     const sql = "insert into likes(userId, recipeId) values (?,?)";
     const values = [userId, recipeId];
-    const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    const info = await dal.execute(sql, values) as OkPacketParams;
     return info.affectedRows === 1;
   }
 
   public async unlikeRecipe(userId: number, recipeId: number): Promise<boolean> {
     const sql = "delete from likes where userId=? and recipeId=? limit 1";
     const values = [userId, recipeId];
-    const result: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
+    const result = await dal.execute(sql, values) as OkPacketParams;
     return result.affectedRows === 1;
   }
 
@@ -251,7 +319,6 @@ class RecipeService {
     query: string,
     history: { role: "user" | "assistant"; content: string }[] = []
   ): Promise<string> {
-
     let recipe: FullRecipeModel;
     try {
       recipe = await this.getSingleRecipe(recipeId, userId);
@@ -293,7 +360,6 @@ class RecipeService {
     lang: "en" | "he",
     pairKey: string
   ): Promise<void> {
-
     const ingredientsArr =
       recipe?.ingredients ??
       recipe?.data?.ingredients ??
@@ -317,6 +383,9 @@ class RecipeService {
     }
 
     const systemUserId = await this.ensureSystemUserId();
+
+    const normalizedQueryRestrictions = this.sanitizeQueryRestrictions(recipe.queryRestrictions ?? []);
+    const normalizedCategories = this.normalizeCategories(recipe.categories ?? recipe.data?.categories ?? []);
 
     const title = String(recipe.title ?? "").slice(0, 100);
     const description = String(recipe.description ?? "");
@@ -354,13 +423,8 @@ class RecipeService {
     const difficultyLevel = String(recipe.difficultyLevel ?? "MID_LEVEL");
     const countryOfOrigin = String(recipe.countryOfOrigin ?? "");
 
-    const queryRestrictionsJson = JSON.stringify(recipe.queryRestrictions ?? []);
-
-    const categoriesValue = recipe.categories ?? [];
-    const categoriesJson = Array.isArray(categoriesValue)
-      ? JSON.stringify(categoriesValue)
-      : String(categoriesValue);
-
+    const queryRestrictionsJson = JSON.stringify(normalizedQueryRestrictions);
+    const categoriesJson = JSON.stringify(normalizedCategories);
     const imageName = recipe.imageName ?? null;
 
     const sql = `insert into recipe(
