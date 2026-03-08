@@ -11,6 +11,7 @@ import { mapDbRowToFullRecipe } from "../utils/map-recipe";
 import { DangerousRequestError, ResourceNotFound, ValidationError } from "../models/client-errors";
 import { InputModel } from "../models/input-model";
 import { isLethalQuery } from "../utils/banned-filter";
+import { DietaryRestrictions } from "../models/filters";
 
 class RecipeService {
   private sanitizeQueryRestrictions(values: unknown): string[] {
@@ -53,6 +54,120 @@ class RecipeService {
     return out;
   }
 
+  private collectRecipeText(recipeLike: any): string {
+    const title = String(recipeLike?.title ?? "");
+    const description = String(recipeLike?.description ?? "");
+
+    const ingredients = Array.isArray(recipeLike?.ingredients)
+      ? recipeLike.ingredients
+      : Array.isArray(recipeLike?.data?.ingredients)
+        ? recipeLike.data.ingredients
+        : [];
+
+    const instructions = Array.isArray(recipeLike?.instructions)
+      ? recipeLike.instructions
+      : Array.isArray(recipeLike?.data?.instructions)
+        ? recipeLike.data.instructions
+        : [];
+
+    const ingredientText = ingredients
+      .map((i: any) => `${String(i?.ingredient ?? "")} ${String(i?.amount ?? "")}`)
+      .join(" ");
+
+    const instructionText = instructions.map((s: any) => String(s ?? "")).join(" ");
+
+    return `${title} ${description} ${ingredientText} ${instructionText}`.toLowerCase();
+  }
+
+  private hasAnyTerm(haystack: string, terms: string[]): boolean {
+    return terms.some((term) => haystack.includes(term));
+  }
+
+  private validateRecipeSemantics(recipeLike: any): void {
+    const categories = this.normalizeCategories(recipeLike?.categories ?? recipeLike?.data?.categories ?? []);
+    const dietaryRestrictions = Number(recipeLike?.dietaryRestrictions ?? 0);
+    const text = this.collectRecipeText(recipeLike);
+
+    const porkTerms = [
+      "pork", "bacon", "ham", "prosciutto", "salami", "pepperoni",
+      "guanciale", "pancetta", "lard", "chorizo", "sausage", "pork sausage"
+    ];
+
+    const shellfishTerms = [
+      "shrimp", "prawn", "lobster", "crab", "scallop", "mussel",
+      "clam", "oyster", "shellfish", "calamari", "squid", "octopus"
+    ];
+
+    const meatTerms = [
+      "beef", "steak", "brisket", "veal", "lamb", "mutton", "goat",
+      "chicken", "turkey", "duck", "shawarma", "meatball", "meatballs",
+      "burger", "hamburger", "meat sauce", "ground beef", "ground lamb",
+      "ground turkey", "ground chicken", "broth", "stock", "sausage",
+      "pepperoni", "salami", "guanciale", "pancetta", "bacon", "ham"
+    ];
+
+    const fishTerms = [
+      "fish", "salmon", "tuna", "cod", "tilapia", "trout", "sea bass",
+      "sardine", "anchovy", "mackerel", "halibut"
+    ];
+
+    const dairyTerms = [
+      "milk", "cream", "butter", "cheese", "mozzarella", "parmesan",
+      "cheddar", "yogurt", "labneh", "ricotta", "feta", "cottage cheese",
+      "cream cheese"
+    ];
+
+    const eggTerms = ["egg", "eggs"];
+    const honeyTerms = ["honey"];
+
+    const hasPork = this.hasAnyTerm(text, porkTerms);
+    const hasShellfish = this.hasAnyTerm(text, shellfishTerms);
+    const hasMeat = this.hasAnyTerm(text, meatTerms);
+    const hasFish = this.hasAnyTerm(text, fishTerms);
+    const hasDairy = this.hasAnyTerm(text, dairyTerms);
+    const hasEgg = this.hasAnyTerm(text, eggTerms);
+    const hasHoney = this.hasAnyTerm(text, honeyTerms);
+
+    const isKosher = dietaryRestrictions === DietaryRestrictions.KOSHER;
+    const isVegan = dietaryRestrictions === DietaryRestrictions.VEGAN;
+    const isDairyCategory = categories.includes(RecipeCategory.dairy);
+    const isMeatCategory = categories.includes(RecipeCategory.meat);
+    const isFishCategory = categories.includes(RecipeCategory.fish);
+    const isVeganCategory = categories.includes(RecipeCategory.vegan);
+
+    if (isKosher) {
+      if (hasPork) {
+        throw new ValidationError("Invalid kosher recipe: contains pork/non-kosher meat terms");
+      }
+
+      if (hasShellfish) {
+        throw new ValidationError("Invalid kosher recipe: contains shellfish/non-kosher seafood terms");
+      }
+
+      if (hasMeat && hasDairy) {
+        throw new ValidationError("Invalid kosher recipe: mixes meat and dairy");
+      }
+    }
+
+    if (isDairyCategory && hasMeat) {
+      throw new ValidationError("Invalid dairy recipe: contains meat terms");
+    }
+
+    if (isMeatCategory && hasDairy) {
+      throw new ValidationError("Invalid meat recipe: contains dairy terms");
+    }
+
+    if (isFishCategory && hasMeat) {
+      throw new ValidationError("Invalid fish recipe: contains meat terms");
+    }
+
+    if (isVegan || isVeganCategory) {
+      if (hasMeat || hasFish || hasDairy || hasEgg || hasHoney) {
+        throw new ValidationError("Invalid vegan recipe: contains animal-product terms");
+      }
+    }
+  }
+
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
     input.validate();
 
@@ -62,8 +177,10 @@ class RecipeService {
 
     const recipeQuery = responseInstructions.getQuery(input);
     const data = await gptService.getInstructions(recipeQuery, isWithImage);
+
     let safePrepTime = Number(data.prepTime ?? 0);
     if (!Number.isFinite(safePrepTime) || safePrepTime < 0) safePrepTime = 0;
+
     const popularity = data.popularity ?? 0;
     const desc = (data.description ?? "").toLowerCase();
 
@@ -71,13 +188,17 @@ class RecipeService {
       throw new ValidationError("Non existing dish");
     }
 
-    return {
+    const normalized: GeneratedRecipeData = {
       ...data,
       prepTime: safePrepTime,
       amountOfServings: input.quantity,
       queryRestrictions: this.sanitizeQueryRestrictions(data.queryRestrictions),
       categories: this.normalizeCategories(data.categories)
     };
+
+    this.validateRecipeSemantics(normalized);
+
+    return normalized;
   }
 
   public async setRecipeImageName(recipeId: number, userId: number, imageName: string): Promise<void> {
@@ -138,6 +259,12 @@ class RecipeService {
 
     const normalizedQueryRestrictions = this.sanitizeQueryRestrictions(recipe.queryRestrictions ?? []);
     const normalizedCategories = this.normalizeCategories(recipe.categories ?? recipe.data?.categories ?? []);
+
+    this.validateRecipeSemantics({
+      ...recipe,
+      queryRestrictions: normalizedQueryRestrictions,
+      categories: normalizedCategories
+    });
 
     const title = String(recipe.title ?? "").slice(0, 100);
     const description = String(recipe.description ?? "");
@@ -386,6 +513,12 @@ class RecipeService {
 
     const normalizedQueryRestrictions = this.sanitizeQueryRestrictions(recipe.queryRestrictions ?? []);
     const normalizedCategories = this.normalizeCategories(recipe.categories ?? recipe.data?.categories ?? []);
+
+    this.validateRecipeSemantics({
+      ...recipe,
+      queryRestrictions: normalizedQueryRestrictions,
+      categories: normalizedCategories
+    });
 
     const title = String(recipe.title ?? "").slice(0, 100);
     const description = String(recipe.description ?? "");

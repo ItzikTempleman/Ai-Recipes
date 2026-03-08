@@ -283,6 +283,152 @@ class SuggestionsService {
     return { usedTitles, usedContentHashes };
   }
 
+  private collectRecipeTextFromRow(row: DbRecipeRow): string {
+    const recipe = mapDbRowToFullRecipe(row);
+    const title = String(recipe.title ?? "");
+    const description = String(recipe.description ?? "");
+    const ingredients = (recipe.data?.ingredients ?? [])
+      .map((i) => `${String(i?.ingredient ?? "")} ${String(i?.amount ?? "")}`)
+      .join(" ");
+    const instructions = (recipe.data?.instructions ?? []).join(" ");
+
+    return `${title} ${description} ${ingredients} ${instructions}`.toLowerCase();
+  }
+
+  private rowHasSemanticViolation(row: DbRecipeRow): boolean {
+    const recipe = mapDbRowToFullRecipe(row);
+    const text = this.collectRecipeTextFromRow(row);
+    const categories = this.normalizeCategories(recipe.categories ?? recipe.data?.categories ?? []);
+    const dietaryRestrictions = Number(recipe.dietaryRestrictions ?? 0);
+
+    const hasAny = (terms: string[]) => terms.some((t) => text.includes(t));
+
+    const porkTerms = [
+      "pork", "bacon", "ham", "prosciutto", "salami", "pepperoni",
+      "guanciale", "pancetta", "lard", "chorizo", "sausage", "pork sausage"
+    ];
+
+    const shellfishTerms = [
+      "shrimp", "prawn", "lobster", "crab", "scallop", "mussel",
+      "clam", "oyster", "shellfish", "calamari", "squid", "octopus"
+    ];
+
+    const meatTerms = [
+      "beef", "steak", "brisket", "veal", "lamb", "mutton", "goat",
+      "chicken", "turkey", "duck", "shawarma", "meatball", "meatballs",
+      "burger", "hamburger", "meat sauce", "ground beef", "ground lamb",
+      "ground turkey", "ground chicken", "broth", "stock", "sausage",
+      "pepperoni", "salami", "guanciale", "pancetta", "bacon", "ham"
+    ];
+
+    const fishTerms = [
+      "fish", "salmon", "tuna", "cod", "tilapia", "trout", "sea bass",
+      "sardine", "anchovy", "mackerel", "halibut"
+    ];
+
+    const dairyTerms = [
+      "milk", "cream", "butter", "cheese", "mozzarella", "parmesan",
+      "cheddar", "yogurt", "labneh", "ricotta", "feta", "cottage cheese",
+      "cream cheese"
+    ];
+
+    const eggTerms = ["egg", "eggs"];
+    const honeyTerms = ["honey"];
+
+    const hasPork = hasAny(porkTerms);
+    const hasShellfish = hasAny(shellfishTerms);
+    const hasMeat = hasAny(meatTerms);
+    const hasFish = hasAny(fishTerms);
+    const hasDairy = hasAny(dairyTerms);
+    const hasEgg = hasAny(eggTerms);
+    const hasHoney = hasAny(honeyTerms);
+
+    const isKosher = dietaryRestrictions === DietaryRestrictions.KOSHER;
+    const isVegan = dietaryRestrictions === DietaryRestrictions.VEGAN;
+    const isDairyCategory = categories.includes(RecipeCategory.dairy);
+    const isMeatCategory = categories.includes(RecipeCategory.meat);
+    const isFishCategory = categories.includes(RecipeCategory.fish);
+    const isVeganCategory = categories.includes(RecipeCategory.vegan);
+
+    if (isKosher && (hasPork || hasShellfish || (hasMeat && hasDairy))) return true;
+    if (isDairyCategory && hasMeat) return true;
+    if (isMeatCategory && hasDairy) return true;
+    if (isFishCategory && hasMeat) return true;
+    if ((isVegan || isVeganCategory) && (hasMeat || hasFish || hasDairy || hasEgg || hasHoney)) return true;
+
+    return false;
+  }
+
+  private async deletePairByKey(systemUserId: number, pairKey: string): Promise<void> {
+    await dal.execute(
+      `delete from recipe where userId = ? and pairKey = ?`,
+      [systemUserId, pairKey]
+    );
+  }
+
+  private async purgeInvalidAndDuplicateCatalogPairs(): Promise<void> {
+    const systemUserId = await this.ensureSystemUserId();
+
+    const rows = (await dal.execute(
+      `select * from recipe where userId = ? and pairKey is not null order by id asc`,
+      [systemUserId]
+    )) as DbRecipeRow[];
+
+    const byPair = new Map<string, DbRecipeRow[]>();
+
+    for (const row of rows) {
+      const key = String((row as any).pairKey ?? "");
+      if (!key) continue;
+
+      if (!byPair.has(key)) byPair.set(key, []);
+      byPair.get(key)!.push(row);
+    }
+
+    const seenTitles = new Set<string>();
+    const seenHashes = new Set<string>();
+
+    for (const [pairKey, pairRows] of byPair.entries()) {
+      if (pairRows.length !== 2) {
+        await this.deletePairByKey(systemUserId, pairKey);
+        continue;
+      }
+
+      const langs = new Set(pairRows.map((r: any) => String(r.lang ?? "")));
+      if (!langs.has("en") || !langs.has("he")) {
+        await this.deletePairByKey(systemUserId, pairKey);
+        continue;
+      }
+
+      if (pairRows.some((row) => this.rowHasSemanticViolation(row))) {
+        await this.deletePairByKey(systemUserId, pairKey);
+        continue;
+      }
+
+      const enRow = pairRows.find((r: any) => String(r.lang) === "en")!;
+      const normalizedTitle = this.normalizeTitle((enRow as any).title ?? "");
+
+      let contentHash = "";
+      try {
+        const qr = JSON.parse(String((enRow as any).queryRestrictions ?? "[]"));
+        if (Array.isArray(qr)) {
+          const marker = qr.find((x) => typeof x === "string" && x.startsWith("__CONTENT_HASH__:"));
+          if (marker) {
+            contentHash = marker.replace("__CONTENT_HASH__:", "");
+          }
+        }
+      } catch {
+      }
+
+      if ((normalizedTitle && seenTitles.has(normalizedTitle)) || (contentHash && seenHashes.has(contentHash))) {
+        await this.deletePairByKey(systemUserId, pairKey);
+        continue;
+      }
+
+      if (normalizedTitle) seenTitles.add(normalizedTitle);
+      if (contentHash) seenHashes.add(contentHash);
+    }
+  }
+
   private async generateRequiredImage(
     payload: Parameters<typeof generateImage>[0],
     retries = 3
@@ -440,6 +586,8 @@ Return EXACT schema including "categories".
     }
 
     try {
+      await this.purgeInvalidAndDuplicateCatalogPairs();
+
       const existingPairs = await this.countCatalogPairs();
       if (existingPairs >= TOTAL_PAIRS) {
         return { createdPairs: 0, createdRows: 0 };
