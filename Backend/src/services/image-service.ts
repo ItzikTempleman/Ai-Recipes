@@ -1,29 +1,50 @@
-import { InputModel } from "../models/input-model";
-import { GPTImage, openaiImages } from "../models/recipe-model";
+import { GPTImage, openaiImages, RecipeCategory } from "../models/recipe-model";
 import fs from "fs/promises";
 import path from "path";
 import { appConfig } from "../utils/app-config";
-import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions } from "../models/filters";
+import { DietaryRestrictions } from "../models/filters";
+import crypto from "crypto";
 
 export async function generateImage(recipe: any): Promise<GPTImage> {
   const lowerQuery = String(recipe.query ?? "").toLowerCase();
   const extraBanned: string[] = [];
   const title = String((recipe as any)?.title ?? "").trim();
   const query = String((recipe as any)?.query ?? "").trim();
-  const ingredientNames =(recipe as any).ingredients?.map((x: any) => String(x?.ingredient ?? "").trim()).filter(Boolean) ?? [];
+
+  const ingredientNames =
+    (recipe as any).ingredients?.map((x: any) => String(x?.ingredient ?? "").trim()).filter(Boolean) ?? [];
+
   const allowed = ingredientNames.slice(0, 40).join(", ");
-  const methodHint = (recipe as any).instructions?.slice(0, 4).join(" ").replace(/\s+/g, " ").slice(0, 700) ?? "";
+  const methodHint =
+    (recipe as any).instructions?.slice(0, 4).join(" ").replace(/\s+/g, " ").slice(0, 700) ?? "";
+
+  const categories = Array.isArray((recipe as any)?.categories)
+    ? (recipe as any).categories.map((x: any) => String(x ?? "").trim()).filter(Boolean) as RecipeCategory[]
+    : [];
+
+  const cleanQueryRestrictions = Array.isArray((recipe as any)?.queryRestrictions)
+    ? (recipe as any).queryRestrictions
+        .map((x: any) => String(x ?? "").trim())
+        .filter((x: string) => x && !x.startsWith("__CONTENT_HASH__:"))
+    : [];
+
   const promptParts: string[] = [
     `fhd quality realistic food photo of the finished cooked dish for this recipe.`,
- `Dish label (do not render text): "${title || query}".`, `RENDER SPEC (CRITICAL):
+    `Dish label (do not render text): "${title || query}".`,
+    `RENDER SPEC (CRITICAL):
 - Render the dish to match the RECIPE composition, not a generic default or a guessed "reference photo" dish.
 - The dish must visually align with the dish label AND the ingredient list AND the method cues.
-- If the dish label is not a globally-canonical dish name, DO NOT guess a standard dish. Use the RECIPE as ground truth.`,`COMPOSITION & VISIBILITY (CRITICAL):
+- If the dish label is not a globally-canonical dish name, DO NOT guess a standard dish. Use the RECIPE as ground truth.`,
+    `COMPOSITION & VISIBILITY (CRITICAL):
 - Show only the finished dish on a simple plate/tray/pan. No hands, no utensils in motion, no extra props.
 - Do NOT add side dishes unless explicitly part of the recipe OR listed in ALLOWED INGREDIENTS.
 - Do NOT add garnish, herbs, toppings, or decorative elements unless they are explicitly in ALLOWED INGREDIENTS.
 - Every primary ingredient that would be visible in the finished dish MUST be visible in a realistic cooked form.
 - The image is INVALID if it looks like a generic substitute dish instead of the recipe described.`,
+    `SOURCE OF TRUTH (CRITICAL):
+- Use the following fields together as the single source of truth for the image: DISH LABEL, ALLOWED INGREDIENTS, METHOD CUES, CATEGORY TAGS, and RESTRICTION FLAGS.
+- The image is INVALID if it matches only the title while contradicting the ingredients, categories, or restrictions.
+- CATEGORY TAGS: ${categories.length ? categories.join(", ") : "none"}.`,
     `APPETIZING REALISM (CRITICAL):
 - Make it look freshly cooked and appetizing (not dry, not stale, not dusty, not chalky, not matte).
 - Use natural kitchen/restaurant lighting (avoid harsh studio/catalog lighting).
@@ -42,13 +63,37 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
 - If the method implies simmering/braising/poaching in liquid: surfaces should look tender and liquid-coated, with minimal crust.
 - If the method implies frying/searing/grilling: show crisp browning/char appropriately.`,
     `ALLOWED INGREDIENTS (ONLY these may appear as identifiable ingredients/toppings): ${allowed}. If something is not listed here, it must NOT be added as a topping, garnish, herb, or side dish. Do not add "common garnishes" unless they are explicitly listed here.`,
-    `METHOD CUES (must match the look): ${methodHint}`,  `QUALITY GUARDS:
+    `METHOD CUES (must match the look): ${methodHint}`,
+    `QUALITY GUARDS:
 - No snow-like curds, cottony clumps, plastic shine, waxy surfaces, or powdery/dusty look.
 - No perfect symmetry or identical repeated shapes.`
   ];
 
-  if (recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
-    promptParts.push(  "The dish must be 100% vegan with no animal products at all (no meat, fish, eggs, dairy, butter, gelatin, or honey). Ensure the visuals match realistic vegan versions of the dish (no animal-like textures)." );
+  if (categories.includes(RecipeCategory.dairy)) {
+    promptParts.push(
+      "This is a DAIRY dish. Visible protein and toppings must stay dairy-compatible.",
+      "Do not show beef, chicken, turkey, lamb, shawarma, burger patties, meat sauce, or meat broth anywhere in the image.",
+      "Fish is allowed only if fish is actually present in ALLOWED INGREDIENTS or the recipe/category clearly indicates a fish dish.",
+      "If cheese, cream, butter, yogurt, or milk are part of the recipe, they should read visually as dairy and must not appear alongside meat."
+    );
+  }
+
+  if (categories.includes(RecipeCategory.vegan) || recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
+    promptParts.push(
+      "The dish must be 100% vegan with no animal products at all (no meat, fish, eggs, dairy, butter, gelatin, or honey). Ensure the visuals match realistic vegan versions of the dish (no animal-like textures)."
+    );
+  }
+
+  if (categories.includes(RecipeCategory.fish)) {
+    promptParts.push(
+      "This is a fish dish. Show fish only if fish is actually present in ALLOWED INGREDIENTS, and do not substitute it with meat or poultry."
+    );
+  }
+
+  if (categories.includes(RecipeCategory.meat) && recipe.dietaryRestrictions === DietaryRestrictions.KOSHER) {
+    promptParts.push(
+      "This is a kosher meat dish. Do not show cheese, cream, butter, yogurt, or any other dairy visual anywhere in the image."
+    );
   }
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.KOSHER) {
@@ -58,9 +103,13 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
       "If there is visible meat, absolutely do not show any cheese, butter, cream, or other dairy near it.",
       "Never include anything from the excluded/forbidden ingredients list."
     );
+
     extraBanned.push("pepperoni", "bacon", "ham", "salami", "sausage", "shrimp", "lobster", "crab");
+
     if (extraBanned.length) {
-      promptParts.push( `Do not show any of the following ingredients anywhere in the image: ${extraBanned.join(", ")}.`  );
+      promptParts.push(
+        `Do not show any of the following ingredients anywhere in the image: ${extraBanned.join(", ")}.`
+      );
     }
   }
 
@@ -78,16 +127,14 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
     );
   }
 
-  if (recipe.queryRestrictions?.length) {
-    const excluded = (recipe.queryRestrictions ?? []).map((x: any) => String(x).trim()).filter(Boolean);
-    if (excluded.length) {
-      promptParts.push(
-        `Do not show any of the following ingredients anywhere in the image: ${excluded.join(", ")}.`
-      );
-    }
+  if (cleanQueryRestrictions.length) {
+    promptParts.push(
+      `Do not show any of the following ingredients anywhere in the image: ${cleanQueryRestrictions.join(", ")}.`
+    );
   }
 
   let lastErr: any;
+
   for (let attempt = 0; attempt < 2; attempt++) {
     const attemptPromptParts = [...promptParts];
 
@@ -100,7 +147,13 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
         "CRITICAL: The image is invalid if it looks like a generic substitute dish rather than the dish described by the recipe; it must match the recipe composition and method cues."
       );
 
-      if (lowerQuery.includes("pizza") || lowerQuery.includes("piza") || lowerQuery.includes("pitsa") || query.includes("פיצה") || title.includes("פיצה")) {
+      if (
+        lowerQuery.includes("pizza") ||
+        lowerQuery.includes("piza") ||
+        lowerQuery.includes("pitsa") ||
+        query.includes("פיצה") ||
+        title.includes("פיצה")
+      ) {
         attemptPromptParts.push(
           "CRITICAL: For pizza, the image must look hot, melty, and moist with visible sauce coverage and realistic cheese sheen (not dry or dusty)."
         );
@@ -120,24 +173,20 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
       if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
 
       const imageBase64 = result.data[0].b64_json;
-
-      const imagesDir =
-        process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
+      const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
 
       await fs.mkdir(imagesDir, { recursive: true });
 
       const safeBse = String(title || recipe.title || recipe.query || "recipe")
         .toLowerCase()
         .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
-        .replace(/^-+|-+$/g, "").slice(0,60);
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 60);
 
-        const unique= crypto.randomUUID();
+      const unique = crypto.randomUUID();
       const fileName = `${safeBse}-${unique}.png`;
 
-      await fs.writeFile(
-        path.join(imagesDir, fileName),
-        Buffer.from(imageBase64, "base64")
-      );
+      await fs.writeFile(path.join(imagesDir, fileName), Buffer.from(imageBase64, "base64"));
 
       const url = new URL(fileName, appConfig.baseImageUrl).toString();
       return { fileName, url };

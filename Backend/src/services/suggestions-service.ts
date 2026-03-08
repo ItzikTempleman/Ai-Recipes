@@ -20,6 +20,8 @@ type Lang = "en" | "he";
 const TOTAL_PAIRS = 50;
 
 class SuggestionsService {
+  private readonly generationLockName = "smart_recipes_suggestions_generate_once";
+
   private normalizeTitle(title: unknown): string {
     return String(title ?? "")
       .trim()
@@ -57,11 +59,89 @@ class SuggestionsService {
         amount: i?.amount ?? null
       })),
       instructions: (enRecipeLike?.instructions ?? []).map((s: any) => String(s ?? "").trim()),
-
       categories: (enRecipeLike?.categories ?? []).map((c: any) => String(c))
     };
 
     return crypto.createHash("sha256").update(this.stableStringify(canonical)).digest("hex");
+  }
+
+  private async acquireGenerationLock(timeoutSeconds = 30): Promise<boolean> {
+    const rows = (await dal.execute(
+      "select GET_LOCK(?, ?) as locked",
+      [this.generationLockName, timeoutSeconds]
+    )) as Array<{ locked: number | null }>;
+
+    return Number(rows?.[0]?.locked ?? 0) === 1;
+  }
+
+  private async releaseGenerationLock(): Promise<void> {
+    try {
+      await dal.execute("select RELEASE_LOCK(?)", [this.generationLockName]);
+    } catch {
+    }
+  }
+
+  private sanitizeQueryRestrictions(values: unknown): string[] {
+    if (!Array.isArray(values)) return [];
+
+    const seen = new Set<string>();
+    const out: string[] = [];
+
+    for (const value of values) {
+      const normalized = String(value ?? "").trim();
+      if (!normalized) continue;
+      if (normalized.startsWith("__CONTENT_HASH__:")) continue;
+
+      const key = normalized.toLowerCase();
+      if (seen.has(key)) continue;
+
+      seen.add(key);
+      out.push(normalized);
+    }
+
+    return out;
+  }
+
+  private normalizeCategories(values: unknown): RecipeCategory[] {
+    if (!Array.isArray(values)) return [];
+
+    const allowed = new Set(Object.values(RecipeCategory));
+    const seen = new Set<string>();
+    const out: RecipeCategory[] = [];
+
+    for (const value of values) {
+      const normalized = String(value ?? "").trim() as RecipeCategory;
+      if (!allowed.has(normalized)) continue;
+      if (seen.has(normalized)) continue;
+
+      seen.add(normalized);
+      out.push(normalized);
+    }
+
+    return out;
+  }
+
+  private async hasExistingSuggestion(
+    systemUserId: number,
+    normalizedTitle: string,
+    contentHash: string
+  ): Promise<boolean> {
+    const sql = `
+      select id
+      from recipe
+      where userId = ?
+        and pairKey is not null
+        and (lower(trim(title)) = lower(trim(?)) or queryRestrictions like ?)
+      limit 1
+    `;
+
+    const rows = (await dal.execute(sql, [
+      systemUserId,
+      normalizedTitle,
+      `%__CONTENT_HASH__:${contentHash}%`
+    ])) as Array<{ id: number }>;
+
+    return rows.length > 0;
   }
 
   private async ensureSystemUserId(): Promise<number> {
@@ -85,6 +165,7 @@ class SuggestionsService {
       caloryRestrictions: CaloryRestrictions.DEFAULT,
       queryRestrictions: []
     } as unknown as InputModel);
+
     model.validate();
     return model;
   }
@@ -122,6 +203,7 @@ class SuggestionsService {
     for (const r of rows) {
       const nt = this.normalizeTitle(r.title);
       if (nt) usedTitles.add(nt);
+
       try {
         const qr = JSON.parse(String(r.queryRestrictions ?? "[]"));
         if (Array.isArray(qr)) {
@@ -132,7 +214,6 @@ class SuggestionsService {
           }
         }
       } catch {
-
       }
 
       const ingredientNames = String(r.ingredients ?? "")
@@ -179,16 +260,19 @@ class SuggestionsService {
     return { usedTitles, usedContentHashes };
   }
 
-  private async generateRequiredImage(payload: Parameters<typeof generateImage>[0], retries = 3): Promise<string | null> {
+  private async generateRequiredImage(
+    payload: Parameters<typeof generateImage>[0],
+    retries = 3
+  ): Promise<string | null> {
     for (let i = 0; i < retries; i++) {
       try {
         const res = await generateImage(payload);
         const fileName = typeof res?.fileName === "string" ? res.fileName.trim() : "";
         if (fileName) return fileName;
       } catch {
-  
       }
     }
+
     return null;
   }
 
@@ -199,9 +283,10 @@ class SuggestionsService {
     recipe: FullRecipeModel;
   }): Promise<void> {
     const r = args.recipe;
-    const imageName: string = (typeof r.imageName === "string" && r.imageName.trim())
-      ? r.imageName.trim()
-      : "";
+    const imageName: string =
+      typeof r.imageName === "string" && r.imageName.trim()
+        ? r.imageName.trim()
+        : "";
 
     if (!imageName) {
       throw new Error("insertSuggestionRecipe: imageName is required");
@@ -212,12 +297,19 @@ class SuggestionsService {
     const amountOfServings = Number(r.amountOfServings ?? 1);
     const popularity = Number(r.popularity ?? 0);
 
-    const ingredients = (r.data?.ingredients ?? []).map((i) => i.ingredient).join(", ").slice(0, 350);
-    const instructions = (r.data?.instructions ?? []).join(" | ").slice(0, 1000);
+    const ingredients = (r.data?.ingredients ?? [])
+      .map((i) => i.ingredient)
+      .join(", ")
+      .slice(0, 350);
+
+    const instructions = (r.data?.instructions ?? [])
+      .join(" | ")
+      .slice(0, 1000);
+
     const amounts = JSON.stringify((r.data?.ingredients ?? []).map((i) => i.amount ?? null));
 
-    const queryRestrictionsJson = JSON.stringify(r.queryRestrictions ?? []);
-    const categoriesJson = JSON.stringify((r.categories ?? r.data?.categories ?? []) as RecipeCategory[]);
+    const queryRestrictionsJson = JSON.stringify(this.sanitizeQueryRestrictions(r.queryRestrictions ?? []));
+    const categoriesJson = JSON.stringify(this.normalizeCategories(r.categories ?? r.data?.categories ?? []));
 
     const difficultyText =
       typeof r.difficultyLevel === "number"
@@ -251,6 +343,7 @@ class SuggestionsService {
       pairKey,
       categories
     ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
     const values = [
       title,
       amountOfServings,
@@ -318,120 +411,147 @@ Return EXACT schema including "categories".
   }
 
   public async generateOnce(): Promise<{ createdPairs: number; createdRows: number }> {
-    const existing = await this.countCatalogRows();
-    if (existing >= TOTAL_PAIRS * 2) {
+    const hasLock = await this.acquireGenerationLock();
+    if (!hasLock) {
       return { createdPairs: 0, createdRows: 0 };
     }
 
-    const systemUserId = await this.ensureSystemUserId();
-    const { usedTitles, usedContentHashes } = await this.getUsedKeys();
-    const ideas = getIdeas("en");
-
-    let createdPairs = 0;
-    let createdRows = 0;
-
-    for (let attempts = 0; createdPairs < TOTAL_PAIRS && attempts < 600; attempts++) {
-      const query = ideas[Math.floor(Math.random() * ideas.length)];
-      const input = this.createKosherInputModel(query);
-      const data = await recipeService.generateInstructions(input, false);
-
-      const normalizedTitle = this.normalizeTitle(data.title);
-      if (!normalizedTitle || usedTitles.has(normalizedTitle)) continue;
-      const contentHash = this.buildContentHash({
-        title: data.title,
-        description: data.description,
-        amountOfServings: data.amountOfServings,
-        ingredients: data.ingredients ?? [],
-        instructions: data.instructions ?? [],
-        categories: data.categories ?? []
-      });
-      if (usedContentHashes.has(contentHash)) continue;
-      const fileName = await this.generateRequiredImage({
-        query: input.query,
-        quantity: data.amountOfServings ?? 1,
-        sugarRestriction: data.sugarRestriction,
-        lactoseRestrictions: data.lactoseRestrictions,
-        glutenRestrictions: data.glutenRestrictions,
-        dietaryRestrictions: DietaryRestrictions.KOSHER,
-        caloryRestrictions: data.caloryRestrictions,
-        queryRestrictions: data.queryRestrictions,
-        title: data.title,
-        description: data.description,
-        ingredients: data.ingredients,
-        instructions: data.instructions
-      });
-
-      if (!fileName) {
-        continue;
+    try {
+      const existing = await this.countCatalogRows();
+      if (existing >= TOTAL_PAIRS * 2) {
+        return { createdPairs: 0, createdRows: 0 };
       }
 
-      const pairKey = crypto.randomBytes(16).toString("hex");
-      const qrWithHash = Array.isArray(data.queryRestrictions) ? [...data.queryRestrictions] : [];
-      qrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
+      const systemUserId = await this.ensureSystemUserId();
+      const { usedTitles, usedContentHashes } = await this.getUsedKeys();
+      const ideas = getIdeas("en");
 
-      const en = new FullRecipeModel({
-        title: data.title,
-        amountOfServings: data.amountOfServings,
-        description: data.description,
-        popularity: data.popularity,
-        data,
-        totalSugar: data.totalSugar,
-        totalProtein: data.totalProtein,
-        healthLevel: data.healthLevel,
-        calories: data.calories,
-        sugarRestriction: data.sugarRestriction,
-        lactoseRestrictions: data.lactoseRestrictions,
-        glutenRestrictions: data.glutenRestrictions,
-        dietaryRestrictions: DietaryRestrictions.KOSHER,
-        caloryRestrictions: data.caloryRestrictions,
-        queryRestrictions: qrWithHash,
-        prepTime: data.prepTime,
-        difficultyLevel: data.difficultyLevel,
-        countryOfOrigin: String(data.countryOfOrigin ?? ""),
-        imageName: fileName,
-        userId: systemUserId,
-        categories: data.categories
-      });
+      let createdPairs = 0;
+      let createdRows = 0;
 
-      const heJson = await this.translateRecipeToHebrew(data);
-      const heQrWithHash = Array.isArray(heJson.queryRestrictions) ? [...heJson.queryRestrictions] : [];
-      heQrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
+      for (let attempts = 0; createdPairs < TOTAL_PAIRS && attempts < 600; attempts++) {
+        const query = ideas[Math.floor(Math.random() * ideas.length)];
+        const input = this.createKosherInputModel(query);
+        const data = await recipeService.generateInstructions(input, false);
 
-      const he = new FullRecipeModel({
-        title: heJson.title,
-        amountOfServings: heJson.amountOfServings,
-        description: heJson.description,
-        popularity: heJson.popularity,
-        data: heJson,
-        totalSugar: heJson.totalSugar,
-        totalProtein: heJson.totalProtein,
-        healthLevel: heJson.healthLevel,
-        calories: heJson.calories,
-        sugarRestriction: heJson.sugarRestriction,
-        lactoseRestrictions: heJson.lactoseRestrictions,
-        glutenRestrictions: heJson.glutenRestrictions,
-        dietaryRestrictions: DietaryRestrictions.KOSHER,
-        caloryRestrictions: heJson.caloryRestrictions,
-        queryRestrictions: heQrWithHash,
-        prepTime: heJson.prepTime,
-        difficultyLevel: heJson.difficultyLevel,
-        countryOfOrigin: String(heJson.countryOfOrigin ?? ""),
-        imageName: fileName,
-        userId: systemUserId,
-        categories: heJson.categories
-      });
+        const normalizedTitle = this.normalizeTitle(data.title);
+        if (!normalizedTitle || usedTitles.has(normalizedTitle)) continue;
 
-      await this.insertSuggestionRecipe({ systemUserId, pairKey, lang: "en", recipe: en });
-      await this.insertSuggestionRecipe({ systemUserId, pairKey, lang: "he", recipe: he });
+        const contentHash = this.buildContentHash({
+          title: data.title,
+          description: data.description,
+          amountOfServings: data.amountOfServings,
+          ingredients: data.ingredients ?? [],
+          instructions: data.instructions ?? [],
+          categories: data.categories ?? []
+        });
 
-      usedTitles.add(normalizedTitle);
-      usedContentHashes.add(contentHash);
+        if (usedContentHashes.has(contentHash)) continue;
+        if (await this.hasExistingSuggestion(systemUserId, normalizedTitle, contentHash)) continue;
 
-      createdPairs++;
-      createdRows += 2;
+        const fileName = await this.generateRequiredImage({
+          query: input.query,
+          quantity: data.amountOfServings ?? 1,
+          sugarRestriction: data.sugarRestriction,
+          lactoseRestrictions: data.lactoseRestrictions,
+          glutenRestrictions: data.glutenRestrictions,
+          dietaryRestrictions: DietaryRestrictions.KOSHER,
+          caloryRestrictions: data.caloryRestrictions,
+          queryRestrictions: data.queryRestrictions,
+          title: data.title,
+          description: data.description,
+          ingredients: data.ingredients,
+          instructions: data.instructions,
+          categories: data.categories
+        });
+
+        if (!fileName) continue;
+
+        const pairKey = crypto.randomBytes(16).toString("hex");
+
+        const qrWithHash = this.sanitizeQueryRestrictions(data.queryRestrictions);
+        qrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
+
+        const normalizedCategories = this.normalizeCategories(data.categories);
+
+        const en = new FullRecipeModel({
+          title: data.title,
+          amountOfServings: data.amountOfServings,
+          description: data.description,
+          popularity: data.popularity,
+          data: {
+            ...data,
+            categories: normalizedCategories
+          },
+          totalSugar: data.totalSugar,
+          totalProtein: data.totalProtein,
+          healthLevel: data.healthLevel,
+          calories: data.calories,
+          sugarRestriction: data.sugarRestriction,
+          lactoseRestrictions: data.lactoseRestrictions,
+          glutenRestrictions: data.glutenRestrictions,
+          dietaryRestrictions: DietaryRestrictions.KOSHER,
+          caloryRestrictions: data.caloryRestrictions,
+          queryRestrictions: qrWithHash,
+          prepTime: data.prepTime,
+          difficultyLevel: data.difficultyLevel,
+          countryOfOrigin: String(data.countryOfOrigin ?? ""),
+          imageName: fileName,
+          userId: systemUserId,
+          categories: normalizedCategories
+        });
+
+        const heJson = await this.translateRecipeToHebrew({
+          ...data,
+          queryRestrictions: this.sanitizeQueryRestrictions(data.queryRestrictions),
+          categories: normalizedCategories
+        });
+
+        const heQrWithHash = this.sanitizeQueryRestrictions(heJson.queryRestrictions);
+        heQrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
+
+        const he = new FullRecipeModel({
+          title: heJson.title,
+          amountOfServings: heJson.amountOfServings,
+          description: heJson.description,
+          popularity: heJson.popularity,
+          data: {
+            ...heJson,
+            categories: this.normalizeCategories(heJson.categories)
+          },
+          totalSugar: heJson.totalSugar,
+          totalProtein: heJson.totalProtein,
+          healthLevel: heJson.healthLevel,
+          calories: heJson.calories,
+          sugarRestriction: heJson.sugarRestriction,
+          lactoseRestrictions: heJson.lactoseRestrictions,
+          glutenRestrictions: heJson.glutenRestrictions,
+          dietaryRestrictions: DietaryRestrictions.KOSHER,
+          caloryRestrictions: heJson.caloryRestrictions,
+          queryRestrictions: heQrWithHash,
+          prepTime: heJson.prepTime,
+          difficultyLevel: heJson.difficultyLevel,
+          countryOfOrigin: String(heJson.countryOfOrigin ?? ""),
+          imageName: fileName,
+          userId: systemUserId,
+          categories: this.normalizeCategories(heJson.categories)
+        });
+
+        if (await this.hasExistingSuggestion(systemUserId, normalizedTitle, contentHash)) continue;
+
+        await this.insertSuggestionRecipe({ systemUserId, pairKey, lang: "en", recipe: en });
+        await this.insertSuggestionRecipe({ systemUserId, pairKey, lang: "he", recipe: he });
+
+        usedTitles.add(normalizedTitle);
+        usedContentHashes.add(contentHash);
+        createdPairs++;
+        createdRows += 2;
+      }
+
+      return { createdPairs, createdRows };
+    } finally {
+      await this.releaseGenerationLock();
     }
-
-    return { createdPairs, createdRows };
   }
 
   public async attachMissingImages(limit: number = 20): Promise<{ processed: number; updated: number }> {
@@ -467,7 +587,8 @@ Return EXACT schema including "categories".
             title: recipe.title,
             description: recipe.description,
             ingredients: recipe.data?.ingredients ?? [],
-            instructions: recipe.data?.instructions ?? []
+            instructions: recipe.data?.instructions ?? [],
+            categories: recipe.categories
           },
           3
         );

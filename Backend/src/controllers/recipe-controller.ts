@@ -15,11 +15,11 @@ class RecipeController {
     public router: Router = express.Router();
 
     public constructor() {
-        this.router.post("/api/generate-free-recipe-without-image/:amount",  verificationMiddleware.verifyOptional,  this.generateRecipeNoImage);
-        this.router.post("/api/generate-recipe-with-image/:amount",verificationMiddleware.verifyOptional,  this.generateRecipeWithImage);
-        this.router.get("/api/recipes/all",  verificationMiddleware.verifyOptional,   this.getCatalogRecipes);
-        this.router.get("/api/recipes", verificationMiddleware.verifyLoggedIn, this.getUserRecipes  );
-        this.router.get("/api/recipe/:recipeId",verificationMiddleware.verifyLoggedIn,this.getSingleRecipe);
+        this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeNoImage);
+        this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeWithImage);
+        this.router.get("/api/recipes/all", verificationMiddleware.verifyOptional, this.getCatalogRecipes);
+        this.router.get("/api/recipes", verificationMiddleware.verifyLoggedIn, this.getUserRecipes);
+        this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
         this.router.get("/api/recipes/images/:fileName", this.getImageFile);
 
         this.router.delete(
@@ -91,20 +91,20 @@ class RecipeController {
         );
     }
 
-      private async getUserRecipes(request: Request, response: Response) {
-    const user = (request as any).user as UserModel;
-    const recipes = await recipeService.getRecipes(user.id);
-    response.status(StatusCode.OK).json(recipes);
-  }
+    private async getUserRecipes(request: Request, response: Response) {
+        const user = (request as any).user as UserModel;
+        const recipes = await recipeService.getRecipes(user.id);
+        response.status(StatusCode.OK).json(recipes);
+    }
 
-      private async getSingleRecipe (request: Request, response: Response)  {
+    private async getSingleRecipe(request: Request, response: Response) {
         const user = (request as any).user as UserModel;
         const recipeId = Number(request.params.recipeId);
         const recipe = await recipeService.getSingleRecipe(recipeId, user.id);
         response.status(StatusCode.OK).json(recipe);
     };
-    
-    private async getCatalogRecipes (request: Request, response: Response)  {
+
+    private async getCatalogRecipes(request: Request, response: Response) {
         const lang = normalizeLang(request.headers["accept-language"] as any);
         const recipes = await recipeService.getCatalogRecipes(lang);
         response.status(StatusCode.OK).json(recipes);
@@ -112,13 +112,13 @@ class RecipeController {
 
 
 
-    public async getLikedRecipesByUserId  (request: Request, response: Response)  {
+    public async getLikedRecipesByUserId(request: Request, response: Response) {
         const userId = (request as any).user.id;
         const likedRecipes = await recipeService.getLikedRecipesByUserId(userId);
         response.status(StatusCode.OK).json(likedRecipes);
     };
 
-    private async generateRecipeNoImage(request: Request, response: Response): Promise<void>{
+    private async generateRecipeNoImage(request: Request, response: Response): Promise<void> {
         const user = (request as any).user as UserModel | undefined;
         const visitorId = (request as any).visitorId as string;
 
@@ -146,7 +146,11 @@ class RecipeController {
                 amountOfServings: quantity,
                 description: data.description,
                 popularity: data.popularity,
-                data: { ingredients: data.ingredients, instructions: data.instructions },
+                data: {
+                    ingredients: data.ingredients,
+                    instructions: data.instructions,
+                    categories: data.categories
+                },
                 totalSugar: data.totalSugar,
                 totalProtein: data.totalProtein,
                 healthLevel: data.healthLevel,
@@ -163,7 +167,8 @@ class RecipeController {
                 image: undefined,
                 imageUrl: undefined,
                 imageName: undefined,
-                userId: user?.id
+                userId: user?.id,
+                categories: data.categories
             } as FullRecipeModel);
 
             if (user?.id) {
@@ -181,7 +186,7 @@ class RecipeController {
         }
     };
 
-    private async generateRecipeWithImage(request: Request, response: Response): Promise<void>  {
+    private async generateRecipeWithImage(request: Request, response: Response): Promise<void> {
         const user = (request as any).user as UserModel | undefined;
         const visitorId = (request as any).visitorId as string;
 
@@ -216,15 +221,19 @@ class RecipeController {
                 title: data.title,
                 description: data.description,
                 ingredients: data.ingredients,
-                instructions: data.instructions
+                instructions: data.instructions,
+                categories: data.categories
             });
-
             const fullRecipe = new FullRecipeModel({
                 title: data.title,
                 amountOfServings: quantity,
                 description: data.description,
                 popularity: data.popularity,
-                data: { ingredients: data.ingredients, instructions: data.instructions },
+                data: {
+                    ingredients: data.ingredients,
+                    instructions: data.instructions,
+                    categories: data.categories
+                },
                 totalSugar: data.totalSugar,
                 totalProtein: data.totalProtein,
                 healthLevel: data.healthLevel,
@@ -241,7 +250,8 @@ class RecipeController {
                 image: undefined,
                 imageUrl: url,
                 imageName: fileName,
-                userId: user?.id
+                userId: user?.id,
+                categories: data.categories
             } as FullRecipeModel);
 
             if (user?.id) {
@@ -259,7 +269,7 @@ class RecipeController {
         }
     };
 
-    private async generateImageForSavedRecipe  (request: Request, response: Response) {
+    private async generateImageForSavedRecipe(request: Request, response: Response) {
         const user = (request as any).user as UserModel;
         const recipeId = Number(request.params.recipeId);
 
@@ -282,7 +292,8 @@ class RecipeController {
             title: recipe.title,
             description: recipe.description,
             ingredients: recipe.data?.ingredients ?? [],
-            instructions: recipe.data?.instructions ?? []
+            instructions: recipe.data?.instructions ?? [],
+            categories: recipe.categories ?? recipe.data?.categories ?? []
         });
 
         await recipeService.setRecipeImageName(recipeId, user.id, fileName);
@@ -305,7 +316,7 @@ class RecipeController {
 
         const ingredients = body.data?.ingredients ?? body.ingredients ?? [];
         const instructions = body.data?.instructions ?? body.instructions ?? [];
-
+        const categories = body.categories ?? body.data?.categories ?? [];
         const { fileName, url } = await generateImage({
             query: title,
             quantity: amountOfServings,
@@ -318,14 +329,15 @@ class RecipeController {
             title,
             description,
             ingredients,
-            instructions
+            instructions,
+            categories
         });
 
         response.status(StatusCode.OK).json({ imageName: fileName, imageUrl: url });
     };
 
 
-    private async getPublicRecipe (request: Request, response: Response)  {
+    private async getPublicRecipe(request: Request, response: Response) {
         const recipeId = Number(request.params.recipeId);
 
         if (Number.isNaN(recipeId) || recipeId <= 0) {
@@ -338,7 +350,7 @@ class RecipeController {
     };
 
 
-    private async getImageFile  (request: Request, response: Response)  {
+    private async getImageFile(request: Request, response: Response) {
         try {
             const { fileName } = request.params;
 
@@ -354,26 +366,26 @@ class RecipeController {
         }
     };
 
-    private async deleteRecipe  (request: Request, response: Response) {
+    private async deleteRecipe(request: Request, response: Response) {
         const recipeId = Number(request.params.recipeId);
         await recipeService.deleteRecipe(recipeId);
         response.sendStatus(StatusCode.NoContent);
     };
 
-    private async getMyLikedRecipeIds  (request: Request, response: Response) {
+    private async getMyLikedRecipeIds(request: Request, response: Response) {
         const userId = (request as any).user.id;
         const recipeIds = await recipeService.getLikedRecipeIdsByUser(userId);
         response.status(StatusCode.OK).json(recipeIds);
     };
 
-    public async isRecipeLikedByUser  (request: Request, response: Response)  {
+    public async isRecipeLikedByUser(request: Request, response: Response) {
         const userId = (request as any).user.id;
         const recipeId = Number(request.params.recipeId);
         const isRecipeLiked = await recipeService.isRecipeLikedByUser(userId, recipeId);
         response.status(StatusCode.OK).json(isRecipeLiked);
     };
 
-    private  async likeRecipe  (request: Request, response: Response)  {
+    private async likeRecipe(request: Request, response: Response) {
         const userId = (request as any).user.id;
         const recipeId = Number(request.params.recipeId);
 
@@ -399,7 +411,7 @@ class RecipeController {
         response.status(StatusCode.OK).json(success ? "un-liked" : "not liked");
     };
 
-    private async getRecipesTotalLikeCount  (request: Request, response: Response)  {
+    private async getRecipesTotalLikeCount(request: Request, response: Response) {
         const recipeId = Number(request.params.recipeId);
 
         if (Number.isNaN(recipeId) || recipeId <= 0) {
@@ -411,7 +423,7 @@ class RecipeController {
         response.status(StatusCode.OK).json(likedCount);
     };
 
-    private async askRecipeQuestion (request: Request, response: Response)  {
+    private async askRecipeQuestion(request: Request, response: Response) {
         const user = (request as any).user as UserModel;
         const recipeId = Number(request.params.recipeId);
 
@@ -433,36 +445,34 @@ class RecipeController {
         response.status(StatusCode.OK).json({ answer });
     };
 
-private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
-  const user = (request as any).user as UserModel | undefined;
-  const visitorId = (request as any).visitorId as string;
+    private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
+        const user = (request as any).user as UserModel | undefined;
+        const visitorId = (request as any).visitorId as string;
 
-  const roleId = Number((user as any)?.roleId);
+        const roleId = Number((user as any)?.roleId);
 
-  if (roleId === 1) {
-    response.status(StatusCode.OK).json({ unlimited: true });
-    return;
-  }
+        if (roleId === 1) {
+            response.status(StatusCode.OK).json({ unlimited: true });
+            return;
+        }
 
-  // Any logged-in non-admin uses USER quota:
-  if (user?.id) {
-    const status = await userRecipeUsageService.getStatus(user.id);
-    response.status(StatusCode.OK).json({
-      type: "user",
-      remaining: status.remaining,
-      windowEndsAt: status.windowEndsAt
-    });
-    return;
-  }
+        if (user?.id) {
+            const status = await userRecipeUsageService.getStatus(user.id);
+            response.status(StatusCode.OK).json({
+                type: "user",
+                remaining: status.remaining,
+                windowEndsAt: status.windowEndsAt
+            });
+            return;
+        }
 
-  // Guest uses VISITOR quota:
-  const status = await visitorRecipeUsageService.getStatus(visitorId);
-  response.status(StatusCode.OK).json({
-    type: "visitor",
-    remaining: status.remaining,
-    windowEndsAt: status.windowEndsAt
-  });
-}
+        const status = await visitorRecipeUsageService.getStatus(visitorId);
+        response.status(StatusCode.OK).json({
+            type: "visitor",
+            remaining: status.remaining,
+            windowEndsAt: status.windowEndsAt
+        });
+    }
 }
 
 export const recipeController = new RecipeController();
