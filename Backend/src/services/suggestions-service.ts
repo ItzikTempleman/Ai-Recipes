@@ -720,8 +720,7 @@ Return EXACT schema including "categories".
           usedContentHashes.add(contentHash);
           createdPairs++;
           createdRows += 2;
-        } catch (e) {
-          console.error("[suggestionsService.generateOnce] skipped candidate:", e);
+        }catch  {
           continue;
         }
       }
