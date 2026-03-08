@@ -13,7 +13,7 @@ import { pdfController } from "./controllers/pdf-controller";
 import cookieParser from "cookie-parser";
 import { ensureVisitorId } from "./middleware/visitor-id-middleware";
 import { suggestionsController } from "./controllers/suggestions-controller";
-import { seedSuggestionRecipeIfNeeded } from "./utils/suggestions-seeder";
+import { suggestionsService } from "./services/suggestions-service";
 
 
 export class App {
@@ -56,9 +56,9 @@ export class App {
       console.log(`Listening to port ${appConfig.port}`);
     });
 
-    seedSuggestionRecipeIfNeeded().catch((err) => {
-      console.error("seedCatalogIfNeeded failed:", err);
-    });
+suggestionsService.generateOnce().catch((err) => {
+  console.error("suggestionsService.generateOnce failed:", err);
+});
   }
 }
 

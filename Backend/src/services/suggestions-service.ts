@@ -33,6 +33,7 @@ class SuggestionsService {
 
   private stableStringify(value: unknown): string {
     const seen = new WeakSet<object>();
+
     const normalize = (v: any): any => {
       if (v === null || v === undefined) return null;
       if (typeof v !== "object") return v;
@@ -127,21 +128,38 @@ class SuggestionsService {
     contentHash: string
   ): Promise<boolean> {
     const sql = `
-      select id
+      select title, queryRestrictions
       from recipe
       where userId = ?
         and pairKey is not null
-        and (lower(trim(title)) = lower(trim(?)) or queryRestrictions like ?)
-      limit 1
     `;
 
-    const rows = (await dal.execute(sql, [
-      systemUserId,
-      normalizedTitle,
-      `%__CONTENT_HASH__:${contentHash}%`
-    ])) as Array<{ id: number }>;
+    const rows = (await dal.execute(sql, [systemUserId])) as Array<{
+      title: string;
+      queryRestrictions: string;
+    }>;
 
-    return rows.length > 0;
+    for (const row of rows) {
+      const rowNormalizedTitle = this.normalizeTitle(row.title);
+      if (rowNormalizedTitle && rowNormalizedTitle === normalizedTitle) {
+        return true;
+      }
+
+      try {
+        const qr = JSON.parse(String(row.queryRestrictions ?? "[]"));
+        if (Array.isArray(qr)) {
+          const hasSameHash = qr.some(
+            (x) => typeof x === "string" && x === `__CONTENT_HASH__:${contentHash}`
+          );
+          if (hasSameHash) {
+            return true;
+          }
+        }
+      } catch {
+      }
+    }
+
+    return false;
   }
 
   private async ensureSystemUserId(): Promise<number> {
@@ -170,9 +188,14 @@ class SuggestionsService {
     return model;
   }
 
-  private async countCatalogRows(): Promise<number> {
+  private async countCatalogPairs(): Promise<number> {
     const systemUserId = await this.ensureSystemUserId();
-    const sql = `select count(*) as cnt from recipe where userId=? and pairKey is not null`;
+    const sql = `
+      select count(distinct pairKey) as cnt
+      from recipe
+      where userId = ?
+        and pairKey is not null
+    `;
     const rows = (await dal.execute(sql, [systemUserId])) as any[];
     return Number(rows[0]?.cnt ?? 0);
   }
@@ -183,7 +206,7 @@ class SuggestionsService {
     const sql = `
       select title, description, amountOfServings, ingredients, instructions, amounts, queryRestrictions, categories
       from recipe
-      where userId=? and pairKey is not null
+      where userId = ? and pairKey is not null
     `;
 
     const rows = (await dal.execute(sql, [systemUserId])) as Array<{
@@ -283,7 +306,7 @@ class SuggestionsService {
     recipe: FullRecipeModel;
   }): Promise<void> {
     const r = args.recipe;
-    const imageName: string =
+    const imageName =
       typeof r.imageName === "string" && r.imageName.trim()
         ? r.imageName.trim()
         : "";
@@ -417,10 +440,12 @@ Return EXACT schema including "categories".
     }
 
     try {
-      const existing = await this.countCatalogRows();
-      if (existing >= TOTAL_PAIRS * 2) {
+      const existingPairs = await this.countCatalogPairs();
+      if (existingPairs >= TOTAL_PAIRS) {
         return { createdPairs: 0, createdRows: 0 };
       }
+
+      const missingPairs = TOTAL_PAIRS - existingPairs;
 
       const systemUserId = await this.ensureSystemUserId();
       const { usedTitles, usedContentHashes } = await this.getUsedKeys();
@@ -429,7 +454,7 @@ Return EXACT schema including "categories".
       let createdPairs = 0;
       let createdRows = 0;
 
-      for (let attempts = 0; createdPairs < TOTAL_PAIRS && attempts < 600; attempts++) {
+      for (let attempts = 0; createdPairs < missingPairs && attempts < 600; attempts++) {
         const query = ideas[Math.floor(Math.random() * ideas.length)];
         const input = this.createKosherInputModel(query);
         const data = await recipeService.generateInstructions(input, false);
@@ -437,13 +462,15 @@ Return EXACT schema including "categories".
         const normalizedTitle = this.normalizeTitle(data.title);
         if (!normalizedTitle || usedTitles.has(normalizedTitle)) continue;
 
+        const normalizedCategories = this.normalizeCategories(data.categories);
+
         const contentHash = this.buildContentHash({
           title: data.title,
           description: data.description,
           amountOfServings: data.amountOfServings,
           ingredients: data.ingredients ?? [],
           instructions: data.instructions ?? [],
-          categories: data.categories ?? []
+          categories: normalizedCategories
         });
 
         if (usedContentHashes.has(contentHash)) continue;
@@ -462,7 +489,7 @@ Return EXACT schema including "categories".
           description: data.description,
           ingredients: data.ingredients,
           instructions: data.instructions,
-          categories: data.categories
+          categories: normalizedCategories
         });
 
         if (!fileName) continue;
@@ -471,8 +498,6 @@ Return EXACT schema including "categories".
 
         const qrWithHash = this.sanitizeQueryRestrictions(data.queryRestrictions);
         qrWithHash.push(`__CONTENT_HASH__:${contentHash}`);
-
-        const normalizedCategories = this.normalizeCategories(data.categories);
 
         const en = new FullRecipeModel({
           title: data.title,
@@ -517,7 +542,7 @@ Return EXACT schema including "categories".
           popularity: heJson.popularity,
           data: {
             ...heJson,
-            categories: this.normalizeCategories(heJson.categories)
+            categories: normalizedCategories
           },
           totalSugar: heJson.totalSugar,
           totalProtein: heJson.totalProtein,
@@ -534,7 +559,7 @@ Return EXACT schema including "categories".
           countryOfOrigin: String(heJson.countryOfOrigin ?? ""),
           imageName: fileName,
           userId: systemUserId,
-          categories: this.normalizeCategories(heJson.categories)
+          categories: normalizedCategories
         });
 
         if (await this.hasExistingSuggestion(systemUserId, normalizedTitle, contentHash)) continue;
@@ -588,7 +613,7 @@ Return EXACT schema including "categories".
             description: recipe.description,
             ingredients: recipe.data?.ingredients ?? [],
             instructions: recipe.data?.instructions ?? [],
-            categories: recipe.categories
+            categories: recipe.categories ?? recipe.data?.categories ?? []
           },
           3
         );

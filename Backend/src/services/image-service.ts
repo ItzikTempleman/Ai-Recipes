@@ -7,62 +7,64 @@ import crypto from "crypto";
 
 export async function generateImage(recipe: any): Promise<GPTImage> {
   const lowerQuery = String(recipe.query ?? "").toLowerCase();
-  const extraBanned: string[] = [];
-  const title = String((recipe as any)?.title ?? "").trim();
-  const query = String((recipe as any)?.query ?? "").trim();
+  const title = String(recipe?.title ?? "").trim();
+  const query = String(recipe?.query ?? "").trim();
 
   const ingredientNames =
-    (recipe as any).ingredients?.map((x: any) => String(x?.ingredient ?? "").trim()).filter(Boolean) ?? [];
+    (recipe?.ingredients ?? [])
+      .map((x: any) => String(x?.ingredient ?? "").trim())
+      .filter(Boolean);
 
   const allowed = ingredientNames.slice(0, 40).join(", ");
+
   const methodHint =
-    (recipe as any).instructions?.slice(0, 4).join(" ").replace(/\s+/g, " ").slice(0, 700) ?? "";
+    (recipe?.instructions ?? [])
+      .slice(0, 4)
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .slice(0, 700);
 
-  const categories = Array.isArray((recipe as any)?.categories)
-    ? (recipe as any).categories.map((x: any) => String(x ?? "").trim()).filter(Boolean) as RecipeCategory[]
-    : [];
+  const categories: RecipeCategory[] =
+    Array.isArray(recipe?.categories)
+      ? recipe.categories.map((x: any) => String(x).trim()).filter(Boolean)
+      : [];
 
-  const cleanQueryRestrictions = Array.isArray((recipe as any)?.queryRestrictions)
-    ? (recipe as any).queryRestrictions
-        .map((x: any) => String(x ?? "").trim())
-        .filter((x: string) => x && !x.startsWith("__CONTENT_HASH__:"))
-    : [];
+  const cleanQueryRestrictions =
+    Array.isArray(recipe?.queryRestrictions)
+      ? recipe.queryRestrictions
+          .map((x: any) => String(x ?? "").trim())
+          .filter((x: string) => x && !x.startsWith("__CONTENT_HASH__:"))
+      : [];
 
   const promptParts: string[] = [
     `fhd quality realistic food photo of the finished cooked dish for this recipe.`,
     `Dish label (do not render text): "${title || query}".`,
+    `SOURCE OF TRUTH (CRITICAL):
+- The image must follow ALL of these together: DISH LABEL, ALLOWED INGREDIENTS, METHOD CUES, CATEGORY TAGS, and RESTRICTION FLAGS.
+- If the title suggests a famous default dish but the categories / ingredients / kosher rules say otherwise, the categories / ingredients / kosher rules win.
+- CATEGORY TAGS: ${categories.length ? categories.join(", ") : "none"}.`,
     `RENDER SPEC (CRITICAL):
-- Render the dish to match the RECIPE composition, not a generic default or a guessed "reference photo" dish.
-- The dish must visually align with the dish label AND the ingredient list AND the method cues.
-- If the dish label is not a globally-canonical dish name, DO NOT guess a standard dish. Use the RECIPE as ground truth.`,
+- Render the dish to match the RECIPE composition, not a generic default or a guessed reference dish.
+- The dish must visually align with the dish label AND the ingredient list AND the method cues AND the category tags.
+- If the dish label is a globally known dish name, you must still obey the recipe constraints instead of falling back to the common non-kosher version.`,
     `COMPOSITION & VISIBILITY (CRITICAL):
 - Show only the finished dish on a simple plate/tray/pan. No hands, no utensils in motion, no extra props.
 - Do NOT add side dishes unless explicitly part of the recipe OR listed in ALLOWED INGREDIENTS.
 - Do NOT add garnish, herbs, toppings, or decorative elements unless they are explicitly in ALLOWED INGREDIENTS.
-- Every primary ingredient that would be visible in the finished dish MUST be visible in a realistic cooked form.
-- The image is INVALID if it looks like a generic substitute dish instead of the recipe described.`,
-    `SOURCE OF TRUTH (CRITICAL):
-- Use the following fields together as the single source of truth for the image: DISH LABEL, ALLOWED INGREDIENTS, METHOD CUES, CATEGORY TAGS, and RESTRICTION FLAGS.
-- The image is INVALID if it matches only the title while contradicting the ingredients, categories, or restrictions.
-- CATEGORY TAGS: ${categories.length ? categories.join(", ") : "none"}.`,
-    `APPETIZING REALISM (CRITICAL):
-- Make it look freshly cooked and appetizing (not dry, not stale, not dusty, not chalky, not matte).
-- Use natural kitchen/restaurant lighting (avoid harsh studio/catalog lighting).
-- Natural cooking artifacts are allowed and expected (these are NOT separate ingredients):
-  • sauce gloss and slight oil separation
-  • moist surfaces and juices
-  • bubbling sauce/cheese, steam
-  • browning/char/caramelization where appropriate
-- Avoid "AI-clean" perfection: include natural irregularities and believable textures.`,
+- Every primary ingredient that would be visible in the finished dish MUST be visible in a realistic cooked form.`,
     `INGREDIENT DISCIPLINE (CRITICAL):
 - ONLY show ingredients that appear in ALLOWED INGREDIENTS as identifiable ingredients/toppings.
-- Do NOT invent extra toppings, garnishes, herbs, or decorative elements.
-- Depict ingredients in their realistic cooked form for THIS dish (melted vs unmelted; sliced vs diced; crumbled vs grated; sauced vs dry).`,
+- Do NOT invent extra toppings, garnishes, herbs, decorative elements, or canonical extras from a famous version of the dish.
+- If something is not listed in ALLOWED INGREDIENTS, it must NOT appear in the image.`,
     `TECHNIQUE FIDELITY (CRITICAL):
 - The visuals must match the cooking method cues (baked vs fried vs simmered/poached vs grilled).
 - If the method implies simmering/braising/poaching in liquid: surfaces should look tender and liquid-coated, with minimal crust.
 - If the method implies frying/searing/grilling: show crisp browning/char appropriately.`,
-    `ALLOWED INGREDIENTS (ONLY these may appear as identifiable ingredients/toppings): ${allowed}. If something is not listed here, it must NOT be added as a topping, garnish, herb, or side dish. Do not add "common garnishes" unless they are explicitly listed here.`,
+    `APPETIZING REALISM (CRITICAL):
+- Make it look freshly cooked and appetizing (not dry, not stale, not dusty, not chalky, not matte).
+- Use natural kitchen/restaurant lighting.
+- Avoid AI-clean perfection; include believable textures.`,
+    `ALLOWED INGREDIENTS (ONLY these may appear as identifiable ingredients/toppings): ${allowed}.`,
     `METHOD CUES (must match the look): ${methodHint}`,
     `QUALITY GUARDS:
 - No snow-like curds, cottony clumps, plastic shine, waxy surfaces, or powdery/dusty look.
@@ -71,59 +73,53 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
 
   if (categories.includes(RecipeCategory.dairy)) {
     promptParts.push(
-      "This is a DAIRY dish. Visible protein and toppings must stay dairy-compatible.",
-      "Do not show beef, chicken, turkey, lamb, shawarma, burger patties, meat sauce, or meat broth anywhere in the image.",
-      "Fish is allowed only if fish is actually present in ALLOWED INGREDIENTS or the recipe/category clearly indicates a fish dish.",
-      "If cheese, cream, butter, yogurt, or milk are part of the recipe, they should read visually as dairy and must not appear alongside meat."
+      "This is a DAIRY dish.",
+      "Do not show beef, chicken, turkey, lamb, shawarma, burger patties, meat sauce, meat broth, bacon, ham, pepperoni, salami, or sausage anywhere in the image.",
+      "Fish is allowed only if fish is actually present in ALLOWED INGREDIENTS or the recipe is also categorized as fish."
     );
   }
 
-  if (categories.includes(RecipeCategory.vegan) || recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
+  if (categories.includes(RecipeCategory.meat)) {
     promptParts.push(
-      "The dish must be 100% vegan with no animal products at all (no meat, fish, eggs, dairy, butter, gelatin, or honey). Ensure the visuals match realistic vegan versions of the dish (no animal-like textures)."
+      "This is a MEAT dish.",
+      "Do not show cheese, cream, butter, yogurt, or other dairy visuals anywhere in the image."
     );
   }
 
   if (categories.includes(RecipeCategory.fish)) {
     promptParts.push(
-      "This is a fish dish. Show fish only if fish is actually present in ALLOWED INGREDIENTS, and do not substitute it with meat or poultry."
+      "This is a FISH dish.",
+      "Show fish only if fish is present in ALLOWED INGREDIENTS.",
+      "Do not substitute fish with chicken, beef, lamb, bacon, ham, pepperoni, sausage, or other meat."
     );
   }
 
-  if (categories.includes(RecipeCategory.meat) && recipe.dietaryRestrictions === DietaryRestrictions.KOSHER) {
+  if (recipe.dietaryRestrictions === DietaryRestrictions.VEGAN) {
     promptParts.push(
-      "This is a kosher meat dish. Do not show cheese, cream, butter, yogurt, or any other dairy visual anywhere in the image."
+      "The dish must be 100% vegan with no animal products at all (no meat, fish, eggs, dairy, butter, gelatin, or honey)."
     );
   }
 
   if (recipe.dietaryRestrictions === DietaryRestrictions.KOSHER) {
     promptParts.push(
-      "The dish must be strictly kosher style: no pork and no shellfish.",
+      "The dish must be strictly kosher style.",
+      "Do not show pork or shellfish.",
       "Do not mix meat and dairy together anywhere in the image.",
-      "If there is visible meat, absolutely do not show any cheese, butter, cream, or other dairy near it.",
-      "Never include anything from the excluded/forbidden ingredients list."
-    );
-
-    extraBanned.push("pepperoni", "bacon", "ham", "salami", "sausage", "shrimp", "lobster", "crab");
-
-    if (extraBanned.length) {
-      promptParts.push(
-        `Do not show any of the following ingredients anywhere in the image: ${extraBanned.join(", ")}.`
-      );
-    }
-  }
-
-  const isLactoseFree = Number(recipe.lactoseRestrictions) === 1;
-  if (isLactoseFree) {
-    promptParts.push(
-      "The dish must be completely lactose-free: no visible dairy cheese, milk, cream, butter, yogurt, or other dairy ingredients. If the recipe includes a plant-based melting cheese, it must be shown as a realistic melted/softened vegan cheese layer."
+      "Never show bacon, ham, pepperoni, salami, pork sausage, pancetta, guanciale, shrimp, lobster, or crab.",
+      "If the recipe is dairy, do not show any meat.",
+      "If the recipe is meat, do not show any dairy."
     );
   }
 
-  const isGlutenFree = Number(recipe.glutenRestrictions) === 1;
-  if (isGlutenFree) {
+  if (Number(recipe.lactoseRestrictions) === 1) {
     promptParts.push(
-      "The dish must be gluten-free: do not show bread, regular pasta, or obvious wheat flour products; use visually plausible gluten-free alternatives instead, while still matching the dish identity."
+      "The dish must be completely lactose-free: no visible dairy cheese, milk, cream, butter, yogurt, or other dairy ingredients."
+    );
+  }
+
+  if (Number(recipe.glutenRestrictions) === 1) {
+    promptParts.push(
+      "The dish must be gluten-free: do not show regular bread, regular pasta, or obvious wheat flour products."
     );
   }
 
@@ -140,24 +136,10 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
 
     if (attempt === 1) {
       attemptPromptParts.push(
-        "CRITICAL: The image is invalid if the dish looks dry, chalky, dusty, matte, or stale instead of freshly cooked and appetizing.",
-        "CRITICAL: The image is invalid if it contains any excluded ingredient.",
-        "CRITICAL: The image is invalid if it contains any ingredient not listed in ALLOWED INGREDIENTS.",
-        "CRITICAL: The image is invalid if textures look like AI artifacts (e.g., snow-like cheese curds, cottony clumps, plastic shine) instead of real food surfaces.",
-        "CRITICAL: The image is invalid if it looks like a generic substitute dish rather than the dish described by the recipe; it must match the recipe composition and method cues."
+        "CRITICAL: The image is INVALID if it contains any ingredient not listed in ALLOWED INGREDIENTS.",
+        "CRITICAL: The image is INVALID if it looks like the common non-kosher default version of a famous dish instead of the recipe-constrained version.",
+        "CRITICAL: For dishes like carbonara, breakfast pasta, creamy pasta, or deli-style pasta, never add bacon, ham, pepperoni, pancetta, guanciale, or pork unless those exact ingredients are present in ALLOWED INGREDIENTS, and for kosher recipes they are never allowed."
       );
-
-      if (
-        lowerQuery.includes("pizza") ||
-        lowerQuery.includes("piza") ||
-        lowerQuery.includes("pitsa") ||
-        query.includes("פיצה") ||
-        title.includes("פיצה")
-      ) {
-        attemptPromptParts.push(
-          "CRITICAL: For pizza, the image must look hot, melty, and moist with visible sauce coverage and realistic cheese sheen (not dry or dusty)."
-        );
-      }
     }
 
     const promptText = attemptPromptParts.join(" ");
@@ -170,21 +152,22 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
         quality: "medium"
       });
 
-      if (!result.data?.[0]?.b64_json) throw new Error("No image generated");
+      if (!result.data?.[0]?.b64_json) {
+        throw new Error("No image generated");
+      }
 
       const imageBase64 = result.data[0].b64_json;
       const imagesDir = process.env.IMAGE_DIR || path.join(__dirname, "..", "1-assets", "images");
 
       await fs.mkdir(imagesDir, { recursive: true });
 
-      const safeBse = String(title || recipe.title || recipe.query || "recipe")
+      const safeBase = String(title || query || "recipe")
         .toLowerCase()
         .replace(/[^a-z0-9\u0590-\u05FF]+/g, "-")
         .replace(/^-+|-+$/g, "")
         .slice(0, 60);
 
-      const unique = crypto.randomUUID();
-      const fileName = `${safeBse}-${unique}.png`;
+      const fileName = `${safeBase}-${crypto.randomUUID()}.png`;
 
       await fs.writeFile(path.join(imagesDir, fileName), Buffer.from(imageBase64, "base64"));
 
