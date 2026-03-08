@@ -44,7 +44,7 @@ CONSTRAINTS & VALIDITY:
 - You MUST return ONLY a single valid JSON object that exactly matches the structure requested.
 - Do NOT add any text before or after the JSON.
 - Do NOT invent impossible or non-food items.
-- Do NOT include newline characters (\n) inside ingredient names or amounts.
+- Do NOT include newline characters (\\n) inside ingredient names or amounts.
 - Each ingredient item must describe exactly one ingredient line.
 - Keep the recipe realistic, consistent and internally coherent.
 
@@ -106,10 +106,6 @@ export function getBreakDownInstructions(
        - Do NOT use dairy ingredients at all (no cheese, butter, cream, yogurt, milk).
    - For any recipe that contains dairy (cheese, butter, cream, yogurt, milk):
        - Do NOT use meat ingredients at all.
-   - When the original dish mixes meat + cheese (e.g., cheeseburger):
-       - You MUST choose ONE of the following kosher options:
-           • Keep a meat patty and use ONLY vegan/pareve cheese (no dairy anywhere).
-           • OR keep real dairy cheese and use a vegetarian patty (no meat).
    - For burger recipes specifically:
        - The final ingredients, description and instructions must NEVER include both meat and dairy together.
        - Do NOT claim that the patty is "meatless" or "vegan" if the ingredients list contains meat.
@@ -129,9 +125,15 @@ export function getBreakDownInstructions(
      and in the same language as the recipe.
 
   KOSHER IS A HARD IDENTITY CONSTRAINT (ONLY WHEN SELECTED) (CRITICAL):
+   - NEVER include pork, bacon, ham, prosciutto, pancetta, guanciale, lard.
+   - NEVER include shellfish.
+   - If the dish is meat → it MUST NOT include dairy.
+   - If the dish is dairy → it MUST NOT include meat.
+   - Fish MAY include dairy.
    - When kosher is selected, you must treat kosher law as more important than the original dish name or tradition.
    - If a dish’s classic or defining version fundamentally violates kosher rules,
      you MUST NOT recreate or “adapt” that dish under the same name.
+   - This applies especially to dishes whose identity depends on mixing meat and dairy.
    - In such cases, you must either:
        • produce a clearly different dish that is unquestionably kosher and rename it accordingly, OR
        • choose a different, fully kosher dish that fits the user’s request category (meal type, cuisine, popularity).
@@ -183,8 +185,6 @@ Examples:
 - מרק עדשים
 - מרק עדשים אדומות
 - מרק עדשים עם כמון
-
-
 
 THESE VALUES ARE ALREADY DECIDED FOR THIS REQUEST:
 
@@ -250,10 +250,6 @@ ${categoriesBlock}
          banana).
    - Never introduce completely new flavors or ingredients unless the user
      asks for them or they are required by the restriction.
-
-  GENERAL RULES FOR ALL RESTRICTIONS:
-   - Always preserve the original dish concept ...
-   - Never introduce completely new flavors ...
 
    ASADO-SPECIFIC RULE (VERY IMPORTANT):
 - If the query or cleaned title contains "asado" (case-insensitive):
@@ -453,7 +449,7 @@ UNIT SELECTION RULE (CRITICAL — AVOID UNREALISTIC UNITS):
 - For cheeses:
   • shredded/grated cheese may be measured in cups OR grams.
   • block/crumbled cheeses should be grams OR tablespoons OR “handful/amount” is NOT allowed — must be numeric.
-- If you are unsure, default to grams (for solids) or pieces (for discrete items). Do NOT guess cups.a topping, choose "pieces" or grams — never cups. 
+- If you are unsure, default to grams (for solids) or pieces (for discrete items). Do NOT guess cups.a topping, choose "pieces" or grams — never cups.
 
 HEBREW TITLE NATURALNESS (CRITICAL — MUST FOLLOW WHEN OUTPUT IS IN HEBREW):
 - The title must sound like everyday, modern Israeli Hebrew (what people actually say/search).
