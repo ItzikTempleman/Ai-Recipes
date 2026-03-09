@@ -14,7 +14,7 @@ const isProd = process.env.NODE_ENV === "production";
   res.cookie("visitorId", newId, {
     httpOnly: true,
      sameSite: isProd ? "none" : "lax",
-    secure: false, // set true when you are on HTTPS
+    secure: isProd,
     maxAge: 1000 * 60 * 60 * 24 * 365,
   });
 

@@ -89,24 +89,25 @@
 .GuestTitle {
   width: 100%;
   margin: 0;
-  font-weight: 200;
-  font-size: 32px;
+  font-weight: 600;
+  font-size: 36px;
   text-align: center;
-  color: #555555;
+  color: #454444;
 }
 
 .GuestTitle2 {
   margin: 0;
-  font-size: 20px;
+  font-weight: 200;
+  font-size: 28px;
   text-align: center;
-  color: #555555;
+  color: rgb(255, 163, 4);
 }
 
 .HomeScreenTitle {
   margin-top: 30px !important;
-  font-size: 22px;
-  font-weight: 900;
-  color: white;
+  font-size: 44px;
+  font-weight: 200;
+  color: rgb(255, 163, 4);
 }
 
 .HomeScreenTitle.user {
@@ -378,9 +379,6 @@
     top: -28px;
   }
 
-  .HomeScreenTitle {
-    font-size: 20px;
-  }
 
   .SelectListDiv {
     margin-top: 20px;
