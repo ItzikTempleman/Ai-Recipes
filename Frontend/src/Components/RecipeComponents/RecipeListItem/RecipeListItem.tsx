@@ -105,6 +105,17 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
         {recipe.title}
       </h3>
 
+        <span className="Categories">
+          {recipe.categories.map((c, i) => (
+            <h3 key={i} className="category-list-item">
+              {c}
+              {i < recipe.categories.length - 1 && <span className="separator">|</span>}
+            </h3>
+             )
+           )
+          }
+        </span>
+
       <div className={`CardFooter ${uiClass}`} dir={uiDir} lang={isRTL ? "he" : "en"}>
         <div className={`TimeAndHardShipLevel ${uiClass}`}>
           <div className="TimeRow">

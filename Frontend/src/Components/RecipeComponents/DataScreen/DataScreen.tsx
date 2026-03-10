@@ -120,7 +120,6 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
         img.onerror = () => ((window as any).__SHARE_READY__ = true);
         return;
       }
-
       (window as any).__SHARE_READY__ = true;
     });
 
@@ -180,9 +179,20 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
           {recipe.description}
         </p>
 
-<div className="ServingsDiv" dir={isRTL ? "rtl" : "ltr"}>
-  <h3>{t("generate.servings")} : {recipe.amountOfServings}</h3>
-</div>
+        <span className="Categories">
+          {recipe.categories.map((c, i) => (
+            <h3 key={i} className="category-item">
+              {c}
+              {i < recipe.categories.length - 1 && <span className="separator">|</span>}
+            </h3>
+             )
+           )
+          }
+        </span>
+
+        <div className="ServingsDiv" dir={isRTL ? "rtl" : "ltr"}>
+          <h3>{t("generate.servings")} : {recipe.amountOfServings}</h3>
+        </div>
         <FilterBadges filters={filters} isRTL={isRTL} />
 
         <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>

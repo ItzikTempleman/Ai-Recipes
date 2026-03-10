@@ -525,6 +525,23 @@ background: rgb(255, 255, 255);
   text-align: right;
 }
 
+.Categories {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-item {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1376a3;
+  font-size: 24px;
+}
+.separator {
+  margin: 0 8px;
+}
 @media (min-width: 780px) {
   .RecipePreparationWideView {
     margin-top: 12px;
