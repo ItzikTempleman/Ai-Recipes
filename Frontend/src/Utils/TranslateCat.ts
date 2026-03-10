@@ -14,9 +14,9 @@ export const ALL_RECIPE_CATEGORIES: RecipeCategory[] = [
 ];
 
 const hebrewCategoryMap = {
-    breakfast: "ארוחת בוקר",
-    lunch: "ארוחת צהריים",
-    supper: "ארוחת ערב",
+    breakfast: "בוקר",
+    lunch: "צהריים",
+    supper: "ערב",
     deserts: "קינוחים",
     dairy: "חלבי",
     vegan: "טבעוני",

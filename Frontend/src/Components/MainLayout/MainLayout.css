@@ -12,8 +12,7 @@
   overflow-x: hidden; 
   overflow-y: visible;
   box-sizing: border-box;
-background: linear-gradient(135deg, #ffffff,#8fcaee,#8fcaee,
-white, white, white);
+background:  white;
 }
 
 .MainLayout > * {
