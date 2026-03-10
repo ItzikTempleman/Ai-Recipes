@@ -12,6 +12,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { difficultyToString } from "../../../Utils/Utils";
+import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
 
 type RecipeListContext = "default" | "suggestions" | "likes";
 
@@ -33,17 +34,19 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     (like) => like.userId === userId && like.recipeId === recipe.id
   );
 
-  // Title direction based on title content (keep as-is)
+ 
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
   const titleIsHebrew = hasHebrew(recipe.title);
   const titleDir: "rtl" | "ltr" = titleIsHebrew ? "rtl" : "ltr";
   const titleClass = titleIsHebrew ? "rtl" : "ltr";
 
-  // UI direction based on selected language (for time/difficulty row)
+
   const isRTL = (i18n.language ?? "").startsWith("he");
   const uiDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
   const uiClass = isRTL ? "rtl" : "ltr";
 
+  const selectedLanguage = normalizeAppLanguage(i18n.language);
+  
   async function moveToInfo(): Promise<void> {
     navigate("/recipe/" + recipe.id);
   }
@@ -61,6 +64,8 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
   function stopCardClick(e: React.MouseEvent) {
     e.stopPropagation();
   }
+
+
 
   return (
     <div className="RecipeListItem" onClick={moveToInfo}>
@@ -108,7 +113,7 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
         <span className="Categories">
           {recipe.categories.map((c, i) => (
             <h3 key={i} className="category-list-item">
-              {c}
+              {translateRecipeCategory(c, selectedLanguage)}
               {i < recipe.categories.length - 1 && <span className="separator">|</span>}
             </h3>
              )

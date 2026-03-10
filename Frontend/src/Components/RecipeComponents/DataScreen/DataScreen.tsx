@@ -5,7 +5,7 @@ import chef from "../../../Assets/images/chef.png";
 import { FilterBadges } from "../FilterBadges/FilterBadges";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
-import { RecipeModel } from "../../../Models/RecipeModel";
+import {  RecipeModel } from "../../../Models/RecipeModel";
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
@@ -17,6 +17,7 @@ import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
 import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
+import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -43,6 +44,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
 
   const instructions = recipe.data?.instructions ?? [];
 
+  
   const recipeIsHebrew =
     hasHebrew(recipe.title) ||
     hasHebrew(recipe.description) ||
@@ -52,7 +54,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
   const headingLng: "he" | "en" = recipeIsHebrew ? "he" : "en";
   const headingDir: "rtl" | "ltr" = recipeIsHebrew ? "rtl" : "ltr";
   const layoutDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
-
+const selectedLanguage = normalizeAppLanguage(i18n.language);
   const [open, setOpen] = useState(false);
   const user = useSelector((state: AppState) => state.user);
 
@@ -126,6 +128,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
     return () => cancelAnimationFrame(raf);
   }, [shareMode, localImgSrc, recipe]);
 
+
   return (
     <div className="DataScreen" dir={isRTL ? "rtl" : "ltr"}>
       <div className="RecipeTopSection">
@@ -182,7 +185,7 @@ export function DataScreen({ recipe, imageSrc, filters, loadImage, shareMode, on
         <span className="Categories">
           {recipe.categories.map((c, i) => (
             <h3 key={i} className="category-item">
-              {c}
+                   {translateRecipeCategory(c, selectedLanguage)}
               {i < recipe.categories.length - 1 && <span className="separator">|</span>}
             </h3>
              )
