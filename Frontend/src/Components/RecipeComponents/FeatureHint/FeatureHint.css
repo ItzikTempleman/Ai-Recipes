@@ -1,15 +1,13 @@
 .FeatureHint {
   width: 330px;
   display: flex;
-  margin: 12px auto;            
+  margin: 2px auto;            
   justify-content: center;
   flex-direction: column;
   align-items: center;
-    border-radius: 50px;
-      background-color: #bdbdbd48;
-  gap: 6px;          
-  cursor: pointer;
-   padding: 8px 12px 8px 12px;         
+  gap: 2px;          
+
+   padding: 2px;         
 
 }
 
@@ -19,9 +17,9 @@
   display: flex;
   align-items: center;     
   justify-content: center;    
-  gap: 6px;          
+  gap: 12px;          
 
-  padding: 8px 12px 8px 12px;       
+  padding: 2px;       
 }
 
 .FeaterIcon {
@@ -32,17 +30,17 @@
 }
 
 .ChatSection .FeaterIcon .MuiSvgIcon-root {
-  color: #1376a3;
+color: rgb(255, 163, 4);
   font-size: 20px;
 }
 
 .FavoritesSection .FeaterIcon .MuiSvgIcon-root {
-  color: #ff3f99;
+  color: rgb(255, 163, 4);
   font-size: 20px;
 }
 
 .HistorySection .FeaterIcon .MuiSvgIcon-root {
-  color: #0e9f12;
+  color: rgb(255, 163, 4);
   font-size: 20px;
 }
 
@@ -50,9 +48,9 @@
   text-align: center;
   font-size: 18px;
   margin: 0;     
-   text-shadow: 1px 1px 0.5px rgb(111, 110, 110);
+
   font-weight: 900;            
-  color: #ffffff;
+  color: rgb(255, 163, 4);
   
 }
 
@@ -60,16 +58,16 @@
 font-size: 18px !important;
   font-weight: 900 !important;
   background: transparent !important;
-   color: #ffffff !important;
+   color: rgb(255, 163, 4)!important;
   padding: 10px 18px !important;
-    text-shadow: 1px 1px 0.5px rgb(111, 110, 110);
+ 
 }
 
 .FreeWithLoginBtn:active, .FreeWithLoginBtn:hover{
   height: 50px;
   width: 300px !important;
   border-radius: 16px !important;
-  background-color: #eab928 !important;
-  color: #555555 !important;
+  background-color:rgb(255, 163, 4) !important;
+   color: white !important;
 }
 

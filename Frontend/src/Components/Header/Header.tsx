@@ -32,10 +32,10 @@ export function Header() {
   const showUndo = isGuest && (hasCurrentRecipe || hasStashRecipe) && !isOnRecipeInputScreen;
   const usage = useSelector((state: AppState) => state.usage);
   const isAdmin = Boolean(user && user.roleId === RoleId.Admin);
+const shouldShowBadge =
+  !isAdmin && usage && !usage.unlimited && usage.remaining != null;
 
-  const shouldShowBadge =
-    !isAdmin && usage && !usage.unlimited && usage.remaining != null;
-
+const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
   useEffect(() => {
     usageService.refreshRecipeUsage();
   }, [user?.id]);
@@ -45,8 +45,7 @@ export function Header() {
     : (guestStash?.imageUrl ?? "");
 
   const handleReturnClick = (e: React.MouseEvent) => {
-    // When already on /home, NavLink to /home can be a no-op.
-    // Prevent default and force a navigation update.
+
     if (onHome) {
       e.preventDefault();
     }
@@ -55,7 +54,7 @@ export function Header() {
       dispatch(restoreGuestRecipe());
     }
 
-    // Force React Router to emit an update even if the path is the same
+
     navigate("/home", { state: { _returnTs: Date.now() } });
   };
 
@@ -110,7 +109,7 @@ export function Header() {
                 : "Usage"
             }
           >
-            {usage!.remaining} / 8
+         {usage!.remaining} / {usageLimit}
           </div>
         )}
 

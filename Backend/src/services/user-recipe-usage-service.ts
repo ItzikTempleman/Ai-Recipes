@@ -1,7 +1,6 @@
 import { dal } from "../utils/dal";
 import { RecipeUsageExceededError } from "../middleware/error-middleware";
 
-
 type UsageRow = { used: number; windowEndsAt: Date };
 
 class UserRecipeUsageService {
@@ -28,7 +27,7 @@ class UserRecipeUsageService {
     }
 
     if (used >= this.max_amount_per_usage) {
-      throw new RecipeUsageExceededError();
+      throw new RecipeUsageExceededError(this.max_amount_per_usage, this.usage_days);
     }
 
     const incSql = `update user_recipe_usage set used = used + 1 where userId = ?`;
@@ -45,6 +44,7 @@ class UserRecipeUsageService {
     const rows = (await dal.execute(statusSql, [userId])) as UsageRow[];
 
     if (rows.length === 0) return { used: 0, remaining: 8, windowEndsAt: null };
+
     const used = rows[0].used ?? 0;
     return { used, remaining: Math.max(0, 8 - used), windowEndsAt: rows[0].windowEndsAt };
   }

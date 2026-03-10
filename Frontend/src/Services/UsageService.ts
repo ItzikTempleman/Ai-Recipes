@@ -13,7 +13,8 @@ function coerceNumber(val: any): number | null {
 function parseUsage(payload: any): RecipeUsage | null {
   if (!payload || typeof payload !== "object") return null;
 
-  const scope = payload.scope === "visitor" ? "visitor" : "user";
+  const rawScope = payload.scope ?? payload.type;
+  const scope = rawScope === "visitor" ? "visitor" : "user";
   const used = coerceNumber(payload.used) ?? 0;
 
   const limit =

@@ -444,34 +444,38 @@ const { fileName, url } = await generateImage({
         response.status(StatusCode.OK).json({ answer });
     };
 
-    private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
-        const user = (request as any).user as UserModel | undefined;
-        const visitorId = (request as any).visitorId as string;
+private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
+    const user = (request as any).user as UserModel | undefined;
+    const visitorId = (request as any).visitorId as string;
 
-        const roleId = Number((user as any)?.roleId);
+    const roleId = Number((user as any)?.roleId);
 
-        if (roleId === 1) {
-            response.status(StatusCode.OK).json({ unlimited: true });
-            return;
-        }
+    if (roleId === 1) {
+        response.status(StatusCode.OK).json({ unlimited: true });
+        return;
+    }
 
-        if (user?.id) {
-            const status = await userRecipeUsageService.getStatus(user.id);
-            response.status(StatusCode.OK).json({
-                type: "user",
-                remaining: status.remaining,
-                windowEndsAt: status.windowEndsAt
-            });
-            return;
-        }
-
-        const status = await visitorRecipeUsageService.getStatus(visitorId);
+    if (user?.id) {
+        const status = await userRecipeUsageService.getStatus(user.id);
         response.status(StatusCode.OK).json({
-            type: "visitor",
+            scope: "user",
+            limit: 8,
+            used: status.used,
             remaining: status.remaining,
             windowEndsAt: status.windowEndsAt
         });
+        return;
     }
+
+    const status = await visitorRecipeUsageService.getStatus(visitorId);
+    response.status(StatusCode.OK).json({
+        scope: "visitor",
+        limit: 5,
+        used: status.used,
+        remaining: status.remaining,
+        windowEndsAt: status.windowEndsAt
+    });
+}
 }
 
 export const recipeController = new RecipeController();
