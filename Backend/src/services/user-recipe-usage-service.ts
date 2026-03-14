@@ -18,6 +18,54 @@ class UserRecipeUsageService {
     await dal.execute(sql, [userId, 3]);
   }
 
+    public async mergeVisitorIntoUser(userId: number, visitorId: string): Promise<void> {
+    const visitorRows = await dal.execute(
+      `select used, windowEndsAt, totalGenerated
+       from visitor_recipe_usage
+       where visitorId = ?
+       limit 1`,
+      [visitorId]
+    ) as UsageRow[];
+
+    await this.recordUserFirstVisit(userId);
+
+    if (visitorRows.length === 0) return;
+
+    const visitor = visitorRows[0];
+
+    await dal.execute(
+      `
+      update user_recipe_usage
+      set
+        used = greatest(used, ?),
+        totalGenerated = totalGenerated + ?,
+        windowEndsAt =
+          case
+            when windowEndsAt is null then ?
+            when ? is null then windowEndsAt
+            when ? > windowEndsAt then ?
+            else windowEndsAt
+          end
+      where userId = ?
+      `,
+      [
+        visitor.used ?? 0,
+        visitor.totalGenerated ?? 0,
+        visitor.windowEndsAt ?? null,
+        visitor.windowEndsAt ?? null,
+        visitor.windowEndsAt ?? null,
+        visitor.windowEndsAt ?? null,
+        userId
+      ]
+    );
+
+    await dal.execute(
+      `delete from visitor_recipe_usage where visitorId = ?`,
+      [visitorId]
+    );
+  }
+
+  
   public async consume(userId: number): Promise<void> {
     const sql = `select used, windowEndsAt,totalGenerated from user_recipe_usage where userId = ? limit 1`;
     const values = [userId];
