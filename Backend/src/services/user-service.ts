@@ -11,9 +11,18 @@ import { UploadedFile } from "express-fileupload";
 import fs from "fs/promises";
 import axios from "axios";
 
+
+type Statistics = {
+    usersEnteredSite: number,
+    guestsEnteredSite: number,
+    usersWhoGeneratedRecipes: number,
+    guestsWhoGeneratedRecipes: number,
+    totalRecipesGenerated: number
+}
+
 class UserService {
     public async register(user: UserModel): Promise<string> {
-         user.roleId = Role.User; 
+        user.roleId = Role.User;
         user.validate();
         this.normalizeOptionalFields(user);
         const imageName = user.image ? await this.saveNewUserImage(user.image as UploadedFile) : null;
@@ -56,7 +65,7 @@ values
 
     public async isUserExists(id: number): Promise<boolean> {
         const sql = "select id from user where id = ? limit 1";
-const values = [id];
+        const values = [id];
         const rows = (await dal.execute(sql, values)) as Array<{ id: number }>;
         return rows.length > 0;
     }
@@ -144,7 +153,7 @@ const values = [id];
         const tempPassword = cyber.hash(randomUUID());
         const imageName = pictureUrl ? await this.saveRemoteUserImage(pictureUrl) : null;
         const insertSql = `insert into user(firstName, familyName, email, password, phoneNumber, Gender, birthDate, imageName, roleId) values (?,?,?,?,?,?,?,?,?)`;
-const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, imageName, Role.User];
+        const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, imageName, Role.User];
         const result = await dal.execute(insertSql, values) as OkPacketParams;
         const id = result.insertId!;
         const placeholder = this.googlePlaceHolderHash(id);
@@ -264,7 +273,7 @@ const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, im
     }
 
     private normalizeOptionalFields(user: UserModel): void {
-    
+
         if ((user.phoneNumber as any) === "" || user.phoneNumber === undefined) {
             (user as any).phoneNumber = null;
         }
@@ -273,6 +282,20 @@ const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, im
         }
         if ((user.birthDate as any) === "" || user.birthDate === undefined) {
             (user as any).birthDate = null;
+        }
+    }
+
+
+    public async getAdminStatistics(): Promise<Statistics> {
+        const sql = `select (select count(*) from user_recipe_usage as usersEnteredSite),(select count(*) from visitor_recipe_usage) as guestsEnteredSite, (select count(*) from user_recipe_usage where totalGenerated > 0) as usersWhoGeneratedRecipes, (select count(*) from visitor_recipe_usage where totalGenerated > 0) as guestsWhoGeneratedRecipes, ((select coalesce(sum(totalGenerated), 0) from user_recipe_usage) + (select coalesce(sum(totalGenerated), 0) from visitor_recipe_usage))as totalRecipesGenerated`;
+        const rows = await dal.execute(sql) as Array<Statistics>;
+        const row = rows[0];
+        return {
+            usersEnteredSite: Number(row?.usersEnteredSite ?? 0),
+            guestsEnteredSite: Number(row?.guestsEnteredSite ?? 0),
+            usersWhoGeneratedRecipes: Number(row?.usersWhoGeneratedRecipes ?? 0),
+            guestsWhoGeneratedRecipes: Number(row?.guestsWhoGeneratedRecipes ?? 0),
+            totalRecipesGenerated: Number(row?.totalRecipesGenerated ?? 0)
         }
     }
 }

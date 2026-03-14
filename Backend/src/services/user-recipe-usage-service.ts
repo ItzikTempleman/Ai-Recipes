@@ -1,46 +1,54 @@
 import { dal } from "../utils/dal";
 import { RecipeUsageExceededError } from "../middleware/error-middleware";
 
-type UsageRow = { used: number; windowEndsAt: Date };
+export type UsageRow = {
+  used: number;
+  windowEndsAt: Date;
+  totalGenerated: number;
+};
 
 class UserRecipeUsageService {
-  private readonly max_amount_per_usage = 8;
-  private readonly usage_days = 3;
+
+  public async recordUserFirstVisit(userId: number): Promise<void> {
+    const sql = `insert into user_recipe_usage (userId, windowEndsAt, totalGenerated,used, totalGenerated) values (?, DATE_ADD(NOW(), INTERVAL ? DAY),0,0) on duplicate key update userId=? `;
+    const values = [userId];
+    await dal.execute(sql, values) as UsageRow[];
+  };
 
   public async consume(userId: number): Promise<void> {
-    const sql = `select used, windowEndsAt from user_recipe_usage where userId = ? limit 1`;
-    const rows = (await dal.execute(sql, [userId])) as UsageRow[];
+    const sql = `select used, windowEndsAt,totalGenerated from user_recipe_usage where userId = ? limit 1`;
+    const values = [userId];
+    const rows = (await dal.execute(sql, values)) as UsageRow[];
 
     if (rows.length === 0) {
-      const insertSql = `insert into user_recipe_usage (userId, windowEndsAt, used) values (?, DATE_ADD(NOW(), INTERVAL ? DAY), 1)`;
-      await dal.execute(insertSql, [userId, this.usage_days]);
+      const insertSql = `insert into user_recipe_usage (userId, windowEndsAt, used,totalGenerated) values (?, DATE_ADD(NOW(), INTERVAL ? DAY), 1,1 )`;
+      await dal.execute(insertSql, [userId, 3]);
       return;
     }
 
     const { used, windowEndsAt } = rows[0];
-    const now = new Date();
-
-    if (new Date(windowEndsAt).getTime() <= now.getTime()) {
-      const resetSql = `update user_recipe_usage set used = 1, windowEndsAt = DATE_ADD(NOW(), INTERVAL ? DAY) where userId = ?`;
-      await dal.execute(resetSql, [this.usage_days, userId]);
+    
+    if (new Date(windowEndsAt).getTime() <= new Date().getTime()) {
+      const resetSql = `update user_recipe_usage set used = 1,totalGenerated = totalGenerated + 1, windowEndsAt = DATE_ADD(NOW(), INTERVAL ? DAY) where userId = ?`;
+      await dal.execute(resetSql, [3, userId]);
       return;
     }
 
-    if (used >= this.max_amount_per_usage) {
-      throw new RecipeUsageExceededError(this.max_amount_per_usage, this.usage_days);
+    if (used >= 8) {
+      throw new RecipeUsageExceededError(8, 3);
     }
 
-    const incSql = `update user_recipe_usage set used = used + 1 where userId = ?`;
+    const incSql = `update user_recipe_usage set used = used + 1,totalGenerated = totalGenerated + 1 where userId = ?`;
     await dal.execute(incSql, [userId]);
   }
 
   public async refund(userId: number): Promise<void> {
-    const refundSql = `update user_recipe_usage set used = if(used > 0, used - 1, 0) where userId = ?`;
+    const refundSql = `update user_recipe_usage set used = if(used > 0, used - 1, 0), totalGenerated = if(totalGenerated > 0, totalGenerated - 1, 0) where userId = ?`;
     await dal.execute(refundSql, [userId]);
   }
 
   public async getStatus(userId: number): Promise<{ used: number; remaining: number; windowEndsAt: Date | null }> {
-    const statusSql = `select used, windowEndsAt from user_recipe_usage where userId = ? limit 1`;
+    const statusSql = `select used, windowEndsAt,totalGenerated from user_recipe_usage where userId = ? limit 1`;
     const rows = (await dal.execute(statusSql, [userId])) as UsageRow[];
 
     if (rows.length === 0) return { used: 0, remaining: 8, windowEndsAt: null };

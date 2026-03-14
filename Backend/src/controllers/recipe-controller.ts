@@ -10,6 +10,7 @@ import { visitorRecipeUsageService } from "../services/visitor-recipe-usage-serv
 import { userRecipeUsageService } from "../services/user-recipe-usage-service";
 import { consumeRecipeUsage, refundRecipeUsage, UsageConsumer } from "../utils/recipe-usage-helper";
 import { normalizeLang } from "../utils/normalize-language";
+import { userService } from "../services/user-service";
 
 class RecipeController {
     public router: Router = express.Router();
@@ -21,7 +22,7 @@ class RecipeController {
         this.router.get("/api/recipes", verificationMiddleware.verifyLoggedIn, this.getUserRecipes);
         this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
         this.router.get("/api/recipes/images/:fileName", this.getImageFile);
-
+        this.router.get("/api/admin/statistics", verificationMiddleware.verifyIsAdmin, this.getAdminStatistics);
         this.router.delete(
             "/api/recipe/:recipeId",
             verificationMiddleware.verifyLoggedIn,
@@ -141,35 +142,35 @@ class RecipeController {
 
             const data = await recipeService.generateInstructions(inputModel, false);
 
-const noImageRecipe = new FullRecipeModel({
-    title: data.title,
-    amountOfServings: quantity,
-    description: data.description,
-    popularity: data.popularity,
-    data: {
-        ingredients: data.ingredients,
-        instructions: data.instructions,
-        categories: data.categories
-    },
-    totalSugar: data.totalSugar,
-    totalProtein: data.totalProtein,
-    healthLevel: data.healthLevel,
-    calories: data.calories,
-    sugarRestriction: data.sugarRestriction,
-    lactoseRestrictions: data.lactoseRestrictions,
-    glutenRestrictions: data.glutenRestrictions,
-    dietaryRestrictions: data.dietaryRestrictions,
-    caloryRestrictions: data.caloryRestrictions,
-    queryRestrictions: data.queryRestrictions,
-    prepTime: data.prepTime,
-    difficultyLevel: data.difficultyLevel,
-    countryOfOrigin: data.countryOfOrigin,
-    image: undefined,
-    imageUrl: undefined,
-    imageName: undefined,
-    userId: user?.id,
-    categories: data.categories
-} as FullRecipeModel);
+            const noImageRecipe = new FullRecipeModel({
+                title: data.title,
+                amountOfServings: quantity,
+                description: data.description,
+                popularity: data.popularity,
+                data: {
+                    ingredients: data.ingredients,
+                    instructions: data.instructions,
+                    categories: data.categories
+                },
+                totalSugar: data.totalSugar,
+                totalProtein: data.totalProtein,
+                healthLevel: data.healthLevel,
+                calories: data.calories,
+                sugarRestriction: data.sugarRestriction,
+                lactoseRestrictions: data.lactoseRestrictions,
+                glutenRestrictions: data.glutenRestrictions,
+                dietaryRestrictions: data.dietaryRestrictions,
+                caloryRestrictions: data.caloryRestrictions,
+                queryRestrictions: data.queryRestrictions,
+                prepTime: data.prepTime,
+                difficultyLevel: data.difficultyLevel,
+                countryOfOrigin: data.countryOfOrigin,
+                image: undefined,
+                imageUrl: undefined,
+                imageName: undefined,
+                userId: user?.id,
+                categories: data.categories
+            } as FullRecipeModel);
 
             if (user?.id) {
                 const saved = await recipeService.saveRecipe(noImageRecipe, user.id);
@@ -209,50 +210,50 @@ const noImageRecipe = new FullRecipeModel({
 
             const data = await recipeService.generateInstructions(inputModel, true);
 
-const { fileName, url } = await generateImage({
-    query: inputModel.query,
-    quantity,
-    sugarRestriction: inputModel.sugarRestriction,
-    lactoseRestrictions: inputModel.lactoseRestrictions,
-    glutenRestrictions: inputModel.glutenRestrictions,
-    dietaryRestrictions: inputModel.dietaryRestrictions,
-    caloryRestrictions: inputModel.caloryRestrictions,
-    queryRestrictions: inputModel.queryRestrictions,
-    title: data.title,
-    description: data.description,
-    ingredients: data.ingredients,
-    instructions: data.instructions,
-    categories: data.categories
-});
-const fullRecipe = new FullRecipeModel({
-    title: data.title,
-    amountOfServings: quantity,
-    description: data.description,
-    popularity: data.popularity,
-    data: {
-        ingredients: data.ingredients,
-        instructions: data.instructions,
-        categories: data.categories
-    },
-    totalSugar: data.totalSugar,
-    totalProtein: data.totalProtein,
-    healthLevel: data.healthLevel,
-    calories: data.calories,
-    sugarRestriction: data.sugarRestriction,
-    lactoseRestrictions: data.lactoseRestrictions,
-    glutenRestrictions: data.glutenRestrictions,
-    dietaryRestrictions: data.dietaryRestrictions,
-    caloryRestrictions: data.caloryRestrictions,
-    queryRestrictions: data.queryRestrictions,
-    prepTime: data.prepTime,
-    difficultyLevel: data.difficultyLevel,
-    countryOfOrigin: data.countryOfOrigin,
-    image: undefined,
-    imageUrl: url,
-    imageName: fileName,
-    userId: user?.id,
-    categories: data.categories
-} as FullRecipeModel);
+            const { fileName, url } = await generateImage({
+                query: inputModel.query,
+                quantity,
+                sugarRestriction: inputModel.sugarRestriction,
+                lactoseRestrictions: inputModel.lactoseRestrictions,
+                glutenRestrictions: inputModel.glutenRestrictions,
+                dietaryRestrictions: inputModel.dietaryRestrictions,
+                caloryRestrictions: inputModel.caloryRestrictions,
+                queryRestrictions: inputModel.queryRestrictions,
+                title: data.title,
+                description: data.description,
+                ingredients: data.ingredients,
+                instructions: data.instructions,
+                categories: data.categories
+            });
+            const fullRecipe = new FullRecipeModel({
+                title: data.title,
+                amountOfServings: quantity,
+                description: data.description,
+                popularity: data.popularity,
+                data: {
+                    ingredients: data.ingredients,
+                    instructions: data.instructions,
+                    categories: data.categories
+                },
+                totalSugar: data.totalSugar,
+                totalProtein: data.totalProtein,
+                healthLevel: data.healthLevel,
+                calories: data.calories,
+                sugarRestriction: data.sugarRestriction,
+                lactoseRestrictions: data.lactoseRestrictions,
+                glutenRestrictions: data.glutenRestrictions,
+                dietaryRestrictions: data.dietaryRestrictions,
+                caloryRestrictions: data.caloryRestrictions,
+                queryRestrictions: data.queryRestrictions,
+                prepTime: data.prepTime,
+                difficultyLevel: data.difficultyLevel,
+                countryOfOrigin: data.countryOfOrigin,
+                image: undefined,
+                imageUrl: url,
+                imageName: fileName,
+                userId: user?.id,
+                categories: data.categories
+            } as FullRecipeModel);
             if (user?.id) {
                 const saved = await recipeService.saveRecipe(fullRecipe, user.id);
                 response.status(StatusCode.Created).json(saved);
@@ -278,21 +279,21 @@ const fullRecipe = new FullRecipeModel({
             response.status(StatusCode.OK).json(recipe);
             return;
         }
-const { fileName, url } = await generateImage({
-    query: recipe.title,
-    quantity: recipe.amountOfServings,
-    sugarRestriction: recipe.sugarRestriction,
-    lactoseRestrictions: recipe.lactoseRestrictions,
-    glutenRestrictions: recipe.glutenRestrictions,
-    dietaryRestrictions: recipe.dietaryRestrictions,
-    caloryRestrictions: recipe.caloryRestrictions,
-    queryRestrictions: recipe.queryRestrictions,
-    title: recipe.title,
-    description: recipe.description,
-    ingredients: recipe.data?.ingredients ?? [],
-    instructions: recipe.data?.instructions ?? [],
-    categories: recipe.categories ?? recipe.data?.categories ?? []
-});
+        const { fileName, url } = await generateImage({
+            query: recipe.title,
+            quantity: recipe.amountOfServings,
+            sugarRestriction: recipe.sugarRestriction,
+            lactoseRestrictions: recipe.lactoseRestrictions,
+            glutenRestrictions: recipe.glutenRestrictions,
+            dietaryRestrictions: recipe.dietaryRestrictions,
+            caloryRestrictions: recipe.caloryRestrictions,
+            queryRestrictions: recipe.queryRestrictions,
+            title: recipe.title,
+            description: recipe.description,
+            ingredients: recipe.data?.ingredients ?? [],
+            instructions: recipe.data?.instructions ?? [],
+            categories: recipe.categories ?? recipe.data?.categories ?? []
+        });
 
         await recipeService.setRecipeImageName(recipeId, user.id, fileName);
         const updated = await recipeService.getSingleRecipe(recipeId, user.id);
@@ -312,25 +313,25 @@ const { fileName, url } = await generateImage({
             return;
         }
 
-const ingredients = body.data?.ingredients ?? body.ingredients ?? [];
-const instructions = body.data?.instructions ?? body.instructions ?? [];
-const categories = body.categories ?? body.data?.categories ?? [];
+        const ingredients = body.data?.ingredients ?? body.ingredients ?? [];
+        const instructions = body.data?.instructions ?? body.instructions ?? [];
+        const categories = body.categories ?? body.data?.categories ?? [];
 
-const { fileName, url } = await generateImage({
-    query: title,
-    quantity: amountOfServings,
-    sugarRestriction: body.sugarRestriction,
-    lactoseRestrictions: body.lactoseRestrictions,
-    glutenRestrictions: body.glutenRestrictions,
-    dietaryRestrictions: body.dietaryRestrictions,
-    caloryRestrictions: body.caloryRestrictions,
-    queryRestrictions: body.queryRestrictions ?? [],
-    title,
-    description,
-    ingredients,
-    instructions,
-    categories
-});
+        const { fileName, url } = await generateImage({
+            query: title,
+            quantity: amountOfServings,
+            sugarRestriction: body.sugarRestriction,
+            lactoseRestrictions: body.lactoseRestrictions,
+            glutenRestrictions: body.glutenRestrictions,
+            dietaryRestrictions: body.dietaryRestrictions,
+            caloryRestrictions: body.caloryRestrictions,
+            queryRestrictions: body.queryRestrictions ?? [],
+            title,
+            description,
+            ingredients,
+            instructions,
+            categories
+        });
 
         response.status(StatusCode.OK).json({ imageName: fileName, imageUrl: url });
     };
@@ -444,38 +445,44 @@ const { fileName, url } = await generateImage({
         response.status(StatusCode.OK).json({ answer });
     };
 
-private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
-    const user = (request as any).user as UserModel | undefined;
-    const visitorId = (request as any).visitorId as string;
+    private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
+        const user = (request as any).user as UserModel | undefined;
+        const visitorId = (request as any).visitorId as string;
 
-    const roleId = Number((user as any)?.roleId);
+        const roleId = Number((user as any)?.roleId);
 
-    if (roleId === 1) {
-        response.status(StatusCode.OK).json({ unlimited: true });
-        return;
-    }
+        if (roleId === 1) {
+            response.status(StatusCode.OK).json({ unlimited: true });
+            return;
+        }
 
-    if (user?.id) {
-        const status = await userRecipeUsageService.getStatus(user.id);
+        if (user?.id) {
+            const status = await userRecipeUsageService.getStatus(user.id);
+            response.status(StatusCode.OK).json({
+                scope: "user",
+                limit: 8,
+                used: status.used,
+                remaining: status.remaining,
+                windowEndsAt: status.windowEndsAt
+            });
+            return;
+        }
+
+        const status = await visitorRecipeUsageService.getStatus(visitorId);
         response.status(StatusCode.OK).json({
-            scope: "user",
-            limit: 8,
+            scope: "visitor",
+            limit: 5,
             used: status.used,
             remaining: status.remaining,
             windowEndsAt: status.windowEndsAt
         });
-        return;
     }
 
-    const status = await visitorRecipeUsageService.getStatus(visitorId);
-    response.status(StatusCode.OK).json({
-        scope: "visitor",
-        limit: 5,
-        used: status.used,
-        remaining: status.remaining,
-        windowEndsAt: status.windowEndsAt
-    });
-}
+    private async getAdminStatistics(request: Request, response: Response): Promise<void> {
+        const stats = await userService.getAdminStatistics();
+        response.status(StatusCode.OK).json(stats);
+    }
+
 }
 
 export const recipeController = new RecipeController();
