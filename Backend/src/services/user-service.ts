@@ -10,6 +10,7 @@ import { randomUUID } from "crypto";
 import { UploadedFile } from "express-fileupload";
 import fs from "fs/promises";
 import axios from "axios";
+import { userRecipeUsageService } from "./user-recipe-usage-service";
 
 
 type Statistics = {
@@ -50,6 +51,7 @@ values
         ];
         const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
         user.id = info.insertId!;
+        await userRecipeUsageService.recordUserFirstVisit(user.id);
         return cyber.generateToken(user);
     }
 
@@ -60,6 +62,7 @@ values
         const users = await dal.execute(sql, values) as UserModel[];
         const user = users[0];
         if (!user) throw new AuthorizationError("Incorrect email or password");
+        await userRecipeUsageService.recordUserFirstVisit(user.id!);
         return cyber.generateToken(user);
     }
 
@@ -132,6 +135,7 @@ values
         const users = await dal.execute(sql, [appConfig.baseUserImageUrl, email]) as UserModel[];
         const existing = users[0];
         if (existing) {
+            await userRecipeUsageService.recordUserFirstVisit(existing.id!);
             const dbPasswordHash = (existing as any).password as string | undefined;
             const needsPasswordSetup =
                 existing.id != null &&
@@ -156,6 +160,7 @@ values
         const values = [safeFirst, safeFamily, email, tempPassword, null, null, null, imageName, Role.User];
         const result = await dal.execute(insertSql, values) as OkPacketParams;
         const id = result.insertId!;
+        await userRecipeUsageService.recordUserFirstVisit(id);
         const placeholder = this.googlePlaceHolderHash(id);
         await dal.execute(`update user set password=? where id=?`, [placeholder, id]);
         const newUser = await this.getOneUser(id);
@@ -286,18 +291,29 @@ values
     }
 
 
-    public async getAdminStatistics(): Promise<Statistics> {
-        const sql = `select (select count(*) from user_recipe_usage as usersEnteredSite),(select count(*) from visitor_recipe_usage) as guestsEnteredSite, (select count(*) from user_recipe_usage where totalGenerated > 0) as usersWhoGeneratedRecipes, (select count(*) from visitor_recipe_usage where totalGenerated > 0) as guestsWhoGeneratedRecipes, ((select coalesce(sum(totalGenerated), 0) from user_recipe_usage) + (select coalesce(sum(totalGenerated), 0) from visitor_recipe_usage))as totalRecipesGenerated`;
-        const rows = await dal.execute(sql) as Array<Statistics>;
-        const row = rows[0];
-        return {
-            usersEnteredSite: Number(row?.usersEnteredSite ?? 0),
-            guestsEnteredSite: Number(row?.guestsEnteredSite ?? 0),
-            usersWhoGeneratedRecipes: Number(row?.usersWhoGeneratedRecipes ?? 0),
-            guestsWhoGeneratedRecipes: Number(row?.guestsWhoGeneratedRecipes ?? 0),
-            totalRecipesGenerated: Number(row?.totalRecipesGenerated ?? 0)
-        }
-    }
+public async getAdminStatistics(): Promise<Statistics> {
+    const sql = `
+        select
+            (select count(*) from user_recipe_usage) as usersEnteredSite,
+            (select count(*) from visitor_recipe_usage) as guestsEnteredSite,
+            (select count(*) from user_recipe_usage where totalGenerated > 0) as usersWhoGeneratedRecipes,
+            (select count(*) from visitor_recipe_usage where totalGenerated > 0) as guestsWhoGeneratedRecipes,
+            (
+                (select coalesce(sum(totalGenerated), 0) from user_recipe_usage) +
+                (select coalesce(sum(totalGenerated), 0) from visitor_recipe_usage)
+            ) as totalRecipesGenerated
+    `;
+    const rows = await dal.execute(sql) as Array<Statistics>;
+    const row = rows[0];
+
+    return {
+        usersEnteredSite: Number(row?.usersEnteredSite ?? 0),
+        guestsEnteredSite: Number(row?.guestsEnteredSite ?? 0),
+        usersWhoGeneratedRecipes: Number(row?.usersWhoGeneratedRecipes ?? 0),
+        guestsWhoGeneratedRecipes: Number(row?.guestsWhoGeneratedRecipes ?? 0),
+        totalRecipesGenerated: Number(row?.totalRecipesGenerated ?? 0)
+    };
+}
 }
 
 export const userService = new UserService();

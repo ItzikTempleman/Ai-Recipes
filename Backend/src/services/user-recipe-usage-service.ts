@@ -10,10 +10,13 @@ export type UsageRow = {
 class UserRecipeUsageService {
 
   public async recordUserFirstVisit(userId: number): Promise<void> {
-    const sql = `insert into user_recipe_usage (userId, windowEndsAt, totalGenerated,used, totalGenerated) values (?, DATE_ADD(NOW(), INTERVAL ? DAY),0,0) on duplicate key update userId=? `;
-    const values = [userId];
-    await dal.execute(sql, values) as UsageRow[];
-  };
+    const sql = `
+      insert into user_recipe_usage (userId, windowEndsAt, used, totalGenerated)
+      values (?, DATE_ADD(NOW(), INTERVAL ? DAY), 0, 0)
+      on duplicate key update userId = userId
+    `;
+    await dal.execute(sql, [userId, 3]);
+  }
 
   public async consume(userId: number): Promise<void> {
     const sql = `select used, windowEndsAt,totalGenerated from user_recipe_usage where userId = ? limit 1`;
