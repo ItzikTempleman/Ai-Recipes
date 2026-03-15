@@ -2,7 +2,7 @@
   width: 240px;
   height: 560px !important;
   margin: 8px;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
 
 }
 
@@ -27,24 +27,22 @@
   height: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0 8px;
-  box-sizing: border-box;
 }
 
 .LogoutFromDrawerBtn.MuiButton-root,
 .LoginFromDrawerBtn.MuiButton-root {
   font-size: 18px;
   display: flex;
-  margin: 10px auto 0;
-  border-radius: 16px;
-  height: 50px !important;
-  font-weight: 900;
+  width: 90%;
+  margin: 4px auto 0;
+  border-radius: 4px;
+  height: 40px !important;
+  font-weight: 200;
   background: transparent;
 }
 
 .LoginFromDrawerBtn.MuiButton-root{
- color: #1376a3;
+ color: #07a8de;
 }
 .LogoutFromDrawerBtn.MuiButton-root{
 color: #ff0000;
@@ -52,14 +50,12 @@ color: #ff0000;
 
 .LoginFromDrawerBtn.MuiButton-root:active,
 .LoginFromDrawerBtn.MuiButton-root:hover {
-  background: #1376a3;    
-  width: 90%;
+  background: #07a8de;    
   color: white;
 }
 .LogoutFromDrawerBtn.MuiButton-root:active,
 .LogoutFromDrawerBtn.MuiButton-root:hover {
   background: #ff0000;    
-  width: 90%;
   color: white;
 }
 
@@ -103,36 +99,24 @@ color: #ff0000;
 .ProfileBtn,
 .AboutScreenBtn,
 .MoreBtn.MuiButton-root {
-  width: calc(100% - 24px);
-  margin-left: 12px;
-  margin-right: 12px;
   display: flex;
+  width: 90%;
+  margin: 20px 8px 0 8px;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 12px;
-  margin-top: 20px;
-  border-radius: 16px;
+  border-radius: 4px;
   text-decoration: none;
-  height: 50px;
-  box-sizing: border-box;
-  transition: filter 120ms ease, transform 120ms ease;
+  height: 40px;
 }
 
 .MoreBtn.MuiButton-root {
  justify-content: center !important;
 }
 
-.ProfileBtn:hover,
-.AboutScreenBtn:hover {
-  transform: translateY(-1px);
-}
-
 
 .ProfileBtn {
-  background: #1376a3;
+  background: #07a8de;
   color: #ffffff;
-  font-weight: 900;
+  font-weight: 200;
 
 }
 
@@ -146,19 +130,18 @@ color: #ff0000;
 .AboutScreenBtn>p{
    margin: 0 12px 0 0 !important; 
 }
+.AboutScreenBtn svg ,
 .ProfileBtn svg {
   color: #fff;
 }
 
 .AboutScreenBtn {
-  background: #ffb700;
-  color: #5b5b5b;
-  font-weight: 700;
+  background: #fdc433;
+  color: #ffffff;
+  font-weight: 200;
 }
 
-.AboutScreenBtn svg {
-  color: #5b5b5b;
-}
+
 
 .MoreOptionsDropdown {
   position: relative;

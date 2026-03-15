@@ -189,13 +189,13 @@ useEffect(() => {
             <div className={`HelloGuestMessage ${isRTL ? "rtl" : "ltr"}`}>
               <p>{t("generate.guest")}</p>
             </div>
-
+        </div>
+        )}
             <div>
               <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
               {/* <p className="GuestTitle2">{t("homeScreen.generate2")}</p> */}
             </div>
-          </div>
-        )}
+  
 
         <div className="SelectionDiv">
           <FeatureHint />
@@ -263,7 +263,13 @@ useEffect(() => {
             </div>
           )}
 
-          {!user && <h3 className="HomeScreenTitle user">{titleText}</h3>}
+         {!user && (
+  <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
+    <div className="SuggestionsBtn active" role="presentation">
+      <h4>{titleText}</h4>
+    </div>
+  </div>
+)}
 
           {listState === ListState.SUGGESTIONS && (
             <div className="CategoryChipsContainer">

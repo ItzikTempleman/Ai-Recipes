@@ -33,7 +33,7 @@
   z-index: 10000;
   margin: 0;
   padding: 4px 8px;
-  background: rgb(255, 149, 0) ;
+  background: #54c9f0 ;
   border-radius: 4px;
 }
 
@@ -107,7 +107,7 @@
   margin-top: 30px !important;
   font-size: 32px;
   font-weight: 200;
-  color: rgb(105, 105, 105);
+  color: rgb(74, 74, 74);
 }
 
 .HomeScreenTitle.user {
@@ -188,7 +188,7 @@
 .LikeBtn.active,
 .RecentlyViewedBtn.active,
 .SuggestionsBtn.active {
-  color: #ff6f15;
+  color: #54c9f0;
   margin: 0;
 }
 
@@ -222,8 +222,8 @@
 .LikeBtn.active h4,
 .RecentlyViewedBtn.active h4,
 .SuggestionsBtn.active h4 {
-  border-bottom-color: #ff6f15;
-  color: #ff6f15;
+  border-bottom-color: #54c9f0;
+  color: #54c9f0;
 }
 
 .RecentlyViewedBtn {
@@ -259,7 +259,7 @@
   margin: 30px auto !important;
   display: flex !important;
   border-radius: 4px !important;
-  background: #1376a3 !important;
+  background: #07a8de !important;
   text-transform: none;
   align-items: center;
   justify-content: center;
