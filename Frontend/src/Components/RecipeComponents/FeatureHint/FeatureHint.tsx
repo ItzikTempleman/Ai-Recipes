@@ -47,7 +47,7 @@ export function FeatureHint() {
   onClick={() => navigate("/login")}
 >
   {t("homeScreen.freeWithLogin")}{" "}
-  {isHebrew ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />}
+  {/* {isHebrew ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />} */}
 </Button>
           
     </div>

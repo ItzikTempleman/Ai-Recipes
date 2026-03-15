@@ -192,7 +192,7 @@ useEffect(() => {
 
             <div>
               <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
-              <p className="GuestTitle2">{t("homeScreen.generate2")}</p>
+              {/* <p className="GuestTitle2">{t("homeScreen.generate2")}</p> */}
             </div>
           </div>
         )}
