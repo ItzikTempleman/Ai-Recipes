@@ -2,8 +2,6 @@ import { useSelector } from "react-redux";
 import "./FeatureHint.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { AppState } from "../../../Redux/Store";
 import { Button } from "@mui/material";
 
