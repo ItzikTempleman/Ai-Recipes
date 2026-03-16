@@ -3,10 +3,9 @@
   height: 100vh !important;
 }
 
-
 .DrawerMainContainer {
-  height: 100%;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
@@ -14,25 +13,36 @@
 }
 
 .DrawerContent {
-  display: flex;
   width: 100%;
   height: 100%;
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.DrawerContent>div {
+.DrawerHeader {
+  width: 100%;
+}
+
+.DrawerRow {
   width: 100%;
 }
 
 .CloseButton {
+  width: fit-content;
   margin: 24px 24px 0 auto;
   cursor: pointer;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[dir="rtl"] .CloseButton {
+  margin: 24px auto 0 24px;
 }
 
 .UserName {
-  justify-content: flex-start;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -44,101 +54,172 @@
 .ProfileImage {
   width: 180px;
   height: 180px;
-  border-radius: 180px;
+  border-radius: 50%;
   object-fit: cover;
   display: block;
-  margin: 0 auto;
-  margin-top: 10px;
+  margin: 10px auto 0;
   border: 1px solid grey;
 }
 
-.ProfileBtn, .AdminBtn, .AboutScreenBtn, .LoginFromDrawerBtn, .LogoutFromDrawerBtn {
-display: flex;
- width: 100%;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-text-decoration: none;
-gap: 8px;
-box-sizing: border-box;
-color: #5b5b5b;
-height: 40px;
+.DrawerItem,
+.MoreBtn,
+.LoginFromDrawerBtn.MuiButton-root,
+.LogoutFromDrawerBtn.MuiButton-root {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  text-decoration: none;
+  border-radius: 0 !important;
+  text-transform: none !important;
 }
 
-[dir="ltr"] .ProfileBtn,
-[dir="ltr"] .AdminBtn,
-[dir="ltr"] .AboutScreenBtn,
-[dir="ltr"] .LoginFromDrawerBtn,
-[dir="ltr"] .LogoutFromDrawerBtn {
+.DrawerItem {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  color: #5b5b5b;
+}
+
+.LoginFromDrawerBtn.MuiButton-root,
+.LogoutFromDrawerBtn.MuiButton-root {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 16px !important;
+  gap: 8px;
+}
+
+[dir="ltr"] .DrawerItem,
+[dir="ltr"] .LoginFromDrawerBtn.MuiButton-root,
+[dir="ltr"] .LogoutFromDrawerBtn.MuiButton-root {
   flex-direction: row;
-}
-[dir="rtl"] .ProfileBtn,
-[dir="rtl"] .AdminBtn,
-[dir="rtl"] .AboutScreenBtn,
-[dir="rtl"] .LoginFromDrawerBtn,
-[dir="rtl"] .LogoutFromDrawerBtn {
-  flex-direction: row-reverse;
+  text-align: left;
 }
 
-.ProfileBtn p,
-.AdminBtn p,
-.AboutScreenBtn p,
-.LoginFromDrawerBtn p,
-.LogoutFromDrawerBtn p {
+[dir="rtl"] .DrawerItem,
+[dir="rtl"] .LoginFromDrawerBtn.MuiButton-root,
+[dir="rtl"] .LogoutFromDrawerBtn.MuiButton-root {
+  flex-direction: row;
+  text-align: right;
+}
+
+.DrawerItemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.DrawerItemLabel {
   margin: 0;
-  min-width: 120px;
-  text-align: center;
+  display: block;
+  flex: 1;
 }
 
-.LoginFromDrawerBtn.MuiButton-root{
-  color:#54c9f0;
+[dir="ltr"] .DrawerItemIcon,
+[dir="ltr"] .LoginFromDrawerBtn .DrawerItemIcon,
+[dir="ltr"] .LogoutFromDrawerBtn .DrawerItemIcon {
+  order: 1;
 }
-.LogoutFromDrawerBtn.MuiButton-root{
+
+[dir="ltr"] .DrawerItemLabel,
+[dir="ltr"] .LoginFromDrawerBtn .DrawerItemLabel,
+[dir="ltr"] .LogoutFromDrawerBtn .DrawerItemLabel {
+  order: 2;
+  text-align: left;
+}
+
+[dir="rtl"] .DrawerItemIcon,
+[dir="rtl"] .LoginFromDrawerBtn .DrawerItemIcon,
+[dir="rtl"] .LogoutFromDrawerBtn .DrawerItemIcon {
+  order: 2;
+}
+
+[dir="rtl"] .DrawerItemLabel,
+[dir="rtl"] .LoginFromDrawerBtn .DrawerItemLabel,
+[dir="rtl"] .LogoutFromDrawerBtn .DrawerItemLabel {
+  order: 1;
+  text-align: right;
+}
+
+.LoginFromDrawerBtn.MuiButton-root {
+  color: #fbbf32;
+}
+
+.LogoutFromDrawerBtn.MuiButton-root {
   color: red;
 }
 
-.border-top{
-  margin-top: 80px;
-    width: 100%;
-  height: 1px;
-  background-color: grey;
-}
-.border-bottom{
+.border-bottom {
   width: 100%;
   height: 1px;
   background-color: grey;
-}
-
-.MoreBtn.MuiButton-root {
-  justify-content: center !important;
 }
 
 .MoreOptionsDropdown {
   position: relative;
-  overflow: visible;
-  flex: 0 0 auto;
-  white-space: nowrap;
   width: 100%;
-  padding: 0;
   box-sizing: border-box;
+  overflow: visible;
   z-index: 2;
-  margin: 0;
 }
 
 .MoreBtn.MuiButton-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   color: #222;
- justify-content: center;
- display: flex;
- width: 100%;
+}
+
+[dir="ltr"] .MoreBtn .MuiButton-startIcon {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+}
+
+[dir="rtl"] .MoreBtn .MuiButton-startIcon {
+  margin-right: 0 !important;
+  margin-left: 8px !important;
 }
 
 .MoreOptionsSection {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 16px;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  overflow: hidden;
-  justify-content: center;
+  gap: 8px;
   cursor: pointer;
+  overflow: hidden;
+}
+
+[dir="ltr"] .MoreOptionsSection {
+  flex-direction: row;
+}
+
+[dir="rtl"] .MoreOptionsSection {
+  flex-direction: row;
+}
+
+[dir="rtl"] .MoreOptionsSection .DrawerItemIcon {
+  order: 2;
+}
+
+[dir="rtl"] .MoreOptionsSection .DeleteAccountText {
+  order: 1;
+  flex: 1;
+  text-align: right;
+}
+
+[dir="ltr"] .MoreOptionsSection .DrawerItemIcon {
+  order: 1;
+}
+
+[dir="ltr"] .MoreOptionsSection .DeleteAccountText {
+  order: 2;
+  flex: 1;
+  text-align: left;
 }
 
 .MoreOptionsSection.open {
@@ -151,6 +232,11 @@ height: 40px;
 
 .MoreOptionsSection.closed {
   max-height: 0;
+  margin-top: 0;
   opacity: 0;
   pointer-events: none;
+}
+
+.DeleteAccountText {
+  margin: 0;
 }

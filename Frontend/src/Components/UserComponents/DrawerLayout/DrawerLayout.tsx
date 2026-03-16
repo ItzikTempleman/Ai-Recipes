@@ -9,16 +9,18 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import CloseIcon from "@mui/icons-material/Close";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import LoginIcon from '@mui/icons-material/Login';
+
 import type { AppState } from "../../../Redux/Store";
 import { userService } from "../../../Services/UserService";
 import { notify } from "../../../Utils/Notify";
 import { DeleteDialog } from "../DeleteDialog/DeleteDialog";
-import LogoutIcon from '@mui/icons-material/Logout';
+
 import "./DrawerLayout.css";
 
 type DrawerState = {
@@ -47,8 +49,8 @@ export type DrawerItem = {
 };
 
 export function DrawerLayout({ open, setOpen }: DrawerState) {
-const { t, i18n } = useTranslation();
-const isRTL = i18n.dir() === "rtl";
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === "rtl";
   const navigate = useNavigate();
 
   const user = useSelector((state: AppState) => state.user);
@@ -56,7 +58,7 @@ const isRTL = i18n.dir() === "rtl";
   const isLoggedIn = !!localStorage.getItem("token");
   const isAdmin = isLoggedIn && user?.roleId === 1;
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingDeleteUserId, setPendingDeleteUserId] = useState<number | null>(null);
 
@@ -72,7 +74,7 @@ const isRTL = i18n.dir() === "rtl";
   }
 
   function handleLogout(): void {
-    setIsOpen(false);
+    setIsMoreOpen(false);
     closeDrawer();
     userService.logout();
     navigate("/home");
@@ -110,7 +112,7 @@ const isRTL = i18n.dir() === "rtl";
       icon: <PersonIcon />,
       visible: isLoggedIn,
       to: "/profile",
-      className: "ProfileBtn",
+      className: "DrawerItem ProfileBtn",
     },
     {
       key: DrawerItemKey.Admin,
@@ -118,7 +120,7 @@ const isRTL = i18n.dir() === "rtl";
       icon: <AdminPanelSettingsIcon />,
       visible: isAdmin,
       to: "/admin",
-      className: "AdminBtn",
+      className: "DrawerItem AdminBtn",
     },
     {
       key: DrawerItemKey.About,
@@ -126,7 +128,7 @@ const isRTL = i18n.dir() === "rtl";
       icon: <InfoOutlinedIcon />,
       visible: true,
       to: "/about",
-      className: "AboutScreenBtn",
+      className: "DrawerItem AboutScreenBtn",
     },
     {
       key: DrawerItemKey.Login,
@@ -134,7 +136,7 @@ const isRTL = i18n.dir() === "rtl";
       icon: <LoginIcon />,
       visible: !isLoggedIn,
       onClick: () => handleNavigate("/login"),
-      className: "LoginFromDrawerBtn",
+      className: "DrawerItem LoginFromDrawerBtn",
     },
     {
       key: DrawerItemKey.Logout,
@@ -142,17 +144,12 @@ const isRTL = i18n.dir() === "rtl";
       icon: <LogoutIcon />,
       visible: isLoggedIn,
       onClick: handleLogout,
-      className: "LogoutFromDrawerBtn",
+      className: "DrawerItem LogoutFromDrawerBtn",
     },
   ];
 
-  const navigationItems = drawerItems.filter(
-    (item) => item.visible && item.to
-  );
-
-  const actionItems = drawerItems.filter(
-    (item) => item.visible && item.onClick
-  );
+  const navigationItems = drawerItems.filter((item) => item.visible && item.to);
+  const actionItems = drawerItems.filter((item) => item.visible && item.onClick);
 
   return (
     <div>
@@ -173,55 +170,45 @@ const isRTL = i18n.dir() === "rtl";
 
           <div className={`DrawerContent ${isLoggedIn ? "LoggedIn" : "LoggedOut"}`}>
             {isLoggedIn ? (
-              <div>
+              <div className="DrawerHeader">
                 <img
                   className="ProfileImage"
                   src={user?.imageUrl || "/person-21.png"}
                   alt="Profile"
                 />
-
                 <h2 className="UserName">
-                  {user.firstName} {user.familyName}
+                  {user?.firstName} {user?.familyName}
                 </h2>
               </div>
             ) : (
-              <div>
-                <img
-                  className="NoProfileImage"
-                  src="/person-21.png"
-                  alt="Guest"
-                />
+              <div className="DrawerHeader">
+                <img className="NoProfileImage" src="/person-21.png" alt="Guest" />
               </div>
             )}
 
-  {navigationItems.map((item) => (
-  <div key={item.key}>
-    <NavLink
-      to={item.to!}
-      className={item.className}
-      onClickCapture={closeDrawer}
-    >
-      {item.icon}
-      <p>{item.label}</p>
-    </NavLink>
-    <div className="border-bottom"></div>
-  </div>
-))}
+            {navigationItems.map((item) => (
+              <div key={item.key} className="DrawerRow">
+                <NavLink
+                  to={item.to!}
+                  className={item.className}
+                  onClick={closeDrawer}
+                >
+                  <span className="DrawerItemIcon">{item.icon}</span>
+                  <span className="DrawerItemLabel">{item.label}</span>
+                </NavLink>
+                <div className="border-bottom" />
+              </div>
+            ))}
 
-{actionItems.map((item) => (
-  <div key={item.key}>
-     <div className="border-top"></div>
-    <Button
-      className={item.className}
-      onClick={item.onClick}
-    >
-      {item.icon}
-      <p>{item.label}</p>
-    </Button>
-    
-    <div className="border-bottom"></div>
-  </div>
-))}
+            {actionItems.map((item) => (
+              <div key={item.key} className="DrawerRow">
+                <Button className={item.className} onClick={item.onClick}>
+                  <span className="DrawerItemIcon">{item.icon}</span>
+                  <span className="DrawerItemLabel">{item.label}</span>
+                </Button>
+                <div className="border-bottom" />
+              </div>
+            ))}
 
             {isLoggedIn && (
               <div className="MoreOptionsDropdown" ref={moreActionsRef}>
@@ -229,19 +216,21 @@ const isRTL = i18n.dir() === "rtl";
                   className="MoreBtn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setIsOpen((prev) => !prev);
+                    setIsMoreOpen((prev) => !prev);
                   }}
-                  startIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                  startIcon={isMoreOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                 >
-                  {isOpen ? t("drawer.less") : t("drawer.more")}
+                  {isMoreOpen ? t("drawer.less") : t("drawer.more")}
                 </Button>
 
                 <div
-                  className={`MoreOptionsSection ${isOpen ? "open" : "closed"}`}
-                  onClick={() => askDeleteAccount(user.id)}
+                  className={`MoreOptionsSection ${isMoreOpen ? "open" : "closed"}`}
+                  onClick={() => user?.id && askDeleteAccount(user.id)}
                 >
-                  <PersonOffIcon />
-                  <h5>{t("drawer.deleteAccount")}</h5>
+                  <span className="DrawerItemIcon">
+                    <PersonOffIcon />
+                  </span>
+                  <h5 className="DeleteAccountText">{t("drawer.deleteAccount")}</h5>
                 </div>
               </div>
             )}
