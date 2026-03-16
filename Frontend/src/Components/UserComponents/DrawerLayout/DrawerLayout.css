@@ -1,16 +1,8 @@
 .MuiDrawer-paper {
-  width: 240px;
-  height: 560px !important;
-  margin: 8px;
-  border-radius: 4px !important;
-
+  width: 220px;
+  height: 100vh !important;
 }
 
-
-.MuiDrawer-paper:has(.MoreOptionsSection.open) {
-  height: 620px !important;
-    overflow: hidden;
-}
 
 .DrawerMainContainer {
   height: 100%;
@@ -29,37 +21,6 @@
   align-items: center;
 }
 
-.LogoutFromDrawerBtn.MuiButton-root,
-.LoginFromDrawerBtn.MuiButton-root {
-  font-size: 18px;
-  display: flex;
-  width: 90%;
-  margin: 4px auto 0;
-  border-radius: 4px;
-  height: 40px !important;
-  font-weight: 200;
-  background: transparent;
-}
-
-.LoginFromDrawerBtn.MuiButton-root{
- color: #07a8de;
-}
-.LogoutFromDrawerBtn.MuiButton-root{
-color: #ff0000;
-}
-
-.LoginFromDrawerBtn.MuiButton-root:active,
-.LoginFromDrawerBtn.MuiButton-root:hover {
-  background: #07a8de;    
-  color: white;
-}
-.LogoutFromDrawerBtn.MuiButton-root:active,
-.LogoutFromDrawerBtn.MuiButton-root:hover {
-  background: #ff0000;    
-  color: white;
-}
-
-
 .DrawerContent>div {
   width: 100%;
 }
@@ -74,7 +35,9 @@ color: #ff0000;
   justify-content: flex-start;
   font-size: 20px;
   display: flex;
-  margin: 12px !important;
+  justify-content: center;
+  margin: 12px 0 60px 0 !important;
+  text-align: center;
 }
 
 .NoProfileImage,
@@ -89,59 +52,66 @@ color: #ff0000;
   border: 1px solid grey;
 }
 
+.ProfileBtn, .AdminBtn, .AboutScreenBtn, .LoginFromDrawerBtn, .LogoutFromDrawerBtn {
+display: flex;
+ width: 100%;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+gap: 8px;
+box-sizing: border-box;
+color: #5b5b5b;
+height: 40px;
+}
 
+[dir="ltr"] .ProfileBtn,
+[dir="ltr"] .AdminBtn,
+[dir="ltr"] .AboutScreenBtn,
+[dir="ltr"] .LoginFromDrawerBtn,
+[dir="ltr"] .LogoutFromDrawerBtn {
+  flex-direction: row;
+}
+[dir="rtl"] .ProfileBtn,
+[dir="rtl"] .AdminBtn,
+[dir="rtl"] .AboutScreenBtn,
+[dir="rtl"] .LoginFromDrawerBtn,
+[dir="rtl"] .LogoutFromDrawerBtn {
+  flex-direction: row-reverse;
+}
 
-.UserName {
-  margin: 20px 0 0;
+.ProfileBtn p,
+.AdminBtn p,
+.AboutScreenBtn p,
+.LoginFromDrawerBtn p,
+.LogoutFromDrawerBtn p {
+  margin: 0;
+  min-width: 120px;
   text-align: center;
 }
 
-.ProfileBtn,
-.AboutScreenBtn,
-.MoreBtn.MuiButton-root {
-  display: flex;
-  width: 90%;
-  margin: 20px 8px 0 8px;
-  align-items: center;
-  border-radius: 4px;
-  text-decoration: none;
-  height: 40px;
+.LoginFromDrawerBtn.MuiButton-root{
+  color:#54c9f0;
+}
+.LogoutFromDrawerBtn.MuiButton-root{
+  color: red;
+}
+
+.border-top{
+  margin-top: 80px;
+    width: 100%;
+  height: 1px;
+  background-color: grey;
+}
+.border-bottom{
+  width: 100%;
+  height: 1px;
+  background-color: grey;
 }
 
 .MoreBtn.MuiButton-root {
- justify-content: center !important;
+  justify-content: center !important;
 }
-
-
-.ProfileBtn {
-  background: #07a8de;
-  color: #ffffff;
-  font-weight: 200;
-
-}
-
-.AboutScreenBtn>p,
-.ProfileBtn >p{
-  flex: 1;           
-  text-align: center; 
-  margin: 0 36px 0 0;  
-}
-
-.AboutScreenBtn>p{
-   margin: 0 12px 0 0 !important; 
-}
-.AboutScreenBtn svg ,
-.ProfileBtn svg {
-  color: #fff;
-}
-
-.AboutScreenBtn {
-  background: #fdc433;
-  color: #ffffff;
-  font-weight: 200;
-}
-
-
 
 .MoreOptionsDropdown {
   position: relative;
@@ -156,9 +126,10 @@ color: #ff0000;
 }
 
 .MoreBtn.MuiButton-root {
-  background: white;
-  color: #5b5b5b;
-  font-weight: 900;
+  color: #222;
+ justify-content: center;
+ display: flex;
+ width: 100%;
 }
 
 .MoreOptionsSection {
