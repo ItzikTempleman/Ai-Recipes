@@ -23,73 +23,18 @@ class RecipeController {
         this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
         this.router.get("/api/recipes/images/:fileName", this.getImageFile);
         this.router.get("/api/admin/statistics", verificationMiddleware.verifyIsAdmin, this.getAdminStatistics);
-        this.router.delete(
-            "/api/recipe/:recipeId",
-            verificationMiddleware.verifyLoggedIn,
-            this.deleteRecipe
-        );
-
-        this.router.post(
-            "/api/recipes/liked/:recipeId",
-            verificationMiddleware.verifyLoggedIn,
-            this.likeRecipe
-        );
-
-        this.router.delete(
-            "/api/recipes/liked/:recipeId",
-            verificationMiddleware.verifyLoggedIn,
-            this.unlikeRecipe
-        );
-
-        this.router.get(
-            "/api/recipes/liked/:recipeId",
-            verificationMiddleware.verifyLoggedIn,
-            this.isRecipeLikedByUser
-        );
-
-        this.router.get(
-            "/api/recipes/liked",
-            verificationMiddleware.verifyLoggedIn,
-            this.getMyLikedRecipeIds
-        );
-
-        this.router.get(
-            "/api/recipes/liked/full-recipe",
-            verificationMiddleware.verifyLoggedIn,
-            this.getLikedRecipesByUserId
-        );
-
-        this.router.post(
-            "/api/recipes/:recipeId/generate-image",
-            verificationMiddleware.verifyLoggedIn,
-            this.generateImageForSavedRecipe
-        );
-
-        this.router.post(
-            "/api/recipes/generate-image-preview",
-            verificationMiddleware.verifyOptional,
-            this.generateImagePreview
-        );
-
+        this.router.delete("/api/recipe/:recipeId",verificationMiddleware.verifyLoggedIn,this.deleteRecipe);
+        this.router.post("/api/recipes/liked/:recipeId",verificationMiddleware.verifyLoggedIn,this.likeRecipe);
+        this.router.delete("/api/recipes/liked/:recipeId",verificationMiddleware.verifyLoggedIn,this.unlikeRecipe);
+        this.router.get("/api/recipes/liked/:recipeId",verificationMiddleware.verifyLoggedIn,this.isRecipeLikedByUser);
+        this.router.get("/api/recipes/liked",verificationMiddleware.verifyLoggedIn,this.getMyLikedRecipeIds);
+        this.router.get("/api/recipes/liked/full-recipe",verificationMiddleware.verifyLoggedIn,this.getLikedRecipesByUserId);
+        this.router.post("/api/recipes/:recipeId/generate-image",verificationMiddleware.verifyLoggedIn,this.generateImageForSavedRecipe);
+        this.router.post("/api/recipes/generate-image-preview",verificationMiddleware.verifyOptional,this.generateImagePreview);
         this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe);
-
-        this.router.get(
-            "/api/recipes/liked/count/:recipeId",
-            verificationMiddleware.verifyLoggedIn,
-            this.getRecipesTotalLikeCount
-        );
-
-        this.router.post(
-            "/api/recipe/:recipeId/ask",
-            verificationMiddleware.verifyLoggedIn,
-            this.askRecipeQuestion
-        );
-
-        this.router.get(
-            "/api/usage/recipes",
-            verificationMiddleware.verifyOptional,
-            this.getRecipeUsageStatus
-        );
+        this.router.get("/api/recipes/liked/count/:recipeId",verificationMiddleware.verifyLoggedIn,this.getRecipesTotalLikeCount);
+        this.router.post("/api/recipe/:recipeId/ask",verificationMiddleware.verifyLoggedIn,this.askRecipeQuestion);
+        this.router.get("/api/usage/recipes",verificationMiddleware.verifyOptional,this.getRecipeUsageStatus);
     }
 
     private async getUserRecipes(request: Request, response: Response) {

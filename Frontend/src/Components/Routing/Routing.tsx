@@ -17,12 +17,13 @@ import { GenerateRoute } from "../../Utils/DialogRoute";
 import { HomeScreen } from "../RecipeComponents/HomeScreen/HomeScreen";
 import { RecipeInfoScreen } from "../RecipeComponents/RecipeInfoScreen/RecipeInfoScreen";
 import { PdfScreen } from "../RecipeComponents/PdfScreen/PdfScreen";
+import { AdminScreen } from "../UserComponents/AdminScreen/AdminScreen";
 
 export function Routing() {
 
     const user = useSelector((state: AppState) => state.user);
     const isLoggedIn = user && localStorage.getItem("token");
-    
+
     return (
         <div>
             <Routes>
@@ -35,7 +36,7 @@ export function Routing() {
                 <Route path="/registration" element={<RegistrationScreen />} />
                 <Route path="/profile" element={isLoggedIn ? <ProfileScreen /> : <Navigate to="/home" replace />} />
                 <Route path="/share-render/:recipeId" element={<PdfScreen />} />
-        
+                <Route path="//admin" element={<AdminScreen />} />
                 <Route path="/reset" element={<ResetPasswordScreen />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/data-deletion" element={<DataDeletion />} />
