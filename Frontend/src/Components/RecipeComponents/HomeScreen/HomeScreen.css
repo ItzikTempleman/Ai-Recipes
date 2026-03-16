@@ -34,7 +34,7 @@
   margin: 0;
   padding: 4px 8px;
   background: #54c9f0 ;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .HelloGuestMessage.ltr {
@@ -258,8 +258,8 @@
   width: 340px !important;
   margin: 30px auto !important;
   display: flex !important;
-  border-radius: 4px !important;
-  background: #07a8de !important;
+  border-radius: 16px !important;
+  background: #54c9f0 !important;
   text-transform: none;
   align-items: center;
   justify-content: center;

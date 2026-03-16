@@ -50,7 +50,7 @@ const resources = {
         ask: "Chatbot",
         save: "Favorites",
         remember: "Recently viewed",
-        freeWithLogin: "Free with login",
+        freeWithLogin: "Free when login",
         unlockTitle: "Unlock features"
       },
       categories: {
