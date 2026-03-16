@@ -15,7 +15,8 @@ const resources = {
         selectLanguage: "Language"
       },
       drawer: {
-         admin: "Admin data",
+        role:"Admin",
+        admin: "Admin data",
         profile: "Profile",
         english: "English",
         hebrew: "עברית",
@@ -194,7 +195,15 @@ const resources = {
           phoneRequired: "Phone number is required",
         },
       },
-
+      adminStats: {
+        loading: "Loading...",
+        title: "Admin Statistics & Analytics",
+        usersEnteredSite: "Users Entered Site",
+        guestsEnteredSite: "Guests Entered Site",
+        usersWhoGeneratedRecipes: "Users Generated Recipes",
+        guestsWhoGeneratedRecipes: "Guests Generated Recipes",
+        totalRecipesGenerated: "Total Recipes Generated"
+      },
       profile: {
         addPhoneNumber: "Add phone number",
         title: "Profile",
@@ -258,7 +267,8 @@ const resources = {
       },
 
       drawer: {
-           admin: "מנהל מערכת",
+        role:"מנהל המערכת",
+        admin: "מנהל מערכת",
         profile: "פרופיל",
         english: "English",
         hebrew: "עברית",
@@ -443,7 +453,15 @@ const resources = {
           phoneRequired: "נדרש מספר טלפון",
         },
       },
-
+      adminStats: {
+        loading: "...טוען",
+        title: "סטטיסטיקות של מנהל המערכת",
+        usersEnteredSite: "משתמשים שנכנסו לאתר",
+        guestsEnteredSite: "אורחים שנכנסו לאתר",
+        usersWhoGeneratedRecipes: "משתמשים שיצרו מתכונים",
+        guestsWhoGeneratedRecipes: "אורחים שיצרו מתכונים",
+        totalRecipesGenerated: "סה״כ מתונים שנוצרו"
+      },
       profile: {
         addPhoneNumber: "הוסף טלפון",
         title: "פרופיל",

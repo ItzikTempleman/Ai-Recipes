@@ -1,0 +1,63 @@
+.AdminScreen {
+    background-color: #e6e6e6;
+    width: 100%;
+height: 100vh;
+}
+
+.AdminScreen h2 {
+    text-align: center;
+    color: #4d4d4d;
+}
+
+.chartBox {
+    width: 100%;
+    margin: 0 ;
+    overflow-x: auto;
+}
+
+.chartBox .recharts-responsive-container {
+    min-width: 720px;
+}
+
+.adminBar {
+    fill: #07a8de;
+}
+
+.AdminScreen .recharts-cartesian-axis-tick-value {
+    font-size: 16px;
+    fill: #343434;
+}
+
+.AdminScreen .recharts-cartesian-grid line {
+    stroke: #e5e7eb;
+}
+
+.AdminScreen .recharts-tooltip-wrapper .recharts-default-tooltip {
+    background-color: #ffffff !important;
+    border: 1px solid #dbe3ef !important;
+    border-radius: 10px !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    padding: 10px 12px !important;
+}
+
+@media (max-width: 600px) {
+
+    .AdminScreen h2 {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+
+    .chartBox {
+        padding: 16px 12px 8px;
+        border-radius: 14px;
+    }
+
+    .chartBox .recharts-responsive-container {
+        min-width: 620px;
+    }
+
+    .AdminScreen .recharts-cartesian-axis-tick-value {
+        font-size: 16px;
+    }
+}
+

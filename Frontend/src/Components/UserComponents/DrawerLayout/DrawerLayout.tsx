@@ -186,6 +186,13 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
               </div>
             )}
 
+{
+  isAdmin &&(
+    <div className="AdminBadge">
+    <p>{t("drawer.role")}</p>
+    </div>
+  )
+}
             {navigationItems.map((item) => (
               <div key={item.key} className="DrawerRow">
                 <NavLink

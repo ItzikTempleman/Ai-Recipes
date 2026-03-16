@@ -28,6 +28,22 @@
   width: 100%;
 }
 
+.AdminBadge{
+background-color: #fbbf32;
+display: flex;
+width: 60%;
+margin: 12px;
+height: 30px;
+border-radius: 8px;
+align-items: center;
+justify-content: center;
+
+}
+
+.AdminBadge p{
+color: white;
+}
+
 .CloseButton {
   width: fit-content;
   margin: 24px 24px 0 auto;
@@ -46,7 +62,7 @@
   font-size: 20px;
   display: flex;
   justify-content: center;
-  margin: 12px 0 60px 0 !important;
+  margin: 12px 0 0 0 !important;
   text-align: center;
 }
 
