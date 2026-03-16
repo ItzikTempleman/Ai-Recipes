@@ -80,7 +80,7 @@
   position: absolute;
   inset: 0;
   height: 6px;
-  background: linear-gradient(90deg, #eaf6ff, #1e80b159, #1e80b1);
+  background: linear-gradient(90deg, #eaf6ff, #b7a270, #fbbf32);
 }
 
 .TopContent {
@@ -107,7 +107,7 @@
 
 .RestOfContent strong,
 .TopContent strong {
-  color: #1e80b1;
+  color: #fbbf32;
 }
 
 /* ---------- Footer ---------- */

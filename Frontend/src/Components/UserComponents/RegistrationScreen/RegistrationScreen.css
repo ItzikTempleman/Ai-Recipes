@@ -82,7 +82,7 @@
 }
 
 .FormController .MuiRadio-root.Mui-checked {
-  color: #07a8de;
+  color: #fbbf32;
 }
 
 /* --- Submit button --- */
@@ -94,16 +94,16 @@
   font-weight: 800 !important;
   margin-top: 0;
   background: white;
-  border: 2px solid #07a8de;
+  border: 2px solid #fbbf32;
   border-radius: 18px;
 font-size: 18px;
-  color: #07a8de !important;
+  color: #fbbf32 !important;
 
 }
 
 .RegistrationScreenBtn.MuiButton-root:hover {
   color: #ffffff !important;
- background: #07a8de;
+ background: #fbbf32;
 
 }
 
