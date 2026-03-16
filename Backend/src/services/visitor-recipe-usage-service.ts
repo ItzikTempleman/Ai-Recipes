@@ -17,7 +17,10 @@ public async recordVisitorFirstVisit(visitorId: string): Promise<void> {
     const rows = (await dal.execute(consumeSql, [visitorId])) as UsageRow[];
 
     if (rows.length === 0) {
-      const insertUsageIntoConsumeSql = `insert into visitor_recipe_usage (visitorId, windowEndsAt, used, totalGenerated) values (?, DATE_ADD(NOW(), INTERVAL ? DAY), 1)`
+      const insertUsageIntoConsumeSql = `
+  insert into visitor_recipe_usage (visitorId, windowEndsAt, used, totalGenerated)
+  values (?, DATE_ADD(NOW(), INTERVAL ? DAY), 1, 1)
+`;
       await dal.execute(insertUsageIntoConsumeSql, [visitorId,3]);
       return;
     }
@@ -40,7 +43,13 @@ public async recordVisitorFirstVisit(visitorId: string): Promise<void> {
   }
 
   public async refund(visitorId: string): Promise<void> {
-    const refundSql = `update visitor_recipe_usage set used = if(used > 0, used - 1, totalGenerated = if(totalGenerated > 0, totalGenerated - 1, 0) where visitorId = ?`;
+    const refundSql = `
+  update visitor_recipe_usage
+  set
+    used = if(used > 0, used - 1, 0),
+    totalGenerated = if(totalGenerated > 0, totalGenerated - 1, 0)
+  where visitorId = ?
+`;
     await dal.execute(refundSql, [visitorId]);
   }
 
