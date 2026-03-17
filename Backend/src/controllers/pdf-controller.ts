@@ -133,7 +133,7 @@ private async createShareToken(request: Request, response: Response) {
             countryOfOrigin: normalized.countryOfOrigin,
         };
 
-        const token = PdfController.encodeShareToken(minimal);
+       const token = sharePdfService.createTokenForPayload(minimal);
 
         response.json({ token });
     } catch (e: any) {

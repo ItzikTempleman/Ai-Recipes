@@ -77,7 +77,7 @@ async function getTokenPdfUrl(recipe: RecipeModel): Promise<string> {
     appConfig.shareTokenUrl,
     payload
   );
-  return new URL(`/share-render/0?token=${encodeURIComponent(data.token)}`, window.location.origin).toString();
+ return new URL(`/share-render/0?token=${encodeURIComponent(data.token)}`, window.location.origin).toString();
 }
 
 async function fetchPdfBlobFromUrl(pdfUrl: string): Promise<Blob> {
