@@ -25,11 +25,22 @@ function collectRecipeText(recipeLike: any): string {
 
   const instructionText = instructions.map((s: any) => String(s ?? "")).join(" ");
 
-  return `${title} ${description} ${ingredientText} ${instructionText}`.toLowerCase();
+  return `${title} ${description} ${ingredientText} ${instructionText}`
+    .toLowerCase()
+    .replace(/[^a-z0-9\u0590-\u05ff]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function hasAnyTerm(haystack: string, terms: string[]): boolean {
-  return terms.some((term) => haystack.includes(term));
+  return terms.some((term) => {
+    const pattern = new RegExp(`(^|[^a-z])${escapeRegex(term.toLowerCase())}([^a-z]|$)`, "i");
+    return pattern.test(haystack);
+  });
 }
 
 export function validateRecipeSemantics(recipeLike: any): void {
@@ -46,12 +57,24 @@ export function validateRecipeSemantics(recipeLike: any): void {
     "pancetta",
     "lard",
     "pork belly",
-    "pork shoulder"
+    "pork shoulder",
+    "pepperoni",
+    "sausage",
   ];
 
   const shellfishTerms = [
-    "shrimp", "prawn", "lobster", "crab", "scallop", "mussel",
-    "clam", "oyster", "shellfish", "calamari", "squid", "octopus"
+    "shrimp",
+    "prawn",
+    "lobster",
+    "crab",
+    "scallop",
+    "mussel",
+    "clam",
+    "oyster",
+    "shellfish",
+    "calamari",
+    "squid",
+    "octopus",
   ];
 
   const meatTerms = [
@@ -78,18 +101,37 @@ export function validateRecipeSemantics(recipeLike: any): void {
     "beef broth",
     "chicken broth",
     "beef stock",
-    "chicken stock"
+    "chicken stock",
   ];
 
   const fishTerms = [
-    "fish", "salmon", "tuna", "cod", "tilapia", "trout", "sea bass",
-    "sardine", "anchovy", "mackerel", "halibut"
+    "fish",
+    "salmon",
+    "tuna",
+    "cod",
+    "tilapia",
+    "trout",
+    "sea bass",
+    "sardine",
+    "anchovy",
+    "mackerel",
+    "halibut",
   ];
 
   const dairyTerms = [
-    "milk", "cream", "butter", "cheese", "mozzarella", "parmesan",
-    "cheddar", "yogurt", "labneh", "ricotta", "feta", "cottage cheese",
-    "cream cheese"
+    "milk",
+    "cream",
+    "butter",
+    "cheese",
+    "mozzarella",
+    "parmesan",
+    "cheddar",
+    "yogurt",
+    "labneh",
+    "ricotta",
+    "feta",
+    "cottage cheese",
+    "cream cheese",
   ];
 
   const eggTerms = ["egg", "eggs"];
@@ -105,32 +147,30 @@ export function validateRecipeSemantics(recipeLike: any): void {
 
   const isKosher = dietaryRestrictions === DietaryRestrictions.KOSHER;
   const isVegan = dietaryRestrictions === DietaryRestrictions.VEGAN;
-  const isDairyCategory = categories.includes(RecipeCategory.dairy);
-  const isMeatCategory = categories.includes(RecipeCategory.meat);
   const isFishCategory = categories.includes(RecipeCategory.fish);
   const isVeganCategory = categories.includes(RecipeCategory.vegan);
 
-if (isKosher) {
-  if (hasPork) {
-    throw new ValidationError("Invalid kosher recipe: contains pork/non-kosher meat terms");
+  if (isKosher) {
+    if (hasPork) {
+      throw new ValidationError("Invalid kosher recipe: contains pork/non-kosher meat terms");
+    }
+
+    if (hasShellfish) {
+      throw new ValidationError("Invalid kosher recipe: contains shellfish/non-kosher seafood terms");
+    }
+
+    if (hasMeat && hasDairy) {
+      throw new ValidationError("Invalid kosher recipe: mixes meat and dairy");
+    }
   }
 
-  if (hasShellfish) {
-    throw new ValidationError("Invalid kosher recipe: contains shellfish/non-kosher seafood terms");
+  if (isFishCategory && hasMeat) {
+    throw new ValidationError("Invalid fish recipe: contains meat terms");
   }
 
-  if (hasMeat && hasDairy) {
-    throw new ValidationError("Invalid kosher recipe: mixes meat and dairy");
+  if (isVegan || isVeganCategory) {
+    if (hasMeat || hasFish || hasDairy || hasEgg || hasHoney) {
+      throw new ValidationError("Invalid vegan recipe: contains animal-product terms");
+    }
   }
-}
-
-if (isFishCategory && hasMeat) {
-  throw new ValidationError("Invalid fish recipe: contains meat terms");
-}
-
-if (isVegan || isVeganCategory) {
-  if (hasMeat || hasFish || hasDairy || hasEgg || hasHoney) {
-    throw new ValidationError("Invalid vegan recipe: contains animal-product terms");
-  }
-}
 }

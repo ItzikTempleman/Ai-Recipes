@@ -539,8 +539,9 @@ background: rgb(255, 255, 255);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #54c9f0;
-  font-size: 24px;
+  color: #036485;
+  text-transform: uppercase;
+  font-size: 18px;
 }
 .separator {
   margin: 0 8px;
@@ -617,15 +618,15 @@ background: rgb(255, 255, 255);
   .RecipeTopSection {
     border-left: 0;
     border-right: 0;
-    border-radius: 0;
-    padding-top: 84px;
+    border-radius: 8;
+    padding:60px 6px 0 6px;
+
    background: transparent;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0;
+ 
     margin: 8px;
     box-shadow: none;
-    border: none;
+    border: 2px solid rgb(213, 213, 213);
+   
   }
 
   .LoadImageBtn {
