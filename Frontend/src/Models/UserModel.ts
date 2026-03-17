@@ -11,6 +11,12 @@ export type User = {
      image?: File;
      needsPasswordSetup: boolean;
        roleId: number; 
+       isPremium?: boolean;
+premiumSince?: string | null;
+premiumUntil?: string | null;
+paymentProvider?: string | null;
+paymentCustomerId?: string | null;
+paymentSubscriptionId?: string | null;
 }
 
 export enum Gender {

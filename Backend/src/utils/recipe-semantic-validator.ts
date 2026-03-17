@@ -110,35 +110,27 @@ export function validateRecipeSemantics(recipeLike: any): void {
   const isFishCategory = categories.includes(RecipeCategory.fish);
   const isVeganCategory = categories.includes(RecipeCategory.vegan);
 
-  if (isKosher) {
-    if (hasPork) {
-      throw new ValidationError("Invalid kosher recipe: contains pork/non-kosher meat terms");
-    }
-
-    if (hasShellfish) {
-      throw new ValidationError("Invalid kosher recipe: contains shellfish/non-kosher seafood terms");
-    }
-
-    if (hasMeat && hasDairy) {
-      throw new ValidationError("Invalid kosher recipe: mixes meat and dairy");
-    }
+if (isKosher) {
+  if (hasPork) {
+    throw new ValidationError("Invalid kosher recipe: contains pork/non-kosher meat terms");
   }
 
-  if (isDairyCategory && hasMeat) {
-    throw new ValidationError("Invalid dairy recipe: contains meat terms");
+  if (hasShellfish) {
+    throw new ValidationError("Invalid kosher recipe: contains shellfish/non-kosher seafood terms");
   }
 
-  if (isMeatCategory && hasDairy) {
-    throw new ValidationError("Invalid meat recipe: contains dairy terms");
+  if (hasMeat && hasDairy) {
+    throw new ValidationError("Invalid kosher recipe: mixes meat and dairy");
   }
+}
 
-  if (isFishCategory && hasMeat) {
-    throw new ValidationError("Invalid fish recipe: contains meat terms");
-  }
+if (isFishCategory && hasMeat) {
+  throw new ValidationError("Invalid fish recipe: contains meat terms");
+}
 
-  if (isVegan || isVeganCategory) {
-    if (hasMeat || hasFish || hasDairy || hasEgg || hasHoney) {
-      throw new ValidationError("Invalid vegan recipe: contains animal-product terms");
-    }
+if (isVegan || isVeganCategory) {
+  if (hasMeat || hasFish || hasDairy || hasEgg || hasHoney) {
+    throw new ValidationError("Invalid vegan recipe: contains animal-product terms");
   }
+}
 }

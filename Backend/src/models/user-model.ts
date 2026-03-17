@@ -9,8 +9,8 @@ export enum Gender {
 }
 
 export enum Role {
-    Admin=1,
-    User=2
+    Admin = 1,
+    User = 2
 }
 
 
@@ -21,13 +21,19 @@ export class UserModel {
     public email!: string;
     public password!: string;
     public age!: number;
-   public phoneNumber?: string | null; 
-  public gender?: Gender | null;      
-  public birthDate?: string | null;
+    public phoneNumber?: string | null;
+    public gender?: Gender | null;
+    public birthDate?: string | null;
     public image!: UploadedFile;
     public imageUrl!: string;
     public imageName!: string;
     public roleId!: number;
+    public isPremium!: boolean;
+    public premiumSince?: string | null;
+    public premiumUntil?: string | null;
+    public paymentProvider?: string | null;
+    public paymentCustomerId?: string | null;
+    public paymentSubscriptionId?: string | null;
 
     constructor(user: UserModel) {
         this.id = user.id;
@@ -45,21 +51,27 @@ export class UserModel {
         this.roleId = user.roleId;
     }
 
-private static validationSchema = Joi.object({
-  id: Joi.number().optional().positive(),
-  firstName: Joi.string().required().min(2).max(50),
-  familyName: Joi.string().required().min(2).max(50),
-  email: Joi.string().required().min(0).max(1000),
-  password: Joi.string().optional().min(0).max(1000),
-  birthDate: Joi.string().optional().allow("", null),
-  phoneNumber: Joi.string().optional().allow("", null).min(9).max(16),
-  age: Joi.number().optional().allow(null),
-  gender: Joi.string().valid("MALE", "FEMALE", "OTHER").optional().allow("", null),
-  image: Joi.object().optional(),
-  imageUrl: Joi.string().optional().uri(),
-  imageName: Joi.string().optional().max(50),
-roleId: Joi.number().valid(Role.Admin, Role.User).optional(),
-});
+    private static validationSchema = Joi.object({
+        id: Joi.number().optional().positive(),
+        firstName: Joi.string().required().min(2).max(50),
+        familyName: Joi.string().required().min(2).max(50),
+        email: Joi.string().required().min(0).max(1000),
+        password: Joi.string().optional().min(0).max(1000),
+        birthDate: Joi.string().optional().allow("", null),
+        phoneNumber: Joi.string().optional().allow("", null).min(9).max(16),
+        age: Joi.number().optional().allow(null),
+        gender: Joi.string().valid("MALE", "FEMALE", "OTHER").optional().allow("", null),
+        image: Joi.object().optional(),
+        imageUrl: Joi.string().optional().uri(),
+        imageName: Joi.string().optional().max(50),
+        roleId: Joi.number().valid(Role.Admin, Role.User).optional(),
+        isPremium: Joi.boolean().optional(),
+        premiumSince: Joi.string().optional().allow("", null),
+        premiumUntil: Joi.string().optional().allow("", null),
+        paymentProvider: Joi.string().optional().allow("", null).max(30),
+        paymentCustomerId: Joi.string().optional().allow("", null).max(100),
+        paymentSubscriptionId: Joi.string().optional().allow("", null).max(100),
+    });
 
     public validate(): void {
         const result = UserModel.validationSchema.validate(this);
