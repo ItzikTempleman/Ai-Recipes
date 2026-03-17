@@ -97,6 +97,23 @@ export function getBreakDownInstructions(
 ): string {
   const kosherSelected = dietaryRestrictions === DietaryRestrictions.KOSHER;
 
+  const defaultDietaryBlock =
+  dietaryRestrictions === DietaryRestrictions.DEFAULT
+    ? `
+  DEFAULT DIETARY MODE (ONLY WHEN SELECTED):
+   - Do NOT apply kosher rules unless DietaryRestrictions = 2.
+   - Do NOT remove dairy from meat dishes unless a selected restriction explicitly requires it.
+   - Do NOT replace dairy cheese with vegan cheese, lactose-free cheese, or any non-dairy substitute unless:
+       - the user explicitly asked for it, OR
+       - LactoseRestrictions = 1, OR
+       - DietaryRestrictions = 1 (VEGAN), OR
+       - DietaryRestrictions = 2 (KOSHER).
+   - If a dish's normal real-world identity includes both meat and dairy and no selected restriction forbids that combination, keep both.
+   - Example: in default mode, a cheeseburger must remain a real cheeseburger with a meat patty and real melted cheese in the ingredients AND in the instructions.
+   - Never silently convert a default recipe into a kosher-style adaptation.
+`
+    : "";
+
   const kosherBlock = kosherSelected
     ? `
   DIETARY RESTRICTIONS — KOSHER (ONLY WHEN SELECTED):
@@ -320,6 +337,7 @@ ${categoriesBlock}
        - No meat, fish, eggs, dairy, gelatin, or animal-derived ingredients.
        - Use plant-based alternatives that maintain the flavor/concept.
 
+${defaultDietaryBlock}
 ${kosherBlock}
 
   CALORY RESTRICTIONS:

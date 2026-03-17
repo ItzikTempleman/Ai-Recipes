@@ -32,8 +32,8 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
   const cleanQueryRestrictions =
     Array.isArray(recipe?.queryRestrictions)
       ? recipe.queryRestrictions
-          .map((x: any) => String(x ?? "").trim())
-          .filter((x: string) => x && !x.startsWith("__CONTENT_HASH__:"))
+        .map((x: any) => String(x ?? "").trim())
+        .filter((x: string) => x && !x.startsWith("__CONTENT_HASH__:"))
       : [];
 
   const promptParts: string[] = [
@@ -80,10 +80,23 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
   }
 
   if (categories.includes(RecipeCategory.meat)) {
-    promptParts.push(
-      "This is a MEAT dish.",
-      "Do not show cheese, cream, butter, yogurt, or other dairy visuals anywhere in the image."
-    );
+    const dairyMustBeHidden =
+      recipe.dietaryRestrictions === DietaryRestrictions.KOSHER ||
+      recipe.dietaryRestrictions === DietaryRestrictions.VEGAN ||
+      Number(recipe.lactoseRestrictions) === 1;
+
+    if (dairyMustBeHidden) {
+      promptParts.push(
+        "This is a MEAT dish.",
+        "Do not show cheese, cream, butter, yogurt, or other dairy visuals anywhere in the image."
+      );
+    } else {
+      promptParts.push(
+        "This is a MEAT dish.",
+        "If dairy ingredients such as cheese are explicitly present in ALLOWED INGREDIENTS, they MUST remain visible in the finished dish.",
+        "Do not sanitize the dish into a kosher-style meat-without-dairy version unless kosher is explicitly selected."
+      );
+    }
   }
 
   if (categories.includes(RecipeCategory.fish)) {
@@ -128,7 +141,25 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
       `Do not show any of the following ingredients anywhere in the image: ${cleanQueryRestrictions.join(", ")}.`
     );
   }
+  const hasCheeseIngredient = ingredientNames.some((x: string) =>
+    /\b(cheese|cheddar|mozzarella|swiss|american cheese|provolone|gouda|parmesan|feta|ricotta|cream cheese)\b/i.test(x)
+  );
 
+  const looksLikeBurger = /\b(cheeseburger|burger|hamburger)\b/i.test(`${title} ${query}`);
+
+  if (
+    looksLikeBurger &&
+    hasCheeseIngredient &&
+    recipe.dietaryRestrictions !== DietaryRestrictions.KOSHER &&
+    recipe.dietaryRestrictions !== DietaryRestrictions.VEGAN &&
+    Number(recipe.lactoseRestrictions) !== 1
+  ) {
+    promptParts.push(
+      "CRITICAL DEFAULT-MODE RULE: this dish is not kosher unless kosher was explicitly selected.",
+      "Show a real meat burger with clearly visible melted dairy cheese if cheese appears in ALLOWED INGREDIENTS.",
+      "Do not replace the cheese with a non-dairy substitute and do not remove it from the burger."
+    );
+  }
   let lastErr: any;
 
   for (let attempt = 0; attempt < 2; attempt++) {
