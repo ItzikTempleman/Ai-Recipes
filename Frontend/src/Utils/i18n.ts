@@ -460,7 +460,7 @@ const resources = {
         guestsEnteredSite: "אורחים שנכנסו לאתר",
         usersWhoGeneratedRecipes: "משתמשים שיצרו מתכונים",
         guestsWhoGeneratedRecipes: "אורחים שיצרו מתכונים",
-        totalRecipesGenerated: "סה״כ מתונים שנוצרו"
+        totalRecipesGenerated: "מתכונים שנוצרו"
       },
       profile: {
         addPhoneNumber: "הוסף טלפון",
