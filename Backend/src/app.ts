@@ -15,7 +15,6 @@ import { ensureVisitorId } from "./middleware/visitor-id-middleware";
 import { suggestionsController } from "./controllers/suggestions-controller";
 import { suggestionsService } from "./services/suggestions-service";
 
-
 export class App {
   public async start(): Promise<void> {
     const server = express();
@@ -31,7 +30,6 @@ export class App {
 
     server.use(express.json());
     server.use(cookieParser());
-    server.use(ensureVisitorId);
     server.use(fileUpload());
 
     const imageDir = process.env.IMAGE_DIR || path.join(__dirname, "1-assets", "images");
@@ -39,15 +37,19 @@ export class App {
     const userImageDir = path.join(imageDir, "users");
     await fs.mkdir(userImageDir, { recursive: true });
 
+    // Put infra/static endpoints BEFORE visitor tracking
+    server.use("/api/health", healthController.router);
     server.use("/api/recipes/images", express.static(imageDir));
     server.use("/api/users/images", express.static(userImageDir));
+
+    // Track only real app requests
+    server.use(ensureVisitorId);
 
     server.use("/api", userController.router);
     server.use(pdfController.router);
     server.use(recipeController.router);
     server.use(suggestionsController.router);
     server.use("/api", resetPasswordController.router);
-    server.use(healthController.router);
 
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);
@@ -56,9 +58,9 @@ export class App {
       console.log(`Listening to port ${appConfig.port}`);
     });
 
-suggestionsService.generateOnce().catch((err) => {
-  console.error("suggestionsService.generateOnce failed:", err);
-});
+    suggestionsService.generateOnce().catch((err) => {
+      console.error("suggestionsService.generateOnce failed:", err);
+    });
   }
 }
 

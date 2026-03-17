@@ -4,7 +4,7 @@ class HealthController {
   public router: Router = express.Router();
 
   public constructor() {
-this.router.get("/api/health", (_req, res) => void res.sendStatus(200));
+    this.router.get("/", (_req, res) => void res.sendStatus(200));
   }
 }
 

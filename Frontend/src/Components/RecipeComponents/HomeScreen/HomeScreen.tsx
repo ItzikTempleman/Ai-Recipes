@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Button, Chip, Dialog } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./HomeScreen.css";
 import { useTitle } from "../../../Utils/Utils";
 import { AppState } from "../../../Redux/Store";
@@ -54,18 +55,26 @@ export function HomeScreen() {
   const likes = useSelector((state: AppState) => state.likes);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
 
-  const [open, setOpen] = useState(false);
+  const shouldOpenGenerate = searchParams.get("generate") === "1";
+  const [open, setOpen] = useState(shouldOpenGenerate);
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
   const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
   const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<RecipeCategory[]>([]);
 
-useEffect(() => {
-  setListState(ListState.SUGGESTIONS);
-}, [user?.id]);
+  useEffect(() => {
+    setOpen(shouldOpenGenerate);
+  }, [shouldOpenGenerate]);
+
+  useEffect(() => {
+    setListState(ListState.SUGGESTIONS);
+  }, [user?.id]);
 
   useEffect(() => {
     recipeService.getAllRecipes().catch(notify.error);
@@ -152,6 +161,21 @@ useEffect(() => {
 
   const filtersToUse: Filters | null = appliedFilters ?? guestFiltersStash;
 
+  const openGenerateDialog = () => {
+    dispatch(resetGenerated());
+    setAppliedFilters(null);
+
+    const next = new URLSearchParams(searchParams);
+    next.set("generate", "1");
+    setSearchParams(next);
+  };
+
+  const closeGenerateDialog = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("generate");
+    setSearchParams(next);
+  };
+
   const handleExitRecipe = () => {
     if (!user && current?.title) {
       dispatch(stashGuestRecipe(current));
@@ -165,7 +189,7 @@ useEffect(() => {
   const featuredFallback = isRTL ? "המלצות" : "Featured";
 
   const titleText = useMemo(() => {
-    const featured = t("homeScreen.suggestions") || t("homeScreen.suggestions") || featuredFallback;
+    const featured = t("homeScreen.suggestions") || featuredFallback;
 
     if (!user) return featured;
 
@@ -189,23 +213,19 @@ useEffect(() => {
             <div className={`HelloGuestMessage ${isRTL ? "rtl" : "ltr"}`}>
               <p>{t("generate.guest")}</p>
             </div>
-        </div>
+          </div>
         )}
-            <div>
-              <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
-              {/* <p className="GuestTitle2">{t("homeScreen.generate2")}</p> */}
-            </div>
-  
+
+        <div>
+          <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
+        </div>
 
         <div className="SelectionDiv">
           <FeatureHint />
+
           <Button
             className="GenerateRecipeBtnHomeScreen"
-            onClick={() => {
-              dispatch(resetGenerated());
-              setAppliedFilters(null);
-              setOpen(true);
-            }}
+            onClick={openGenerateDialog}
             variant="contained"
           >
             {t("homeScreen.generate")}
@@ -216,9 +236,15 @@ useEffect(() => {
             className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={closeGenerateDialog}
           >
-            <RecipeInputDialog onDone={() => setOpen(false)} onFiltersReady={setAppliedFilters} />
+            <RecipeInputDialog
+              onDone={() => {
+                closeGenerateDialog();
+                navigate("/home", { replace: true });
+              }}
+              onFiltersReady={setAppliedFilters}
+            />
           </Dialog>
 
           {current?.title && filtersToUse && !open && (
@@ -240,7 +266,7 @@ useEffect(() => {
                 role="button"
                 tabIndex={0}
               >
-                <h4>{t("homeScreen.suggestions") || t("homeScreen.suggestions") || featuredFallback}</h4>
+                <h4>{t("homeScreen.suggestions") || featuredFallback}</h4>
               </div>
 
               <div
@@ -263,25 +289,26 @@ useEffect(() => {
             </div>
           )}
 
-         {!user && (
-  <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
-    <div className="SuggestionsBtn active" role="presentation">
-      <h4>{titleText}</h4>
-    </div>
-  </div>
-)}
+          {!user && (
+            <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
+              <div className="SuggestionsBtn active" role="presentation">
+                <h4>{titleText}</h4>
+              </div>
+            </div>
+          )}
 
           {listState === ListState.SUGGESTIONS && (
             <div className="CategoryChipsContainer">
               {ALL_CATEGORIES.map((c) => (
-<Chip
-  className={`Chip ${selectedCategories.includes(c) ? "selected" : ""}`}
-  key={c}
-  label={t(`categories.${c}`) || c}
-  clickable
-  onClick={() => toggleCategory(c)}
-/>
+                <Chip
+                  className={`Chip ${selectedCategories.includes(c) ? "selected" : ""}`}
+                  key={c}
+                  label={t(`categories.${c}`) || c}
+                  clickable
+                  onClick={() => toggleCategory(c)}
+                />
               ))}
+
               {selectedCategories.length > 0 && (
                 <Chip
                   className="CategoryChipClear"
