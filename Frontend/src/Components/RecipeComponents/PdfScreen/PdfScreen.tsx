@@ -25,7 +25,7 @@ export function PdfScreen() {
     const token = params.get("token");
 
     if (token) {
-      fetch(`/api/share-payload/${token}`)
+      fetch(`/api/share-payload/${encodeURIComponent(token)}`)
         .then(async (r) => {
           if (!r.ok) throw new Error(await r.text());
           return r.json();
