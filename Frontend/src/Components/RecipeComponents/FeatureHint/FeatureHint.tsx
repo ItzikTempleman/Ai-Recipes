@@ -13,43 +13,42 @@ export function FeatureHint() {
   const isHebrew = (i18n.language ?? "").startsWith("he");
   const dir: "rtl" | "ltr" = isHebrew ? "rtl" : "ltr";
 
-  return (
-    <div className={` ${user ? "user" : "guest"}  `}>
+return (
+  <div className={` ${user ? "user" : "guest"}  `}>
+    <div className="container">
+      <div className="FeatureHint" dir={dir}>
+        <div className="ChatSection FeatureRow">
+          {/* <span className="FeaterIcon">
+            <BubbleChartIcon />
+          </span> */}
+          <span className="FeatureLabel">{t("homeScreen.ask")}</span>
+        </div>
+
+        <div className="FavoritesSection FeatureRow">
+          {/* <span className="FeaterIcon">
+            <FavoriteIcon />
+          </span> */}
+          <span className="FeatureLabel">{t("homeScreen.save")}</span>
+        </div>
+
+        <div className="HistorySection FeatureRow">
+          {/* <span className="FeaterIcon">
+            <HistoryIcon />
+          </span> */}
+          <span className="FeatureLabel">{t("homeScreen.history")}</span>
+        </div>
+      </div>
+
       {!user && (
-<div className="container">
-        <div className="FeatureHint" dir={dir}>
-       
-<div className="ChatSection FeatureRow">
-  {/* <span className="FeaterIcon">
-    <BubbleChartIcon />
-  </span> */}
-  <span className="FeatureLabel">{t("homeScreen.ask")}</span>
-</div>
-
-<div className="FavoritesSection FeatureRow">
-  {/* <span className="FeaterIcon">
-    <FavoriteIcon />
-  </span> */}
-  <span className="FeatureLabel">{t("homeScreen.save")}</span>
-</div>
-
-<div className="HistorySection FeatureRow">
-  {/* <span className="FeaterIcon">
-    <HistoryIcon />
-  </span> */}
-  <span className="FeatureLabel">{t("homeScreen.history")}</span>
-</div>
-    </div>
-<Button
-  className="FreeWithLoginBtn"
-  onClick={() => navigate("/login")}
->
-  {t("homeScreen.freeWithLogin")}{" "}
-  {/* {isHebrew ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />} */}
-</Button>
-          
-    </div>
+        <Button
+          className="FreeWithLoginBtn"
+          onClick={() => navigate("/login")}
+        >
+          {t("homeScreen.freeWithLogin")}{" "}
+          {/* {isHebrew ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />} */}
+        </Button>
       )}
     </div>
-  );
+  </div>
+);
 }

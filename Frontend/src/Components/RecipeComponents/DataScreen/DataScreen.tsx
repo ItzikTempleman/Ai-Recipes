@@ -149,6 +149,14 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
           <CloseIcon />
         </div>
 
+      {!localImgSrc && loadImage && !isImageLoading && !shareMode && (
+          <div className="LoadImageCta">
+            <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
+              {t("recipeUi.loadImage")} <CameraEnhanceIcon />
+            </Button>
+          </div>
+        )}
+        
         {localImgSrc ? (
           <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
         ) : (
@@ -257,13 +265,7 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
           </div>
         </div>
 
-        {!localImgSrc && loadImage && !isImageLoading && !shareMode && (
-          <div className="LoadImageCta">
-            <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
-              {t("recipeUi.loadImage")} <CameraEnhanceIcon />
-            </Button>
-          </div>
-        )}
+  
 
         <AskChefDialog open={open} onClose={handleCloseAskChef} recipe={recipe} isRTL={isRTL} />
       </div>
