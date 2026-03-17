@@ -110,37 +110,37 @@ class PdfController {
         }
     }
 
-    private async createShareToken(request: Request, response: Response) {
-        try {
-            const normalized = request.body;
+private async createShareToken(request: Request, response: Response) {
+    try {
+        const normalized = request.body;
 
-            const minimal = {
-                title: normalized.title,
-                data: normalized.data,
-                imageUrl: normalized.imageUrl || normalized.image || "",
-                description: normalized.description,
-                sugarRestriction: normalized.sugarRestriction,
-                lactoseRestrictions: normalized.lactoseRestrictions,
-                glutenRestrictions: normalized.glutenRestrictions,
-                dietaryRestrictions: normalized.dietaryRestrictions,
-                amountOfServings: normalized.amountOfServings,
-                calories: normalized.calories,
-                totalSugar: normalized.totalSugar,
-                totalProtein: normalized.totalProtein,
-                healthLevel: normalized.healthLevel,
-                prepTime: normalized.prepTime,
-                difficultyLevel: normalized.difficultyLevel,
-                countryOfOrigin: normalized.countryOfOrigin,
-            };
+        const minimal = {
+            title: normalized.title,
+            data: normalized.data,
+            imageUrl: normalized.imageUrl || normalized.image || "",
+            description: normalized.description,
+            sugarRestriction: normalized.sugarRestriction,
+            lactoseRestrictions: normalized.lactoseRestrictions,
+            glutenRestrictions: normalized.glutenRestrictions,
+            dietaryRestrictions: normalized.dietaryRestrictions,
+            amountOfServings: normalized.amountOfServings,
+            calories: normalized.calories,
+            totalSugar: normalized.totalSugar,
+            totalProtein: normalized.totalProtein,
+            healthLevel: normalized.healthLevel,
+            prepTime: normalized.prepTime,
+            difficultyLevel: normalized.difficultyLevel,
+            countryOfOrigin: normalized.countryOfOrigin,
+        };
 
-            const token = sharePdfService.createTokenForPayload(minimal);
+        const token = PdfController.encodeShareToken(minimal);
 
-            response.json({ token });
-        } catch (e: any) {
-            console.error("createShareToken failed:", e?.stack || e);
-            response.status(StatusCode.InternalServerError).send("Some error, please try again");
-        }
+        response.json({ token });
+    } catch (e: any) {
+        console.error("createShareToken failed:", e?.stack || e);
+        response.status(StatusCode.InternalServerError).send("Some error, please try again");
     }
+}
 
     static encodeShareToken(payload: any): string {
 
