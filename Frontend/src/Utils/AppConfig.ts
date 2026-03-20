@@ -23,6 +23,8 @@ class AppConfig {
   public readonly suggestionsUrl = `${API}/suggestions`;
   public readonly recipeUsageUrl = `${API}/usage/recipes`;
   public readonly adminStatistics = `${API}/admin/statistics`;
+  public readonly premiumPlansUrl = `${API}/premium/plans`;
+  public readonly premiumStatusUrl = `${API}/users/plan/premium`;
 }
 
 export const appConfig = new AppConfig();

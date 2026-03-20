@@ -57,3 +57,20 @@ export enum PaymentStatus {
     EXPIRED = "EXPIRED",
     FAILED = "FAILED"
 }
+
+export type PremiumPlanInfo = {
+  code:PremiumPlan;
+  name: string;
+  price: number;
+  currency: string;
+  durationDays: number;
+};
+
+export type PremiumStatus = {
+  isPremium: boolean;
+  premiumPlan: string | null;
+  premiumSince: string | null;
+  premiumUntil: string | null;
+  paymentProvider: string | null;
+  paymentStatus: string | null;
+};
