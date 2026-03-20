@@ -1,6 +1,7 @@
 import { UserModel } from "../models/user-model";
 import { visitorRecipeUsageService } from "../services/visitor-recipe-usage-service";
 import { userRecipeUsageService } from "../services/user-recipe-usage-service";
+import { premiumService } from "../services/premium-service";
 
 export type UsageConsumer = "none" | "user" | "visitor";
 
@@ -15,16 +16,16 @@ export async function consumeRecipeUsage(
 ): Promise<UsageConsumer> {
   const roleId = toNum((user as any)?.roleId);
 
-  // Admin => unlimited
   if (roleId === 1) return "none";
 
-  // Any logged-in non-admin => consume USER usage
   if (user?.id) {
+    const isPremium = await premiumService.isUserPremium(user.id);
+    if (isPremium) return "none";
+
     await userRecipeUsageService.consume(user.id);
     return "user";
   }
 
-  // Guest => consume VISITOR usage
   await visitorRecipeUsageService.consume(visitorId);
   return "visitor";
 }

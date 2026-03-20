@@ -14,6 +14,7 @@ export enum Role {
 }
 
 
+
 export class UserModel {
     public id!: number;
     public firstName!: string;
