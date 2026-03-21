@@ -12,13 +12,14 @@ import { consumeRecipeUsage, refundRecipeUsage, UsageConsumer } from "../utils/r
 import { normalizeLang } from "../utils/normalize-language";
 import { userService } from "../services/user-service";
 import { premiumService } from "../services/premium-service";
+import { ensureVisitorId } from "../middleware/visitor-id-middleware";
 
 class RecipeController {
     public router: Router = express.Router();
 
     public constructor() {
-        this.router.post("/api/generate-free-recipe-without-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeNoImage);
-        this.router.post("/api/generate-recipe-with-image/:amount", verificationMiddleware.verifyOptional, this.generateRecipeWithImage);
+        this.router.post("/api/generate-free-recipe-without-image/:amount",ensureVisitorId, verificationMiddleware.verifyOptional, this.generateRecipeNoImage);
+        this.router.post("/api/generate-recipe-with-image/:amount",ensureVisitorId, verificationMiddleware.verifyOptional, this.generateRecipeWithImage);
         this.router.get("/api/recipes/all", verificationMiddleware.verifyOptional, this.getCatalogRecipes);
         this.router.get("/api/recipes", verificationMiddleware.verifyLoggedIn, this.getUserRecipes);
         this.router.get("/api/recipe/:recipeId", verificationMiddleware.verifyLoggedIn, this.getSingleRecipe);
@@ -35,7 +36,7 @@ class RecipeController {
         this.router.get("/api/recipe/public/:recipeId", this.getPublicRecipe);
         this.router.get("/api/recipes/liked/count/:recipeId",verificationMiddleware.verifyLoggedIn,this.getRecipesTotalLikeCount);
         this.router.post("/api/recipe/:recipeId/ask",verificationMiddleware.verifyLoggedIn,this.askRecipeQuestion);
-        this.router.get("/api/usage/recipes",verificationMiddleware.verifyOptional,this.getRecipeUsageStatus);
+        this.router.get("/api/usage/recipes",ensureVisitorId,verificationMiddleware.verifyOptional,this.getRecipeUsageStatus);
     }
 
     private async getUserRecipes(request: Request, response: Response) {

@@ -43,7 +43,7 @@ export class App {
     server.use("/api/users/images", express.static(userImageDir));
 
     // Track only real app requests
-    server.use(ensureVisitorId);
+   
 
     server.use("/api", userController.router);
     server.use(pdfController.router);
