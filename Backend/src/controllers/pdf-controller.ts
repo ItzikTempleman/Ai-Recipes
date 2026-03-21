@@ -15,6 +15,9 @@ class PdfController {
         this.router.post("/api/recipes/share-token", this.createShareToken.bind(this));
     }
 
+    // =========================================
+    // Recipe ID → PDF
+    // =========================================
     private async getSharePdf(request: Request, response: Response) {
         try {
             const recipeId = Number(request.params.recipeId);
@@ -32,6 +35,7 @@ class PdfController {
             response.setHeader("Content-Type", "application/pdf");
             response.setHeader("Cache-Control", "no-store");
             response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+
             response.status(StatusCode.OK).send(pdf);
         } catch (e: any) {
             console.error("getSharePdf failed:", e?.stack || e);
@@ -39,6 +43,9 @@ class PdfController {
         }
     }
 
+    // =========================================
+    // TOKEN → PDF (MAIN SHARE ENTRY POINT)
+    // =========================================
     private async getSharePdfByToken(request: Request, response: Response) {
         try {
             const token = String(request.query.token || "").trim();
@@ -48,9 +55,7 @@ class PdfController {
                 return;
             }
 
-            // Accept BOTH:
-            // 1. short server-stored token (preferred)
-            // 2. legacy/encoded token (backward compatible)
+            // ✅ CRITICAL FIX: support BOTH token types
             const payload =
                 sharePdfService.getPayload(token) ??
                 PdfController.decodeShareToken(token);
@@ -68,6 +73,7 @@ class PdfController {
             response.setHeader("Content-Type", "application/pdf");
             response.setHeader("Cache-Control", "no-store");
             response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+
             response.status(StatusCode.OK).send(pdf);
         } catch (e: any) {
             console.error("getSharePdfByToken failed:", e?.stack || e);
@@ -75,6 +81,9 @@ class PdfController {
         }
     }
 
+    // =========================================
+    // BODY → PDF (NOT WHATSAPP FLOW)
+    // =========================================
     private async sharePdfFromBody(request: Request, response: Response) {
         try {
             const recipe = request.body;
@@ -84,7 +93,9 @@ class PdfController {
                 return;
             }
 
+            // ✅ Keep short token even here (consistent)
             const token = sharePdfService.createTokenForPayload(recipe);
+
             const pdf = await sharePdfService.pdfForPayloadToken(
                 this.getFrontendBaseUrl(request),
                 token
@@ -93,6 +104,7 @@ class PdfController {
             response.setHeader("Content-Type", "application/pdf");
             response.setHeader("Cache-Control", "no-store");
             response.setHeader("Content-Disposition", `inline; filename="recipe.pdf"`);
+
             response.status(StatusCode.OK).send(pdf);
         } catch (e: any) {
             console.error("sharePdfFromBody failed:", e?.stack || e);
@@ -100,6 +112,9 @@ class PdfController {
         }
     }
 
+    // =========================================
+    // TOKEN → JSON PAYLOAD
+    // =========================================
     private async getSharePayload(request: Request, response: Response) {
         try {
             const token = String(request.params.token || "").trim();
@@ -109,9 +124,7 @@ class PdfController {
                 return;
             }
 
-            // Accept BOTH:
-            // 1. short server-stored token
-            // 2. legacy/encoded token
+            // ✅ CRITICAL FIX: support BOTH token types
             const payload =
                 sharePdfService.getPayload(token) ??
                 PdfController.decodeShareToken(token);
@@ -128,6 +141,9 @@ class PdfController {
         }
     }
 
+    // =========================================
+    // CREATE SHARE TOKEN
+    // =========================================
     private async createShareToken(request: Request, response: Response) {
         try {
             const normalized = request.body;
@@ -156,9 +172,7 @@ class PdfController {
                 countryOfOrigin: normalized.countryOfOrigin,
             };
 
-            // IMPORTANT FIX:
-            // Use a short server-side token again instead of embedding
-            // the whole payload in the URL.
+            // ✅ CRITICAL FIX: SHORT TOKEN (WhatsApp-safe)
             const token = sharePdfService.createTokenForPayload(minimal);
 
             response.status(StatusCode.OK).json({ token });
@@ -168,6 +182,9 @@ class PdfController {
         }
     }
 
+    // =========================================
+    // ENCODE (kept for backward compatibility)
+    // =========================================
     static encodeShareToken(payload: any): string {
         const json = JSON.stringify(payload);
         const deflated = zlib.deflateRawSync(Buffer.from(json, "utf8"), { level: 9 });
@@ -176,6 +193,9 @@ class PdfController {
         return `v2.${b64url}`;
     }
 
+    // =========================================
+    // DECODE (backward compatibility)
+    // =========================================
     private static decodeShareToken(token: string): any | null {
         try {
             if (token.startsWith("v2.")) {
@@ -191,20 +211,15 @@ class PdfController {
                 return obj;
             }
 
-            // Optional legacy plain-base64 token support
-            let b64 = token.replace(/-/g, "+").replace(/_/g, "/");
-            while (b64.length % 4 !== 0) b64 += "=";
-
-            const json = Buffer.from(b64, "base64").toString("utf8");
-            const obj = JSON.parse(json);
-
-            if (!obj || !obj.title) return null;
-            return obj;
+            return null;
         } catch {
             return null;
         }
     }
 
+    // =========================================
+    // FRONTEND URL RESOLUTION
+    // =========================================
     private getFrontendBaseUrl(request: Request): string {
         const envOrigin =
             process.env.FRONTEND_BASE_URL?.trim() ||
