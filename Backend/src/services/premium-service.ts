@@ -69,7 +69,7 @@ class PremiumService {
     };
 
     public async getPremiumStatus(userId: number): Promise<PremiumStatusResponse> {
-        const sql = `select isPremium, premiumPlan, premiumSince, premiumUntil, paymentProvider, paymentStatus from user where id=? limit =1`;
+        const sql = `select isPremium, premiumPlan, premiumSince, premiumUntil, paymentProvider, paymentStatus from user where id=? limit 1`;
         const values = [userId];
         const rows = await dal.execute(sql, values) as PremiumStatusResponse[];
         const row = rows[0];
