@@ -55,8 +55,10 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
 
   const user = useSelector((state: AppState) => state.user);
 
-  const isLoggedIn = !!localStorage.getItem("token");
+  const isLoggedIn = !!user;
   const isAdmin = isLoggedIn && user?.roleId === 1;
+
+  // const isPremium = user?.isPremium === true;
 
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -186,13 +188,13 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
               </div>
             )}
 
-{
-  isAdmin &&(
-    <div className="AdminBadge">
-    <p>{t("drawer.role")}</p>
-    </div>
-  )
-}
+            {
+              isAdmin && (
+                <div className="AdminBadge">
+                  <p>{t("drawer.role")}</p>
+                </div>
+              )
+            }
             {navigationItems.map((item) => (
               <div key={item.key} className="DrawerRow">
                 <NavLink
