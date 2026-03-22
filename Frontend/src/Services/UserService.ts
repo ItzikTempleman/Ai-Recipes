@@ -45,7 +45,11 @@ class UserService {
             const dbUser = decoded.user;
 
             if (decoded.exp * 1000 > Date.now() && dbUser) {
-                store.dispatch(userSlice.actions.registrationAndLogin(dbUser));
+                const normalizedUser: User = {
+                    ...dbUser,
+                    isPremium: Boolean(dbUser.isPremium),
+                };
+                store.dispatch(userSlice.actions.registrationAndLogin(normalizedUser));
                 localStorage.setItem("token", token);
                 this.logoutAfterTimeout(token);
                 return dbUser;

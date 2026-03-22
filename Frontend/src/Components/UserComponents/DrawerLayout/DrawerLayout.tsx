@@ -15,11 +15,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import type { AppState } from "../../../Redux/Store";
 import { userService } from "../../../Services/UserService";
 import { notify } from "../../../Utils/Notify";
 import { DeleteDialog } from "../DeleteDialog/DeleteDialog";
+import premiumBadge from "../../../Assets/images/premium.jpg";
 
 import "./DrawerLayout.css";
 
@@ -58,7 +58,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
   const isLoggedIn = !!user;
   const isAdmin = isLoggedIn && user?.roleId === 1;
 
-  // const isPremium = user?.isPremium === true;
+  const isPremium = user?.isPremium === true;
 
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -195,6 +195,17 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                 </div>
               )
             }
+{isPremium && (
+  <div className="PremiumBadgeContainer">
+    <div className="PremiumImageWrapper">
+      <img className="premium-image" src={premiumBadge} alt="Premium" />
+      <div className="PremiumBadge">
+        <p>{t("drawer.premium")}</p>
+      </div>
+    </div>
+  </div>
+)}
+
             {navigationItems.map((item) => (
               <div key={item.key} className="DrawerRow">
                 <NavLink

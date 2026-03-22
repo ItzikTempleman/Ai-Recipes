@@ -15,6 +15,7 @@ const resources = {
         selectLanguage: "Language"
       },
       drawer: {
+        premium:"Premium",
         role:"Admin",
         admin: "Admin data",
         profile: "Profile",
@@ -267,6 +268,7 @@ const resources = {
       },
 
       drawer: {
+         premium:" פרימיום",
         role:"מנהל המערכת",
         admin: "מנהל מערכת",
         profile: "פרופיל",

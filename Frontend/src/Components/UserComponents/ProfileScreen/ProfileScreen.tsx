@@ -49,7 +49,7 @@ export function ProfileScreen() {
   const fallbackAvatar = "/person-21.png";
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+ const isPremium = user?.isPremium === true;
   useEffect(() => {
     if (user?.imageUrl) {
       setImagePreview(user.imageUrl);
@@ -195,10 +195,17 @@ export function ProfileScreen() {
           }}
         />
 
+
         <h3 className="Name">
           {user.firstName} {user.familyName}
         </h3>
 
+        {isPremium && (
+      <div className="PremiumBadgeProfile">
+        <p>{t("drawer.premium")}</p>
+      </div>
+        )
+      }
         {(ageText || genderText) && (
           <p>{[ageText, genderText].filter(Boolean).join(", ")}</p>
         )}
