@@ -163,26 +163,35 @@ class UserController {
         response.json(plans);
     }
 
-    private async activatePremium(request: Request, response: Response) {
+private async activatePremium(request: Request, response: Response, next: NextFunction) {
+    try {
         const userId = (request as any).user.id;
         const { plan, provider, paymentCustomerId, paymentSubscriptionId } = request.body;
 
-        const status = await premiumService.activatePremium(
-            {
-                userId,
-                plan,
-                provider,
-                paymentCustomerId,
-                paymentSubscriptionId
-            }
-        )
+        console.log("activatePremium start", { userId, plan, provider });
+
+        const status = await premiumService.activatePremium({
+            userId,
+            plan,
+            provider,
+            paymentCustomerId,
+            paymentSubscriptionId
+        });
+        console.log("premium activated", status);
 
         const dbUser = await userService.getOneUser(userId);
+        console.log("dbUser loaded", dbUser?.id);
+
         const token = cyber.generateToken(dbUser);
-        response.json({
-            status, token
-        });
-    };
+        console.log("token generated");
+
+        response.json({ status, token });
+    }
+    catch (err) {
+        console.error("activatePremium failed:", err);
+        next(err);
+    }
+}
 
     private async cancelPremium(request: Request, response: Response) {
         const userId = (request as any).user.id;
