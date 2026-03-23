@@ -213,7 +213,9 @@ justify-content: center;
 }
 
 .LoginFromDrawerBtn.MuiButton-root {
-  color: #fbbf32;
+  color: #ff9d00;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .LogoutFromDrawerBtn.MuiButton-root {
@@ -308,4 +310,18 @@ justify-content: center;
 
 .DeleteAccountText {
   margin: 0;
+}
+
+
+.HelloGuestMessage {
+  margin: 8px;
+  padding: 4px 8px;
+  background: #9a9a9a ;
+  border-radius: 6px;
+}
+
+.HelloGuestMessage p {
+  margin: 0;
+  font-size: 16px;
+  color: white;
 }

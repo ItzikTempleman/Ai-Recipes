@@ -4,17 +4,19 @@ import { useTranslation } from "react-i18next";
 import { Button, Chip, Dialog } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./HomeScreen.css";
-import { useTitle } from "../../../Utils/Utils";
-import { AppState } from "../../../Redux/Store";
-import { recipeService } from "../../../Services/RecipeService";
-import { RecipeListItem } from "../RecipeListItem/RecipeListItem";
-import { notify } from "../../../Utils/Notify";
+import { useTitle } from "../../Utils/Utils";
+import { AppState } from "../../Redux/Store";
+import { recipeService } from "../../Services/RecipeService";
+import { RecipeListItem } from "../RecipeComponents/RecipeListItem/RecipeListItem";
+import { notify } from "../../Utils/Notify";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
-import { RecipeInputDialog } from "../RecipeInputDialog/RecipeInputDialog";
-import { resetGenerated, setCurrent, stashGuestRecipe } from "../../../Redux/RecipeSlice";
-import { Filters, RecipeDataContainer } from "../RecipeDataContainer/RecipeDataContainer";
-import { RecipeCategory, RecipeModel } from "../../../Models/RecipeModel";
-import { FeatureHint } from "../FeatureHint/FeatureHint";
+import { RecipeInputDialog } from "../RecipeComponents/RecipeInputDialog/RecipeInputDialog";
+import { resetGenerated, setCurrent, stashGuestRecipe } from "../../Redux/RecipeSlice";
+import { Filters, RecipeDataContainer } from "../RecipeComponents/RecipeDataContainer/RecipeDataContainer";
+import { RecipeCategory, RecipeModel } from "../../Models/RecipeModel";
+ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 enum ListState {
   SUGGESTIONS,
@@ -60,7 +62,7 @@ export function HomeScreen() {
 
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
-
+  
   const shouldOpenGenerate = searchParams.get("generate") === "1";
   const [open, setOpen] = useState(shouldOpenGenerate);
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
@@ -207,24 +209,29 @@ export function HomeScreen() {
 
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
-      <div className={`HomeScreenTitleWrapper ${isRTL ? "rtl" : "ltr"}`}>
-        {!user && (
-          <div className={`GuestHeader ${isRTL ? "rtl" : "ltr"}`}>
-            <div className={`HelloGuestMessage ${isRTL ? "rtl" : "ltr"}`}>
-              <p>{t("generate.guest")}</p>
-            </div>
-          </div>
-        )}
-
+      <div className={`home-screen-wrapper ${isRTL ? "rtl" : "ltr"}`}>
         <div>
-          <h2 className="GuestTitle">{t("homeScreen.generateTitle")}</h2>
+          <h2 className="main-title">{t("homeScreen.generateTitle")}</h2>
         </div>
 
         <div className="SelectionDiv">
-          <FeatureHint />
+             <div className="FeatureHint">
+        {!user && (
+          <Button
+            className="free-with-login-btn"
+            onClick={() => navigate("/login")}>
+            <p>{t("homeScreen.ask")}</p>
+            <p>{t("homeScreen.save")}</p>
+            <p>{t("homeScreen.history")}</p>
+             {
+              !isRTL? <ArrowForwardIcon/> :<ArrowBackIcon/>
+            }
+          </Button>
+        )}
+      </div>
 
           <Button
-            className="GenerateRecipeBtnHomeScreen"
+            className="home-screen-generate-btn"
             onClick={openGenerateDialog}
             variant="contained"
           >

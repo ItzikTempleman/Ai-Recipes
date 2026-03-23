@@ -9,7 +9,7 @@ import { ProfileScreen } from "../UserComponents/ProfileScreen/ProfileScreen";
 import { PrivacyPolicy } from "../UserComponents/PrivacyPolicy/PrivacyPolicy";
 import { DataDeletion } from "../UserComponents/DataDeletion/DataDeletion";
 import { ResetPasswordScreen } from "../UserComponents/ResetPasswordScreen/ResetPasswordScreen";
-import { HomeScreen } from "../RecipeComponents/HomeScreen/HomeScreen";
+import { HomeScreen } from "../HomeScreen/HomeScreen";
 import { RecipeInfoScreen } from "../RecipeComponents/RecipeInfoScreen/RecipeInfoScreen";
 import { PdfScreen } from "../RecipeComponents/PdfScreen/PdfScreen";
 import { AdminScreen } from "../UserComponents/AdminScreen/AdminScreen";

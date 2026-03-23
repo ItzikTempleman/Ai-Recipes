@@ -97,6 +97,7 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
             </NavLink>
           </div>
         )}
+
       </div>
 
       <div className="HeaderRight">
@@ -125,19 +126,12 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
           </select>
         </div>
 
-        {!isGuest ? (
-          <NavLink
-            to="/profile"
-            className={({ isActive }) => `IdentityBadge ${isActive ? "active" : ""}`}
-          >
-            {user.firstName} {user.familyName}
-          </NavLink>
-        ) : (
-          <>
+        {!isGuest && (
+      
             <div className="LoginBtn" onClick={() => navigate("/login")}>
               <h3>{t("drawer.login")}</h3>
             </div>
-          </>
+        
         )}
 
         <div className="MenuBtn">

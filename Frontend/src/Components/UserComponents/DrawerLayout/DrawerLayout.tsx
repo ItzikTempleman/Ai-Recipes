@@ -187,7 +187,13 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                 <img className="NoProfileImage" src="/person-21.png" alt="Guest" />
               </div>
             )}
-
+        {!user && (
+        
+            <div className={`HelloGuestMessage`}>
+              <p>{t("generate.guest")}</p>
+           
+          </div>
+        )}
             {
               isAdmin && (
                 <div className="AdminBadge">

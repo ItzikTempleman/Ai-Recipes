@@ -2,128 +2,43 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  margin: 0;
-  padding: 28px 16px 56px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
 
-.HomeScreenTitleWrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.HomeScreen>* {
-  position: relative;
-  z-index: 1;
-}
-
-.GuestHeader {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.HelloGuestMessage {
-  position: absolute;
-  top: calc(-48px - 28px);
-  z-index: 10000;
-  margin: 0;
-  padding: 4px 8px;
-  background: #fbbf32 ;
-  border-radius: 12px;
-}
-
-.HelloGuestMessage.ltr {
-  left: 0;
-  right: auto;
-  direction: ltr;
-  text-align: left;
-}
-
-.HelloGuestMessage.rtl {
-  right: 0;
-  left: auto;
-  direction: rtl;
-  text-align: right;
-}
-
-.HelloGuestMessage p {
-  margin: 0;
-  font-weight: 200;
-  font-size: 16px;
-  color: white;
-}
-
-.HomeScreenTitleWrapper {
+.home-screen-wrapper {
   width: 100%;
-  max-width: 1480px;
-  margin: 48px auto 0;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 22px;
-  box-sizing: border-box;
 }
 
-.HomeScreenTitleWrapper.ltr {
+.home-screen-wrapper.ltr {
   direction: ltr;
 }
 
-.HomeScreenTitleWrapper.rtl {
+.home-screen-wrapper.rtl {
   direction: rtl;
+}
+
+.main-title {
+  width: 100%;
+  margin: 0 80px 0 80px;
+  font-weight: 200;
+  font-size: 36px;
+  color: #5b5b5b;
+}
+
+
+
+.HomeScreen.user{
+  text-align: start;
 }
 
 .SelectionDiv {
   width: 100%;
 }
 
-.HomeScreenTitleContainer {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.GuestTitle {
-  width: 100%;
-  margin: 0;
-  font-weight: 600;
-  font-size: 36px;
-  text-align: center;
-  color: #454444;
-}
-
-.GuestTitle2 {
-  margin-top: 20px;
-  font-weight: 200;
-  font-size: 20px;
-  text-align: center;
-  color: #454444;
-}
-
-.HomeScreenTitle {
-  margin-top: 30px !important;
-  font-size: 32px;
-  font-weight: 200;
-  color: rgb(74, 74, 74);
-}
-
-.HomeScreenTitle.user {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.HomeScreen.guest .HomeScreenTitle,
-.HomeScreen.guest .HomeScreenTitle.user {
-  width: 100%;
-  text-align: center !important;
-}
-
-.HomeScreen.user .HomeScreenTitle.user {
-  text-align: start;
-}
 
 .SelectListDiv {
   display: flex;
@@ -209,9 +124,9 @@
   min-width: 0;
 }
 
-.HomeScreenTitleWrapper.rtl .LikeBtn h4,
-.HomeScreenTitleWrapper.rtl .RecentlyViewedBtn h4,
-.HomeScreenTitleWrapper.rtl .SuggestionsBtn h4 {
+.home-screen-wrapper.rtl .LikeBtn h4,
+.home-screen-wrapper.rtl .RecentlyViewedBtn h4,
+.home-screen-wrapper.rtl .SuggestionsBtn h4 {
   font-size: 18px !important;
   font-weight: 700;
   line-height: 1.1;
@@ -249,28 +164,24 @@
   overflow: visible;
 }
 
-.RecipeGrid>* {
-  min-width: 0;
-}
-
-.GenerateRecipeBtnHomeScreen {
+.home-screen-generate-btn {
   height: 40px;
-  width: 340px !important;
+ padding: 0 40px 0 40px !important;
   margin: 30px auto !important;
   display: flex !important;
   border-radius: 16px !important;
-  background: #54c9f0 !important;
+  background: #30adf0 !important;
   text-transform: none;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
 
-.GenerateRecipeBtnHomeScreen.MuiButton-root {
+.home-screen-generate-btn.MuiButton-root {
   font-size: 18px !important;
 }
 
-.GenerateRecipeBtnHomeScreen svg {
+.home-screen-generate-btn svg {
   color: #eab928 !important;
 }
 
@@ -312,7 +223,6 @@
     transform 0.15s ease;
 }
 
-/* regular category chip */
 .MuiChip-root.Chip {
   border: 1px solid #a7a7a7 !important;
   color: #4b4b4b !important;
@@ -325,7 +235,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-/* selected category chip */
 .MuiChip-root.Chip.selected {
   background-color: #f6cd52 !important;
   border: 2px solid #f6cd52 !important;
@@ -338,7 +247,6 @@
   font-weight: 700 !important;
 }
 
-/* selected hover must be DIFFERENT */
 .MuiChip-root.MuiChip-clickable.Chip.selected:hover {
   background-color: #e5b932 !important;
   border-color: #e5b932 !important;
@@ -366,19 +274,39 @@
   background-color: rgb(245, 222, 222) !important;
 }
 
+.free-with-login-btn {
+  margin-top: 20px !important;
+ padding: 0 16px 0 16px !important;
+  background-color: #f3c37f30 !important;
+  height: 42px;
+  border-radius: 16px !important;
+  gap: 26px !important;
+  border: 2px solid !important;
+}
+
+.free-with-login-btn p {
+  font-size: 16px;
+}
+
+.free-with-login-btn.MuiButton-root {
+  color: rgb(255, 162, 0) !important;
+}
+
+
 @media (max-width: 600px) {
   .HomeScreen {
     padding: 18px 14px 2px;
   }
 
-  .HomeScreenTitleWrapper {
+  .home-screen-wrapper {
     margin-top: 10px;
   }
 
-  .HelloGuestMessage {
-    top: -28px;
-  }
+.main-title {
 
+  text-align: center;
+
+}
 
   .SelectListDiv {
     margin-top: 20px;
@@ -420,9 +348,9 @@
     line-height: 1.05;
   }
 
-  .HomeScreenTitleWrapper.rtl .LikeBtn h4,
-  .HomeScreenTitleWrapper.rtl .RecentlyViewedBtn h4,
-  .HomeScreenTitleWrapper.rtl .SuggestionsBtn h4 {
+  .home-screen-wrapper.rtl .LikeBtn h4,
+  .home-screen-wrapper.rtl .RecentlyViewedBtn h4,
+  .home-screen-wrapper.rtl .SuggestionsBtn h4 {
     font-size: 17px !important;
     font-weight: 800;
     line-height: 1.1;
