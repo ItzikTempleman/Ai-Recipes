@@ -1,6 +1,6 @@
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import { Button } from "@mui/material";
+import { Button, Dialog } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -22,6 +22,7 @@ import { DeleteDialog } from "../DeleteDialog/DeleteDialog";
 import premiumBadge from "../../../Assets/images/premium.jpg";
 
 import "./DrawerLayout.css";
+import { PremiumDialog } from "../PremiumDialog/PremiumDialog";
 
 type DrawerState = {
   open: boolean;
@@ -59,9 +60,11 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
   const isAdmin = isLoggedIn && user?.roleId === 1;
 
   const isPremium = user?.isPremium === true;
+  const showUpgradeToPremium= !isPremium && !isAdmin && isLoggedIn;
 
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmPremiumOpen, setConfirmPremiumOpen] = useState(false);
   const [pendingDeleteUserId, setPendingDeleteUserId] = useState<number | null>(null);
 
   const moreActionsRef = useRef<HTMLDivElement | null>(null);
@@ -92,8 +95,18 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
     setPendingDeleteUserId(null);
   }
 
+        function openPremiumDialog(): void {
+    setConfirmPremiumOpen(true);
+  }
+
+  function closePremiumDialog():void{
+    setConfirmPremiumOpen(false);
+  }
   async function confirmDeleteAccount(): Promise<void> {
     if (pendingDeleteUserId == null) return;
+
+
+
 
     try {
       await userService.deleteAccount(pendingDeleteUserId);
@@ -211,6 +224,13 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
     </div>
   </div>
 )}
+{
+  showUpgradeToPremium &&(
+      <Button className="UpgradeBtn" variant="contained" onClick={ () => {openPremiumDialog()}}>
+        {t("drawer.upgrade")}
+      </Button>
+  )
+}
 
             {navigationItems.map((item) => (
               <div key={item.key} className="DrawerRow">
@@ -269,6 +289,15 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
         onCancel={cancelDeleteAccount}
         onConfirm={confirmDeleteAccount}
       />
+
+                <Dialog
+                  className="generate_dialog_root"
+                  PaperProps={{ className: "generate_dialog_paper" }}
+                  open={confirmPremiumOpen}
+               onClose={closePremiumDialog}
+                >
+                  <PremiumDialog />
+                </Dialog>
     </div>
   );
 }

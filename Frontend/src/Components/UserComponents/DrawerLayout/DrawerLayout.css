@@ -119,6 +119,13 @@ justify-content: center;
   text-align: center;
 }
 
+.UpgradeBtn{
+  margin: 14px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #c756dd, #eac1f3);
+  color: #5b5b5b !important;
+}
+
 .NoProfileImage,
 .ProfileImage {
   width: 180px;

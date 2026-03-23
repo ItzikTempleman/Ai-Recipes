@@ -13,7 +13,6 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { useTranslation } from "react-i18next";
-import { useTitle } from "../../../Utils/Utils";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
 
@@ -47,7 +46,7 @@ type RecipeStateType = {
 };
 
 export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
-  useTitle("Generate");
+
 
   const dispatch = useDispatch();
   const user = useSelector((state: AppState) => state.user);

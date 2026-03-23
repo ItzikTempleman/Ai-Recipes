@@ -126,7 +126,7 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
           </select>
         </div>
 
-        {!isGuest && (
+        {isGuest && (
       
             <div className="LoginBtn" onClick={() => navigate("/login")}>
               <h3>{t("drawer.login")}</h3>

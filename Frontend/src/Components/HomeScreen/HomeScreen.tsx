@@ -16,7 +16,7 @@ import { Filters, RecipeDataContainer } from "../RecipeComponents/RecipeDataCont
 import { RecipeCategory, RecipeModel } from "../../Models/RecipeModel";
  import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
  import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import titleImage from "../../Assets/images/title.png";
 
 enum ListState {
   SUGGESTIONS,
@@ -211,7 +211,8 @@ export function HomeScreen() {
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`home-screen-wrapper ${isRTL ? "rtl" : "ltr"}`}>
         <div>
-          <h2 className="main-title">{t("homeScreen.generateTitle")}</h2>
+          <img className="main-title" src ={titleImage}/>
+      
         </div>
 
         <div className="SelectionDiv">
