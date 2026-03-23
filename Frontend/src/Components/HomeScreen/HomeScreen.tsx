@@ -233,8 +233,7 @@ export function HomeScreen() {
           <Button
             className="home-screen-generate-btn"
             onClick={openGenerateDialog}
-            variant="contained"
-          >
+            variant="contained">
             {t("homeScreen.generate")}
             <AutoAwesome />
           </Button>

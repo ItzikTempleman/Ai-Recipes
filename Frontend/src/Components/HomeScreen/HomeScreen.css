@@ -22,23 +22,16 @@
 }
 
 .main-title {
-  width: 100%;
-  margin: 0 80px 0 80px;
+  margin: 0 60px ;
   font-weight: 200;
-  font-size: 36px;
-  color: #5b5b5b;
-}
-
-
-
-.HomeScreen.user{
+  font-size: 30px;
+  color: #858585;
   text-align: start;
 }
 
 .SelectionDiv {
   width: 100%;
 }
-
 
 .SelectListDiv {
   display: flex;
@@ -294,13 +287,6 @@
 
 
 @media (max-width: 600px) {
-  .HomeScreen {
-    padding: 18px 14px 2px;
-  }
-
-  .home-screen-wrapper {
-    margin-top: 10px;
-  }
 
 .main-title {
 width: 100%;
