@@ -52,34 +52,52 @@ class UserRecipeUsageService {
     await dal.execute(sql, [userId, config.windowDays, policy]);
   }
 
-  public async mergeVisitorIntoUser(
-    userId: number,
-    visitorId: string,
-    policy: UserUsagePolicy = UserUsagePolicy.FREE_3_DAYS
-  ): Promise<void> {
-    const visitorRows = (await dal.execute(
-      `
-      select used, windowEndsAt, totalGenerated
-      from visitor_recipe_usage
-      where visitorId = ?
-      limit 1
-      `,
-      [visitorId]
-    )) as UsageRow[];
+public async mergeVisitorIntoUser(
+  userId: number,
+  visitorId: string,
+  policy: UserUsagePolicy = UserUsagePolicy.FREE_3_DAYS
+): Promise<void> {
+  const visitorRows = (await dal.execute(
+    `
+    select used, windowEndsAt, totalGenerated
+    from visitor_recipe_usage
+    where visitorId = ?
+    limit 1
+    `,
+    [visitorId]
+  )) as UsageRow[];
 
-    await this.recordUserFirstVisit(userId, policy);
+  await this.recordUserFirstVisit(userId, policy);
 
-    if (visitorRows.length === 0) return;
+  if (visitorRows.length === 0) return;
 
-    const visitor = visitorRows[0];
-    const config = this.getPolicyConfig(policy);
+  const visitor = visitorRows[0];
+  const config = this.getPolicyConfig(policy);
 
-    // Keep the user's current row aligned to the current policy.
+  const userRows = (await dal.execute(
+    `
+    select used, windowEndsAt, totalGenerated, windowStartedAt, windowPolicy
+    from user_recipe_usage
+    where userId = ?
+    limit 1
+    `,
+    [userId]
+  )) as UsageRow[];
+
+  const userRow = userRows[0];
+  const currentPolicy = userRow.windowPolicy ?? UserUsagePolicy.FREE_3_DAYS;
+  const windowExpired =
+    !userRow.windowEndsAt ||
+    new Date(userRow.windowEndsAt).getTime() <= Date.now();
+
+  const policyChanged = currentPolicy !== policy;
+
+  if (windowExpired || policyChanged) {
     await dal.execute(
       `
       update user_recipe_usage
       set
-        used = least(greatest(used, ?), ?),
+        used = least(?, ?),
         totalGenerated = totalGenerated + ?,
         windowStartedAt = NOW(),
         windowEndsAt = DATE_ADD(NOW(), INTERVAL ? DAY),
@@ -95,12 +113,29 @@ class UserRecipeUsageService {
         userId
       ]
     );
-
+  } else {
     await dal.execute(
-      `delete from visitor_recipe_usage where visitorId = ?`,
-      [visitorId]
+      `
+      update user_recipe_usage
+      set
+        used = least(greatest(used, ?), ?),
+        totalGenerated = totalGenerated + ?
+      where userId = ?
+      `,
+      [
+        visitor.used ?? 0,
+        config.limit,
+        visitor.totalGenerated ?? 0,
+        userId
+      ]
     );
   }
+
+  await dal.execute(
+    `delete from visitor_recipe_usage where visitorId = ?`,
+    [visitorId]
+  );
+}
 
   public async consume(
     userId: number,
