@@ -1,6 +1,6 @@
 import { UserModel } from "../models/user-model";
 import { visitorRecipeUsageService } from "../services/visitor-recipe-usage-service";
-import { userRecipeUsageService } from "../services/user-recipe-usage-service";
+import { userRecipeUsageService, UserUsagePolicy } from "../services/user-recipe-usage-service";
 import { premiumService } from "../services/premium-service";
 
 export type UsageConsumer = "none" | "user" | "visitor";
@@ -20,9 +20,11 @@ export async function consumeRecipeUsage(
 
   if (user?.id) {
     const isPremium = await premiumService.isUserPremium(user.id);
-    if (isPremium) return "none";
-
-    await userRecipeUsageService.consume(user.id);
+   
+    await userRecipeUsageService.consume(
+      user.id, 
+      isPremium? UserUsagePolicy.PREMIUM_1_DAY : UserUsagePolicy.FREE_3_DAYS
+    );
     return "user";
   }
 

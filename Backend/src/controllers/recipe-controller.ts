@@ -7,7 +7,7 @@ import { verificationMiddleware } from "../middleware/verification-middleware";
 import { UserModel } from "../models/user-model";
 import { generateImage } from "../services/image-service";
 import { visitorRecipeUsageService } from "../services/visitor-recipe-usage-service";
-import { userRecipeUsageService } from "../services/user-recipe-usage-service";
+import { userRecipeUsageService, UserUsagePolicy } from "../services/user-recipe-usage-service";
 import { consumeRecipeUsage, refundRecipeUsage, UsageConsumer } from "../utils/recipe-usage-helper";
 import { normalizeLang } from "../utils/normalize-language";
 import { userService } from "../services/user-service";
@@ -392,62 +392,72 @@ class RecipeController {
         response.status(StatusCode.OK).json({ answer });
     };
 
-    private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
-        const user = (request as any).user as UserModel | undefined;
-        const visitorId = (request as any).visitorId as string;
+private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {
+    const user = (request as any).user as UserModel | undefined;
+    const visitorId = (request as any).visitorId as string;
 
-        const roleId = Number((user as any)?.roleId);
+    const roleId = Number((user as any)?.roleId);
 
-        if (roleId === 1) {
+    if (roleId === 1) {
+        response.status(StatusCode.OK).json({
+            scope: "user",
+            unlimited: true,
+            isPremium: false,
+            isAdmin: true
+        });
+        return;
+    }
+
+    if (user?.id) {
+        const isPremium = await premiumService.isUserPremium(user.id);
+
+        const status = await userRecipeUsageService.getStatus(
+            user.id,
+            isPremium
+                ? UserUsagePolicy.PREMIUM_1_DAY
+                : UserUsagePolicy.FREE_3_DAYS
+        );
+
+        if (isPremium) {
+            const premium = await premiumService.getPremiumStatus(user.id);
             response.status(StatusCode.OK).json({
                 scope: "user",
-                unlimited: true,
-                isPremium: false,
-                isAdmin: true
-            });
-            return;
-        }
-
-        if (user?.id) {
-            const isPremium = await premiumService.isUserPremium(user.id);
-
-            if (isPremium) {
-                const premium = await premiumService.getPremiumStatus(user.id);
-                response.status(StatusCode.OK).json({
-                    scope: "user",
-                    unlimited: true,
-                    isPremium: true,
-                    premiumPlan: premium.premiumPlan,
-                    premiumSince: premium.premiumSince,
-                    premiumUntil: premium.premiumUntil
-                });
-                return;
-            }
-
-            const status = await userRecipeUsageService.getStatus(user.id);
-            response.status(StatusCode.OK).json({
-                scope: "user",
-                limit: 8,
+                limit: 15,
                 used: status.used,
                 remaining: status.remaining,
                 windowEndsAt: status.windowEndsAt,
                 unlimited: false,
-                isPremium: false
+                isPremium: true,
+                premiumPlan: premium.premiumPlan,
+                premiumSince: premium.premiumSince,
+                premiumUntil: premium.premiumUntil
             });
             return;
         }
 
-        const status = await visitorRecipeUsageService.getStatus(visitorId);
         response.status(StatusCode.OK).json({
-            scope: "visitor",
-            limit: 5,
+            scope: "user",
+            limit: 8,
             used: status.used,
             remaining: status.remaining,
             windowEndsAt: status.windowEndsAt,
             unlimited: false,
             isPremium: false
         });
+        return;
     }
+
+    const status = await visitorRecipeUsageService.getStatus(visitorId);
+    response.status(StatusCode.OK).json({
+        scope: "visitor",
+        limit: 5,
+        used: status.used,
+        remaining: status.remaining,
+        windowEndsAt: status.windowEndsAt,
+        unlimited: false,
+        isPremium: false
+    });
+}
 
     private async getAdminStatistics(request: Request, response: Response): Promise<void> {
         const stats = await userService.getAdminStatistics();
