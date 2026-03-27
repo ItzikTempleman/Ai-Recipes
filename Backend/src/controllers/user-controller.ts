@@ -7,7 +7,7 @@ import { AuthorizationError } from "../models/client-errors";
 import { appConfig } from "../utils/app-config";
 import { OAuth2Client } from "google-auth-library";
 import { verificationMiddleware } from "../middleware/verification-middleware";
-import { userRecipeUsageService } from "../services/user-recipe-usage-service";
+import { userRecipeUsageService, UserUsagePolicy } from "../services/user-recipe-usage-service";
 import { premiumService } from "../services/premium-service";
 import { cyber } from "../utils/cyber";
 
@@ -42,7 +42,7 @@ class UserController {
         const visitorId = (request as any).visitorId;
 
         if (visitorId && createdUser?.id) {
-            await userRecipeUsageService.mergeVisitorIntoUser(createdUser.id, visitorId);
+            await userRecipeUsageService.mergeVisitorIntoUser(createdUser.id, visitorId,UserUsagePolicy.FREE_3_DAYS);
         }
         response.status(StatusCode.Created).json(token);
     }

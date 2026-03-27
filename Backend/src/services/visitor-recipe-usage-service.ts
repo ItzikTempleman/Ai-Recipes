@@ -53,15 +53,33 @@ public async recordVisitorFirstVisit(visitorId: string): Promise<void> {
     await dal.execute(refundSql, [visitorId]);
   }
 
-  public async getStatus(visitorId: string): Promise<{ used: number; remaining: number; windowEndsAt: Date | null }> {
-    const statusSql = `select used, windowEndsAt, totalGenerated from visitor_recipe_usage where visitorId = ? limit 1`
+public async getStatus(visitorId: string): Promise<{ used: number; remaining: number; windowEndsAt: Date | null }> {
+    const statusSql = `
+      select used, windowEndsAt, totalGenerated
+      from visitor_recipe_usage
+      where visitorId = ?
+      limit 1
+    `;
     const rows = (await dal.execute(statusSql, [visitorId])) as UsageRow[];
 
-    if (rows.length === 0) return { used: 0, remaining: 5, windowEndsAt: null };
+    if (rows.length === 0) {
+      return { used: 0, remaining: 5, windowEndsAt: null };
+    }
 
-    const used = rows[0].used ?? 0;
-    return { used, remaining: Math.max(0, 5 - used), windowEndsAt: rows[0].windowEndsAt };
-  }
+    const row = rows[0];
+
+    if (!row.windowEndsAt || new Date(row.windowEndsAt).getTime() <= Date.now()) {
+      return { used: 0, remaining: 5, windowEndsAt: null };
+    }
+
+    const used = row.used ?? 0;
+
+    return {
+      used,
+      remaining: Math.max(0, 5 - used),
+      windowEndsAt: row.windowEndsAt
+    };
+}
 }
 
 export const visitorRecipeUsageService = new VisitorRecipeUsageService();
