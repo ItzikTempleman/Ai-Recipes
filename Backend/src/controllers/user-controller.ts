@@ -10,7 +10,7 @@ import { verificationMiddleware } from "../middleware/verification-middleware";
 import { userRecipeUsageService, UserUsagePolicy } from "../services/user-recipe-usage-service";
 import { premiumService } from "../services/premium-service";
 import { cyber } from "../utils/cyber";
-
+import { ensureVisitorId } from "../middleware/visitor-id-middleware";
 
 
 class UserController {
@@ -19,13 +19,13 @@ class UserController {
     public readonly router = express.Router();
 
     public constructor() {
-        this.router.post("/register", this.register);
-        this.router.post("/login", this.login);
+        this.router.post("/register",ensureVisitorId, this.register);
+        this.router.post("/login",ensureVisitorId, this.login);
         this.router.get("/users", this.getAllUsers);
         this.router.get("/users/:id", this.getOneUser);
         this.router.put("/users/:id", this.updateUser);
         this.router.delete("/users/:id", verificationMiddleware.verifyLoggedIn, this.deleteUser);
-        this.router.post("/auth/google", this.googleLogin);
+        this.router.post("/auth/google", ensureVisitorId,this.googleLogin);
         this.router.get("/users/images/:imageName", this.getImage);
         this.router.post("/users/set-password", verificationMiddleware.verifyLoggedIn, this.setPassword);
         this.router.get("/users/premium", verificationMiddleware.verifyLoggedIn, this.getPremiumStatus);
@@ -54,7 +54,13 @@ class UserController {
         const visitorId = (request as any).visitorId;
 
         if (visitorId && createdUser?.id) {
-            await userRecipeUsageService.mergeVisitorIntoUser(createdUser.id, visitorId);
+               const isPremium = await premiumService.isUserPremium(createdUser.id);
+
+    await userRecipeUsageService.mergeVisitorIntoUser(
+        createdUser.id,
+        visitorId,
+        isPremium ? UserUsagePolicy.PREMIUM_1_DAY : UserUsagePolicy.FREE_3_DAYS
+    );
         }
         response.json(token);
     }
@@ -95,7 +101,13 @@ class UserController {
         const visitorId = (request as any).visitorId;
 
         if (visitorId && loggedInUser?.id) {
-            await userRecipeUsageService.mergeVisitorIntoUser(loggedInUser.id, visitorId);
+               const isPremium = await premiumService.isUserPremium(loggedInUser.id);
+
+    await userRecipeUsageService.mergeVisitorIntoUser(
+        loggedInUser.id,
+        visitorId,
+        isPremium ? UserUsagePolicy.PREMIUM_1_DAY : UserUsagePolicy.FREE_3_DAYS
+    );
         }
 
         response.json(token);
