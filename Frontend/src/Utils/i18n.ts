@@ -166,6 +166,7 @@ const resources = {
           emailNotFound: " Email not found"
         },
         registration: {
+          phoneInvalid: "Enter a valid phone number",
           optionalFields: "Optional fields",
           title: "Registration",
           back: "Back",
@@ -426,6 +427,7 @@ const resources = {
         },
 
         registration: {
+          phoneInvalid: "נא להזין מספר טלפון תקין",
           optionalFields: "שדות רשות",
           title: "הרשמה",
           back: "חזרה",

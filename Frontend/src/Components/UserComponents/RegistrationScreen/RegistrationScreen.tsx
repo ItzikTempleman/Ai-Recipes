@@ -18,6 +18,7 @@ import { notify } from "../../../Utils/Notify";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Collapse from "@mui/material/Collapse";
+import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 
 export function RegistrationScreen() {
   const { t, i18n } = useTranslation();
@@ -184,37 +185,34 @@ const BackArrowIcon = isRTL ? ArrowForwardIos : ArrowBackIosNew;
 
 <Collapse in={showOptional} timeout={250} unmountOnExit>
   <div className="OptionalFields">
-    <TextField className="InputTextField"
-      placeholder={t("auth.registration.phonePlaceholder")}
+<Controller
+  name="phoneNumber"
+  control={control}
+  rules={{
+    validate: (value) => {
+      if (!value || !value.trim()) return true; 
+      return matchIsValidTel(value) || t("auth.registration.phoneInvalid");
+    }
+  }}
+  render={({ field, fieldState }) => (
+    <MuiTelInput
+      className="InputTextField"
       fullWidth
-        size="small"
-      type="tel"
+      size="small"
       variant="outlined"
-      InputProps={{
-        ...(isRTL
-          ? {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PhoneAndroidIcon />
-                </InputAdornment>
-              )
-            }
-          : {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <PhoneAndroidIcon />
-                </InputAdornment>
-              )
-            })
-      }}
-      inputProps={{
-        inputMode: "tel",
-        pattern: "[0-9]*",
-      }}
-      {...register("phoneNumber")}
-      error={!!errors.phoneNumber}
-      helperText={errors.phoneNumber?.message}
+      value={field.value ?? ""}
+      onChange={(newValue) => field.onChange(newValue)}
+      inputRef={field.ref}
+      defaultCountry="IL"
+      preferredCountries={["IL", "US", "GB"]}
+      forceCallingCode
+      langOfCountryName={isRTL ? "he" : "en"}
+      placeholder={t("auth.registration.phonePlaceholder")}
+      error={fieldState.invalid}
+      helperText={fieldState.error?.message}
     />
+  )}
+/>
 
     <TextField className="InputTextField"
       fullWidth
