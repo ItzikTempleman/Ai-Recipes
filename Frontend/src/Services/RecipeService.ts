@@ -190,27 +190,47 @@ usageService.refreshRecipeUsage();
     store.dispatch(setLikes(data.map((recipeId) => ({ userId, recipeId }))));
   }
 
-  public async askRecipeQuestion(
-    recipe: RecipeModel,
-    question: string,
-    history: ChatMsg[] = []
-  ): Promise<AskRecipeResponse> {
-    const url = `${appConfig.askRecipeUrl}/${recipe.id}/ask`;
+public async askRecipeQuestion(
+  recipe: RecipeModel,
+  question: string,
+  history: ChatMsg[] = []
+): Promise<AskRecipeResponse> {
+  const url = `${appConfig.askRecipeUrl}/${recipe.id}/ask`;
 
-    const body = {
-      query: question,
-      history: history.slice(-8)
-    };
+  const body = {
+    query: question,
+    history: history.slice(-8)
+  };
 
-    const { data } = await axios.post<AskRecipeResponse>(url, body, getAuth());
+  const { data } = await axios.post<AskRecipeResponse>(url, body, getAuth());
 
-    if (data?.updatedRecipe) {
-      store.dispatch(setCurrent(data.updatedRecipe));
-      store.dispatch(upsertRecipe(data.updatedRecipe));
+  if (data?.updatedRecipe) {
+    const previousImageUrl = (recipe.imageUrl ?? "").trim();
+    const previousImageName = recipe.imageName ?? null;
+    const updatedHasImage = Boolean((data.updatedRecipe.imageUrl ?? "").trim());
+
+    const optimisticRecipe =
+      !updatedHasImage && previousImageUrl
+        ? {
+            ...data.updatedRecipe,
+            imageUrl: previousImageUrl,
+            imageName: null,
+          }
+        : data.updatedRecipe;
+
+    store.dispatch(setCurrent(optimisticRecipe));
+    store.dispatch(upsertRecipe(optimisticRecipe));
+
+    if (!updatedHasImage && previousImageName && data.updatedRecipe.id) {
+      const regenerated = await this.generateImageForSavedRecipe(data.updatedRecipe.id);
+      data.updatedRecipe = regenerated;
+    } else {
+      data.updatedRecipe = optimisticRecipe;
     }
-
-    return data;
   }
+
+  return data;
+}
 }
 
 export const recipeService = new RecipeService();
