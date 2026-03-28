@@ -1,5 +1,10 @@
-
-import {DietaryRestrictions,GlutenRestrictions,LactoseRestrictions,RecipeModel,SugarRestriction} from "../../../Models/RecipeModel";
+import {
+  DietaryRestrictions,
+  GlutenRestrictions,
+  LactoseRestrictions,
+  RecipeModel,
+  SugarRestriction
+} from "../../../Models/RecipeModel";
 import { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import { DataScreen } from "../DataScreen/DataScreen";
 import { notify } from "../../../Utils/Notify";
@@ -8,8 +13,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTitle } from "../../../Utils/Utils";
 import "./RecipeInfoScreen.css";
-
-
+import { useSelector } from "react-redux";
+import { AppState } from "../../../Redux/Store";
 
 type Props = {
   filters?: Filters;
@@ -17,26 +22,35 @@ type Props = {
 };
 
 export function RecipeInfoScreen({ filters, loadImage }: Props) {
-
   useTitle("Info");
   const { id } = useParams();
   const recipeId = Number(id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeModel>();
 
+  const reduxRecipe = useSelector((state: AppState) => {
+    if (!recipeId) return undefined;
+    if (state.recipes.current?.id === recipeId) return state.recipes.current;
+    return state.recipes.items.find((r) => r.id === recipeId);
+  });
 
   useEffect(() => {
     if (!recipeId) {
       navigate("/home");
       return;
     }
+
     recipeService
       .getSingleRecipe(recipeId)
       .then(setRecipe)
       .catch((err) => notify.error(err));
   }, [recipeId, navigate]);
 
-
+  useEffect(() => {
+    if (reduxRecipe) {
+      setRecipe(reduxRecipe);
+    }
+  }, [reduxRecipe]);
 
   if (!recipe) return null;
 
@@ -61,16 +75,15 @@ export function RecipeInfoScreen({ filters, loadImage }: Props) {
   };
 
   return (
-<div className="RecipeInfoScreen">
-        <div className="InfoScreenContainer">
-          <DataScreen
-            loadImage={loadImageHelper}
-            recipe={recipe}
-            imageSrc={imgSrc}
-            filters={filters ?? filtersFromRecipe}
-          />
+    <div className="RecipeInfoScreen">
+      <div className="InfoScreenContainer">
+        <DataScreen
+          loadImage={loadImageHelper}
+          recipe={recipe}
+          imageSrc={imgSrc}
+          filters={filters ?? filtersFromRecipe}
+        />
       </div>
- </div>
+    </div>
   );
 }
-
