@@ -324,7 +324,20 @@ class RecipeService {
       }
     };
 
-    const canEdit = !!ownedRecipe && await premiumService.isUserPremium(userId);
+    const currentUserRows = await dal.execute(
+      "select roleId, email from user where id = ? limit 1",
+      [userId]
+    ) as { roleId: number; email: string }[];
+
+    const currentUser = currentUserRows[0];
+    const isSystemUser =
+      String(currentUser?.email ?? "").toLowerCase() === "system.generator@smart-recipes.local";
+
+    const isPrivilegedAdmin =
+      Number(currentUser?.roleId ?? 0) === 1 && !isSystemUser;
+
+    const isPremium = await premiumService.isUserPremium(userId);
+    const canEdit = !!ownedRecipe && (isPremium || isPrivilegedAdmin);
 
     const result = await gptService.askRecipeQuestionOrEdit(
       recipeContext,

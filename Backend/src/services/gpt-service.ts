@@ -20,6 +20,11 @@ export type RecipeChatEditResult =
       };
     };
 
+const NON_PREMIUM_EDIT_PREFIX = {
+  en: "Only premium users can actually edit and save the recipe in the chatbot. ",
+  he: "רק משתמשי פרימיום יכולים לערוך ולשמור בפועל את המתכון דרך הצ'אטבוט. "
+} as const;
+
 class GptService {
   private normalizeForIntent(text: string): string {
     return String(text ?? "")
@@ -34,6 +39,16 @@ class GptService {
   private isEditIntentHeuristic(userQuestion: string): boolean {
     const q = this.normalizeForIntent(userQuestion);
     return editSignals.some(signal => q.includes(this.normalizeForIntent(signal)));
+  }
+
+  private isLikelyHebrew(text: string): boolean {
+    return /[\u0590-\u05FF]/.test(String(text ?? ""));
+  }
+
+  private getNonPremiumEditPrefix(userQuestion: string): string {
+    return this.isLikelyHebrew(userQuestion)
+      ? NON_PREMIUM_EDIT_PREFIX.he
+      : NON_PREMIUM_EDIT_PREFIX.en;
   }
 
   public async classifyRecipeChatIntent(
@@ -297,7 +312,7 @@ Context:
     }
   }
 
-  public async askRecipeQuestionOrEdit(
+  private async generateRecipeEdit(
     recipe: {
       title: string;
       description: string;
@@ -307,30 +322,8 @@ Context:
       restrictions?: any;
     },
     userQuestion: string,
-    history: { role: "user" | "assistant"; content: string }[] = [],
-    canEdit: boolean
-  ): Promise<RecipeChatEditResult> {
-    if (!canEdit) {
-      const answer = await this.askRecipeQuestion(recipe, userQuestion, history);
-      return { mode: "answer", answer };
-    }
-
-    const shouldCheckEdit =
-      this.isEditIntentHeuristic(userQuestion) ||
-      String(userQuestion ?? "").trim().length > 0;
-
-    if (!shouldCheckEdit) {
-      const answer = await this.askRecipeQuestion(recipe, userQuestion, history);
-      return { mode: "answer", answer };
-    }
-
-    const intent = await this.classifyRecipeChatIntent(recipe, userQuestion, history);
-
-    if (intent !== "edit_request") {
-      const answer = await this.askRecipeQuestion(recipe, userQuestion, history);
-      return { mode: "answer", answer };
-    }
-
+    history: { role: "user" | "assistant"; content: string }[] = []
+  ): Promise<Extract<RecipeChatEditResult, { mode: "edit" }>> {
     const modelToUse = appConfig.freeNoImageModelNumber || appConfig.modelNumber;
     const keyToUse = appConfig.freeNoImageApiKey || appConfig.apiKey;
 
@@ -397,54 +390,196 @@ Return JSON in exactly this shape:
       temperature: 0.2
     };
 
+    const response = await axios.post(appConfig.gptUrl, body, {
+      headers: {
+        Authorization: "Bearer " + keyToUse,
+        "Content-Type": "application/json"
+      }
+    });
+
+    const raw = String(response.data?.choices?.[0]?.message?.content ?? "").trim();
+    const parsed = JSON.parse(raw);
+
+    const fallbackIngredients = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
+    const fallbackInstructions = Array.isArray(recipe.instructions) ? recipe.instructions : [];
+
+    const compactInstructions = Array.isArray(parsed?.recipe?.instructions)
+      ? parsed.recipe.instructions
+          .map((s: any) => String(s ?? "").trim())
+          .filter(Boolean)
+          .slice(0, 8)
+          .map((s: string) => (s.length > 140 ? s.slice(0, 140).trim() : s))
+      : fallbackInstructions;
+
+    const compactIngredients = Array.isArray(parsed?.recipe?.ingredients)
+      ? parsed.recipe.ingredients
+          .map((i: any) => ({
+            ingredient: String(i?.ingredient ?? "").trim().slice(0, 80),
+            amount:
+              i?.amount == null ? null : String(i.amount).trim().slice(0, 60)
+          }))
+          .filter((i: { ingredient: string; amount: string | null }) => i.ingredient.length > 0)
+          .slice(0, 20)
+      : fallbackIngredients;
+
+    return {
+      mode: "edit",
+      answer: String(parsed?.answer ?? "Updated your recipe.").trim().slice(0, 300),
+      recipe: {
+        title: String(parsed?.recipe?.title ?? recipe.title).trim().slice(0, 100),
+        description: String(parsed?.recipe?.description ?? recipe.description).trim().slice(0, 1000),
+        amountOfServings:
+          Number(parsed?.recipe?.amountOfServings ?? recipe.amountOfServings) || recipe.amountOfServings,
+        ingredients: compactIngredients,
+        instructions: compactInstructions
+      }
+    };
+  }
+
+  private async generateNonPremiumEditInstructions(
+    recipe: {
+      title: string;
+      description: string;
+      amountOfServings: number;
+      ingredients: { ingredient: string; amount: string | null }[];
+      instructions: string[];
+      restrictions?: any;
+    },
+    userQuestion: string,
+    history: { role: "user" | "assistant"; content: string }[] = []
+  ): Promise<string> {
+    const modelToUse = appConfig.freeNoImageModelNumber || appConfig.modelNumber;
+    const keyToUse = appConfig.freeNoImageApiKey || appConfig.apiKey;
+
+    const safeHistory = Array.isArray(history)
+      ? history
+          .filter(
+            m =>
+              m &&
+              (m.role === "user" || m.role === "assistant") &&
+              typeof m.content === "string"
+          )
+          .slice(-12)
+      : [];
+
+    const system = `
+You are Chef, a cooking assistant.
+
+The user asked to edit the recipe, but in this mode you must NOT act as if you actually edited or saved anything.
+
+Your job:
+- Explain textually what the user should change on their own in the recipe.
+- Give practical edit instructions in the context of this recipe.
+- Be specific about ingredients, quantities, steps, or servings when relevant.
+- Reply in the language of the user's latest message.
+
+Hard rules:
+- NEVER say or imply that you already updated, changed, saved, edited, rewrote, or applied the recipe.
+- NEVER say things like:
+  - "I updated it"
+  - "I changed it"
+  - "Here is the updated recipe"
+  - "Done"
+- DO say things like:
+  - "To make this change..."
+  - "You can change..."
+  - "Replace..."
+  - "Increase..."
+  - "Reduce..."
+  - "In the instructions, update step..."
+- Do NOT return JSON.
+- Do NOT output a full rewritten recipe unless absolutely necessary.
+- Prefer short, actionable guidance in chat format.
+- Keep it friendly and clear.
+- No markdown headings.
+`.trim();
+
+    const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
+      { role: "system", content: system },
+      {
+        role: "user",
+        content: `CURRENT_RECIPE_JSON:\n${JSON.stringify(recipe)}`
+      },
+      ...safeHistory.map(m => ({ role: m.role, content: m.content })),
+      { role: "user", content: userQuestion }
+    ];
+
+    const body = {
+      model: modelToUse,
+      messages,
+      temperature: 0.3
+    };
+
+    const response = await axios.post(appConfig.gptUrl, body, {
+      headers: {
+        Authorization: "Bearer " + keyToUse,
+        "Content-Type": "application/json"
+      }
+    });
+
+    return String(response.data?.choices?.[0]?.message?.content ?? "").trim();
+  }
+
+  private async buildNonPremiumEditPreview(
+    recipe: {
+      title: string;
+      description: string;
+      amountOfServings: number;
+      ingredients: { ingredient: string; amount: string | null }[];
+      instructions: string[];
+      restrictions?: any;
+    },
+    userQuestion: string,
+    history: { role: "user" | "assistant"; content: string }[] = []
+  ): Promise<string> {
+    const instructions = await this.generateNonPremiumEditInstructions(
+      recipe,
+      userQuestion,
+      history
+    );
+    const prefix = this.getNonPremiumEditPrefix(userQuestion);
+    return `${prefix}${instructions}`.trim();
+  }
+
+  public async askRecipeQuestionOrEdit(
+    recipe: {
+      title: string;
+      description: string;
+      amountOfServings: number;
+      ingredients: { ingredient: string; amount: string | null }[];
+      instructions: string[];
+      restrictions?: any;
+    },
+    userQuestion: string,
+    history: { role: "user" | "assistant"; content: string }[] = [],
+    canEdit: boolean
+  ): Promise<RecipeChatEditResult> {
+    const shouldCheckEdit =
+      this.isEditIntentHeuristic(userQuestion) ||
+      String(userQuestion ?? "").trim().length > 0;
+
+    if (!shouldCheckEdit) {
+      const answer = await this.askRecipeQuestion(recipe, userQuestion, history);
+      return { mode: "answer", answer };
+    }
+
+    const intent = await this.classifyRecipeChatIntent(recipe, userQuestion, history);
+
+    if (intent !== "edit_request") {
+      const answer = await this.askRecipeQuestion(recipe, userQuestion, history);
+      return { mode: "answer", answer };
+    }
+
+    if (!canEdit) {
+      const answer = await this.buildNonPremiumEditPreview(recipe, userQuestion, history);
+      return { mode: "answer", answer };
+    }
+
     try {
-      const response = await axios.post(appConfig.gptUrl, body, {
-        headers: {
-          Authorization: "Bearer " + keyToUse,
-          "Content-Type": "application/json"
-        }
-      });
-
-      const raw = String(response.data?.choices?.[0]?.message?.content ?? "").trim();
-      const parsed = JSON.parse(raw);
-
-      const fallbackIngredients = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
-      const fallbackInstructions = Array.isArray(recipe.instructions) ? recipe.instructions : [];
-
-      const compactInstructions = Array.isArray(parsed?.recipe?.instructions)
-        ? parsed.recipe.instructions
-            .map((s: any) => String(s ?? "").trim())
-            .filter(Boolean)
-            .slice(0, 8)
-            .map((s: string) => (s.length > 140 ? s.slice(0, 140).trim() : s))
-        : fallbackInstructions;
-
-      const compactIngredients = Array.isArray(parsed?.recipe?.ingredients)
-        ? parsed.recipe.ingredients
-            .map((i: any) => ({
-              ingredient: String(i?.ingredient ?? "").trim().slice(0, 80),
-              amount:
-                i?.amount == null ? null : String(i.amount).trim().slice(0, 60)
-            }))
-            .filter((i: { ingredient: string; amount: string | null }) => i.ingredient.length > 0)
-            .slice(0, 20)
-        : fallbackIngredients;
-
-      return {
-        mode: "edit",
-        answer: String(parsed?.answer ?? "Updated your recipe.").trim().slice(0, 300),
-        recipe: {
-          title: String(parsed?.recipe?.title ?? recipe.title).trim().slice(0, 100),
-          description: String(parsed?.recipe?.description ?? recipe.description).trim().slice(0, 1000),
-          amountOfServings:
-            Number(parsed?.recipe?.amountOfServings ?? recipe.amountOfServings) || recipe.amountOfServings,
-          ingredients: compactIngredients,
-          instructions: compactInstructions
-        }
-      };
+      return await this.generateRecipeEdit(recipe, userQuestion, history);
     } catch (error: any) {
       console.error("askRecipeQuestionOrEdit error:", {
-        model: modelToUse,
+        model: appConfig.freeNoImageModelNumber || appConfig.modelNumber,
         status: error?.response?.status,
         data: error?.response?.data,
         message: error?.message,
