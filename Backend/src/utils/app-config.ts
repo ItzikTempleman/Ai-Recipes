@@ -1,46 +1,47 @@
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
-import fs from "fs";
-
 
 class AppConfig {
   public readonly isDevelopment = process.env.ENVIRONMENT === "development";
-  public readonly isProduction  = process.env.ENVIRONMENT === "production";
+  public readonly isProduction = process.env.ENVIRONMENT === "production";
+
   public readonly jwtSecretKey = process.env.JWT_SECRET_KEY!;
-    public readonly hashSaltKey = process.env.HASH_SALT_KEY!;
-    
+  public readonly hashSaltKey = process.env.HASH_SALT_KEY!;
+
   public readonly port = Number(process.env.PORT ?? 4000);
   public readonly serverHost = "0.0.0.0";
 
   public readonly host = process.env.MYSQL_HOST!;
   public readonly user = process.env.MYSQL_USER!;
   public readonly password = process.env.MYSQL_PASSWORD!;
- public readonly database = process.env.MYSQL_DB || "smart-recipes";
+  public readonly database = process.env.MYSQL_DB || "smart-recipes";
 
-public readonly senderEmail = process.env.SENDER_EMAIL;     
-public readonly senderAppPassword = process.env.APP_PASSWORD;  
-public readonly resetExpiresMinutes = Number(process.env.RESET_EXPIRES_MINUTES ?? "30");
-public readonly resetMailSubject = process.env.RESET_MAIL_SUBJECT ?? "Password reset";
+  public readonly senderEmail = process.env.SENDER_EMAIL;
+  public readonly senderAppPassword = process.env.APP_PASSWORD;
+  public readonly resetExpiresMinutes = Number(process.env.RESET_EXPIRES_MINUTES ?? "30");
+  public readonly resetMailSubject = process.env.RESET_MAIL_SUBJECT ?? "Password reset";
 
-public readonly googleClientId = process.env.GOOGLE_CLIENT_ID!;
+  public readonly googleClientId = process.env.GOOGLE_CLIENT_ID!;
 
-public readonly frontendBaseUrl = this.normalizeFrontendBaseUrl();
+  public readonly frontendBaseUrl = this.normalizeFrontendBaseUrl();
+
   public readonly gptUrl = "https://api.openai.com/v1/chat/completions";
   public readonly apiKey = process.env.API_KEY;
   public readonly freeNoImageApiKey = process.env.NO_IMAGE_API_KEY;
-  public readonly modelNumber = "gpt-5.2";
-  public readonly freeNoImageModelNumber = "gpt-image-1.5";
+
+  // Use the exact model that already works in your project.
+  public readonly modelNumber = process.env.MODEL_NUMBER || "gpt-5.2";
+
+  // Do NOT guess a different mini/image model here.
+  // Reuse the same known-good text model unless/until you explicitly verify another one.
+  public readonly freeNoImageModelNumber =
+    process.env.NO_IMAGE_MODEL_NUMBER || this.modelNumber;
 
   public readonly baseImageUrl = this.normalizeBaseImageUrl();
-public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
-
-
-
-
-
+  public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
 
   private normalizeBaseUserImageUrl(): string {
- const raw = process.env.BASE_USER_IMAGE_URL;
+    const raw = process.env.BASE_USER_IMAGE_URL;
 
     if (raw && /^https?:\/\//i.test(raw)) {
       return raw.endsWith("/") ? raw : raw + "/";
@@ -52,7 +53,6 @@ public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
 
     return `http://${host}:${this.port}/api/users/images/`;
   }
-
 
   private normalizeBaseImageUrl(): string {
     const raw = process.env.BASE_IMAGE_URL;
@@ -67,27 +67,19 @@ public readonly baseUserImageUrl = this.normalizeBaseUserImageUrl();
 
     return `http://${host}:${this.port}/api/recipes/images/`;
   }
+
   private normalizeFrontendBaseUrl(): string {
-  // If you ever define it, it will be used. Otherwise fall back safely.
-  const raw = process.env.FRONTEND_BASE_URL;
+    const raw = process.env.FRONTEND_BASE_URL;
 
-  if (raw && /^https?:\/\//i.test(raw)) {
-    return raw.endsWith("/") ? raw.slice(0, -1) : raw; // no trailing slash
+    if (raw && /^https?:\/\//i.test(raw)) {
+      return raw.endsWith("/") ? raw.slice(0, -1) : raw;
+    }
+
+    if (this.isDevelopment) return "http://localhost:5173";
+
+    const host = process.env.PUBLIC_HOST || "localhost";
+    return `http://${host}`;
   }
-
-  // dev default (Vite)
-  if (this.isDevelopment) return "http://localhost:5173";
-
-  // prod default: same public host as backend
-  const host = process.env.PUBLIC_HOST || "localhost";
-  return `http://${host}`;
-}
-
-
-
 }
 
 export const appConfig = new AppConfig();
-
-
-

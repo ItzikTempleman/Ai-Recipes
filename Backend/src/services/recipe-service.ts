@@ -14,6 +14,7 @@ import { isLethalQuery } from "../utils/banned-filter";
 import { sanitizeQueryRestrictions, normalizeCategories } from "../utils/recipe-normalization";
 import { validateRecipeSemantics } from "../utils/recipe-semantic-validator";
 import { naturalizeRecipeTitle } from "../utils/title-naturalizer";
+import { premiumService } from "./premium-service";
 
 class RecipeService {
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
@@ -296,13 +297,16 @@ class RecipeService {
     userId: number,
     query: string,
     history: { role: "user" | "assistant"; content: string }[] = []
-  ): Promise<string> {
-    let recipe: FullRecipeModel;
+  ): Promise<{ answer: string; updatedRecipe?: FullRecipeModel }> {
+    let ownedRecipe: FullRecipeModel | null = null;
+
     try {
-      recipe = await this.getSingleRecipe(recipeId, userId);
+      ownedRecipe = await this.getSingleRecipe(recipeId, userId);
     } catch {
-      recipe = await this.getRecipePublicById(recipeId);
+      ownedRecipe = null;
     }
+
+    const recipe = ownedRecipe ?? await this.getRecipePublicById(recipeId);
 
     const recipeContext = {
       title: recipe.title,
@@ -320,7 +324,132 @@ class RecipeService {
       }
     };
 
-    return await gptService.askRecipeQuestion(recipeContext, query, history);
+    const canEdit = !!ownedRecipe && await premiumService.isUserPremium(userId);
+
+    const result = await gptService.askRecipeQuestionOrEdit(
+      recipeContext,
+      query,
+      history,
+      canEdit
+    );
+
+    if (result.mode === "answer") {
+      return { answer: result.answer };
+    }
+
+    if (!ownedRecipe) {
+      throw new ValidationError("Only your own generated recipes can be edited in chat.");
+    }
+
+    const updatedRecipe = await this.updateExistingGeneratedRecipe(recipeId, userId, result.recipe);
+
+    return {
+      answer: result.answer,
+      updatedRecipe
+    };
+  }
+
+  private async updateExistingGeneratedRecipe(
+    recipeId: number,
+    userId: number,
+    patch: {
+      title: string;
+      description: string;
+      amountOfServings: number;
+      ingredients: { ingredient: string; amount: string | null }[];
+      instructions: string[];
+    }
+  ): Promise<FullRecipeModel> {
+    const existing = await this.getSingleRecipe(recipeId, userId);
+
+    const title = String(patch.title ?? existing.title).trim().slice(0, 100);
+    const description = String(patch.description ?? existing.description ?? "").trim();
+
+    let amountOfServings = Number(patch.amountOfServings ?? existing.amountOfServings ?? 1);
+    if (!Number.isFinite(amountOfServings) || amountOfServings <= 0) {
+      amountOfServings = Number(existing.amountOfServings ?? 1) || 1;
+    }
+
+    const rawIngredientsList = Array.isArray(patch.ingredients)
+      ? patch.ingredients
+      : (existing.data?.ingredients ?? []);
+
+    const rawInstructionsList = Array.isArray(patch.instructions)
+      ? patch.instructions
+      : (existing.data?.instructions ?? []);
+
+    const ingredientsList = rawIngredientsList
+      .map(i => ({
+        ingredient: String(i?.ingredient ?? "").trim().slice(0, 80),
+        amount: i?.amount == null ? null : String(i.amount).trim().slice(0, 60)
+      }))
+      .filter(i => i.ingredient.length > 0)
+      .slice(0, 20);
+
+    const fallbackIngredientsList = (existing.data?.ingredients ?? []).map(i => ({
+      ingredient: String(i?.ingredient ?? "").trim().slice(0, 80),
+      amount: i?.amount == null ? null : String(i.amount).trim().slice(0, 60)
+    }));
+
+    const safeIngredientsList = ingredientsList.length > 0 ? ingredientsList : fallbackIngredientsList;
+
+    const instructionsList = rawInstructionsList
+      .map(s => String(s ?? "").trim())
+      .filter(Boolean)
+      .slice(0, 8)
+      .map(s => (s.length > 140 ? s.slice(0, 140).trim() : s));
+
+    const fallbackInstructionsList = (existing.data?.instructions ?? [])
+      .map(s => String(s ?? "").trim())
+      .filter(Boolean)
+      .slice(0, 8)
+      .map(s => (s.length > 140 ? s.slice(0, 140).trim() : s));
+
+    const safeInstructionsList =
+      instructionsList.length > 0 ? instructionsList : fallbackInstructionsList;
+
+    const ingredients = safeIngredientsList
+      .map(i => i.ingredient)
+      .join(", ")
+      .slice(0, 350);
+
+    const amounts = JSON.stringify(
+      safeIngredientsList.map(i => i.amount ?? null)
+    ).slice(0, 1000);
+
+    const instructions = safeInstructionsList
+      .join(" | ")
+      .slice(0, 1000);
+
+    const sql = `
+      UPDATE recipe
+      SET
+        title = ?,
+        description = ?,
+        amountOfServings = ?,
+        ingredients = ?,
+        amounts = ?,
+        instructions = ?,
+        imageName = NULL
+      WHERE id = ? AND userId = ?
+    `;
+
+    await dal.execute(sql, [
+      title,
+      description,
+      amountOfServings,
+      ingredients,
+      amounts,
+      instructions,
+      recipeId,
+      userId
+    ]);
+
+    const updated = await this.getSingleRecipe(recipeId, userId);
+    updated.imageName = null;
+    updated.imageUrl = "";
+
+    return updated;
   }
 
   private async ensureSystemUserId(): Promise<number> {

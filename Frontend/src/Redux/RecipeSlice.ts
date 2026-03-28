@@ -60,6 +60,17 @@ function deleteRecipeReducer(state: RecipeState, action: PayloadAction<number>) 
   if (state.current?.id === idOfRecipeToDelete) state.current = null;
 }
 
+function upsertRecipeReducer(state: RecipeState, action: PayloadAction<RecipeModel>) {
+  const recipe = action.payload;
+
+  state.items = [recipe, ...state.items.filter(r => r.id !== recipe.id)];
+  state.catalogItems = (state.catalogItems ?? []).map(r => (r.id === recipe.id ? recipe : r));
+
+  if (state.current?.id === recipe.id) {
+    state.current = recipe;
+  }
+}
+
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
@@ -73,7 +84,8 @@ const recipeSlice = createSlice({
     addRecipe: addRecipeReducer,
     deleteRecipe: deleteRecipeReducer,
     stashGuestRecipe: stashGuestRecipeReducer,
-    restoreGuestRecipe: restoreGuestRecipeReducer
+    restoreGuestRecipe: restoreGuestRecipeReducer,
+    upsertRecipe:upsertRecipeReducer
   }
 });
 
@@ -87,7 +99,8 @@ export const {
   setCurrent,
   deleteRecipe,
   stashGuestRecipe,
-  restoreGuestRecipe
+  restoreGuestRecipe,
+  upsertRecipe
 } = recipeSlice.actions;
 
 export const recipeReducer = recipeSlice.reducer;

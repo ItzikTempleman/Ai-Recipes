@@ -6,6 +6,8 @@ import { RecipeModel } from "../../../Models/RecipeModel";
 import { recipeService } from "../../../Services/RecipeService";
 import { useTranslation } from "react-i18next";
 import chef from "../../../Assets/images/chef.png";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../Redux/Store";
 
 export type ChatMsg = { role: "user" | "assistant"; content: string };
 
@@ -25,7 +27,12 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
 
   const endRef = useRef<HTMLDivElement | null>(null);
 
- 
+ const liveRecipe = useSelector((state: AppState) =>
+  state.recipes.current?.id === recipe.id
+    ? state.recipes.current
+    : state.recipes.items.find(r => r.id === recipe.id) ?? recipe
+);
+
   useEffect(() => {
     if (open) return;
     setMessages([]);
@@ -60,11 +67,10 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
     setDraft("");
 
     try {
-  
-     const history: ChatMsg[] = [...messages, { role: "user", content: q }];
-      const answer = await recipeService.askRecipeQuestion(recipe, q, history);
+      const history: ChatMsg[] = [...messages, { role: "user", content: q }];
+      const result = await recipeService.askRecipeQuestion(liveRecipe, q, history);
 
-      setMessages(prev => [...prev, { role: "assistant", content: answer }]);
+      setMessages(prev => [...prev, { role: "assistant", content: result.answer }]);
     } catch (err: any) {
       const msg = err?.response?.data ?? err?.message ?? "Ask failed";
       setAskError(String(msg));
@@ -76,6 +82,7 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
   const dir = isRTL ? "rtl" : "ltr";
 
   return (
+    
     <Dialog
       open={open}
       onClose={onClose}

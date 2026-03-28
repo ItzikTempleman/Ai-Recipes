@@ -379,17 +379,17 @@ class RecipeController {
             return;
         }
 
-        const ask = new AskModel({ query: request.body.query, history: request.body.history } as any);
-        ask.validate();
+        const model = new AskModel(request.body);
+        model.validate();
 
-        const answer = await recipeService.askAboutRecipe(
+        const result = await recipeService.askAboutRecipe(
             recipeId,
             user.id,
-            ask.query,
-            ask.history ?? []
+            model.query,
+            model.history ?? []
         );
 
-        response.status(StatusCode.OK).json({ answer });
+        response.status(StatusCode.OK).json(result);
     };
 
 private async getRecipeUsageStatus(request: Request, response: Response): Promise<void> {

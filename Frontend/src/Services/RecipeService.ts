@@ -5,7 +5,8 @@ import {
   LactoseRestrictions,
   GlutenRestrictions,
   DietaryRestrictions,
-  ChatMsg
+  ChatMsg,
+  AskRecipeResponse
 } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
@@ -17,7 +18,8 @@ import {
   setError,
   setIsLoading,
   setCurrent,
-  deleteRecipe
+  deleteRecipe,
+  upsertRecipe
 } from "../Redux/RecipeSlice";
 import { usageService } from "./UsageService";
 import { like, setLikes, unlike } from "../Redux/LikeSlice";
@@ -192,7 +194,7 @@ usageService.refreshRecipeUsage();
     recipe: RecipeModel,
     question: string,
     history: ChatMsg[] = []
-  ): Promise<string> {
+  ): Promise<AskRecipeResponse> {
     const url = `${appConfig.askRecipeUrl}/${recipe.id}/ask`;
 
     const body = {
@@ -200,8 +202,14 @@ usageService.refreshRecipeUsage();
       history: history.slice(-8)
     };
 
-    const { data } = await axios.post<{ answer: string }>(url, body, getAuth());
-    return data.answer;
+    const { data } = await axios.post<AskRecipeResponse>(url, body, getAuth());
+
+    if (data?.updatedRecipe) {
+      store.dispatch(setCurrent(data.updatedRecipe));
+      store.dispatch(upsertRecipe(data.updatedRecipe));
+    }
+
+    return data;
   }
 }
 

@@ -1,4 +1,5 @@
 
+
 export type InputModel = {
     query: string;
     sugarLevel: SugarRestriction;
@@ -88,10 +89,12 @@ export type QueryRestrictions = string[];
 
 export type AskRecipeRequest = {
   query: string;
+  history?: ChatMsg[];
 };
 
 export type AskRecipeResponse = {
   answer: string;
+  updatedRecipe?: RecipeModel;
 };
 
 export type AskRecipeBody = {
