@@ -370,7 +370,19 @@ Return JSON in exactly this shape:
     "ingredients": [
       { "ingredient": "string", "amount": "string or null" }
     ],
-    "instructions": ["step 1", "step 2"]
+    "instructions": ["step 1", "step 2"],
+    "totalSugar": 0,
+    "totalProtein": 0,
+    "calories": 0,
+    "prepTime": 0,
+    "categories": ["breakfast"],
+    "sugarRestriction": 0,
+    "lactoseRestrictions": 0,
+    "glutenRestrictions": 0,
+    "dietaryRestrictions": 0,
+    "difficultyLevel": 1,
+    "countryOfOrigin": "string",
+    "queryRestrictions": []
   }
 }
 `.trim();

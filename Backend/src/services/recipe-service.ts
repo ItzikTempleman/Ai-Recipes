@@ -1,4 +1,4 @@
-import { FullRecipeModel, GeneratedRecipeData, DbRecipeRow, DifficultyLevel } from "../models/recipe-model";
+import { FullRecipeModel, GeneratedRecipeData, DbRecipeRow, DifficultyLevel, RecipeCategory } from "../models/recipe-model";
 import { gptService } from "./gpt-service";
 import { responseInstructions } from "./response-instructions";
 import path from "path";
@@ -15,6 +15,7 @@ import { sanitizeQueryRestrictions, normalizeCategories } from "../utils/recipe-
 import { validateRecipeSemantics } from "../utils/recipe-semantic-validator";
 import { naturalizeRecipeTitle } from "../utils/title-naturalizer";
 import { premiumService } from "./premium-service";
+import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, SugarRestriction } from "../models/filters";
 
 class RecipeService {
   public async generateInstructions(input: InputModel, isWithImage: boolean): Promise<GeneratedRecipeData> {
@@ -363,14 +364,26 @@ class RecipeService {
   }
 
   private async updateExistingGeneratedRecipe(
-    recipeId: number,
-    userId: number,
-    patch: {
-      title: string;
-      description: string;
-      amountOfServings: number;
-      ingredients: { ingredient: string; amount: string | null }[];
-      instructions: string[];
+  recipeId: number,
+  userId: number,
+  patch: {
+    title: string;
+    description: string;
+    amountOfServings: number;
+    ingredients: { ingredient: string; amount: string | null }[];
+    instructions: string[];
+    totalSugar?: number;
+    totalProtein?: number;
+    calories?: number;
+    prepTime?: number;
+    categories?: RecipeCategory[];
+    sugarRestriction?: SugarRestriction;
+    lactoseRestrictions?: LactoseRestrictions;
+    glutenRestrictions?: GlutenRestrictions;
+    dietaryRestrictions?: DietaryRestrictions;
+    difficultyLevel?: DifficultyLevel;
+    countryOfOrigin?: string;
+    queryRestrictions?: string[];
     }
   ): Promise<FullRecipeModel> {
     const existing = await this.getSingleRecipe(recipeId, userId);
@@ -434,29 +447,53 @@ class RecipeService {
       .join(" | ")
       .slice(0, 1000);
 
-    const sql = `
-      UPDATE recipe
-      SET
-        title = ?,
-        description = ?,
-        amountOfServings = ?,
-        ingredients = ?,
-        amounts = ?,
-        instructions = ?,
-        imageName = NULL
-      WHERE id = ? AND userId = ?
-    `;
+const sql = `
+  UPDATE recipe
+  SET
+    title = ?,
+    description = ?,
+    amountOfServings = ?,
+    ingredients = ?,
+    amounts = ?,
+    instructions = ?,
+    totalSugar = ?,
+    totalProtein = ?,
+    calories = ?,
+    prepTime = ?,
+    sugarRestriction = ?,
+    lactoseRestrictions = ?,
+    glutenRestrictions = ?,
+    dietaryRestrictions = ?,
+    difficultyLevel = ?,
+    countryOfOrigin = ?,
+    queryRestrictions = ?,
+    categories = ?,
+    imageName = NULL
+  WHERE id = ? AND userId = ?
+`;
 
-    await dal.execute(sql, [
-      title,
-      description,
-      amountOfServings,
-      ingredients,
-      amounts,
-      instructions,
-      recipeId,
-      userId
-    ]);
+ await dal.execute(sql, [
+  title,
+  description,
+  amountOfServings,
+  ingredients,
+  amounts,
+  instructions,
+  Number(patch.totalSugar ?? existing.totalSugar ?? 0),
+  Number(patch.totalProtein ?? existing.totalProtein ?? 0),
+  Number(patch.calories ?? existing.calories ?? 0),
+  Number(patch.prepTime ?? existing.prepTime ?? 0),
+  patch.sugarRestriction ?? existing.sugarRestriction,
+  patch.lactoseRestrictions ?? existing.lactoseRestrictions,
+  patch.glutenRestrictions ?? existing.glutenRestrictions,
+  patch.dietaryRestrictions ?? existing.dietaryRestrictions,
+  DifficultyLevel[patch.difficultyLevel ?? existing.difficultyLevel ?? DifficultyLevel.MID_LEVEL],
+  String(patch.countryOfOrigin ?? existing.countryOfOrigin ?? ""),
+  JSON.stringify(patch.queryRestrictions ?? existing.queryRestrictions ?? []),
+  JSON.stringify(patch.categories ?? existing.categories ?? []),
+  recipeId,
+  userId
+]);
 
     const updated = await this.getSingleRecipe(recipeId, userId);
     updated.imageName = null;

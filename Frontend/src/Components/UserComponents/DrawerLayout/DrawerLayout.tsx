@@ -60,7 +60,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
   const isAdmin = isLoggedIn && user?.roleId === 1;
 
   const isPremium = user?.isPremium === true;
-  const showUpgradeToPremium= !isPremium && !isAdmin && isLoggedIn;
+  const showUpgradeToPremium = !isPremium && !isAdmin && isLoggedIn;
 
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -95,11 +95,11 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
     setPendingDeleteUserId(null);
   }
 
-        function openPremiumDialog(): void {
+  function openPremiumDialog(): void {
     setConfirmPremiumOpen(true);
   }
 
-  function closePremiumDialog():void{
+  function closePremiumDialog(): void {
     setConfirmPremiumOpen(false);
   }
   async function confirmDeleteAccount(): Promise<void> {
@@ -200,13 +200,13 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                 <img className="NoProfileImage" src="/person-21.png" alt="Guest" />
               </div>
             )}
-        {!user && (
-        
-            <div className={`HelloGuestMessage`}>
-              <p>{t("generate.guest")}</p>
-           
-          </div>
-        )}
+            {!user && (
+
+              <div className={`HelloGuestMessage`}>
+                <p>{t("generate.guest")}</p>
+
+              </div>
+            )}
             {
               isAdmin && (
                 <div className="AdminBadge">
@@ -214,23 +214,23 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
                 </div>
               )
             }
-{isPremium && (
-  <div className="PremiumBadgeContainer">
-    <div className="PremiumImageWrapper">
-      <img className="premium-image" src={premiumBadge} alt="Premium" />
-      <div className="PremiumBadge">
-        <p>{t("drawer.premium")}</p>
-      </div>
-    </div>
-  </div>
-)}
-{
-  showUpgradeToPremium &&(
-      <Button className="UpgradeBtn" variant="contained" onClick={ () => {openPremiumDialog()}}>
-        {t("drawer.upgrade")}
-      </Button>
-  )
-}
+            {isPremium && (
+              <div className="PremiumBadgeContainer">
+                <div className="PremiumImageWrapper">
+                  <img className="premium-image" src={premiumBadge} alt="Premium" />
+                  <div className="PremiumBadge">
+                    <p>{t("drawer.premium")}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {
+              showUpgradeToPremium && (
+                <Button className="UpgradeBtn" variant="contained" onClick={() => { openPremiumDialog() }}>
+                  {t("drawer.upgrade")}
+                </Button>
+              )
+            }
 
             {navigationItems.map((item) => (
               <div key={item.key} className="DrawerRow">
@@ -290,14 +290,14 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
         onConfirm={confirmDeleteAccount}
       />
 
-                <Dialog
-                  className="generate_dialog_root"
-                  PaperProps={{ className: "generate_dialog_paper" }}
-                  open={confirmPremiumOpen}
-               onClose={closePremiumDialog}
-                >
-                  <PremiumDialog />
-                </Dialog>
+      <Dialog
+        className="generate_dialog_root"
+        PaperProps={{ className: "generate_dialog_paper" }}
+        open={confirmPremiumOpen}
+        onClose={closePremiumDialog}
+      >
+        <PremiumDialog />
+      </Dialog>
     </div>
   );
 }
