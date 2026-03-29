@@ -1,4 +1,58 @@
-.PremiumDialog{
-    width: 700px;
-    height: 600px;
+.premium_dialog_paper {
+  width: 600px !important;
+  height: 600px;
+  border-radius: 16px !important;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.PremiumDialog {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-section {
+  position: relative;
+  width: 100%;
+  padding-top: 16px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.premium-title-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.premium-title-div svg {
+  color: #eab928 !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.subscription-title {
+  margin: 0;
+  font-size: 32px;
+  color: rgb(50, 50, 50);
+}
+
+.subscription-sub-title {
+  margin-top: 12px;
+  align-self: center;
+  font-size: 18px;
+  color: #585858;
 }

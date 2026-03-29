@@ -35,6 +35,9 @@ const resources = {
         message: "Deleting this account is irreversible.",
         message2: "All data will be wiped."
       },
+      premium:{
+upgradeExperience:"Upgrade your cooking experience"
+      },
       homeScreen: {
         generateTitle: "AI recipes",
         shareIntro: "Share your recipes",
@@ -290,7 +293,9 @@ const resources = {
         message: "מחיקת המשתמש אינה ניתנת לביטול או שחזור.",
         message2: "כל המידע ימחק"
       },
-
+    premium:{
+upgradeExperience:"שדרג את חווית הבישול שלך"
+      },
       homeScreen: {
         generateTitle: "מתכונים עם AI",
         shareIntro: "שתף את המתכונים",

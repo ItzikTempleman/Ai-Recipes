@@ -291,12 +291,12 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
       />
 
       <Dialog
-        className="generate_dialog_root"
-        PaperProps={{ className: "generate_dialog_paper" }}
-        open={confirmPremiumOpen}
-        onClose={closePremiumDialog}
+  open={confirmPremiumOpen}
+  onClose={closePremiumDialog}
+  maxWidth={false}
+  PaperProps={{ className: "premium_dialog_paper" }}
       >
-        <PremiumDialog />
+        <PremiumDialog onClose={closePremiumDialog}/>
       </Dialog>
     </div>
   );

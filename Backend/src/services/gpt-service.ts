@@ -371,6 +371,14 @@ Your task:
 - Maximum 8 instruction steps.
 - Maximum 1 sentence per step.
 - Ingredients should stay concise and practical.
+
+- Any nutrition change MUST be reflected by real ingredient and quantity changes.
+- If protein goes up, the ingredients must include actual protein-rich ingredients.
+- If sugar is removed, explicit sugar/syrup/honey ingredients must be removed.
+- If calories go down, quantities and/or higher-calorie ingredients must be reduced or replaced accordingly.
+- The nutrition fields must match the ingredient list, not just the user request.
+- Do not claim the recipe is high-protein, sugar-free, or lower-calorie unless the ingredient list truly supports that.
+
 - Do not add markdown fences.
 - Do not return explanations outside JSON.
 

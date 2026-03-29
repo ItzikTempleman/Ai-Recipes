@@ -15,7 +15,6 @@ import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { useTranslation } from "react-i18next";
 import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
-
 import {
   DietaryRestrictions,
   GlutenRestrictions,
