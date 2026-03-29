@@ -35,8 +35,14 @@ const resources = {
         message: "Deleting this account is irreversible.",
         message2: "All data will be wiped."
       },
-      premium:{
-upgradeExperience:"Upgrade your cooking experience"
+      premium: {
+        upgradeExperience: "Upgrade your cooking experience",
+        cookSmarter: "Cook smarter. Eat better.",
+        recipesDaily: "15 recipes daily",
+        instead: "(instead of 8 / 3 days)",
+        editRecipesLive: "Edit recipes live",
+        withAi: "with Al chef",
+        personalized: "Personalized preferences & filters"
       },
       homeScreen: {
         generateTitle: "AI recipes",
@@ -293,8 +299,14 @@ upgradeExperience:"Upgrade your cooking experience"
         message: "מחיקת המשתמש אינה ניתנת לביטול או שחזור.",
         message2: "כל המידע ימחק"
       },
-    premium:{
-upgradeExperience:"שדרג את חווית הבישול שלך"
+      premium: {
+        upgradeExperience: "שדרג את חווית הבישול שלך",
+        cookSmarter: "בישול חכם יותר. לאכול טוב יותר",
+        recipesDaily: "מתכונים יומיים 15",
+        instead: "(במקום 8 / 3 ימים)",
+        editRecipesLive: "עריכת מתכונים קיימים ",
+        withAi: "באמצעות השף הוירטואלי",
+        personalized: "העדפות וסינונים מותאמים אישית כברירת מחדל"
       },
       homeScreen: {
         generateTitle: "מתכונים עם AI",
