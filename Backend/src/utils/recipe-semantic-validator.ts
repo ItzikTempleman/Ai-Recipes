@@ -27,7 +27,7 @@ function collectRecipeText(recipeLike: any): string {
 
   return `${title} ${description} ${ingredientText} ${instructionText}`
     .toLowerCase()
-    .replace(/[^a-z0-9\u0590-\u05ff]+/g, " ")
+    .replace(/[^a-z0-9\u0590-\u05ff-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -40,6 +40,32 @@ function hasAnyTerm(haystack: string, terms: string[]): boolean {
   return terms.some((term) => {
     const pattern = new RegExp(`(^|[^a-z])${escapeRegex(term.toLowerCase())}([^a-z]|$)`, "i");
     return pattern.test(haystack);
+  });
+}
+
+function hasQualifiedStyleTerm(
+  haystack: string,
+  styleTerms: string[],
+  qualifierTerms: string[]
+): boolean {
+  return styleTerms.some((styleTerm) => {
+    const escapedStyle = escapeRegex(styleTerm.toLowerCase());
+
+    return qualifierTerms.some((qualifier) => {
+      const escapedQualifier = escapeRegex(qualifier.toLowerCase());
+
+      const qualifierBefore = new RegExp(
+        `(^|[^a-z])${escapedQualifier}\\s+${escapedStyle}([^a-z]|$)`,
+        "i"
+      );
+
+      const qualifierAfter = new RegExp(
+        `(^|[^a-z])${escapedStyle}\\s+${escapedQualifier}([^a-z]|$)`,
+        "i"
+      );
+
+      return qualifierBefore.test(haystack) || qualifierAfter.test(haystack);
+    });
   });
 }
 
@@ -77,6 +103,7 @@ export function validateRecipeSemantics(recipeLike: any): void {
     "octopus",
   ];
 
+  // Strict actual meat terms:
   const meatTerms = [
     "beef",
     "steak",
@@ -88,12 +115,6 @@ export function validateRecipeSemantics(recipeLike: any): void {
     "chicken",
     "turkey",
     "duck",
-    "shawarma",
-    "meatball",
-    "meatballs",
-    "burger",
-    "hamburger",
-    "meat sauce",
     "ground beef",
     "ground lamb",
     "ground turkey",
@@ -102,6 +123,37 @@ export function validateRecipeSemantics(recipeLike: any): void {
     "chicken broth",
     "beef stock",
     "chicken stock",
+  ];
+
+  // Ambiguous dish-style words:
+  const meatStyleTerms = [
+    "shawarma",
+    "burger",
+    "hamburger",
+    "meatball",
+    "meatballs",
+    "meat sauce",
+  ];
+
+  // Words that make those dish-style terms clearly plant-based:
+  const veganStyleQualifiers = [
+    "vegan",
+    "plant based",
+    "plant-based",
+    "vegetarian",
+    "meatless",
+    "lentil",
+    "lentils",
+    "chickpea",
+    "chickpeas",
+    "bean",
+    "beans",
+    "black bean",
+    "mushroom",
+    "tofu",
+    "tempeh",
+    "seitan",
+    "soy",
   ];
 
   const fishTerms = [
@@ -140,6 +192,12 @@ export function validateRecipeSemantics(recipeLike: any): void {
   const hasPork = hasAnyTerm(text, porkTerms);
   const hasShellfish = hasAnyTerm(text, shellfishTerms);
   const hasMeat = hasAnyTerm(text, meatTerms);
+  const hasMeatStyle = hasAnyTerm(text, meatStyleTerms);
+  const hasQualifiedPlantStyle = hasQualifiedStyleTerm(
+    text,
+    meatStyleTerms,
+    veganStyleQualifiers
+  );
   const hasFish = hasAnyTerm(text, fishTerms);
   const hasDairy = hasAnyTerm(text, dairyTerms);
   const hasEgg = hasAnyTerm(text, eggTerms);
@@ -169,7 +227,9 @@ export function validateRecipeSemantics(recipeLike: any): void {
   }
 
   if (isVegan || isVeganCategory) {
-    if (hasMeat || hasFish || hasDairy || hasEgg || hasHoney) {
+    const hasUnqualifiedMeatStyle = hasMeatStyle && !hasQualifiedPlantStyle;
+
+    if (hasMeat || hasUnqualifiedMeatStyle || hasFish || hasDairy || hasEgg || hasHoney) {
       throw new ValidationError("Invalid vegan recipe: contains animal-product terms");
     }
   }
