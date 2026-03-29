@@ -1,6 +1,6 @@
 import axios from "axios";
 import { appConfig } from "../utils/app-config";
-import { GeneratedRecipeData, Query } from "../models/recipe-model";
+import { GeneratedRecipeData, Query, RecipeCategory } from "../models/recipe-model";
 import { editSignals } from "../utils/edit-recipe-trigger-list";
 
 export type RecipeChatEditResult =
@@ -17,6 +17,20 @@ export type RecipeChatEditResult =
         amountOfServings: number;
         ingredients: { ingredient: string; amount: string | null }[];
         instructions: string[];
+
+        totalSugar?: number;
+        totalProtein?: number;
+        calories?: number;
+        prepTime?: number;
+
+        categories?: RecipeCategory[];
+        sugarRestriction?: number;
+        lactoseRestrictions?: number;
+        glutenRestrictions?: number;
+        dietaryRestrictions?: number;
+        difficultyLevel?: number;
+        countryOfOrigin?: string;
+        queryRestrictions?: any[];
       };
     };
 
@@ -434,18 +448,46 @@ Return JSON in exactly this shape:
           .slice(0, 20)
       : fallbackIngredients;
 
-    return {
-      mode: "edit",
-      answer: String(parsed?.answer ?? "Updated your recipe.").trim().slice(0, 300),
-      recipe: {
-        title: String(parsed?.recipe?.title ?? recipe.title).trim().slice(0, 100),
-        description: String(parsed?.recipe?.description ?? recipe.description).trim().slice(0, 1000),
-        amountOfServings:
-          Number(parsed?.recipe?.amountOfServings ?? recipe.amountOfServings) || recipe.amountOfServings,
-        ingredients: compactIngredients,
-        instructions: compactInstructions
-      }
-    };
+return {
+  mode: "edit",
+  answer: String(parsed?.answer ?? "Updated your recipe.").trim().slice(0, 300),
+  recipe: {
+    title: String(parsed?.recipe?.title ?? recipe.title).trim().slice(0, 100),
+    description: String(parsed?.recipe?.description ?? recipe.description).trim().slice(0, 1000),
+    amountOfServings:
+      Number(parsed?.recipe?.amountOfServings ?? recipe.amountOfServings) || recipe.amountOfServings,
+    ingredients: compactIngredients,
+    instructions: compactInstructions,
+
+    totalSugar:
+      parsed?.recipe?.totalSugar != null ? Number(parsed.recipe.totalSugar) : undefined,
+    totalProtein:
+      parsed?.recipe?.totalProtein != null ? Number(parsed.recipe.totalProtein) : undefined,
+    calories:
+      parsed?.recipe?.calories != null ? Number(parsed.recipe.calories) : undefined,
+    prepTime:
+      parsed?.recipe?.prepTime != null ? Number(parsed.recipe.prepTime) : undefined,
+
+    categories: Array.isArray(parsed?.recipe?.categories) ? parsed.recipe.categories : undefined,
+    sugarRestriction:
+      parsed?.recipe?.sugarRestriction != null ? Number(parsed.recipe.sugarRestriction) : undefined,
+    lactoseRestrictions:
+      parsed?.recipe?.lactoseRestrictions != null ? Number(parsed.recipe.lactoseRestrictions) : undefined,
+    glutenRestrictions:
+      parsed?.recipe?.glutenRestrictions != null ? Number(parsed.recipe.glutenRestrictions) : undefined,
+    dietaryRestrictions:
+      parsed?.recipe?.dietaryRestrictions != null ? Number(parsed.recipe.dietaryRestrictions) : undefined,
+    difficultyLevel:
+      parsed?.recipe?.difficultyLevel != null ? Number(parsed.recipe.difficultyLevel) : undefined,
+    countryOfOrigin:
+      parsed?.recipe?.countryOfOrigin != null
+        ? String(parsed.recipe.countryOfOrigin).trim().slice(0, 100)
+        : undefined,
+    queryRestrictions: Array.isArray(parsed?.recipe?.queryRestrictions)
+      ? parsed.recipe.queryRestrictions
+      : undefined
+  }
+};
   }
 
   private async generateNonPremiumEditInstructions(
