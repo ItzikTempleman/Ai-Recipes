@@ -7,6 +7,17 @@ import {
 } from "../models/recipe-model";
 import { editSignals } from "../utils/edit-recipe-trigger-list";
 import { gptPrompts } from "../utils/gpt-prompts";
+import {
+  normalizeCategories,
+  sanitizeQueryRestrictions
+} from "../utils/recipe-normalization";
+import { validateRecipeSemantics } from "../utils/recipe-semantic-validator";
+import {
+  DietaryRestrictions,
+  GlutenRestrictions,
+  LactoseRestrictions,
+  SugarRestriction
+} from "../models/filters";
 
 export type RecipeChatEditResult =
   | {
@@ -53,6 +64,16 @@ class GptService {
       .trim();
   }
 
+  private normalizeQuestion(text: string): string {
+    return String(text ?? "")
+      .toLowerCase()
+      .replace(/[׳']/g, "'")
+      .replace(/[״"]/g, '"')
+      .replace(/[.,!?;:()[\]{}"`]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   private isEditIntentHeuristic(userQuestion: string): boolean {
     const normalizedQuestion = this.normalizeForIntent(userQuestion);
     return editSignals.some(signal =>
@@ -68,6 +89,188 @@ class GptService {
     return this.isLikelyHebrew(userQuestion)
       ? NON_PREMIUM_EDIT_PREFIX.he
       : NON_PREMIUM_EDIT_PREFIX.en;
+  }
+
+  private getIngredientSupportText(
+    ingredients: { ingredient: string; amount: string | null }[]
+  ): string {
+    return ingredients
+      .map(item => `${String(item?.ingredient ?? "")} ${String(item?.amount ?? "")}`)
+      .join(" ")
+      .toLowerCase();
+  }
+
+  private hasHighProteinSupport(
+    ingredients: { ingredient: string; amount: string | null }[]
+  ): boolean {
+    const text = this.getIngredientSupportText(ingredients);
+
+    const strongProteinTerms = [
+      "protein powder",
+      "whey",
+      "greek yogurt",
+      "cottage cheese",
+      "tuna",
+      "salmon",
+      "chicken breast",
+      "turkey breast",
+      "egg white",
+      "egg whites",
+      "tofu",
+      "tempeh",
+      "seitan",
+      "lentil",
+      "lentils",
+      "chickpea",
+      "chickpeas",
+      "edamame",
+      "black beans",
+      "beans",
+      "mozzarella",
+      "parmesan",
+      "cheddar"
+    ];
+
+    return strongProteinTerms.some(term => text.includes(term));
+  }
+
+  private inferRestrictionOverrides(userQuestion: string): {
+    sugarRestriction?: number;
+    lactoseRestrictions?: number;
+    glutenRestrictions?: number;
+    dietaryRestrictions?: number;
+  } {
+    const q = this.normalizeQuestion(userQuestion);
+    const hasAny = (terms: string[]) => terms.some(term => q.includes(term));
+
+    const overrides: {
+      sugarRestriction?: number;
+      lactoseRestrictions?: number;
+      glutenRestrictions?: number;
+      dietaryRestrictions?: number;
+    } = {};
+
+    if (
+      hasAny([
+        "no sugar",
+        "sugar free",
+        "sugar-free",
+        "without sugar",
+        "ללא סוכר",
+        "בלי סוכר"
+      ])
+    ) {
+      overrides.sugarRestriction = SugarRestriction.NONE;
+    } else if (
+      hasAny([
+        "low sugar",
+        "less sugar",
+        "reduce sugar",
+        "lower sugar",
+        "דל סוכר",
+        "פחות סוכר"
+      ])
+    ) {
+      overrides.sugarRestriction = SugarRestriction.LOW;
+    }
+
+    if (hasAny(["vegan", "טבעוני", "טבעונית"])) {
+      overrides.dietaryRestrictions = DietaryRestrictions.VEGAN;
+    } else if (hasAny(["kosher", "כשר"])) {
+      overrides.dietaryRestrictions = DietaryRestrictions.KOSHER;
+    }
+
+    if (
+      hasAny([
+        "lactose free",
+        "lactose-free",
+        "no lactose",
+        "no dairy",
+        "dairy free",
+        "dairy-free",
+        "ללא לקטוז",
+        "בלי לקטוז",
+        "ללא חלב",
+        "בלי חלב"
+      ])
+    ) {
+      overrides.lactoseRestrictions = LactoseRestrictions.NONE;
+    }
+
+    if (
+      hasAny([
+        "gluten free",
+        "gluten-free",
+        "no gluten",
+        "ללא גלוטן",
+        "בלי גלוטן"
+      ])
+    ) {
+      overrides.glutenRestrictions = GlutenRestrictions.NONE;
+    }
+
+    return overrides;
+  }
+
+  private validateEditedRecipeConsistency(
+    originalRecipe: {
+      title: string;
+      description: string;
+      amountOfServings: number;
+      ingredients: { ingredient: string; amount: string | null }[];
+      instructions: string[];
+      restrictions?: any;
+      categories?: RecipeCategory[];
+    },
+    editedRecipe: Extract<RecipeChatEditResult, { mode: "edit" }>["recipe"]
+  ): void {
+    const normalizedRecipe = {
+      ...editedRecipe,
+      categories: normalizeCategories(editedRecipe.categories ?? []),
+      queryRestrictions: sanitizeQueryRestrictions(
+        editedRecipe.queryRestrictions ?? []
+      ),
+      sugarRestriction:
+        editedRecipe.sugarRestriction ??
+        Number(originalRecipe.restrictions?.sugarRestriction ?? 0),
+      lactoseRestrictions:
+        editedRecipe.lactoseRestrictions ??
+        Number(originalRecipe.restrictions?.lactoseRestrictions ?? 0),
+      glutenRestrictions:
+        editedRecipe.glutenRestrictions ??
+        Number(originalRecipe.restrictions?.glutenRestrictions ?? 0),
+      dietaryRestrictions:
+        editedRecipe.dietaryRestrictions ??
+        Number(originalRecipe.restrictions?.dietaryRestrictions ?? 0)
+    };
+
+    validateRecipeSemantics(normalizedRecipe);
+
+    const proteinPer100g = Number(editedRecipe.totalProtein ?? 0);
+    const sugarPer100g = Number(editedRecipe.totalSugar ?? 0);
+    const caloriesPer100g = Number(editedRecipe.calories ?? 0);
+
+    if (Number.isFinite(proteinPer100g) && (proteinPer100g < 0 || proteinPer100g > 35)) {
+      throw new Error("Edited recipe protein per 100g is unrealistic");
+    }
+
+    if (Number.isFinite(sugarPer100g) && (sugarPer100g < 0 || sugarPer100g > 60)) {
+      throw new Error("Edited recipe sugar per 100g is unrealistic");
+    }
+
+    if (Number.isFinite(caloriesPer100g) && (caloriesPer100g < 0 || caloriesPer100g > 650)) {
+      throw new Error("Edited recipe calories per 100g is unrealistic");
+    }
+
+    if (
+      Number.isFinite(proteinPer100g) &&
+      proteinPer100g >= 18 &&
+      !this.hasHighProteinSupport(editedRecipe.ingredients)
+    ) {
+      throw new Error(
+        "Edited recipe protein claim is not supported by the ingredient list"
+      );
+    }
   }
 
   public async classifyRecipeChatIntent(
@@ -298,6 +501,7 @@ class GptService {
       ingredients: { ingredient: string; amount: string | null }[];
       instructions: string[];
       restrictions?: any;
+      categories?: RecipeCategory[];
     },
     userQuestion: string,
     history: { role: "user" | "assistant"; content: string }[] = []
@@ -387,7 +591,9 @@ class GptService {
           .slice(0, 20)
       : fallbackIngredients;
 
-    return {
+    const inferredOverrides = this.inferRestrictionOverrides(userQuestion);
+
+    const result: Extract<RecipeChatEditResult, { mode: "edit" }> = {
       mode: "edit",
       answer: String(parsed?.answer ?? "Updated your recipe.")
         .trim()
@@ -404,6 +610,7 @@ class GptService {
           recipe.amountOfServings,
         ingredients: compactIngredients,
         instructions: compactInstructions,
+
         totalSugar:
           parsed?.recipe?.totalSugar != null
             ? Number(parsed.recipe.totalSugar)
@@ -420,38 +627,54 @@ class GptService {
           parsed?.recipe?.prepTime != null
             ? Number(parsed.recipe.prepTime)
             : undefined,
+
         categories: Array.isArray(parsed?.recipe?.categories)
-          ? parsed.recipe.categories
-          : undefined,
+          ? normalizeCategories(parsed.recipe.categories)
+          : normalizeCategories(recipe.categories ?? []),
+
         sugarRestriction:
-          parsed?.recipe?.sugarRestriction != null
+          inferredOverrides.sugarRestriction ??
+          (parsed?.recipe?.sugarRestriction != null
             ? Number(parsed.recipe.sugarRestriction)
-            : undefined,
+            : Number(recipe.restrictions?.sugarRestriction ?? 0)),
+
         lactoseRestrictions:
-          parsed?.recipe?.lactoseRestrictions != null
+          inferredOverrides.lactoseRestrictions ??
+          (parsed?.recipe?.lactoseRestrictions != null
             ? Number(parsed.recipe.lactoseRestrictions)
-            : undefined,
+            : Number(recipe.restrictions?.lactoseRestrictions ?? 0)),
+
         glutenRestrictions:
-          parsed?.recipe?.glutenRestrictions != null
+          inferredOverrides.glutenRestrictions ??
+          (parsed?.recipe?.glutenRestrictions != null
             ? Number(parsed.recipe.glutenRestrictions)
-            : undefined,
+            : Number(recipe.restrictions?.glutenRestrictions ?? 0)),
+
         dietaryRestrictions:
-          parsed?.recipe?.dietaryRestrictions != null
+          inferredOverrides.dietaryRestrictions ??
+          (parsed?.recipe?.dietaryRestrictions != null
             ? Number(parsed.recipe.dietaryRestrictions)
-            : undefined,
+            : Number(recipe.restrictions?.dietaryRestrictions ?? 0)),
+
         difficultyLevel:
           parsed?.recipe?.difficultyLevel != null
             ? Number(parsed.recipe.difficultyLevel)
             : undefined,
+
         countryOfOrigin:
           parsed?.recipe?.countryOfOrigin != null
             ? String(parsed.recipe.countryOfOrigin).trim().slice(0, 100)
             : undefined,
+
         queryRestrictions: Array.isArray(parsed?.recipe?.queryRestrictions)
-          ? parsed.recipe.queryRestrictions
-          : undefined
+          ? sanitizeQueryRestrictions(parsed.recipe.queryRestrictions)
+          : sanitizeQueryRestrictions(recipe.restrictions?.queryRestrictions ?? [])
       }
     };
+
+    this.validateEditedRecipeConsistency(recipe, result.recipe);
+
+    return result;
   }
 
   private async generateNonPremiumEditInstructions(
@@ -546,6 +769,7 @@ class GptService {
       ingredients: { ingredient: string; amount: string | null }[];
       instructions: string[];
       restrictions?: any;
+      categories?: RecipeCategory[];
     },
     userQuestion: string,
     history: { role: "user" | "assistant"; content: string }[] = [],

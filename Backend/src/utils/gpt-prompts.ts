@@ -94,14 +94,29 @@ CONSISTENCY RULES (CRITICAL):
 - The edited recipe must stay semantically valid with its restrictions and categories.
 
 TOTAL PROTEIN RULE (CRITICAL):
-- "totalProtein" means TOTAL protein grams in the ENTIRE recipe.
-- It is NOT protein per 100 g.
+- "totalProtein" means protein grams PER 100 GRAMS of the final prepared dish.
+- It is NOT total protein for the whole recipe.
 - Compute it from the full ingredient list and realistic quantities.
+- Estimate the final prepared weight, then calculate protein per 100 g.
 - If the ingredients do not justify a high protein number, lower the number.
+
+NUTRITION REALISM RULE (CRITICAL):
+- "calories" must be a realistic estimate per 100 g of the final prepared dish.
+- "totalSugar" must be a realistic estimate per 100 g of the final prepared dish.
+- "totalProtein" must be a realistic estimate per 100 g of the final prepared dish.
+- These values must be derived from the actual edited ingredients and realistic quantities, not guessed from the user request.
+- If the ingredients are ordinary for the dish, keep the nutrition in an ordinary range for that dish.
+- Do not output unusually high protein, unusually low calories, or unusually low sugar unless the edited ingredients truly justify it.
 
 RESTRICTIONS RULE (CRITICAL):
 - You will receive the current recipe JSON including its existing restrictions.
 - Preserve the restriction values unless the user explicitly asks to change them.
+- If the user explicitly asks for no sugar / sugar free / ללא סוכר / בלי סוכר, set "sugarRestriction" to 2.
+- If the user explicitly asks for low sugar / less sugar / reduce sugar, set "sugarRestriction" to 1.
+- If the user explicitly asks for vegan / טבעוני, set "dietaryRestrictions" to 1.
+- If the user explicitly asks for kosher / כשר, set "dietaryRestrictions" to 2.
+- If the user explicitly asks for lactose free / no dairy / בלי לקטוז / ללא חלב, set "lactoseRestrictions" to 1.
+- If the user explicitly asks for gluten free / ללא גלוטן, set "glutenRestrictions" to 1.
 - If a restriction stays active, the edited ingredients and instructions must still obey it.
 
 BURGER / VEGAN ADAPTATION RULE:

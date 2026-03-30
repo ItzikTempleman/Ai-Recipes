@@ -48,25 +48,38 @@ function hasQualifiedStyleTerm(
   styleTerms: string[],
   qualifierTerms: string[]
 ): boolean {
-  return styleTerms.some((styleTerm) => {
-    const escapedStyle = escapeRegex(styleTerm.toLowerCase());
+  const words = haystack.split(/\s+/).filter(Boolean);
 
-    return qualifierTerms.some((qualifier) => {
-      const escapedQualifier = escapeRegex(qualifier.toLowerCase());
+  const styleIndexes: number[] = [];
+  const qualifierIndexes: number[] = [];
 
-      const qualifierBefore = new RegExp(
-        `(^|[^a-z])${escapedQualifier}\\s+${escapedStyle}([^a-z]|$)`,
-        "i"
-      );
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
 
-      const qualifierAfter = new RegExp(
-        `(^|[^a-z])${escapedStyle}\\s+${escapedQualifier}([^a-z]|$)`,
-        "i"
-      );
+    if (styleTerms.includes(word)) {
+      styleIndexes.push(i);
+    }
 
-      return qualifierBefore.test(haystack) || qualifierAfter.test(haystack);
-    });
-  });
+    if (qualifierTerms.includes(word)) {
+      qualifierIndexes.push(i);
+    }
+
+    if (i < words.length - 1) {
+      const bigram = `${words[i]} ${words[i + 1]}`;
+
+      if (styleTerms.includes(bigram)) {
+        styleIndexes.push(i);
+      }
+
+      if (qualifierTerms.includes(bigram)) {
+        qualifierIndexes.push(i);
+      }
+    }
+  }
+
+  return styleIndexes.some(styleIndex =>
+    qualifierIndexes.some(qualifierIndex => Math.abs(styleIndex - qualifierIndex) <= 3)
+  );
 }
 
 export function validateRecipeSemantics(recipeLike: any): void {
