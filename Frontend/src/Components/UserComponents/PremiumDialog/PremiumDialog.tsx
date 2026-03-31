@@ -7,6 +7,7 @@ import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import i18n from "../../../Utils/i18n";
 
 type CloseDialogProps = {
   onClose: () => void;
@@ -16,7 +17,7 @@ type SubscriptionType = "monthly" | "annual";
 
 export function PremiumDialog({ onClose }: CloseDialogProps) {
   const { t } = useTranslation();
-
+  const isRTL = (i18n.language ?? "").startsWith("he");
   const [selected, setSelected] = useState<SubscriptionType>("monthly");
 
 
@@ -60,8 +61,7 @@ export function PremiumDialog({ onClose }: CloseDialogProps) {
       </div>
 
 
-      <div className="box-selector">
-
+       <div className="box-selector">
         <Button
           className={`box-option ${selected === "monthly" ? "selected" : ""}`}
           onClick={() => setSelected("monthly")}
@@ -69,23 +69,43 @@ export function PremiumDialog({ onClose }: CloseDialogProps) {
         >
           <div className="monthly-subscription-div">
             <p>{t("premium.monthly")}</p>
+
+            <p className="price-line">
+              {isRTL ? (
+                <>
+                  {t("premium.month")} / <span className="price-ltr">9.9₪</span>
+                </>
+              ) : (
+                <>
+                  <span className="price-ltr">9.9₪</span> / {t("premium.month")}
+                </>
+              )}
+            </p>
           </div>
         </Button>
 
         <Button
           className={`box-option ${selected === "annual" ? "selected" : ""}`}
           onClick={() => setSelected("annual")}
-           variant="contained"
+          variant="contained"
         >
           <div className="yearly-subscription-div">
-            <p >{t("premium.annual")}</p>
+            <p>{t("premium.annual")}</p>
+
+            <p className="price-line">
+              {isRTL ? (
+                <>
+                  {t("premium.year")} / <span className="price-ltr">99₪</span>
+                </>
+              ) : (
+                <>
+                  <span className="price-ltr">99₪</span> / {t("premium.year")}
+                </>
+              )}
+            </p>
           </div>
         </Button>
       </div>
-
-
-
-
     </div>
   );
 }

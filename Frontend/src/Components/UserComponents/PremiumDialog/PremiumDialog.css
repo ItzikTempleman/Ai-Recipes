@@ -143,17 +143,27 @@ justify-content: center;
   background-color: white !important;
   margin: 6px !important;
   border-radius:8px !important;
-  border: 2px solid rgb(58, 166, 238) !important;
+  border: 1px solid rgb(58, 166, 238) !important;
+  border-bottom: 26px rgba(58, 166, 238, 0.794) solid !important;
 }
 
 .box-option p{
   color: #2e2e2e;
 }
 .box-option.selected {
-border: 2px solid rgb(238, 187, 58) !important;
+  background-color: rgba(238, 187, 58, 0.226) !important;
+border: 2.5px solid rgb(238, 187, 58) !important;
 border-bottom: 26px rgb(238, 187, 58) solid !important;
 }
+.price-line {
+  direction: inherit;
+}
 
+.price-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
 @media (max-width: 600px) {
   .what_you_get {
     width: calc(100% - 40px);
