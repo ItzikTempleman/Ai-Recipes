@@ -42,7 +42,16 @@ const resources = {
         instead: "(instead of 8 / 3 days)",
         editRecipesLive: "Edit recipes live",
         withAi: "with Al chef",
-        personalized: "Personalized preferences & filters"
+        personalized: "Personalized preferences & filters",
+        monthly: "Monthly",
+        annual: "Annual",
+        month: "month",
+        year: "year",
+        bestValue: "Best Value",
+        save: "Save",
+        upgrade: "Upgrade to premium",
+        cancel: "Cancel",
+        securePayment: "Secure payment"
       },
       homeScreen: {
         generateTitle: "AI recipes",
@@ -306,7 +315,16 @@ const resources = {
         instead: "(במקום 8 / 3 ימים)",
         editRecipesLive: "עריכת מתכונים קיימים ",
         withAi: "באמצעות השף הוירטואלי",
-        personalized: "העדפות וסינונים מותאמים אישית כברירת מחדל"
+        personalized: "העדפות וסינונים מותאמים אישית כברירת מחדל",
+        monthly: "חודשי",
+        annual: "שנתי",
+        month: "לחודש",
+        year: "לשנה",
+        bestValue: "הכי משתלם",
+        save: "חסוך",
+        upgrade: "שדרג",
+        cancel: "ביטול",
+        securePayment: "תשלום מאובטח"
       },
       homeScreen: {
         generateTitle: "מתכונים עם AI",

@@ -46,7 +46,7 @@
 
 .subscription-title {
   margin: 0;
-  font-size: 32px;
+  font-size: 30px;
   color: rgb(50, 50, 50);
 }
 
@@ -62,7 +62,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 40px;
   width: 94%;
   margin: 12px auto;
   background: linear-gradient(135deg, #f5cd54, #f4e0a2, white);
@@ -102,8 +102,8 @@
 
 .what_you_get svg {
   flex: 0 0 26px;
-  width: 26px !important;
-  height: 26px !important;
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .what_you_get.yellow svg {
@@ -121,6 +121,34 @@
 .secondary-text {
   color: #7b7b7b;
   margin-left: 6px;
+}
+
+._divider {
+  width: auto;
+  height: 1px;
+  background-color: #c3c3c3;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.box-selector {
+  display: flex;
+  gap: 12px;
+
+}
+
+.box-option {
+  width: 180px;
+  height: 130px;
+  background-color: white !important;
+  margin: 6px !important;
+  border-radius:8px !important;
+  border: 2px solid rgb(58, 166, 238) !important;
+}
+
+.box-option.selected {
+border: 2px solid rgb(238, 187, 58) !important;
+border-bottom: 26px rgb(238, 187, 58) solid !important;
 }
 
 @media (max-width: 600px) {
