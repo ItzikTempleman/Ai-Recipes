@@ -133,8 +133,8 @@
 
 .box-selector {
   display: flex;
-  gap: 12px;
-
+width: 100%;
+justify-content: center;
 }
 
 .box-option {
@@ -146,6 +146,9 @@
   border: 2px solid rgb(58, 166, 238) !important;
 }
 
+.box-option p{
+  color: #2e2e2e;
+}
 .box-option.selected {
 border: 2px solid rgb(238, 187, 58) !important;
 border-bottom: 26px rgb(238, 187, 58) solid !important;

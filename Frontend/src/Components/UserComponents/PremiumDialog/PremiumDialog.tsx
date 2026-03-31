@@ -60,7 +60,7 @@ export function PremiumDialog({ onClose }: CloseDialogProps) {
       </div>
 
 
-      <div>
+      <div className="box-selector">
 
         <Button
           className={`box-option ${selected === "monthly" ? "selected" : ""}`}
