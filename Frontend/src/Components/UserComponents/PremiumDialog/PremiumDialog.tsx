@@ -8,6 +8,7 @@ import PsychologyIcon from "@mui/icons-material/Psychology";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import i18n from "../../../Utils/i18n";
+import StarIcon from "@mui/icons-material/Star";
 
 type CloseDialogProps = {
   onClose: () => void;
@@ -60,52 +61,64 @@ export function PremiumDialog({ onClose }: CloseDialogProps) {
         </div>
       </div>
 
+<div className="box-selector">
+  <Button
+    className={`box-option monthly-box ${selected === "monthly" ? "selected" : ""}`}
+    onClick={() => setSelected("monthly")}
+    variant="contained"
+  >
+    <div className="plan-inner monthly-subscription-div">
+      <p className="plan-name">{t("premium.monthly")}</p>
+      <div className="plan-mini-divider" />
 
-       <div className="box-selector">
-        <Button
-          className={`box-option ${selected === "monthly" ? "selected" : ""}`}
-          onClick={() => setSelected("monthly")}
-          variant="contained"
-        >
-          <div className="monthly-subscription-div">
-            <p>{t("premium.monthly")}</p>
+      <p className="price-line">
+        {isRTL ? (
+          <>
+            <span className="price-ltr">9.9₪</span> / {t("premium.month")}
+          </>
+        ) : (
+          <>
+            <span className="price-ltr">9.9₪</span> / {t("premium.month")}
+          </>
+        )}
+      </p>
+    </div>
+  </Button>
 
-            <p className="price-line">
-              {isRTL ? (
-                <>
-                  {t("premium.month")} / <span className="price-ltr">9.9₪</span>
-                </>
-              ) : (
-                <>
-                  <span className="price-ltr">9.9₪</span> / {t("premium.month")}
-                </>
-              )}
-            </p>
-          </div>
-        </Button>
+<Button
+  className={`box-option annual-box ${selected === "annual" ? "selected" : ""}`}
+  onClick={() => setSelected("annual")}
+  variant="contained"
+>
+  <div className="annual-badge">
+    <StarIcon className="badge-star" />
+    <span>{t("premium.bestValue")}</span>
+  </div>
 
-        <Button
-          className={`box-option ${selected === "annual" ? "selected" : ""}`}
-          onClick={() => setSelected("annual")}
-          variant="contained"
-        >
-          <div className="yearly-subscription-div">
-            <p>{t("premium.annual")}</p>
+  <div className="yearly-subscription-div">
+    <p>{t("premium.annual")}</p>
 
-            <p className="price-line">
-              {isRTL ? (
-                <>
-                  {t("premium.year")} / <span className="price-ltr">99₪</span>
-                </>
-              ) : (
-                <>
-                  <span className="price-ltr">99₪</span> / {t("premium.year")}
-                </>
-              )}
-            </p>
-          </div>
-        </Button>
-      </div>
+    <p className="price-line">
+      <span className="price-ltr">99₪</span> / {t("premium.year")}
+    </p>
+  </div>
+
+  <div className="annual-save-box">
+    <span>{t("premium.save")}</span>
+  </div>
+</Button>
+
+
+</div>
+<Button 
+className="upgrade" 
+  onClick={() => ("")}
+  variant="contained"
+>
+<p>{t("premium.upgrade")}</p>
+</Button>
+<div className="divider"></div>
+<p className="cancel-message">{t("premium.cancel")}</p>
     </div>
   );
 }

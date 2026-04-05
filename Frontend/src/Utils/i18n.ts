@@ -30,7 +30,7 @@ const resources = {
         deleteAccount: "Delete account",
         areYouSure: "Are you sure?",
         yes: "Ok",
-        cancel: "Cancel",
+        cancel: "Cancel anytime",
         confirmation: "Account deleted permanently. Good bye",
         message: "Deleting this account is irreversible.",
         message2: "All data will be wiped."
@@ -48,10 +48,10 @@ const resources = {
         month: "month",
         year: "year",
         bestValue: "Best Value",
-        save: "Save",
+        save: "Save 17%",
         upgrade: "Upgrade to premium",
-        cancel: "Cancel",
-        securePayment: "Secure payment"
+        cancel: "Cancel anytime",
+        securePayment: "Secure payment",
       },
       homeScreen: {
         generateTitle: "AI recipes",
@@ -321,9 +321,9 @@ const resources = {
         month: "חודש",
         year: "שנה",
         bestValue: "הכי משתלם",
-        save: "חסוך",
-        upgrade: "שדרג",
-        cancel: "ביטול",
+        save: "17% חסוך",
+        upgrade: "שדרג לפרימיום",
+        cancel: "בטל בכל זמן",
         securePayment: "תשלום מאובטח"
       },
       homeScreen: {

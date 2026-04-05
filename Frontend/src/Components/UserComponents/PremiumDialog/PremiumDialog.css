@@ -1,6 +1,6 @@
 .premium_dialog_paper {
   width: 600px !important;
-  height: 600px;
+  height: 620px;
   border-radius: 16px !important;
   overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
@@ -131,32 +131,121 @@
   margin-right: 12px;
 }
 
+/* pricing cards */
+
 .box-selector {
   display: flex;
-width: 100%;
-justify-content: center;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 18px;
 }
 
 .box-option {
+  position: relative !important;
   width: 180px;
-  height: 130px;
-  background-color: white !important;
+  height: 150px;
   margin: 6px !important;
-  border-radius:8px !important;
-  border: 1px solid rgb(58, 166, 238) !important;
-  border-bottom: 26px rgba(58, 166, 238, 0.794) solid !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+  text-transform: none !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
 }
 
-.box-option p{
+.box-option p {
   color: #2e2e2e;
 }
-.box-option.selected {
-  background-color: rgba(238, 187, 58, 0.226) !important;
-border: 2.5px solid rgb(238, 187, 58) !important;
-border-bottom: 26px rgb(238, 187, 58) solid !important;
+
+.monthly-box {
+  background-color: white !important;
+  border: 2px solid rgb(58, 166, 238) !important;
 }
+
+.annual-box {
+  background-color: white !important;
+  border: 2px solid rgb(234, 185, 40) !important;
+}
+
+.box-option.selected {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12) !important;
+}
+
+.monthly-box.selected {
+  background-color: rgba(58, 166, 238, 0.17) !important;
+  border: 3px solid #1e88e5 !important;
+}
+
+.annual-box.selected {
+  background-color: #f7efd8 !important;
+  border: 3px solid #eab928 !important;
+}
+
+/* inner content */
+
+.plan-inner,
+.monthly-subscription-div,
+.yearly-subscription-div {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.monthly-box.selected .monthly-subscription-div,
+.monthly-box.selected .plan-inner {
+  background-color: rgba(58, 166, 238, 0.12);
+}
+
+.annual-box.selected .yearly-subscription-div {
+  background-color: #f7efd8;
+}
+
+.annual-box .yearly-subscription-div {
+  padding-bottom: 36px;
+}
+
+.monthly-subscription-div p,
+.yearly-subscription-div p,
+.plan-inner p {
+  margin: 0;
+}
+
+.monthly-subscription-div > p:first-child,
+.yearly-subscription-div > p:first-child,
+.plan-name {
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.plan-mini-divider {
+  width: 72%;
+  height: 1px;
+  background: rgba(46, 46, 46, 0.14);
+  margin: 12px auto 14px;
+}
+
 .price-line {
-  direction: inherit;
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .price-ltr {
@@ -164,6 +253,77 @@ border-bottom: 26px rgb(238, 187, 58) solid !important;
   unicode-bidi: isolate;
   display: inline-block;
 }
+
+/* real bottom save box for annual */
+
+.annual-save-box {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26px;
+  background: rgb(234, 185, 40);
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.annual-save-box span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b4a00;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* floating badge above annual box */
+
+.annual-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f6a400, #f0b11f);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+  z-index: 5;
+}
+
+.badge-star {
+  width: 14px !important;
+  height: 14px !important;
+  color: white !important;
+  flex-shrink: 0;
+}
+
+.upgrade{
+  border-radius: 24px !important;
+  height: 40px ;
+  width: 300px;
+  margin: 16px !important;
+  align-items: center;
+  align-self: center;
+  background-color: #0e6ab6 !important;
+}
+
+.cancel-message{
+  align-self: center;
+  font-size: 12px;
+  color: #585858;
+}
+
 @media (max-width: 600px) {
   .what_you_get {
     width: calc(100% - 40px);
@@ -178,5 +338,13 @@ border-bottom: 26px rgb(238, 187, 58) solid !important;
 
   .secondary-text {
     margin-left: 4px;
+  }
+
+  .box-selector {
+    gap: 12px;
+  }
+
+  .box-option {
+    width: 160px;
   }
 }
