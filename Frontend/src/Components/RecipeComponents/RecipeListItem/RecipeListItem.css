@@ -52,7 +52,7 @@
 }
 
 .ListItemLikeBtn svg {
-  color: #ed1b5d;
+  color: #197ed1;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.1));
 }
 
@@ -169,6 +169,11 @@
   font-size: 18px;
 }
 
+.arrow{
+  color: #3596e5;
+  size: 24px ;
+  margin: 8px;
+}
 @media (max-width: 600px) {
 
   .RecipeListItem{

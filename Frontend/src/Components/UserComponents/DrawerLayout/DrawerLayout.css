@@ -1,18 +1,74 @@
+.menu-icon.MuiIconButton-root {
+  width: 38px;
+  height: 38px;
+  padding: 4px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 4px #5b5b5b !important;
+}
+
+.menu-icon svg {
+  color: #409be6;
+  width: 24px;
+  height: 24px;
+}
+
 .MuiDrawer-paper {
   width: 220px;
   height: 100vh !important;
+  overflow: hidden;
 }
 
 .DrawerMainContainer {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: transparent;
+  background: white;
 }
 
+.DrawerMainContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 188px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.96) 0px,
+      rgba(255, 255, 255, 0.78) 7px,
+      rgba(255, 255, 255, 0.28) 16px,
+      rgba(255, 255, 255, 0) 26px
+    ),
+    radial-gradient(
+      ellipse 58% 24% at 50% 7%,
+      rgba(247, 219, 120, 0.72) 0%,
+      rgba(247, 226, 155, 0.48) 34%,
+      rgba(250, 239, 201, 0.22) 58%,
+      rgba(255, 255, 255, 0) 78%
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.45) 14%,
+      rgba(255, 255, 255, 0.08) 24%,
+      rgba(255, 255, 255, 0.08) 76%,
+      rgba(255, 255, 255, 0.45) 86%,
+      rgba(255, 255, 255, 0.9) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      #fbf7ea 0%,
+      #f8f1d8 22%,
+      #ffffff 100%
+    );
+  z-index: 0;
+  pointer-events: none;
+}
 .DrawerContent {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   display: flex;
@@ -22,28 +78,27 @@
 
 .DrawerHeader {
   width: 100%;
+  background: transparent;
 }
 
 .DrawerRow {
   width: 100%;
 }
 
-.AdminBadge{
-background-color: #fbbf32;
-display: flex;
-width: 60%;
-margin: 12px;
-height: 30px;
-border-radius: 8px;
-align-items: center;
-justify-content: center;
-
+.AdminBadge {
+  background-color: #fbbf32;
+  display: flex;
+  width: 60%;
+  margin: 12px;
+  height: 30px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
-.AdminBadge p{
-color: white;
+.AdminBadge p {
+  color: white;
 }
-
 
 .PremiumBadgeContainer {
   width: 100%;
@@ -55,8 +110,8 @@ color: white;
 .PremiumImageWrapper {
   position: relative;
   width: 100%;
-  height: 86px;  
-   overflow: hidden;
+  height: 86px;
+  overflow: hidden;
 }
 
 .premium-image {
@@ -68,9 +123,9 @@ color: white;
 .PremiumBadge {
   position: absolute;
   z-index: 2;
-  left: 12px;     
-  right: 12px;  
-  top: 8px;       
+  left: 12px;
+  right: 12px;
+  top: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +133,7 @@ color: white;
   height: 30px;
   padding: 0 14px;
   border-radius: 8px;
-    background: linear-gradient(135deg, #d4af37, #f9ecc3);
+  background: linear-gradient(135deg, #d4af37, #f9ecc3);
 }
 
 .PremiumBadge p {
@@ -86,25 +141,32 @@ color: white;
   margin: 0;
 }
 
-
-.PremiumBadgeProfile{
+.PremiumBadgeProfile {
   background-color: #fbbb32;
-display: flex;
-width: 90px;
-height: 30px;
-border-radius: 8px;
-align-items: center;
-justify-content: center;
+  display: flex;
+  width: 90px;
+  height: 30px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
 .CloseButton {
+  position: relative;
+  z-index: 3;
   width: fit-content;
-  margin: 24px 24px 0 auto;
+  margin: 12px 12px 0 auto;
   cursor: pointer;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  
+}
+
+.CloseButton svg {
+  font-size: 24px !important;
+  color: #4c4a4a;
 }
 
 [dir="rtl"] .CloseButton {
@@ -112,29 +174,45 @@ justify-content: center;
 }
 
 .UserName {
-  font-size: 20px;
+  font-size: 18px;
   display: flex;
   justify-content: center;
   margin: 12px 0 0 0 !important;
   text-align: center;
 }
 
-.UpgradeBtn{
+.UpgradeBtn {
+    width: 180px !important;
   margin: 14px !important;
   border-radius: 8px !important;
-  background: linear-gradient(135deg, #c756dd, #eac1f3);
-  color: #5b5b5b !important;
+  background: #e3b128 !important;
+  color: #543f02 !important;
+  font-weight: 900 !important;
+  font-size: 12px !important;
 }
 
 .NoProfileImage,
 .ProfileImage {
-  width: 180px;
-  height: 180px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
   margin: 10px auto 0;
-  border: 1px solid grey;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(white, white) padding-box,
+conic-gradient(
+  from 28deg,
+  #ffffff 0deg 212deg,
+  #f7e8a1 226deg,
+  #f3d877 248deg,
+  #efc84e 278deg,
+  #e3b128 304deg,
+  #efcf6f 330deg,
+  #ffffff 346deg 360deg
+) border-box;
+  background-color: white;
 }
 
 .DrawerItem,
@@ -190,6 +268,7 @@ justify-content: center;
 .DrawerItemLabel {
   margin: 0;
   display: block;
+  font-size: 13px;
   flex: 1;
 }
 
@@ -231,8 +310,8 @@ justify-content: center;
 
 .border-bottom {
   width: 100%;
-  height: 1px;
-  background-color: grey;
+  height: 0.5px;
+  background-color: rgb(206, 206, 206);
 }
 
 .MoreOptionsDropdown {
@@ -319,11 +398,10 @@ justify-content: center;
   margin: 0;
 }
 
-
 .HelloGuestMessage {
   margin: 8px;
   padding: 4px 8px;
-  background: #9a9a9a ;
+  background: #9a9a9a;
   border-radius: 6px;
 }
 

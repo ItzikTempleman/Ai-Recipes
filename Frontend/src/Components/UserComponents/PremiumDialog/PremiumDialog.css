@@ -177,14 +177,10 @@
 }
 
 .monthly-box.selected {
-  background-color: rgba(58, 166, 238, 0.17) !important;
-  border: 3px solid #1e88e5 !important;
+  background-color: rgba(58, 166, 238, 0.331) !important;
+  border: 0px solid #1e88e5 !important;
 }
 
-.annual-box.selected {
-  background-color: #f7efd8 !important;
-  border: 3px solid #eab928 !important;
-}
 
 /* inner content */
 
@@ -209,7 +205,7 @@
 }
 
 .annual-box.selected .yearly-subscription-div {
-  background-color: #f7efd8;
+  background-color: #eeb8176d;
 }
 
 .annual-box .yearly-subscription-div {
@@ -315,7 +311,7 @@
   margin: 16px !important;
   align-items: center;
   align-self: center;
-  background-color: #0e6ab6 !important;
+  background-color: #197ed1 !important;
 }
 
 .cancel-message{

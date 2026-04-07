@@ -168,7 +168,7 @@ export function DrawerLayout({ open, setOpen }: DrawerState) {
 
   return (
     <div>
-      <IconButton onClick={() => setOpen(true)}>
+      <IconButton className="menu-icon" onClick={() => setOpen(true)}>
         <MenuIcon fontSize="large" />
       </IconButton>
 

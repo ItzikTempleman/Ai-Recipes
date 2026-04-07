@@ -182,7 +182,7 @@
   border-radius: 16px !important;
   width: 380px !important;
   height: auto !important;
-  max-height: 90vh !important;
+  max-height: 100vh !important;
   overflow: visible !important;
 }
 
@@ -204,7 +204,7 @@
 .generate_dialog_root .MuiPaper-root {
   margin-top: 80px !important;
   margin-bottom: 24px !important;
-  max-height: calc(100vh - 324px) !important;
+  max-height: calc(100vh - 160px) !important;
 }
 
 .Chip,

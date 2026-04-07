@@ -236,10 +236,12 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                         }}
                       >
                         <div>
+                          <p className="dietaryPreferences">{t("filters.dietaryPreferences")}</p>
                           <DietaryFilter key={`diet-${filtersResetKey}`} onDietSelect={(v) => setDietType(v)} />
                         </div>
 
                         <div>
+                                 <p className="healthGoals">{t("filters.healthGoals")}</p>
                           <SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={(v) => setSugarLevel(v)} />
                         </div>
 

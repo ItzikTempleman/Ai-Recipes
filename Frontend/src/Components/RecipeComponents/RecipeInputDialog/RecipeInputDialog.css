@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .DialogHeaderRow.rtl {
@@ -65,7 +65,7 @@
 }
 
 .RecipeTextField .MuiOutlinedInput-root{
-  height: 56px !important;
+  height: 42px !important;
    box-shadow: 0 10px 12px rgba(90, 90, 90, 0.472);
    border: 1px solid #07a8de;
    background-color: rgba(0, 195, 255, 0.11) !important;
@@ -224,7 +224,7 @@
 /* Selected state */
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover {
-  background: #686868 !important;
+  background: #197ed1 !important;
   color: #fff !important;
 }
 
@@ -299,7 +299,7 @@
   width: 100% !important;
   height: 38px;
   border-radius: 16px !important;
-  background: #07a8de !important;
+  background: #197ed1 !important;
   text-transform: none;
   display: inline-flex;
   align-items: center;
@@ -369,6 +369,15 @@
 
 .RecipeTextField .MuiInputAdornment-root {
   padding: 0 !important;
+
+}
+
+.dietaryPreferences, .healthGoals{
+  font-weight: 900;
+    margin: 8px ;
+}
+.healthGoals{
+  margin-top: 0;
 }
 @media (max-width: 600px) {
   .generate_dialog_paper.MuiPaper-root {

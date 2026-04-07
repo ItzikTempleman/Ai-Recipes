@@ -128,6 +128,8 @@ const resources = {
         likedTitle: "Favorites"
       },
       filters: {
+        dietaryPreferences:"Dietary preferences",
+        healthGoals:"Health goals",
         image: {
           image: "Image",
           withImage: "ON",
@@ -402,6 +404,8 @@ const resources = {
         likedTitle: "מועדפים"
       },
       filters: {
+             dietaryPreferences:"העדפות תזונה",
+        healthGoals:"מטרות בריאות",
         image: {
           image: "תמונה",
           withImage: "עם",

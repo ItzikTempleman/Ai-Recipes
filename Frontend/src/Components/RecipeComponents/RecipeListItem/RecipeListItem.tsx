@@ -13,6 +13,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { difficultyToString } from "../../../Utils/Utils";
 import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 type RecipeListContext = "default" | "suggestions" | "likes";
 
@@ -137,7 +139,19 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
           onClick={moveToInfo}
           variant="contained"
         >
-          {t("recipeUi.showRecipe")}
+
+  {isRTL ? (
+    <>
+      {t("recipeUi.showRecipe")}
+      <ArrowBackIosNewIcon className="arrow"/>
+    </>
+  ) : (
+    <>
+       {t("recipeUi.showRecipe")}
+   <NavigateNextIcon  className="arrow"/>
+   
+    </>
+  )}
         </Button>
       </div>
       </div>
