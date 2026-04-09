@@ -1,3 +1,4 @@
+
 import { useSelector } from "react-redux";
 import "./ProfileScreen.css";
 import { Button, Dialog, TextField } from "@mui/material";
@@ -10,23 +11,27 @@ import { User } from "../../../Models/UserModel";
 import { userService } from "../../../Services/UserService";
 import { notify } from "../../../Utils/Notify";
 import { useNavigate } from "react-router-dom";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { getProfileRows } from "../../../Utils/ProfileRow";
+
 
 export function ProfileScreen() {
   const user = useSelector((state: AppState) => state.user);
   useTitle("Profile");
   if (!user) return null;
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
   const rawBirthDate = user.birthDate ?? "";
   const birthDateStr = rawBirthDate ? showDate(rawBirthDate) : "";
   const isoDate = rawBirthDate ? rawBirthDate.split("T")[0] : "";
   const computedAge = isoDate ? getAge(isoDate) : NaN;
   const ageText = Number.isFinite(computedAge) ? String(computedAge) : "";
 
-  const rawGender = (user.gender ?? (user as any).Gender ?? "")?.toString() ?? "";
+  const rawGender =
+    (user.gender ?? (user as any).Gender ?? "")?.toString() ?? "";
   const genderText = rawGender
     ? rawGender.charAt(0).toUpperCase() + rawGender.slice(1).toLowerCase()
     : "";
@@ -42,14 +47,15 @@ export function ProfileScreen() {
       firstName: user.firstName,
       familyName: user.familyName,
       email: user.email,
-      phoneNumber: user.phoneNumber ?? ""
-    }
+      phoneNumber: user.phoneNumber ?? "",
+    },
   });
 
   const fallbackAvatar = "/person-21.png";
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
- const isPremium = user?.isPremium === true;
+  const isPremium = user?.isPremium === true;
+
   useEffect(() => {
     if (user?.imageUrl) {
       setImagePreview(user.imageUrl);
@@ -60,7 +66,11 @@ export function ProfileScreen() {
     const finalFirstName = formUser.firstName ?? user.firstName;
     const finalFamilyName = formUser.familyName ?? user.familyName;
     const finalEmail = formUser.email ?? user.email;
-    const finalPhone = (formUser.phoneNumber ?? user.phoneNumber ?? "").toString();
+    const finalPhone = (
+      formUser.phoneNumber ??
+      user.phoneNumber ??
+      ""
+    ).toString();
 
     const formData = new FormData();
     formData.append("id", String(user.id));
@@ -75,29 +85,154 @@ export function ProfileScreen() {
 
     try {
       await userService.updateUserInfo(user.id, formData);
-      notify.success("User has been updated");
+      notify.success(t("profile.userUpdated"));
       setOpen(false);
     } catch (err: unknown) {
       notify.error(err);
     }
   }
 
+  const profileRows = getProfileRows({
+    t,
+    language: i18n.language,
+    phoneNumber: user.phoneNumber ?? "",
+    birthDateStr,
+    ageText,
+    genderText,
+    isPremium,
+    onPhoneClick: undefined,
+    onBirthdateClick: undefined,
+    onGenderClick: undefined,
+    onAccountSettingsClick: undefined,
+    onSavedRecipesClick: undefined,
+    onSubscriptionClick: undefined,
+    onLanguageClick: undefined,
+  });
+
+  const infoRows = profileRows.filter(
+    (row) => row.section === "info" && row.visible !== false
+  );
+
+  const actionRows = profileRows.filter(
+    (row) => row.section === "actions" && row.visible !== false
+  );
+
   return (
     <div className="ProfileScreen">
-      <p className="ProfileScreenTitle">{t("profile.title")}</p>
+      <div className="ProfileSection">
+        <div className="top-section">
+          <p className="ProfileScreenTitle">{t("profile.title")}</p>
+          <div className="ReturnBtn" onClick={() => navigate("/home")}>
+            <CloseIcon />
+          </div>
+        </div>
 
- <div className="ProfileSection">
+        <div className="main-section">
+          <div className="ProfileImageWrap">
+            <img
+              className="ImagePreview"
+              src={imagePreview || fallbackAvatar}
+              alt="Profile"
+            />
 
-<div className="EditAndCloseSection">
-   <Button className="EditProfileBtn"onClick={handleClickOpen} > {t("profile.edit")}</Button>
-        <div className="ReturnBtn" onClick={() => navigate("/home")}>   <CloseIcon/> </div>
-</div>
+            <label htmlFor="profile-image-upload" className="ImageUploadBtn">
+              <PhotoCameraIcon fontSize="small" />
+            </label>
 
+            <input
+              id="profile-image-upload"
+              className="HiddenFileInput"
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const target = e.target as HTMLInputElement;
+                const file = target.files?.[0];
+
+                if (!file) return;
+
+                const uri = URL.createObjectURL(file);
+                setSelectedFile(file);
+                setImagePreview(uri);
+
+                const formData = new FormData();
+                formData.append("id", String(user.id));
+                formData.append("firstName", user.firstName);
+                formData.append("familyName", user.familyName);
+                formData.append("email", user.email);
+                formData.append(
+                  "phoneNumber",
+                  (user.phoneNumber ?? "").toString()
+                );
+                formData.append("image", file);
+
+                try {
+                  await userService.updateUserInfo(user.id!, formData);
+                  notify.success(t("profile.imageUpdated"));
+                  setSelectedFile(null);
+                } catch (err) {
+                  notify.error(err);
+                }
+              }}
+            />
+          </div>
+
+          <Button className="EditProfileBtn" onClick={handleClickOpen}>
+            {t("profile.edit")}
+          </Button>
+
+          <h3 className="Name">
+            {user.firstName} {user.familyName}
+          </h3>
+
+          <p className="email">{user.email}</p>
+
+          <div className="divider" />
+        </div>
+
+        <div className="ProfileRows">
+          {infoRows.map((row) => (
+            <div
+              key={row.key}
+              className={`ProfileRow ${row.onClick ? "clickable" : ""}`}
+              onClick={row.onClick}
+            >
+              <div className="ProfileRowLeft">
+                <span className="ProfileRowIcon">{row.icon}</span>
+                <span className="ProfileRowLabel">{row.label}</span>
+              </div>
+
+              <div className="ProfileRowRight">
+                {row.value && <span className="ProfileRowValue">{row.value}</span>}
+                {row.trailing}
+              </div>
+            </div>
+          ))}
+
+          <div className="ProfileRowsSpacer" />
+
+          {actionRows.map((row) => (
+            <div
+              key={row.key}
+              className={`ProfileRow ${row.onClick ? "clickable" : ""}`}
+              onClick={row.onClick}
+            >
+              <div className="ProfileRowLeft">
+                <span className="ProfileRowIcon">{row.icon}</span>
+                <span className="ProfileRowLabel">{row.label}</span>
+              </div>
+
+              <div className="ProfileRowRight">
+                {row.value && <span className="ProfileRowValue">{row.value}</span>}
+                {row.trailing}
+              </div>
+            </div>
+          ))}
+        </div>
 
         <Dialog open={open} onClose={handleClose} fullScreen={false}>
           <div className="DialogDiv">
             <div className="CloseDialogBtn" onClick={handleClose}>
-            <CloseIcon/>
+              <CloseIcon />
             </div>
 
             <form className="EditProfileContainer" onSubmit={handleSubmit(send)}>
@@ -148,6 +283,7 @@ export function ProfileScreen() {
                 }
                 {...register("phoneNumber")}
               />
+
               <Button
                 variant="contained"
                 type="submit"
@@ -159,73 +295,6 @@ export function ProfileScreen() {
             </form>
           </div>
         </Dialog>
-
-        <img className="ImagePreview" src={imagePreview || fallbackAvatar} />
-
-        <TextField
-          variant="standard"
-          InputProps={{ disableUnderline: true }}
-          type="file"
-          inputProps={{ accept: "image/*" }}
-          onChange={async (e) => {
-            const target = e.target as HTMLInputElement;
-            const file = target.files?.[0];
-
-            if (!file) return;
-
-            const uri = URL.createObjectURL(file);
-            setSelectedFile(file);
-            setImagePreview(uri);
-
-            const formData = new FormData();
-            formData.append("id", String(user.id));
-            formData.append("firstName", user.firstName);
-            formData.append("familyName", user.familyName);
-            formData.append("email", user.email);
-            formData.append("phoneNumber", (user.phoneNumber ?? "").toString());
-            formData.append("image", file);
-
-            try {
-              await userService.updateUserInfo(user.id!, formData);
-              notify.success(`${t("profile.imageUpdated")}`);
-              setSelectedFile(null);
-            } catch (err) {
-              notify.error(err);
-            }
-          }}
-        />
-
-
-        <h3 className="Name">
-          {user.firstName} {user.familyName}
-        </h3>
-
-        {isPremium && (
-      <div className="PremiumBadgeProfile">
-        <p>{t("drawer.premium")}</p>
-      </div>
-        )
-      }
-        {(ageText || genderText) && (
-          <p>{[ageText, genderText].filter(Boolean).join(", ")}</p>
-        )}
-
-        <div className="divider" />
-
-        <p>
-          {user.email}
-        </p>
-
-        {user.phoneNumber && user.phoneNumber.trim() !== "" && (
-          <p>
-            {user.phoneNumber}
-          </p>
-        )}
-        {birthDateStr && (
-          <p>
-            {birthDateStr}
-          </p>
-        )}
       </div>
     </div>
   );
