@@ -9,6 +9,7 @@ import {  RecipeModel } from "../../../Models/RecipeModel";
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
 import { Box, Button, CircularProgress, IconButton } from "@mui/material";
 import { notify } from "../../../Utils/Notify";
+
 import { shareRecipeAsPdfWithToasts } from "../../../Services/ShareRecipeService";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
@@ -148,123 +149,128 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
           <CloseIcon />
         </div>
 
-      {!localImgSrc && loadImage && !isImageLoading && !shareMode && (
-          <div className="LoadImageCta">
-            <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
-              {t("recipeUi.loadImage")} <CameraEnhanceIcon />
-            </Button>
-          </div>
-        )}
-        
-        {localImgSrc ? (
-          <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
-        ) : (
-          loadImage &&
-          isImageLoading && (
-            <>
-              <h2 className="ImageLoadingMessageAfterRecipeGenerated">
-                {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
-              </h2>
-              <IconButton className="ProgressBar" disabled>
-                <Box>
-                  <CircularProgress />
-                </Box>
-              </IconButton>
-            </>
-          )
-        )}
-
-        {user && (
-          <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
-            <img className="ChefImage" src={chef} />
-            <h4>{t("recipeUi.ask")}</h4>
-          </div>
-        )}
-
-        <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
-          {recipe.title}
-        </h2>
-
-        <p className={`Description ${headingDir}`} dir={headingDir} lang={headingLng}>
-          {recipe.description}
-        </p>
-
-        <span className="Categories">
-        {(recipe.categories ?? []).map((c, i) => (
-            <h3 key={i} className="category-item">
-                   {translateRecipeCategory(c, selectedLanguage)}
-              {i < recipe.categories.length - 1 && <span className="separator">|</span>}
-            </h3>
-             )
-           )
-          }
-        </span>
-
-        <div className="ServingsDiv" dir={isRTL ? "rtl" : "ltr"}>
-          <h3>{t("generate.servings")} : {recipe.amountOfServings}</h3>
-        </div>
-        <FilterBadges filters={filters} isRTL={isRTL} />
-
-        <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
-          <div className="Calories">
-            <p className="Title">{t("recipeUi.calories")}</p>
-            {isRTL ? (
-              <p className="StatLine">
-                <span className="StatNum BidiIso">{recipe.calories}</span>
-                <span className="StatText"> קק״ל ל־</span>
-                <span className="BidiIso">100</span>
-                <span className="StatText"> גרם</span>
-              </p>
-            ) : (
-              <p className="StatLine">
-                {recipe.calories} {t("recipeUi.kcal")}
-              </p>
+        <div className={`DataScreenTopContent ${isRTL ? "rtl" : "ltr"}`}> 
+          <div className={`DataScreenImageColumn ${isRTL ? "rtl" : "ltr"}`}> 
+            {!localImgSrc && loadImage && !isImageLoading && !shareMode && (
+              <div className="LoadImageCta">
+                <Button className="GenerateRecipeBtnDataScreen" variant="contained" onClick={handleLoadImage}>
+                  {t("recipeUi.loadImage")} <CameraEnhanceIcon />
+                </Button>
+              </div>
             )}
-          </div>
 
-          <div className="Sugar">
-            <p className="Title">{t("recipeUi.sugar")}</p>
-            {Number(recipe.totalSugar) === 0 ? (
-              <p className="StatLine">0</p>
-            ) : isRTL ? (
-              <p className="StatLine">
-                <span className="StatNum BidiIso">{recipe.totalSugar}</span>
-                <span className="StatText"> כפיות ל־</span>
-                <span className="BidiIso">100</span>
-                <span className="StatText"> גרם</span>
-              </p>
+            {localImgSrc ? (
+              <img className="RecipeImage" src={localImgSrc} onError={() => setLocalImgSrc("")} />
             ) : (
-              <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
+              loadImage &&
+              isImageLoading && (
+                <>
+                  <h2 className="ImageLoadingMessageAfterRecipeGenerated">
+                    {t("generate.loadingWithImage")} {t("generate.loadingWithImageLowerMessage")}
+                  </h2>
+                  <IconButton className="ProgressBar" disabled>
+                    <Box>
+                      <CircularProgress />
+                    </Box>
+                  </IconButton>
+                </>
+              )
             )}
-          </div>
 
-          <div className="Protein">
-            <p className="Title">{t("recipeUi.protein")}</p>
-            {isRTL ? (
-              <p className="StatLine">
-                <span className="StatNum BidiIso">{recipe.totalProtein}</span>
-                <span className="StatText"> גרם חלבון ל־</span>
-                <span className="BidiIso">100</span>
-                <span className="StatText"> גרם</span>
-              </p>
-            ) : (
-              <p className="StatLine">
-                {recipe.totalProtein} grams <br />
-                in 100 grams
-              </p>
+            {user && (
+              <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
+                <img className="ChefImage" src={chef} />
+                <h4>{t("recipeUi.ask")}</h4>
+              </div>
             )}
-          </div>
+          </div> 
 
-          <div className="Time">
-            <p className="Title">{t("recipeUi.time")}</p>
-            <p className="StatLine">
-              <span className="StatNum BidiIso">{recipe.prepTime}</span>{" "}
-              <span className="StatText">{t("units.minuteShort")}</span>
+          <div className={`DataScreenInfoColumn ${isRTL ? "rtl" : "ltr"}`}> 
+            <h2 className={`RecipeTitle ${headingDir}`} dir={headingDir} lang={headingLng}>
+              {recipe.title}
+            </h2>
+
+            <p className={`Description ${headingDir}`} dir={headingDir} lang={headingLng}>
+              {recipe.description}
             </p>
-          </div>
-        </div>
 
-  
+            <span className="Categories">
+              {(recipe.categories ?? []).map((c, i) => (
+                <h3 key={i} className="category-item">
+                  {translateRecipeCategory(c, selectedLanguage)}
+                  {i < recipe.categories.length - 1 && <span className="separator">|</span>}
+                </h3>
+              ))}
+            </span>
+
+            <div className="ServingsDiv" dir={isRTL ? "rtl" : "ltr"}>
+              <h3>{t("generate.servings")} : {recipe.amountOfServings}</h3>
+            </div>
+
+            <div className="FilterBadgesRow">
+              <FilterBadges filters={filters} isRTL={isRTL} />
+            </div> 
+
+            <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
+              <div className="Calories">
+                <p className="Title">{t("recipeUi.calories")}</p>
+                {isRTL ? (
+                  <p className="StatLine">
+                    <span className="StatNum BidiIso">{recipe.calories}</span>
+                    <span className="StatText"> קק״ל ל־</span>
+                    <span className="BidiIso">100</span>
+                    <span className="StatText"> גרם</span>
+                  </p>
+                ) : (
+                  <p className="StatLine">
+                    {recipe.calories} {t("recipeUi.kcal")}
+                  </p>
+                )}
+              </div>
+
+              <div className="Sugar">
+                <p className="Title">{t("recipeUi.sugar")}</p>
+                {Number(recipe.totalSugar) === 0 ? (
+                  <p className="StatLine">0</p>
+                ) : isRTL ? (
+                  <p className="StatLine">
+                    <span className="StatNum BidiIso">{recipe.totalSugar}</span>
+                    <span className="StatText"> כפיות ל־</span>
+                    <span className="BidiIso">100</span>
+                    <span className="StatText"> גרם</span>
+                  </p>
+                ) : (
+                  <p className="StatLine">{recipe.totalSugar} table spoons in 100 grams</p>
+                )}
+              </div>
+
+              <div className="Protein">
+                <p className="Title">{t("recipeUi.protein")}</p>
+                {isRTL ? (
+                  <p className="StatLine">
+                    <span className="StatNum BidiIso">{recipe.totalProtein}</span>
+                    <span className="StatText"> גרם חלבון ל־</span>
+                    <span className="BidiIso">100</span>
+                    <span className="StatText"> גרם</span>
+                  </p>
+                ) : (
+                  <p className="StatLine">
+                    {recipe.totalProtein} grams <br />
+                    in 100 grams
+                  </p>
+                )}
+              </div>
+
+              <div className="Time">
+                <p className="Title">{t("recipeUi.time")}</p>
+                <p className="StatLine">
+                  <span className="StatNum BidiIso">{recipe.prepTime}</span>{" "}
+                  <span className="StatText">{t("units.minuteShort")}</span>
+                </p>
+              </div>
+            </div>
+          </div> {/* changed */}
+        </div> {/* changed */}
 
         <AskChefDialog open={open} onClose={handleCloseAskChef} recipe={recipe} isRTL={isRTL} />
       </div>
