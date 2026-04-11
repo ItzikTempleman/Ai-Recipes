@@ -54,11 +54,9 @@ background: rgb(255, 255, 255);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  line-height: 1;
+  
   background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+
 }
 
 .RecipeTopSection .ClearFormDiv {
@@ -91,8 +89,8 @@ background: rgb(255, 255, 255);
 .RecipeImage {
   display: block;
   margin: 18px auto;
-  width: 70%;
-  border-radius: 0;
+  width: 300px;
+  border-radius: 12px;
   height: auto;
   object-fit: cover;
 }
@@ -635,8 +633,11 @@ background: rgb(255, 255, 255);
 
   .RecipeImage {
     width: 100%;
-    margin: 0;
     display: block;
+  margin: 18px auto;
+  border-radius: 0;
+  height: auto;
+  object-fit: cover
   }
 
   .DataScreen {

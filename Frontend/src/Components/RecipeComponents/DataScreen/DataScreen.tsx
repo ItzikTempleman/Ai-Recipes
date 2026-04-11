@@ -18,7 +18,7 @@ import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/No
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
-
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
@@ -134,7 +134,7 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
       <div className="RecipeTopSection">
         <div className={`TopActions ${isRTL ? "rtl" : "ltr"}`}>
           <Button className={`ShareBtnContainer ${isRTL ? "rtl" : "ltr"}`} variant="contained" onClick={handleShare}>
-            <ReplyIcon />
+            <ArrowUpwardIcon />
             {t("recipeUi.share")}
           </Button>
         </div>
