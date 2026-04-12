@@ -7,36 +7,33 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
- 
 }
 
 .InfoScreenContainer {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   text-align: left;
   position: relative;
 }
 
-.RecipeDataContainer {
+/* ONLY scope this inside RecipeInfoScreen */
+.RecipeInfoScreen .RecipeDataContainer {
   width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 18px;
+  max-width: 100%;
+  margin: 0;
+  padding: 18px 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
   box-sizing: border-box;
-  
-
 }
-@media (max-width: 600px) {
+
 @media (max-width: 600px) {
   .RecipeInfoScreen {
-    /* Mobile: keep breathing room + respect device safe-areas (notches, home indicator) */
     padding-top: calc(12px + env(safe-area-inset-top));
     padding-right: calc(12px + env(safe-area-inset-right));
     padding-bottom: calc(20px + env(safe-area-inset-bottom));
@@ -46,8 +43,12 @@
   .InfoScreenContainer {
     max-width: none;
     margin: 0;
-    /* Outer screen already provides padding on mobile */
     padding: 0;
   }
-}
+
+  .RecipeInfoScreen .RecipeDataContainer {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 }
