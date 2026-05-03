@@ -270,11 +270,11 @@
 .free-with-login-btn {
   margin-top: 20px !important;
  padding: 0 16px 0 16px !important;
-  background-color: #f3c37f19 !important;
+ 
   height: 42px;
-  border-radius: 16px !important;
+  border-radius: 4px !important;
   gap: 26px !important;
-  border: 2px solid !important;
+  border: 0.5px solid !important;
 }
 
 .free-with-login-btn p {
@@ -282,9 +282,69 @@
 }
 
 .free-with-login-btn.MuiButton-root {
-  color: rgb(255, 162, 0) !important;
+  color: rgb(147, 146, 146) !important;
 }
 
+.BackgroundGenerationBox {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: calc(100% - 28px);
+  max-width: 440px;
+  z-index: 1400;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #ffffff;
+  border: 1px solid #d7e6ff;
+  border-radius: 22px;
+  padding: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.BackgroundGenerationBox.rtl {
+  direction: rtl;
+}
+
+.BackgroundGenerationSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.BackgroundGenerationText {
+  flex: 1;
+  min-width: 0;
+}
+
+.BackgroundGenerationText h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #12345a;
+}
+
+.BackgroundGenerationText p {
+  margin: 3px 0 0 0;
+  font-size: 0.78rem;
+  color: #667085;
+}
+
+.BackgroundGenerationActions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.BackgroundGenerationActions .MuiButton-root {
+  border-radius: 14px !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+}
 
 @media (max-width: 600px) {
 

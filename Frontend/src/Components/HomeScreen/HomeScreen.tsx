@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, Chip, Dialog } from "@mui/material";
+import { Button, Chip, CircularProgress, Dialog } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./HomeScreen.css";
 import { useTitle } from "../../Utils/Utils";
@@ -17,6 +17,7 @@ import { RecipeCategory, RecipeModel } from "../../Models/RecipeModel";
  import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
  import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import titleImage from "../../Assets/images/title.png";
+import { recipeSocketService } from "../../Services/RecipeSocketService";
 
 enum ListState {
   SUGGESTIONS,
@@ -51,7 +52,7 @@ function normalizeCategories(input: unknown): RecipeCategory[] {
 export function HomeScreen() {
   useTitle("Home");
 
-  const { items, catalogItems } = useSelector((state: AppState) => state.recipes);
+ const { items, catalogItems, loading } = useSelector((state: AppState) => state.recipes);
   const current = useSelector((s: AppState) => s.recipes.current);
   const user = useSelector((state: AppState) => state.user);
   const likes = useSelector((state: AppState) => state.likes);
@@ -172,6 +173,12 @@ export function HomeScreen() {
     setSearchParams(next);
   };
 
+  const reopenGenerateDialog = () => {
+  const next = new URLSearchParams(searchParams);
+  next.set("generate", "1");
+  setSearchParams(next);
+};
+
   const closeGenerateDialog = () => {
     const next = new URLSearchParams(searchParams);
     next.delete("generate");
@@ -253,6 +260,38 @@ export function HomeScreen() {
               onFiltersReady={setAppliedFilters}
             />
           </Dialog>
+
+{loading && !open && !current?.title && (
+  <div className={`BackgroundGenerationBox ${isRTL ? "rtl" : "ltr"}`}>
+    <div className="BackgroundGenerationSpinner">
+      <CircularProgress size={28} thickness={5} />
+    </div>
+
+    <div className="BackgroundGenerationText">
+      <h4>{t("generate.loadingNoImage") || "Generating recipe..."}</h4>
+      <p>The recipe is still being prepared in the background.</p>
+    </div>
+
+    <div className="BackgroundGenerationActions">
+      <Button
+        size="small"
+        variant="contained"
+        onClick={reopenGenerateDialog}
+      >
+        Open
+      </Button>
+
+      <Button
+        size="small"
+        variant="outlined"
+        color="error"
+        onClick={() => recipeSocketService.cancelRecipeGeneration()}
+      >
+        Cancel
+      </Button>
+    </div>
+  </div>
+)}
 
           {current?.title && filtersToUse && !open && (
             <div className="RecipeCardContainer">

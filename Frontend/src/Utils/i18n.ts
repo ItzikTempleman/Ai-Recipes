@@ -105,8 +105,7 @@ const resources = {
         return: "Return",
       },
       generate: {
-        warning1: "Do not exit this screen while generating",
-        warning2: "Exiting will stop the generating process",
+
         withImage: "With image",
         withoutImage: "Without image",
         filters: "Filters",
@@ -395,8 +394,7 @@ const resources = {
       },
 
       generate: {
-        warning1: "אין לסגור את מסך זה ",
-        warning2: "סגירת המסך בזמן יצירת המתכון תבטל את התהליך",
+   
         withImage: "עם תמונה",
         withoutImage: "ללא תמונה",
         filters: "סינון",

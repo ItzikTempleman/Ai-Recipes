@@ -272,17 +272,6 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
       <CircularProgress size={70} thickness={4} />
     </Box>
 
-    <div className="DoNotExitText">
-      <h3>
-        {hasImage
-          ? `${t("generate.loadingWithImage")} ${t("generate.loadingWithImageLowerMessage")}`
-          : t("generate.loadingNoImage")}
-      </h3>
-    </div>
-
-    <div>
-      <h3>{t("generate.warning2")}</h3>
-    </div>
 
     <Button
       className="CancelGenerationBtn"
