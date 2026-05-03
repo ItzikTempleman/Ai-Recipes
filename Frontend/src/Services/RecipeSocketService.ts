@@ -48,6 +48,10 @@ class RecipeSocketService {
 
         this.socket = io(appConfig.socketUrl, {
             withCredentials: true,
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
             auth: {
                 token,
                 visitorId: localStorage.getItem("recipeVisitorId") ?? "",
@@ -71,6 +75,7 @@ class RecipeSocketService {
             RecipeSocketEvents.SENDER_IS_BACKEND.ACCEPTED_RECIPE_GENERATION,
             ({ jobId }: { jobId: string }) => {
                 localStorage.setItem("activeRecipeJobId", jobId);
+                store.dispatch(setIsLoading(true));
             }
         );
 
@@ -141,6 +146,12 @@ class RecipeSocketService {
         localStorage.removeItem("activeRecipeJobId");
         store.dispatch(setIsLoading(false));
         store.dispatch(setError(undefined));
+    }
+
+    public reconnectWithLatestAuth(): void {
+        this.socket?.disconnect();
+        this.socket = null;
+        this.connect();
     }
 
     public disconnect(): void {

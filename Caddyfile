@@ -1,10 +1,14 @@
-itzikrecipe.com {
-    redir https://www.itzikrecipe.com{uri}
-}
-
-www.itzikrecipe.com {
+itzikrecipe.com, www.itzikrecipe.com {
 
     encode gzip
+
+    @apex host itzikrecipe.com
+    redir @apex https://www.itzikrecipe.com{uri} permanent
+
+    header {
+        Cache-Control "no-store"
+        Cross-Origin-Opener-Policy "same-origin-allow-popups"
+    }
 
     @api path /api/*
     handle @api {
@@ -18,10 +22,5 @@ www.itzikrecipe.com {
 
     handle {
         reverse_proxy frontend:5173
-
-        header {
-            Cache-Control "no-store"
-            Cross-Origin-Opener-Policy "same-origin-allow-popups"
-        }
     }
 }
