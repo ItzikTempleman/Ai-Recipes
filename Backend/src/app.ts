@@ -13,6 +13,7 @@ import { pdfController } from "./controllers/pdf-controller";
 import cookieParser from "cookie-parser";
 import { suggestionsController } from "./controllers/suggestions-controller";
 import { suggestionsService } from "./services/suggestions-service";
+import { recipeGenerationSocketService } from "./services/recipe-generation-socket-service";
 
 export class App {
   public async start(): Promise<void> {
@@ -42,9 +43,10 @@ export class App {
     server.use("/api", resetPasswordController.router);
     server.use(errorMiddleware.routeNotFound);
     server.use(errorMiddleware.catchAll);
-    server.listen(appConfig.port, appConfig.serverHost, () => {
+    const httpServer = server.listen(appConfig.port, appConfig.serverHost, () => {
       console.log(`Listening to port ${appConfig.port}`);
     });
+    recipeGenerationSocketService.init(httpServer);
     suggestionsService.generateOnce().catch((err) => {
       console.error("suggestionsService.generateOnce failed:", err);
     });

@@ -13,18 +13,16 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { useTranslation } from "react-i18next";
-import { recipeService } from "../../../Services/RecipeService";
 import { notify } from "../../../Utils/Notify";
 import {
   DietaryRestrictions,
   GlutenRestrictions,
   InputModel,
   LactoseRestrictions,
-  RecipeModel,
   RecipeState,
   SugarRestriction,
 } from "../../../Models/RecipeModel";
-import { resetGenerated, setCurrent } from "../../../Redux/RecipeSlice";
+import { resetGenerated } from "../../../Redux/RecipeSlice";
 import { AppState } from "../../../Redux/Store";
 import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
@@ -33,6 +31,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import { DietaryFilter, GlutenFilter, LactoseFilter, SugarFilter } from "../../../Utils/Filtering";
+import { recipeSocketService } from "../../../Services/RecipeSocketService";
 
 type Props = {
   onDone: () => void;
@@ -107,24 +106,6 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
     };
   }, [i18n, dispatch, user, loading, recipeHasData, reset]);
 
-  async function loadImage(recipeToLoad: RecipeModel): Promise<RecipeModel> {
-    let updated: RecipeModel;
-
-    if (recipeToLoad.id) {
-      updated = await recipeService.generateImageForSavedRecipe(recipeToLoad.id);
-    } else {
-      const preview = await recipeService.generateImagePreview(recipeToLoad);
-      updated = {
-        ...recipeToLoad,
-        imageUrl: preview.imageUrl,
-        imageName: preview.imageName ?? recipeToLoad.imageName ?? null,
-      };
-    }
-
-    dispatch(setCurrent(updated));
-    return updated;
-  }
-
   async function send(recipeTitle: InputModel) {
     try {
       if (loading) return;
@@ -141,20 +122,16 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
       const used: Filters = { sugarLevel, hasLactose, hasGluten, dietType };
       onFiltersReady?.(used);
 
-      const generated = await recipeService.generateRecipe(
-        recipeTitle,
+      recipeSocketService.generateRecipe({
+        query: recipeTitle.query,
+        quantity: initialQuantity,
         hasImage,
-        initialQuantity,
-        sugarLevel,
-        hasLactose,
-        hasGluten,
-        dietType,
-        excludedList
-      );
-
-      if (hasImage && generated && !generated.imageUrl) {
-        await loadImage(generated);
-      }
+        sugarRestriction: sugarLevel,
+        lactoseRestriction: hasLactose,
+        glutenRestriction: hasGluten,
+        dietaryRestriction: dietType,
+        queryRestrictions: excludedList,
+      });
 
       onDone();
     } catch (err: unknown) {

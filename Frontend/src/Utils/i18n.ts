@@ -128,8 +128,8 @@ const resources = {
         likedTitle: "Favorites"
       },
       filters: {
-        dietaryPreferences:"Dietary preferences",
-        healthGoals:"Health goals",
+        dietaryPreferences: "Dietary preferences",
+        healthGoals: "Health goals",
         image: {
           image: "Image",
           withImage: "ON",
@@ -227,30 +227,30 @@ const resources = {
         guestsWhoGeneratedRecipes: "Guests Generated Recipes",
         totalRecipesGenerated: "Total Recipes Generated"
       },
-profile: {
-  addPhoneNumber: "Add phone number",
-  title: "Profile",
-  edit: "Edit",
-  updateFirstName: "Update first name",
-  updateLastName: "Update last name",
-  updateEmail: "Update email",
-  updatePhone: "Update phone number",
-  updateProfile: "Update profile",
-  emailPrefix: "Email:",
-  phonePrefix: "phone number:",
-  birthDatePrefix: "birth date:",
-  userUpdated: "User has been updated",
-  imageUpdated: "Profile image updated",
+      profile: {
+        addPhoneNumber: "Add phone number",
+        title: "Profile",
+        edit: "Edit",
+        updateFirstName: "Update first name",
+        updateLastName: "Update last name",
+        updateEmail: "Update email",
+        updatePhone: "Update phone number",
+        updateProfile: "Update profile",
+        emailPrefix: "Email:",
+        phonePrefix: "phone number:",
+        birthDatePrefix: "birth date:",
+        userUpdated: "User has been updated",
+        imageUpdated: "Profile image updated",
 
-  phoneNumber: "Phone number",
-  birthdate: "Birthdate",
-  age: "Age",
-  gender: "Gender",
-  accountSettings: "Account settings",
-  savedRecipes: "Saved recipes",
-  subscription: "Subscription",
-  language: "Language"
-},
+        phoneNumber: "Phone number",
+        birthdate: "Birthdate",
+        age: "Age",
+        gender: "Gender",
+        accountSettings: "Account settings",
+        savedRecipes: "Saved recipes",
+        subscription: "Subscription",
+        language: "Language"
+      },
 
       recipeUi: {
         share: "Share",
@@ -284,7 +284,12 @@ profile: {
       notify: {
         genericError: "Some error, please try again.",
       },
-    },
+      recipeSocketStatus: {
+        GENERATING_RECIPE: "Generating recipe...",
+        GENERATING_IMAGE: "Generating image...",
+        SAVING_RECIPE: "Saving recipe..."
+      }
+    }
   },
 
   he: {
@@ -413,8 +418,8 @@ profile: {
         likedTitle: "מועדפים"
       },
       filters: {
-             dietaryPreferences:"העדפות תזונה",
-        healthGoals:"מטרות בריאות",
+        dietaryPreferences: "העדפות תזונה",
+        healthGoals: "מטרות בריאות",
         image: {
           image: "תמונה",
           withImage: "עם",
@@ -516,30 +521,30 @@ profile: {
         guestsWhoGeneratedRecipes: "אורחים שיצרו מתכונים",
         totalRecipesGenerated: "מתכונים שנוצרו"
       },
- profile: {
-  addPhoneNumber: "הוסף טלפון",
-  title: "פרופיל",
-  edit: "עריכה",
-  updateFirstName: "עדכן שם פרטי",
-  updateLastName: "עדכן שם משפחה",
-  updateEmail: "עדכן אימייל",
-  updatePhone: "עדכן מספר טלפון",
-  updateProfile: "עדכן פרופיל",
-  emailPrefix: "אימייל:",
-  phonePrefix: "מספר טלפון:",
-  birthDatePrefix: "תאריך לידה:",
-  userUpdated: "המשתמש עודכן",
-  imageUpdated: "תמונת הפרופיל עודכנה",
+      profile: {
+        addPhoneNumber: "הוסף טלפון",
+        title: "פרופיל",
+        edit: "עריכה",
+        updateFirstName: "עדכן שם פרטי",
+        updateLastName: "עדכן שם משפחה",
+        updateEmail: "עדכן אימייל",
+        updatePhone: "עדכן מספר טלפון",
+        updateProfile: "עדכן פרופיל",
+        emailPrefix: "אימייל:",
+        phonePrefix: "מספר טלפון:",
+        birthDatePrefix: "תאריך לידה:",
+        userUpdated: "המשתמש עודכן",
+        imageUpdated: "תמונת הפרופיל עודכנה",
 
-  phoneNumber: "מספר טלפון",
-  birthdate: "תאריך לידה",
-  age: "גיל",
-  gender: "מגדר",
-  accountSettings: "הגדרות חשבון",
-  savedRecipes: "מתכונים שמורים",
-  subscription: "מנוי",
-  language: "שפה"
-},
+        phoneNumber: "מספר טלפון",
+        birthdate: "תאריך לידה",
+        age: "גיל",
+        gender: "מגדר",
+        accountSettings: "הגדרות חשבון",
+        savedRecipes: "מתכונים שמורים",
+        subscription: "מנוי",
+        language: "שפה"
+      },
 
       recipeUi: {
         share: "שיתוף",
@@ -574,8 +579,13 @@ profile: {
       notify: {
         genericError: "אירעה שגיאה, נסה שוב",
       },
-    },
-  },
+      recipeSocketStatus: {
+        GENERATING_RECIPE: "...מייצר מתכון",
+        GENERATING_IMAGE: "...מייצר תמונה",
+        SAVING_RECIPE: "...שומר מתכון"
+      }
+    }
+  }
 };
 
 

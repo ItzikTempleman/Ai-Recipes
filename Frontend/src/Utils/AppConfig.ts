@@ -25,6 +25,7 @@ class AppConfig {
   public readonly adminStatistics = `${API}/admin/statistics`;
   public readonly premiumPlansUrl = `${API}/premium/plans`;
   public readonly premiumStatusUrl = `${API}/users/plan/premium`;
+  public readonly socketUrl =import.meta.env.VITE_SOCKET_URL ?? (import.meta.env.DEV ? "http://localhost:4000" : window.location.origin);
 }
 
 export const appConfig = new AppConfig();
