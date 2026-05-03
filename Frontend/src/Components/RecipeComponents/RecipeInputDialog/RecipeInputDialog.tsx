@@ -133,7 +133,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
         queryRestrictions: excludedList,
       });
 
-      onDone();
+  
     } catch (err: unknown) {
       notify.error(err);
       onDone();
@@ -266,26 +266,42 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                 </div>
               )}
 
-              {loading ? (
-                <div className="ProgressBar">
-                  <Box>
-                    <CircularProgress />
-                  </Box>
-                  <div className="DoNotExitText">
-                    <h3>
-                      {t("generate.warning1")}
-                      </h3>
-                  </div>
-                  <div>
-                    <h3>{t("generate.warning2")}</h3>
-                  </div>
-                </div>
-              ) : (
-                <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
-                  {t("homeScreen.generate")}
-                  <AutoAwesome className="BtnIcon" />
-                </Button>
-              )}
+ {loading ? (
+  <div className="ProgressBar">
+    <Box>
+      <CircularProgress size={70} thickness={4} />
+    </Box>
+
+    <div className="DoNotExitText">
+      <h3>
+        {hasImage
+          ? `${t("generate.loadingWithImage")} ${t("generate.loadingWithImageLowerMessage")}`
+          : t("generate.loadingNoImage")}
+      </h3>
+    </div>
+
+    <div>
+      <h3>{t("generate.warning2")}</h3>
+    </div>
+
+    <Button
+      className="CancelGenerationBtn"
+      variant="outlined"
+      color="error"
+      onClick={() => {
+        recipeSocketService.cancelRecipeGeneration();
+        onDone();
+      }}
+    >
+      {t("drawer.cancel")}
+    </Button>
+  </div>
+) : (
+  <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
+    {t("homeScreen.generate")}
+    <AutoAwesome className="BtnIcon" />
+  </Button>
+)}
             </form>
           </div>
         </DialogContent>

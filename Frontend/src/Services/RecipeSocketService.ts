@@ -14,6 +14,7 @@ export const RecipeSocketEvents = {
     SENDER_IS_FRONTEND: {
         START_GENERATING_RECIPE: "recipe-generation-started",
         WATCH_RECIPE_GENERATION: "recipe-generation-watch",
+        CANCEL_RECIPE_GENERATION: "recipe-generation-cancelled",
     },
 
     SENDER_IS_BACKEND: {
@@ -53,6 +54,19 @@ class RecipeSocketService {
             },
         });
 
+        this.socket.on("connect", () => {
+            const activeJobId = localStorage.getItem("activeRecipeJobId");
+
+            if (activeJobId) {
+                store.dispatch(setIsLoading(true));
+
+                this.socket?.emit(
+                    RecipeSocketEvents.SENDER_IS_FRONTEND.WATCH_RECIPE_GENERATION,
+                    { jobId: activeJobId }
+                );
+            }
+        });
+
         this.socket.on(
             RecipeSocketEvents.SENDER_IS_BACKEND.ACCEPTED_RECIPE_GENERATION,
             ({ jobId }: { jobId: string }) => {
@@ -90,23 +104,13 @@ class RecipeSocketService {
             ({ error }: { jobId: string; error: string }) => {
                 localStorage.removeItem("activeRecipeJobId");
 
-                store.dispatch(setError(error));
+                if (error !== "RECIPE_GENERATION_CANCELLED") {
+                    store.dispatch(setError(error));
+                }
+
                 store.dispatch(setIsLoading(false));
             }
         );
-
-        this.socket.on("connect", () => {
-            const activeJobId = localStorage.getItem("activeRecipeJobId");
-
-            if (activeJobId) {
-                store.dispatch(setIsLoading(true));
-
-                this.socket?.emit(
-                    RecipeSocketEvents.SENDER_IS_FRONTEND.WATCH_RECIPE_GENERATION,
-                    { jobId: activeJobId }
-                );
-            }
-        });
     }
 
     public generateRecipe(payload: GeneratePayload): void {
@@ -122,6 +126,21 @@ class RecipeSocketService {
                 visitorId: localStorage.getItem("recipeVisitorId") ?? "",
             }
         );
+    }
+
+    public cancelRecipeGeneration(): void {
+        const activeJobId = localStorage.getItem("activeRecipeJobId");
+
+        if (activeJobId) {
+            this.socket?.emit(
+                RecipeSocketEvents.SENDER_IS_FRONTEND.CANCEL_RECIPE_GENERATION,
+                { jobId: activeJobId }
+            );
+        }
+
+        localStorage.removeItem("activeRecipeJobId");
+        store.dispatch(setIsLoading(false));
+        store.dispatch(setError(undefined));
     }
 
     public disconnect(): void {

@@ -379,6 +379,16 @@
 .healthGoals{
   margin-top: 0;
 }
+
+.CancelGenerationBtn.MuiButton-root {
+  margin-top: 18px !important;
+  width: 100% !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+}
+
 @media (max-width: 600px) {
   .generate_dialog_paper.MuiPaper-root {
     width: 95vw !important;
