@@ -1,9 +1,10 @@
-itzikrecipe.com, www.itzikrecipe.com {
+itzikrecipe.com {
+    redir https://www.itzikrecipe.com{uri} permanent
+}
+
+www.itzikrecipe.com {
 
     encode gzip
-
-    @apex host itzikrecipe.com
-    redir @apex https://www.itzikrecipe.com{uri} permanent
 
     header {
         Cache-Control "no-store"

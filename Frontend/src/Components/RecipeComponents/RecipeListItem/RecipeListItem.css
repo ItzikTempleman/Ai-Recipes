@@ -1,30 +1,29 @@
-.RecipeListItem {
+.recipe-list-item {
   width: 100%;
   margin: 0;
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-   background: white;
+  background: white;
   box-shadow: 0 10px 18px 5px rgba(57, 59, 63, 0.625);
   transition: transform 160ms ease, box-shadow 160ms ease;
-
   display: flex;
   flex-direction: column;
 }
 
-.RecipeListItem:hover {
+.recipe-list-item:hover {
   cursor: pointer;
   transform: translateY(-2px);
 }
 
-.CardImage {
+.card-image {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
 }
 
-.TopRightActions {
+.top-right-actions {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -34,8 +33,8 @@
   z-index: 5;
 }
 
-.ListItemLikeBtn,
-.DeleteBtn {
+.list-item-like-btn,
+.delete-btn {
   padding: 6px !important;
   border-radius: 12px !important;
   border: 1px solid rgba(202, 204, 207, 0.65) !important;
@@ -45,122 +44,53 @@
   transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
-.ListItemLikeBtn:hover,
-.DeleteBtn:hover {
+.list-item-like-btn:hover,
+.delete-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
 }
 
-.ListItemLikeBtn svg {
+.list-item-like-btn svg {
   color: #197ed1;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.1));
 }
 
-.DeleteBtn svg {
+.delete-btn svg {
   color: #4b5563;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.08));
 }
 
-.RecipeName {
+.recipe-name {
   font-size: 22px;
   color: #5e5e5e;
   margin: 12px;
 }
 
-.RecipeName.ltr {
+.recipe-name.ltr {
   left: 12px;
   right: auto;
   direction: ltr;
   text-align: left;
 }
 
-.RecipeName.rtl {
+.recipe-name.rtl {
   right: 12px;
   left: auto;
   direction: rtl;
   text-align: right;
 }
 
-
-
-.CardFooter {
-  margin-top: auto; 
+.list-item-categories {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding-bottom: 6px;
+  gap: 6px;
+  margin-top: 12px;
+  width: 100%;
+  text-align: center;
 }
 
-.TimeAndHardShipLevel {
-  margin: 8px !important;
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important; 
-  justify-content: center !important;
-  font-size: 14px;
-  color: #4b5563;
-}
-
-.TimeRow {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-
-
-  unicode-bidi: isolate !important;
-  direction: ltr !important;
-}
-
-
-.TimeRow > * {
-  flex: 0 0 auto !important;
-}
-
-
-.TimeRow .ClockIcon {
-  order: 0 !important;
-}
-
-
-.TimeAndHardShipLevel.rtl .TimeRow {
-  flex-direction: row-reverse !important;
-}
-
-
-.TimeRow svg {
-  margin: 0 !important;
-}
-
-
-.TimeRow span {
-  unicode-bidi: isolate !important;
-}
-
-.MoreInfoBtn {
-  margin-top: 20px !important;
-  margin-bottom: 8px !important;
-  height: 36px !important;
-  border-radius: 8px !important;
-  background-color: rgba(255, 255, 255, 0) !important;
-  font-size: 18px !important;
-  color: #393939 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  z-index: 5;
-}
-
-.MoreInfoBtn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-  box-shadow:
-    0 22px 44px rgba(243, 162, 0, 0.22),
-    0 10px 20px rgba(15, 23, 42, 0.14),
-    0 2px 0 rgba(255, 255, 255, 0.22) inset !important;
-}
-
-
-.category-list-item{
+.category-list-item {
   margin: 0;
   display: flex;
   align-items: center;
@@ -169,49 +99,84 @@
   font-size: 18px;
 }
 
-.arrow{
-  color: #3596e5;
-  size: 24px ;
-  margin: 8px;
+.card-footer {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 6px;
 }
-@media (max-width: 600px) {
 
-  .RecipeListItem{
+.time-and-hardship-level {
+  margin: 8px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.time-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  unicode-bidi: isolate !important;
+  direction: ltr !important;
+}
+
+.time-row > * {
+  flex: 0 0 auto !important;
+}
+
+.time-row .clock-icon {
+  order: 0 !important;
+}
+
+.time-and-hardship-level.rtl .time-row {
+  flex-direction: row-reverse !important;
+}
+
+.time-row svg {
+  margin: 0 !important;
+}
+
+.time-row span {
+  unicode-bidi: isolate !important;
+}
+
+@media (max-width: 600px) {
+  .recipe-list-item {
     width: 90%;
     margin: 0 auto;
   }
 
-  .CardImage {
+  .card-image {
     height: 190px;
   }
-  
-    .RecipeName {
-    margin: 8px 12px;       
-    font-size: 20px;       
+
+  .recipe-name {
+    margin: 8px 12px;
+    font-size: 20px;
     line-height: 1.15;
   }
 
-  .CardFooter {
-    padding-bottom: 0px; 
+  .card-footer {
+    margin-top: 12px;
+    padding-bottom: 14px;
   }
 
-  .TimeAndHardShipLevel {
-    margin: 4px 0 !important; 
+  .time-and-hardship-level {
+    margin: 4px 0 10px 0 !important;
     font-size: 13px;
   }
 
-  .MoreInfoBtn {
-    margin-top: 0 !important;  
-    margin-bottom: 0 !important;
-    height: 0 !important;     
-    font-size: 00 !important;  
-  }
-  .Categories {
-    width:fit-content;
+  .list-item-categories {
+    width: fit-content;
     margin: auto;
     padding: 6px 16px;
-background-color: rgba(161, 216, 248, 0.206);
-border-radius: 12px;
-
-}
+    background-color: rgba(161, 216, 248, 0.206);
+    border-radius: 12px;
+  }
 }

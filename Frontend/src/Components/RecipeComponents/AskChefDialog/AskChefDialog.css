@@ -34,7 +34,7 @@
 background: #bfdceb7f !important;
   color: rgba(65, 65, 65, 0.85);
   border-radius: 18px;
-  border: 1px solid rgba(84, 209, 255, 0.728);
+  border: 1px solid 1e80a0(84, 209, 255, 0.728);
 }
 
 /* Scrollable chat area */
@@ -110,7 +110,7 @@ background: #bfdceb7f !important;
 }
 
 .AskSendIcon {
-  color: #1bbeff !important;
+  color: #1e80a0 !important;
   font-size: 24px !important;
 }
 

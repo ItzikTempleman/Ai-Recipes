@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./RecipeListItem.css";
 import { RecipeModel } from "../../../Models/RecipeModel";
-import { Button } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import IconButton from "@mui/material/IconButton";
 import { recipeService } from "../../../Services/RecipeService";
@@ -13,8 +12,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { difficultyToString } from "../../../Utils/Utils";
 import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 type RecipeListContext = "default" | "suggestions" | "likes";
 
@@ -36,19 +33,17 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     (like) => like.userId === userId && like.recipeId === recipe.id
   );
 
- 
   const hasHebrew = (s: unknown) => /[\u0590-\u05FF]/.test(String(s ?? ""));
   const titleIsHebrew = hasHebrew(recipe.title);
   const titleDir: "rtl" | "ltr" = titleIsHebrew ? "rtl" : "ltr";
   const titleClass = titleIsHebrew ? "rtl" : "ltr";
-
 
   const isRTL = (i18n.language ?? "").startsWith("he");
   const uiDir: "rtl" | "ltr" = isRTL ? "rtl" : "ltr";
   const uiClass = isRTL ? "rtl" : "ltr";
 
   const selectedLanguage = normalizeAppLanguage(i18n.language);
-  
+
   async function moveToInfo(): Promise<void> {
     navigate("/recipe/" + recipe.id);
   }
@@ -67,20 +62,18 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     e.stopPropagation();
   }
 
-
-
   return (
-    <div className="RecipeListItem" onClick={moveToInfo}>
-      <div className="RecipeMedia">
+    <div className="recipe-list-item" onClick={moveToInfo}>
+      <div className="recipe-media">
         <img
-          className="CardImage"
+          className="card-image"
           src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
         />
 
-        <div className="TopRightActions">
+        <div className="top-right-actions">
           {user && !isSuggestions && (
             <IconButton
-              className="ListItemLikeBtn"
+              className="list-item-like-btn"
               onClick={(e) => {
                 stopCardClick(e);
                 handleLikeState();
@@ -92,7 +85,7 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
 
           {canDelete && (
             <IconButton
-              className="DeleteBtn"
+              className="delete-btn"
               onClick={(e) => {
                 stopCardClick(e);
                 deleteRecipe(recipe.id);
@@ -105,55 +98,33 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
       </div>
 
       <h3
-        className={`RecipeName ${titleClass}  ${isSuggestions ? "suggestions" : ""}`}
+        className={`recipe-name ${titleClass} ${isSuggestions ? "suggestions" : ""}`}
         dir={titleDir}
         lang={titleIsHebrew ? "he" : "en"}
       >
         {recipe.title}
       </h3>
 
-        <span className="Categories">
-          {recipe.categories.map((c, i) => (
-            <h3 key={i} className="category-list-item">
-              {translateRecipeCategory(c, selectedLanguage)}
-              {i < recipe.categories.length - 1 && <span className="separator">|</span>}
-            </h3>
-             )
-           )
-          }
-        </span>
+      <span className="list-item-categories">
+        {recipe.categories.map((c, i) => (
+          <h3 key={i} className="category-list-item">
+            {translateRecipeCategory(c, selectedLanguage)}
+            {i < recipe.categories.length - 1 && <span className="separator">|</span>}
+          </h3>
+        ))}
+      </span>
 
-      <div className={`CardFooter ${uiClass}`} dir={uiDir} lang={isRTL ? "he" : "en"}>
-        <div className={`TimeAndHardShipLevel ${uiClass}`}>
-          <div className="TimeRow">
-            <AccessTimeIcon className="ClockIcon" />
+      <div className={`card-footer ${uiClass}`} dir={uiDir} lang={isRTL ? "he" : "en"}>
+        <div className={`time-and-hardship-level ${uiClass}`}>
+          <div className="time-row">
+            <AccessTimeIcon className="clock-icon" />
             <span>
               {recipe.prepTime} {t("units.minuteShort")} •{" "}
               {difficultyToString(recipe.difficultyLevel)}
             </span>
           </div>
         </div>
-
-        <Button
-          className="MoreInfoBtn FloatingBtn"
-          onClick={moveToInfo}
-          variant="contained"
-        >
-
-  {isRTL ? (
-    <>
-      {t("recipeUi.showRecipe")}
-      <ArrowBackIosNewIcon className="arrow"/>
-    </>
-  ) : (
-    <>
-       {t("recipeUi.showRecipe")}
-   <NavigateNextIcon  className="arrow"/>
-   
-    </>
-  )}
-        </Button>
       </div>
-      </div>
+    </div>
   );
 }

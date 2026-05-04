@@ -999,11 +999,18 @@
     border-bottom: none;
   }
 
+  /* ✅ ONLY CHANGE STARTS HERE */
+  .RecipePreparationWideView {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
   .IngredientsList {
     background: transparent;
     border-radius: 0;
     padding: 0;
   }
+  /* ✅ ONLY CHANGE ENDS HERE */
 
   .RecipeStepsGrid {
     display: block;
