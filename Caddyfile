@@ -1,15 +1,9 @@
 itzikrecipe.com {
-    redir https://www.itzikrecipe.com{uri} permanent
+    redir https://www.itzikrecipe.com{uri}
 }
 
 www.itzikrecipe.com {
-
     encode gzip
-
-    header {
-        Cache-Control "no-store"
-        Cross-Origin-Opener-Policy "same-origin-allow-popups"
-    }
 
     @api path /api/*
     handle @api {
@@ -20,6 +14,9 @@ www.itzikrecipe.com {
     handle @socket {
         reverse_proxy backend:4000
     }
+
+    @html path *.html
+    header @html Cache-Control "no-cache"
 
     handle {
         reverse_proxy frontend:5173

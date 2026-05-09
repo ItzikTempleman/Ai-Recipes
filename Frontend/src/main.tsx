@@ -9,11 +9,8 @@ import "./Utils/i18n.ts";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { MainLayout } from './Components/MainLayout/MainLayout.tsx';
-import { recipeSocketService } from "./Services/RecipeSocketService";
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-recipeSocketService.connect();
 
 createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId={googleClientId}>
