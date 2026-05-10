@@ -13,7 +13,7 @@ import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { RecipeInputDialog } from "../RecipeComponents/RecipeInputDialog/RecipeInputDialog";
 import { resetGenerated, setCurrent, stashGuestRecipe } from "../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeComponents/RecipeDataContainer/RecipeDataContainer";
-import { RecipeCategory, RecipeModel } from "../../Models/RecipeModel";
+import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeCategory, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
  import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
  import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import titleImage from "../../Assets/images/title.png";
@@ -292,17 +292,23 @@ export function HomeScreen() {
     </div>
   </div>
 )}
-
-          {current?.title && filtersToUse && !open && (
-            <div className="RecipeCardContainer">
-              <RecipeDataContainer
-                recipe={current}
-                filters={filtersToUse}
-                loadImage={loadImage}
-                onExitRecipe={handleExitRecipe}
-              />
-            </div>
-          )}
+{current?.title && !open && (
+  <div className="RecipeCardContainer">
+    <RecipeDataContainer
+      recipe={current}
+      filters={
+        filtersToUse ?? {
+          sugarLevel: current.sugarRestriction ?? SugarRestriction.DEFAULT,
+          hasLactose: current.lactoseRestrictions ?? LactoseRestrictions.DEFAULT,
+          hasGluten: current.glutenRestrictions ?? GlutenRestrictions.DEFAULT,
+          dietType: current.dietaryRestrictions ?? DietaryRestrictions.DEFAULT,
+        }
+      }
+      loadImage={loadImage}
+      onExitRecipe={handleExitRecipe}
+    />
+  </div>
+)}
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
