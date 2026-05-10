@@ -269,7 +269,7 @@ export function HomeScreen() {
 
     <div className="BackgroundGenerationText">
       <h4>{t("generate.loadingNoImage") || "Generating recipe..."}</h4>
-      <p>The recipe is still being prepared in the background.</p>
+      <p>{t("generate.preparingMinimizedMessage")}</p>
     </div>
 
     <div className="BackgroundGenerationActions">

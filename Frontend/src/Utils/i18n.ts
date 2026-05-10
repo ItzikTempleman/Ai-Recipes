@@ -105,7 +105,6 @@ const resources = {
         return: "Return",
       },
       generate: {
-
         withImage: "With image",
         withoutImage: "Without image",
         filters: "Filters",
@@ -120,7 +119,8 @@ const resources = {
         loadingWithImage: "Generating an image…",
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe...",
-        servings: "SERVINGS"
+        servings: "SERVINGS",
+        preparingMinimizedMessage:"Preparing the recipe in the background"
       },
       likeScreen: {
         noLikes: "No favorites",
@@ -394,7 +394,6 @@ const resources = {
       },
 
       generate: {
-   
         withImage: "עם תמונה",
         withoutImage: "ללא תמונה",
         filters: "סינון",
@@ -409,7 +408,8 @@ const resources = {
         loadingWithImage: "...מייצר תמונה",
         loadingWithImageLowerMessage: " ,זה יקח דקה ",
         loadingNoImage: "...מייצר מתכון",
-        servings: "מנות"
+        servings: "מנות",
+        preparingMinimizedMessage:"מכין את המתכון ברקע"
       },
       likeScreen: {
         noLikes: "אין מועדפים",
@@ -533,7 +533,6 @@ const resources = {
         birthDatePrefix: "תאריך לידה:",
         userUpdated: "המשתמש עודכן",
         imageUpdated: "תמונת הפרופיל עודכנה",
-
         phoneNumber: "מספר טלפון",
         birthdate: "תאריך לידה",
         age: "גיל",
@@ -543,7 +542,6 @@ const resources = {
         subscription: "מנוי",
         language: "שפה"
       },
-
       recipeUi: {
         share: "שיתוף",
         instructions: "הוראות הכנה",
@@ -573,7 +571,6 @@ const resources = {
         per100g: "|ג 100",
         minuteShort: "דק׳",
       },
-
       notify: {
         genericError: "אירעה שגיאה, נסה שוב",
       },
