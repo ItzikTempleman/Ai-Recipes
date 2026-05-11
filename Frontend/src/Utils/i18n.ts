@@ -120,7 +120,8 @@ const resources = {
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe...",
         servings: "SERVINGS",
-        preparingMinimizedMessage:"Preparing the recipe in the background"
+        preparingMinimizedMessage:"Preparing the recipe in the background",
+        cancel: "Cancel",
       },
       likeScreen: {
         noLikes: "No favorites",
@@ -240,7 +241,6 @@ const resources = {
         birthDatePrefix: "birth date:",
         userUpdated: "User has been updated",
         imageUpdated: "Profile image updated",
-
         phoneNumber: "Phone number",
         birthdate: "Birthdate",
         age: "Age",
@@ -250,7 +250,6 @@ const resources = {
         subscription: "Subscription",
         language: "Language"
       },
-
       recipeUi: {
         share: "Share",
         instructions: "Instructions",
@@ -409,7 +408,8 @@ const resources = {
         loadingWithImageLowerMessage: " ,זה יקח דקה ",
         loadingNoImage: "...מייצר מתכון",
         servings: "מנות",
-        preparingMinimizedMessage:"מכין את המתכון ברקע"
+        preparingMinimizedMessage:"מכין את המתכון ברקע",
+        cancel: "ביטול",
       },
       likeScreen: {
         noLikes: "אין מועדפים",

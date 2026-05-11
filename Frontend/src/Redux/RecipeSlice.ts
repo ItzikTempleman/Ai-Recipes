@@ -64,7 +64,18 @@ function upsertRecipeReducer(state: RecipeState, action: PayloadAction<RecipeMod
   const recipe = action.payload;
 
   state.items = [recipe, ...state.items.filter(r => r.id !== recipe.id)];
-  state.catalogItems = (state.catalogItems ?? []).map(r => (r.id === recipe.id ? recipe : r));
+  
+    const index = state.items.findIndex(r => r.id === recipe.id);
+
+  if (index >= 0) {
+    state.items[index] = recipe;
+  } else {
+    state.items.unshift(recipe);
+  }
+
+  state.catalogItems = (state.catalogItems ?? []).map(r =>
+    r.id === recipe.id ? recipe : r
+  );
 
   if (state.current?.id === recipe.id) {
     state.current = recipe;

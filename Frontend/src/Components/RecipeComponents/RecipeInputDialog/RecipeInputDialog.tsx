@@ -282,7 +282,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
         onDone();
       }}
     >
-      {t("drawer.cancel")}
+      {t("generate.cancel")}
     </Button>
   </div>
 ) : (

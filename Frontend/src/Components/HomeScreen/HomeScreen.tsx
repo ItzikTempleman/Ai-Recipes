@@ -96,7 +96,7 @@ export function HomeScreen() {
   }, [listState, user?.id]);
 
   const recentlyViewedList = useMemo(
-    () => (Array.isArray(items) ? [...items].reverse() : []),
+    () => (Array.isArray(items) ? [...items] : []),
     [items]
   );
 
@@ -268,8 +268,8 @@ export function HomeScreen() {
     </div>
 
     <div className="BackgroundGenerationText">
-      <h4>{t("generate.loadingNoImage") || "Generating recipe..."}</h4>
-      <p>{t("generate.preparingMinimizedMessage")}</p>
+     
+      <h4>{t("generate.preparingMinimizedMessage")}</h4>
     </div>
 
     <div className="BackgroundGenerationActions">
