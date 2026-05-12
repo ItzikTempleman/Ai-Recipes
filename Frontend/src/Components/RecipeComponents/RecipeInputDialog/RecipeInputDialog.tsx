@@ -32,6 +32,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import type { Filters } from "../RecipeDataContainer/RecipeDataContainer";
 import { DietaryFilter, GlutenFilter, LactoseFilter, SugarFilter } from "../../../Utils/Filtering";
 import { recipeSocketService } from "../../../Services/RecipeSocketService";
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 
 type Props = {
   onDone: () => void;
@@ -133,7 +134,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
         queryRestrictions: excludedList,
       });
 
-  
+
     } catch (err: unknown) {
       notify.error(err);
       onDone();
@@ -148,7 +149,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
 
           <div className="GenerateContainer">
             <form onSubmit={handleSubmit(send)} autoComplete="off">
-        
+
               <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
                 <TextField
                   dir={isRTL ? "rtl" : "ltr"}
@@ -179,14 +180,14 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                   }}
                 />
               </div>
-                    <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
-                      <TextField
-                        className="ExcludeTextField"
-                        placeholder={t("generate.excludeIngredient")}
-                        size="small"
-                        {...register("excludedIngredients.0")}
-                      />
-                    </div>
+              <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
+                <TextField
+                  className="ExcludeTextField"
+                  placeholder={t("generate.excludeIngredient")}
+                  size="small"
+                  {...register("excludedIngredients.0")}
+                />
+              </div>
               {error && <div className="ErrorText">{error}</div>}
 
               <div className="FiltersSectionContainer">
@@ -218,7 +219,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                         </div>
 
                         <div>
-                                 <p className="healthGoals">{t("filters.healthGoals")}</p>
+                          <p className="healthGoals">{t("filters.healthGoals")}</p>
                           <SugarFilter key={`sugar-${filtersResetKey}`} onSugarLevelSelect={(v) => setSugarLevel(v)} />
                         </div>
 
@@ -266,31 +267,35 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
                 </div>
               )}
 
- {loading ? (
-  <div className="ProgressBar">
-    <Box>
-      <CircularProgress size={70} thickness={4} />
-    </Box>
+              {loading ? (
+                <div className="ProgressBar">
+                  <Box>
+                    <CircularProgress size={50} thickness={4} />
+                  </Box>
+                  
+                  <IconButton className="MinimizeBtn"
+                    onClick={() => onDone()}>
+                    <CloseFullscreenIcon />
+                  </IconButton>
 
-
-    <Button
-      className="CancelGenerationBtn"
-      variant="outlined"
-      color="error"
-      onClick={() => {
-        recipeSocketService.cancelRecipeGeneration();
-        onDone();
-      }}
-    >
-      {t("generate.cancel")}
-    </Button>
-  </div>
-) : (
-  <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
-    {t("homeScreen.generate")}
-    <AutoAwesome className="BtnIcon" />
-  </Button>
-)}
+                  <Button
+                    className="CancelGenerationBtn"
+                    variant="outlined"
+                    color="error"
+                    onClick={() => {
+                      recipeSocketService.cancelRecipeGeneration();
+                      onDone();
+                    }}
+                  >
+                    {t("generate.cancel")}
+                  </Button>
+                </div>
+              ) : (
+                <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
+                  {t("homeScreen.generate")}
+                  <AutoAwesome className="BtnIcon" />
+                </Button>
+              )}
             </form>
           </div>
         </DialogContent>

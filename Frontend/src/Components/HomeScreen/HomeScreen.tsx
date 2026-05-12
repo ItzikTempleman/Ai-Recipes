@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, Chip, CircularProgress, Dialog } from "@mui/material";
+import { Button, Chip, CircularProgress, Dialog, IconButton } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./HomeScreen.css";
 import { useTitle } from "../../Utils/Utils";
@@ -14,10 +14,12 @@ import { RecipeInputDialog } from "../RecipeComponents/RecipeInputDialog/RecipeI
 import { resetGenerated, setCurrent, stashGuestRecipe } from "../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeComponents/RecipeDataContainer/RecipeDataContainer";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeCategory, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
- import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
- import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import titleImage from "../../Assets/images/title.png";
 import { recipeSocketService } from "../../Services/RecipeSocketService";
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import CloseIcon from '@mui/icons-material/Close';
 
 enum ListState {
   SUGGESTIONS,
@@ -52,7 +54,7 @@ function normalizeCategories(input: unknown): RecipeCategory[] {
 export function HomeScreen() {
   useTitle("Home");
 
- const { items, catalogItems, loading } = useSelector((state: AppState) => state.recipes);
+  const { items, catalogItems, loading } = useSelector((state: AppState) => state.recipes);
   const current = useSelector((s: AppState) => s.recipes.current);
   const user = useSelector((state: AppState) => state.user);
   const likes = useSelector((state: AppState) => state.likes);
@@ -63,7 +65,7 @@ export function HomeScreen() {
 
   const { t, i18n } = useTranslation();
   const isRTL = (i18n.language ?? "").startsWith("he");
-  
+
   const shouldOpenGenerate = searchParams.get("generate") === "1";
   const [open, setOpen] = useState(shouldOpenGenerate);
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
@@ -85,14 +87,14 @@ export function HomeScreen() {
 
   useEffect(() => {
     if (!user?.id) return;
-    recipeService.getMyRecipes().catch(() => {});
+    recipeService.getMyRecipes().catch(() => { });
   }, [user?.id]);
 
   useEffect(() => {
     if (!user?.id) return;
     if (listState !== ListState.FAVORITES) return;
 
-    recipeService.loadMyLikes().catch(() => {});
+    recipeService.loadMyLikes().catch(() => { });
   }, [listState, user?.id]);
 
   const recentlyViewedList = useMemo(
@@ -174,10 +176,10 @@ export function HomeScreen() {
   };
 
   const reopenGenerateDialog = () => {
-  const next = new URLSearchParams(searchParams);
-  next.set("generate", "1");
-  setSearchParams(next);
-};
+    const next = new URLSearchParams(searchParams);
+    next.set("generate", "1");
+    setSearchParams(next);
+  };
 
   const closeGenerateDialog = () => {
     const next = new URLSearchParams(searchParams);
@@ -218,25 +220,25 @@ export function HomeScreen() {
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`home-screen-wrapper ${isRTL ? "rtl" : "ltr"}`}>
         <div>
-          <img className="main-title" src ={titleImage}/>
-      
+          <img className="main-title" src={titleImage} />
+
         </div>
 
         <div className="SelectionDiv">
-             <div className="FeatureHint">
-        {!user && (
-          <Button
-            className="free-with-login-btn"
-            onClick={() => navigate("/login")}>
-            <p>{t("homeScreen.ask")}</p>
-            <p>{t("homeScreen.save")}</p>
-            <p>{t("homeScreen.history")}</p>
-             {
-              !isRTL? <ArrowForwardIcon/> :<ArrowBackIcon/>
-            }
-          </Button>
-        )}
-      </div>
+          <div className="FeatureHint">
+            {!user && (
+              <Button
+                className="free-with-login-btn"
+                onClick={() => navigate("/login")}>
+                <p>{t("homeScreen.ask")}</p>
+                <p>{t("homeScreen.save")}</p>
+                <p>{t("homeScreen.history")}</p>
+                {
+                  !isRTL ? <ArrowForwardIcon /> : <ArrowBackIcon />
+                }
+              </Button>
+            )}
+          </div>
 
           <Button
             className="home-screen-generate-btn"
@@ -261,54 +263,46 @@ export function HomeScreen() {
             />
           </Dialog>
 
-{loading && !open && !current?.title && (
-  <div className={`BackgroundGenerationBox ${isRTL ? "rtl" : "ltr"}`}>
-    <div className="BackgroundGenerationSpinner">
-      <CircularProgress size={28} thickness={5} />
-    </div>
+          {loading && !open && !current?.title && (
+            <div className={`BackgroundGenerationBox ${isRTL ? "rtl" : "ltr"}`}>
+              <div className="BackgroundGenerationSpinner">
+                <CircularProgress size={28} thickness={5} />
+              </div>
 
-    <div className="BackgroundGenerationText">
-     
-      <h4>{t("generate.preparingMinimizedMessage")}</h4>
-    </div>
+              <div className="BackgroundGenerationText">
 
-    <div className="BackgroundGenerationActions">
-      <Button
-        size="small"
-        variant="contained"
-        onClick={reopenGenerateDialog}
-      >
-        Open
-      </Button>
+                <h4>{t("generate.preparingMinimizedMessage")}</h4>
+              </div>
 
-      <Button
-        size="small"
-        variant="outlined"
-        color="error"
-        onClick={() => recipeSocketService.cancelRecipeGeneration()}
-      >
-        Cancel
-      </Button>
-    </div>
-  </div>
-)}
-{current?.title && !open && (
-  <div className="RecipeCardContainer">
-    <RecipeDataContainer
-      recipe={current}
-      filters={
-        filtersToUse ?? {
-          sugarLevel: current.sugarRestriction ?? SugarRestriction.DEFAULT,
-          hasLactose: current.lactoseRestrictions ?? LactoseRestrictions.DEFAULT,
-          hasGluten: current.glutenRestrictions ?? GlutenRestrictions.DEFAULT,
-          dietType: current.dietaryRestrictions ?? DietaryRestrictions.DEFAULT,
-        }
-      }
-      loadImage={loadImage}
-      onExitRecipe={handleExitRecipe}
-    />
-  </div>
-)}
+              <div className="BackgroundGenerationActions">
+                <IconButton onClick={reopenGenerateDialog}>
+                  <AspectRatioIcon />
+                </IconButton>
+
+                <IconButton onClick={() => recipeSocketService.cancelRecipeGeneration()}>
+                  <CloseIcon />
+                </IconButton>
+
+              </div>
+            </div>
+          )}
+          {current?.title && !open && (
+            <div className="RecipeCardContainer">
+              <RecipeDataContainer
+                recipe={current}
+                filters={
+                  filtersToUse ?? {
+                    sugarLevel: current.sugarRestriction ?? SugarRestriction.DEFAULT,
+                    hasLactose: current.lactoseRestrictions ?? LactoseRestrictions.DEFAULT,
+                    hasGluten: current.glutenRestrictions ?? GlutenRestrictions.DEFAULT,
+                    dietType: current.dietaryRestrictions ?? DietaryRestrictions.DEFAULT,
+                  }
+                }
+                loadImage={loadImage}
+                onExitRecipe={handleExitRecipe}
+              />
+            </div>
+          )}
 
           {user && (
             <div className={`SelectListDiv ${isRTL ? "rtl" : "ltr"}`}>
@@ -381,10 +375,10 @@ export function HomeScreen() {
                   !user
                     ? "suggestions"
                     : listState === ListState.SUGGESTIONS
-                    ? "suggestions"
-                    : listState === ListState.FAVORITES
-                    ? "likes"
-                    : "default"
+                      ? "suggestions"
+                      : listState === ListState.FAVORITES
+                        ? "likes"
+                        : "default"
                 }
               />
             ))}
