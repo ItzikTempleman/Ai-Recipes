@@ -13,7 +13,8 @@ import { resetGenerated, restoreGuestRecipe, stashGuestRecipe } from "../../Redu
 import { DrawerLayout } from "../UserComponents/DrawerLayout/DrawerLayout";
 import { usageService } from "../../Services/UsageService";
 import { RoleId } from "../../Models/UserModel";
-
+import titleImage from "../../Assets/images/title.png";
+import ElectricBoltOutlinedIcon from '@mui/icons-material/ElectricBoltOutlined';
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t } = useTranslation();
@@ -85,6 +86,7 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
             </div>
           )}
         </NavLink>
+<img className="HeaderTitleImage" src={titleImage} alt="title" />
 
         {showUndo && (
           <div className={`ReturnToRecipeSection ${returnImage ? "hasImage" : ""}`}>
@@ -110,6 +112,7 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
                 : "Usage"
             }
           >
+<ElectricBoltOutlinedIcon className="lightning-logo"/>
          {usage!.remaining} / {usageLimit}
           </div>
         )}

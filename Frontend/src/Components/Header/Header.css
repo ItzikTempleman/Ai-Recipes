@@ -23,6 +23,12 @@
   gap: 2px;
   margin-top: 6px;
 }
+.HeaderTitleImage {
+  width: 180px;
+  height: auto;
+  display: block;
+  margin-inline-start: 10px;
+}
 
 .Header.rtl .GeneralNavigation {
   flex-direction: row-reverse;
@@ -48,26 +54,29 @@
 .HomeScreenBtn svg {
   height: 30px;
   width: 30px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    padding: 8px;
+    border-radius: 12px;
 }
 
 .HomeScreenBtn p {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 200;
 }
 
 .HomeScreenBtn p,
 .HomeScreenBtn svg {
-  color: #393939;
+  color: #153f61;
 }
 
 .ReturnToRecipeSection svg {
-  color: #393939;
+  color: #153f61;
 }
 
 .ReturnToRecipeSection p {
-  color: #393939;
+  color: #153f61;
   font-size: 8px;
-  font: weight 900px;
+  font: weight 200;
 }
 
 .HeaderRight {
@@ -138,8 +147,8 @@
       margin-left: 18px;
   cursor: pointer;
   color: white ;
-  height: 36px;
-  background-color: #fbbf32;
+  height: 30px;
+  background-color: #1e80a0;
   font-size: 12px;
   border-radius: 16px;
   }
@@ -186,7 +195,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 34px;
+  height: 30px;
   padding: 0 12px;
   border-radius: 16px;
   font-weight: 200;
@@ -211,6 +220,12 @@
   background: rgba(220, 53, 69, 0.12);
   border-color: rgba(220, 53, 69, 0.28);
   color: #8a1f2b;
+}
+
+.lightning-logo{
+  color: #f1b40e;
+  height: 18px !important;
+  width: 18px !important;
 }
 
 .LanguageLink {
@@ -248,3 +263,8 @@
     justify-self: start;
   }
 
+@media (max-width: 600px) {
+  .HeaderTitleImage {
+    display: none;
+  }
+}
