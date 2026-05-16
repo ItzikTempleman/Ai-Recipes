@@ -54,6 +54,7 @@ const resources = {
         securePayment: "Secure payment",
       },
       homeScreen: {
+        unlockSmartFeatures: "Sign in to unlock smart features",
         generateTitle: "AI recipes",
         shareIntro: "Share your recipes",
         generate: "Generate recipe",
@@ -348,6 +349,7 @@ const resources = {
         securePayment: "תשלום מאובטח"
       },
       homeScreen: {
+        unlockSmartFeatures: "התחבר כדי לפתוח יכולות חכמות ",
         generateTitle: "מתכונים עם AI",
         shareIntro: "שתף את המתכונים",
         generate: "יצירת מתכון",

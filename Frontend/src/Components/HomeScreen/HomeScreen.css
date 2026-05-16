@@ -1,10 +1,9 @@
 .HomeScreen {
   position: relative;
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  width: 100vw;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -51,6 +50,13 @@
   z-index: 2;
 }
 
+.home-screen-wrapper.ltr .intro-container {
+  margin-left: 80px;
+  margin-right: auto;
+  text-align: left;
+  align-items: flex-start;
+}
+
 .home-screen-wrapper.rtl .intro-container {
   margin-right: 80px;
   margin-left: auto;
@@ -63,6 +69,7 @@
   width: 100%;
   text-align: end;
   direction: rtl;
+  unicode-bidi: plaintext;
 }
 
 .intro-container p {
@@ -82,72 +89,84 @@
   margin-bottom: 14px !important;
 }
 
-.home-screen-wrapper.rtl .intro-container p {
-  direction: rtl;
-  unicode-bidi: plaintext;
-  text-align: right;
-}
-
 .free-with-login-div {
-  background: rgb(243, 243, 243) !important;
-  border-radius: 12px !important;
-  height: 50px;
-  width: calc(100% - 200px);
-  margin: 15px 100px 0 100px;
-  padding: 0 24px;
+  width: min(100% - 200px, 1260px);
+  min-height: 56px;
+  margin: 15px auto 0;
+  padding: 10px 24px;
   box-sizing: border-box;
-
+  border: 1px solid rgba(232, 180, 100, 0.45);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 22px;
 }
 
-.free-with-login-div > div {
+.free-login-message,
+.free-login-features,
+.free-login-feature {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  height: 50px;
-  gap: 8px;
 }
 
-.free-with-login-div p {
+.free-login-message {
+  gap: 10px;
+  font-weight: 700;
+  color: #2f2f2f;
+  min-width: 0;
+}
+
+.free-login-message svg {
+  color: rgb(255, 174, 0);
+  fill: rgb(255, 174, 0);
+  flex: 0 0 auto;
+}
+
+.free-login-message p,
+.free-login-feature p,
+.free-with-login-btn p {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.lock-icon {
-  color: rgb(255, 174, 0) !important;
-  fill: rgb(255, 174, 0) !important;
-  align-self: center;
+.free-login-features {
+  gap: 18px;
+}
+
+.free-login-feature {
+  gap: 8px;
+  color: #757575;
+  font-weight: 600;
+}
+
+.free-login-separator {
+  color: rgba(0, 26, 68, 0.25);
 }
 
 .free-with-login-btn.MuiButton-root {
-  height: 30px !important;
-  min-height: 30px !important;
-  line-height: 30px !important;
-  padding: 0 14px !important;
+  min-height: 34px !important;
+  padding: 0 22px !important;
   margin: 0 !important;
+  flex-shrink: 0;
   align-self: center !important;
-
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 6px;
-
-  background: #1e80a0 !important;
+  gap: 8px !important;
+  background: #d7ae1a !important;
   color: white !important;
   border: none !important;
-  border-radius: 30px !important;
+  border-radius: 999px !important;
   box-shadow: none !important;
   text-transform: none !important;
+  font-weight: 700 !important;
 }
 
 .free-with-login-btn.MuiButton-root p {
   color: white !important;
-  height: 30px !important;
-  line-height: 30px !important;
   display: flex !important;
   align-items: center !important;
 }
@@ -430,16 +449,13 @@
   width: calc(100% - 28px);
   max-width: 400px;
   z-index: 1400;
-
   display: flex;
   align-items: center;
   gap: 8px;
-
   background: #ffffff;
   border: 1px solid #d7e6ff;
   border-radius: 22px;
   padding: 4px;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
@@ -487,9 +503,84 @@
   display: none;
 }
 
+.generate-login-mobile-order {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 920px) {
+  .free-with-login-div {
+    width: calc(100% - 16px);
+    min-height: auto;
+    margin: 90px auto 0;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "message message"
+      "features button";
+    gap: 10px 12px;
+  }
+
+  .free-login-message {
+    grid-area: message;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .free-login-message p {
+    font-size: 14px;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .free-login-message svg {
+    flex: 0 0 auto;
+    font-size: 28px;
+  }
+
+  .free-login-features {
+    grid-area: features;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    min-width: 0;
+  }
+
+  .free-login-feature {
+    gap: 5px;
+  }
+
+  .free-login-feature svg {
+    font-size: 19px;
+  }
+
+  .free-with-login-btn.MuiButton-root {
+    grid-area: button;
+    min-width: 104px !important;
+    width: auto !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 18px !important;
+  }
+
+  .free-with-login-btn.MuiButton-root p {
+    display: flex !important;
+    font-size: 14px !important;
+  }
+
+  .free-with-login-btn.MuiButton-root svg {
+    font-size: 19px !important;
+  }
+}
+
 @media (max-width: 600px) {
   .main-title {
-    width: 250px;
+    width: 230px;
     max-width: 58%;
     display: block;
   }
@@ -567,14 +658,14 @@
   }
 
   .RecipeGrid {
-  width: 100%;
-  max-width: none;
-  margin: 10px 0 0;
-  padding: 0 30px 24px;
-  box-sizing: border-box;
-  grid-template-columns: minmax(0, 1fr);
-  justify-content: stretch;
-  gap: 14px;
+    width: 100%;
+    max-width: none;
+    margin: 10px 0 0;
+    padding: 0 30px 24px;
+    box-sizing: border-box;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+    gap: 14px;
   }
 
   .FeatureUnlockHint {
@@ -611,101 +702,57 @@
     padding: 6px 14px;
   }
 
+@media (max-width: 600px) {
   .CategoryChipsContainer {
-    gap: 8px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    width: 100vw;
+    max-width: 100vw;
+    margin: 12px 0;
     padding: 0 12px;
     box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 8px;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .CategoryChipsContainer::-webkit-scrollbar {
+    display: none;
   }
 
   .MuiChip-root.Chip,
   .CategoryChipClear {
-    height: 36px !important;
+    height: 30px !important;
+    min-width: max-content !important;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
     border-radius: 999px !important;
   }
 
-  .CategoryChipClear {
-    background-color: #d32f2f !important;
-    color: white !important;
-    font-weight: 700;
-  }
-
-  .CategoryChipClear:hover {
-    background-color: #b71c1c !important;
-  }
-
-  .intro-container {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    max-width: 520px;
-    margin-top: 28px;
-  }
-
-  .home-screen-wrapper.ltr .intro-container {
-    margin-left: 80px;
-    margin-right: auto;
-    text-align: left;
-    align-items: flex-start;
-  }
-
-  .home-screen-wrapper.rtl .intro-container {
-    margin-right: 80px;
-    margin-left: auto;
-    text-align: right;
-    align-items: flex-end;
-  }
-
-  .intro-delicious-title,
-  .intro-container p,
-  .intro-create-title,
-  .intro-delicious-title {
-    display: none;
+  .MuiChip-root.Chip .MuiChip-label {
+    font-size: 13px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    white-space: nowrap !important;
   }
 }
 
-@media (max-width: 800px) {
-  .free-with-login-div {
-    width: calc(100% - 80px);
-    margin: 15px 40px 0 40px;
-    padding: 0 12px;
-    height: 46px;
-    gap: 6px;
+  .intro-container,
+  .intro-delicious-title,
+  .intro-container p,
+  .intro-create-title {
+    display: none;
   }
-
-  .free-with-login-div .lock-icon {
-    display: none !important;
+  .generate-login-mobile-order {
+    flex-direction: column-reverse;
   }
-
-  .free-with-login-div > div {
-    gap: 4px;
-    height: 46px;
-    font-size: 12px;
-  }
-
-  .free-with-login-div > div svg {
-    font-size: 18px !important;
-  }
-
-  .free-with-login-div > div p {
-    font-size: 12px !important;
-    white-space: nowrap;
-  }
-
-  .free-with-login-btn.MuiButton-root {
-    min-width: 38px !important;
-    width: 38px !important;
-    height: 30px !important;
-    padding: 0 !important;
-    flex-shrink: 0;
-  }
-
-  .free-with-login-btn.MuiButton-root p {
-    display: none !important;
-  }
-
-  .free-with-login-btn.MuiButton-root svg {
-    font-size: 19px !important;
-  }
+  
 }

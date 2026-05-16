@@ -129,13 +129,15 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
           </select>
         </div>
 
-        {isGuest && (
-      
-            <div className="LoginBtn" onClick={() => navigate("/login")}>
-              <h3>{t("drawer.login")}</h3>
-            </div>
-        
-        )}
+{!isGuest && (
+  <div className="user-name-badge">
+    <p>
+      {user.firstName}
+      {isAdmin && <> | {t("drawer.role")}</>}
+    </p>
+  </div>
+)}
+
  </div>
         <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />

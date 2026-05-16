@@ -247,7 +247,7 @@ export function HomeScreen() {
             <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
           </div>
 
-
+<div className="generate-login-mobile-order">
           <Button
             className="home-screen-generate-btn"
             onClick={openGenerateDialog}
@@ -257,34 +257,47 @@ export function HomeScreen() {
           </Button>
 
 
-          {!user && (
-            <div className="free-with-login-div">
+         {!user && (
+  <div className="free-with-login-div">
+    <div className="free-login-message">
+      <LockPersonIcon />
+      <p>{t("homeScreen.unlockSmartFeatures")}</p>
+    </div>
 
-              <LockPersonIcon className="lock-icon" />
+    <div className="free-login-features">
+      <div className="free-login-feature">
+        <BubbleChartIcon />
+        <p>{t("homeScreen.ask")}</p>
+      </div>
 
-              <div>
-                <BubbleChartIcon />
-                <p>{t("homeScreen.ask")}</p>
-              </div>
-|
-              <div>
-                <FavoriteBorderIcon />
-                <p>{t("homeScreen.save")}</p>
-              </div>
-|
-              <div>
-                <AccessTimeIcon />
-                <p>{t("homeScreen.history")}</p>
-              </div>
+      <span className="free-login-separator">|</span>
 
-              <Button variant="contained" className="free-with-login-btn" onClick={() => navigate("/login")}>
-                <LockOpenIcon />
-                <p>{t("auth.login.submit")}</p>
-              </Button>
+      <div className="free-login-feature">
+        <FavoriteBorderIcon />
+        <p>{t("homeScreen.save")}</p>
+      </div>
 
-            </div>
-          )}
+      <span className="free-login-separator">|</span>
 
+      <div className="free-login-feature">
+        <AccessTimeIcon />
+        <p>{t("homeScreen.history")}</p>
+      </div>
+    </div>
+
+    <Button
+      variant="contained"
+      className="free-with-login-btn"
+      onClick={() => navigate("/login")}
+    >
+      <LockOpenIcon />
+      <p>{t("auth.login.submit")}</p>
+    </Button>
+  </div>
+  
+)}
+  </div>
+  
           <Dialog
             className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}
