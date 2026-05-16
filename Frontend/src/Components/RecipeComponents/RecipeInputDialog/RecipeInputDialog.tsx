@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
 import "./RecipeInputDialog.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import { useTranslation } from "react-i18next";
 import { notify } from "../../../Utils/Notify";
 import {
