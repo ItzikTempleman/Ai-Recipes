@@ -382,6 +382,13 @@ export function HomeScreen() {
 
           {listState === ListState.SUGGESTIONS && (
             <div className="CategoryChipsContainer">
+              <Chip
+  className={`Chip ${selectedCategories.length === 0 ? "selected" : ""}`}
+  label={t("categories.showAll")}
+  clickable
+  onClick={() => setSelectedCategories([])}
+/>
+
               {ALL_CATEGORIES.map((c) => (
                 <Chip
                   className={`Chip ${selectedCategories.includes(c) ? "selected" : ""}`}
@@ -392,14 +399,6 @@ export function HomeScreen() {
                 />
               ))}
 
-              {selectedCategories.length > 0 && (
-                <Chip
-                  className="CategoryChipClear"
-                  label={t("categories.clear") || "Clear"}
-                  clickable
-                  onClick={() => setSelectedCategories([])}
-                />
-              )}
             </div>
           )}
 

@@ -81,6 +81,7 @@ const resources = {
         },
       },
       categories: {
+        showAll: "Show all",
         breakfast: "Breakfast",
         lunch: "Lunch",
         supper: "Supper",
@@ -373,6 +374,7 @@ const resources = {
         },
       },
       categories: {
+        showAll: "הצג הכל",
         breakfast: "ארוחת בוקר",
         lunch: "ארוחת צהריים",
         supper: "ארוחת ערב",

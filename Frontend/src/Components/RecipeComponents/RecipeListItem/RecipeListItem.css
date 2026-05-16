@@ -1,5 +1,6 @@
 .recipe-list-item {
-  width: 100%;
+   width: 100%;
+  max-width: 280px !important;
   margin: 0;
   position: relative;
   border-radius: 16px;

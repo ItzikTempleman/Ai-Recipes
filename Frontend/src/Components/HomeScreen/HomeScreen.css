@@ -275,15 +275,21 @@
 
 .RecipeGrid {
   width: 100%;
-  max-width: 1480px;
+  max-width: 1120px;
   margin: 34px auto 0;
   padding: 34px var(--edge-pad, 34px) 20px;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 320px);
+  grid-template-columns: repeat(auto-fill, 300px);
   justify-content: center;
-  gap: 64px;
+  gap: 18px;
   overflow: visible;
+}
+
+.RecipeGrid > * {
+  width: 100%;
+  max-width: 320px;
+  justify-self: center;
 }
 
 .home-screen-generate-btn {
@@ -292,7 +298,7 @@
   margin: 40px auto 0 !important;
   display: flex !important;
   border-radius: 30px !important;
-  background: #376887 !important;
+  background: #1e80a0 !important;
   text-transform: none;
   align-items: center;
   justify-content: center;
