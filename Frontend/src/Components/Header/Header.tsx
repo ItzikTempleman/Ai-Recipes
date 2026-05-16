@@ -82,7 +82,6 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
           {({ isActive }) => (
             <div>
               {isActive ? <HomeIcon /> : <HomeOutlinedIcon />}
-              <p>{t("nav.home")}</p>
             </div>
           )}
         </NavLink>

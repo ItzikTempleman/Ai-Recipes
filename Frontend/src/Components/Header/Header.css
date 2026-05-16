@@ -66,15 +66,15 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 
 .HomeScreenBtn p,
 .HomeScreenBtn svg {
-  color: #153f61;
+  color: #1e80a0;
 }
 
 .ReturnToRecipeSection svg {
-  color: #153f61;
+  color: #1e80a0;
 }
 
 .ReturnToRecipeSection p {
-  color: #153f61;
+  color: #1e80a0;
   font-size: 8px;
   font: weight 200;
 }
@@ -172,7 +172,7 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  color: #1e6c9c;
+  color: #1e80a0;
   cursor: pointer;
   background: white;
   overflow: hidden;
@@ -278,6 +278,20 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 @media (max-width: 600px) {
+    .HomeScreenBtn {
+    transform: translateY(0px);
+  }
+
+
+.HomeScreenBtn svg {
+
+box-shadow: none;
+
+}
+
+
+
+
   .HeaderTitleImage {
     display: none;
   }

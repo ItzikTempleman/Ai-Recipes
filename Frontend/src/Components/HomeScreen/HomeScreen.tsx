@@ -222,12 +222,12 @@ export function HomeScreen() {
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`home-screen-wrapper ${isRTL ? "rtl" : "ltr"}`}>
 
-<div className="mobile-main-image-wrapper">
-<img
-  className="mobile-main-image"
-  src={isRTL ? recipeImageHe : recipeImageEn}
-/>
-</div>
+        <div className="mobile-main-image-wrapper">
+          <img
+            className="mobile-main-image"
+            src={isRTL ? recipeImageHe : recipeImageEn}
+          />
+        </div>
 
         <div>
           <img className="main-title" src={titleImage} />
@@ -250,14 +250,12 @@ export function HomeScreen() {
             )}
           </div>
 
-
-
-<div className="intro-container">
-  <p className="intro-create-title">{t("homeScreen.heroIntro.createSomethingTitle")}</p>
-  <p className="intro-delicious-title">{t("homeScreen.heroIntro.deliciousTodayTitle")}</p>
-  <p>{t("homeScreen.heroIntro.personalizedRecipesSubtitle")}</p>
-  <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
-</div>
+          <div className="intro-container">
+            <p className="intro-create-title">{t("homeScreen.heroIntro.createSomethingTitle")}</p>
+            <p className="intro-delicious-title">{t("homeScreen.heroIntro.deliciousTodayTitle")}</p>
+            <p>{t("homeScreen.heroIntro.personalizedRecipesSubtitle")}</p>
+            <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
+          </div>
           <Button
             className="home-screen-generate-btn"
             onClick={openGenerateDialog}
