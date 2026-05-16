@@ -621,14 +621,12 @@
     display: none;
   }
 
-  /* Logged in → more spacing */
   .HomeScreen.user .home-screen-wrapper.ltr .home-screen-generate-btn,
   .HomeScreen.user .home-screen-wrapper.rtl .home-screen-generate-btn,
   .HomeScreen.user .home-screen-generate-btn {
     margin: 130px auto 0 !important;
   }
 
-  /* Guest / not logged in → less spacing */
   .HomeScreen.guest .home-screen-wrapper.ltr .home-screen-generate-btn,
   .HomeScreen.guest .home-screen-wrapper.rtl .home-screen-generate-btn,
   .HomeScreen.guest .home-screen-generate-btn {
@@ -649,11 +647,28 @@
 
   .SelectListDiv.ltr,
   .SelectListDiv.rtl {
-
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
   }
+
+.HomeScreen.guest .SelectListDiv.ltr {
+  justify-content: flex-start !important;
+  text-align: left;
+  direction: ltr;
+}
+
+.HomeScreen.guest .SelectListDiv.rtl {
+  justify-content: flex-start !important;
+  text-align: right;
+  direction: rtl;
+}
+
+.HomeScreen.guest .SuggestionsBtn.active h4 {
+  border-bottom-color: transparent !important;
+  font-size: 18px !important;
+}
+
 
   .RecipeGrid {
     width: 100%;
@@ -706,17 +721,14 @@
     margin: 12px 0;
     padding: 0 12px;
     box-sizing: border-box;
-
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
     gap: 8px;
-
     overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-
     scrollbar-width: none;
     -ms-overflow-style: none;
   }

@@ -247,57 +247,57 @@ export function HomeScreen() {
             <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
           </div>
 
-<div className="generate-login-mobile-order">
-          <Button
-            className="home-screen-generate-btn"
-            onClick={openGenerateDialog}
-            variant="contained">
-            {t("homeScreen.generate")}
-            <AutoAwesome />
-          </Button>
+          <div className="generate-login-mobile-order">
+            <Button
+              className="home-screen-generate-btn"
+              onClick={openGenerateDialog}
+              variant="contained">
+              {t("homeScreen.generate")}
+              <AutoAwesome />
+            </Button>
 
 
-         {!user && (
-  <div className="free-with-login-div">
-    <div className="free-login-message">
-      <LockPersonIcon />
-      <p>{t("homeScreen.unlockSmartFeatures")}</p>
-    </div>
+            {!user && (
+              <div className="free-with-login-div">
+                <div className="free-login-message">
+                  <LockPersonIcon />
+                  <p>{t("homeScreen.unlockSmartFeatures")}</p>
+                </div>
 
-    <div className="free-login-features">
-      <div className="free-login-feature">
-        <BubbleChartIcon />
-        <p>{t("homeScreen.ask")}</p>
-      </div>
+                <div className="free-login-features">
+                  <div className="free-login-feature">
+                    <BubbleChartIcon />
+                    <p>{t("homeScreen.ask")}</p>
+                  </div>
 
-      <span className="free-login-separator">|</span>
+                  <span className="free-login-separator">|</span>
 
-      <div className="free-login-feature">
-        <FavoriteBorderIcon />
-        <p>{t("homeScreen.save")}</p>
-      </div>
+                  <div className="free-login-feature">
+                    <FavoriteBorderIcon />
+                    <p>{t("homeScreen.save")}</p>
+                  </div>
 
-      <span className="free-login-separator">|</span>
+                  <span className="free-login-separator">|</span>
 
-      <div className="free-login-feature">
-        <AccessTimeIcon />
-        <p>{t("homeScreen.history")}</p>
-      </div>
-    </div>
+                  <div className="free-login-feature">
+                    <AccessTimeIcon />
+                    <p>{t("homeScreen.history")}</p>
+                  </div>
+                </div>
 
-    <Button
-      variant="contained"
-      className="free-with-login-btn"
-      onClick={() => navigate("/login")}
-    >
-      <LockOpenIcon />
-      <p>{t("auth.login.submit")}</p>
-    </Button>
-  </div>
-  
-)}
-  </div>
-  
+                <Button
+                  variant="contained"
+                  className="free-with-login-btn"
+                  onClick={() => navigate("/login")}
+                >
+                  <LockOpenIcon />
+                  <p>{t("auth.login.submit")}</p>
+                </Button>
+              </div>
+
+            )}
+          </div>
+
           <Dialog
             className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}
@@ -396,11 +396,11 @@ export function HomeScreen() {
           {listState === ListState.SUGGESTIONS && (
             <div className="CategoryChipsContainer">
               <Chip
-  className={`Chip ${selectedCategories.length === 0 ? "selected" : ""}`}
-  label={t("categories.showAll")}
-  clickable
-  onClick={() => setSelectedCategories([])}
-/>
+                className={`Chip ${selectedCategories.length === 0 ? "selected" : ""}`}
+                label={t("categories.showAll")}
+                clickable
+                onClick={() => setSelectedCategories([])}
+              />
 
               {ALL_CATEGORIES.map((c) => (
                 <Chip
