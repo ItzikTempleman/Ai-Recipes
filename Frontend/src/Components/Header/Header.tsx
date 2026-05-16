@@ -107,7 +107,7 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
           <div
             className={`UsageBadge ${usage!.remaining === 0 ? "danger" : ""}`}
             title={
-              usage!.windowEndsAt
+               usage!.windowEndsAt
                 ? `Resets at ${new Date(usage!.windowEndsAt).toLocaleString()}`
                 : "Usage"
             }

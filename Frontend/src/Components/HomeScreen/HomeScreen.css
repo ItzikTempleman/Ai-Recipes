@@ -38,44 +38,6 @@
 }
 
 
-.main-image-wrapper {
-  position: relative;
-  width: 650px;
-  max-height: 360px;
-  overflow: hidden;
-  background: white;
-}
-
-.home-screen-wrapper.ltr .main-image-wrapper {
-  align-self: flex-end;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.home-screen-wrapper.rtl .main-image-wrapper {
-  align-self: flex-start;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.main-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  transform: translateY(-20px);
-}
-
-.main-image-wrapper::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background:
-    linear-gradient(to bottom, white 0%, transparent 14%, transparent 86%, white 100%),
-    linear-gradient(to right, rgba(255,255,255,0.65) 0%, transparent 26%);
-}
-
 .SelectionDiv {
   width: 100%;
 }
@@ -393,13 +355,68 @@
   font-weight: 700 !important;
 }
 
+.mobile-main-image-wrapper {
+  display: none;
+}
+
+
 @media (max-width: 600px) {
 
   .main-title {
     width: 320px;
-    max-width: 90%;
+    max-width: 58%;
     display: block;
-    margin: 0 auto;
+  }
+
+  .home-screen-wrapper.ltr .main-title {
+    margin-left: 40px;
+    margin-right: auto;
+  }
+
+  .home-screen-wrapper.rtl .main-title {
+    margin-right: 40px;
+    margin-left: auto;
+  }
+
+  .mobile-main-image-wrapper {
+    display: block;
+    position: absolute;
+    top: -5px;
+    width: 38vw;
+    height: 230px;
+    overflow: hidden;
+    background: white;
+  }
+
+  .home-screen-wrapper.ltr .mobile-main-image-wrapper {
+    right: 0;
+    left: auto;
+  }
+
+  .home-screen-wrapper.rtl .mobile-main-image-wrapper {
+    left: 0;
+    right: auto;
+  }
+
+  .mobile-main-image {
+    display: block;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .home-screen-wrapper.ltr .mobile-main-image {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .home-screen-wrapper.rtl .mobile-main-image {
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  .mobile-main-image-wrapper::after {
+    display: none;
   }
 
   .SelectListDiv {
