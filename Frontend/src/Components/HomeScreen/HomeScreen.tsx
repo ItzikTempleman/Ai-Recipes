@@ -14,14 +14,17 @@ import { RecipeInputDialog } from "../RecipeComponents/RecipeInputDialog/RecipeI
 import { resetGenerated, setCurrent, stashGuestRecipe } from "../../Redux/RecipeSlice";
 import { Filters, RecipeDataContainer } from "../RecipeComponents/RecipeDataContainer/RecipeDataContainer";
 import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeCategory, RecipeModel, SugarRestriction } from "../../Models/RecipeModel";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import titleImage from "../../Assets/images/title.png";
 import { recipeSocketService } from "../../Services/RecipeSocketService";
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import CloseIcon from '@mui/icons-material/Close';
 import recipeImageHe from "../../Assets/images/home-screen-image-he.png";
 import recipeImageEn from "../../Assets/images/home-screen-image-en.png";
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LockPersonIcon from '@mui/icons-material/LockPerson';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 enum ListState {
   SUGGESTIONS,
@@ -244,7 +247,7 @@ export function HomeScreen() {
             <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
           </div>
 
-          
+
           <Button
             className="home-screen-generate-btn"
             onClick={openGenerateDialog}
@@ -253,20 +256,35 @@ export function HomeScreen() {
             <AutoAwesome />
           </Button>
 
-          <div className="feature-hint">
-            {!user && (
-              <Button
-                className="free-with-login-btn"
-                onClick={() => navigate("/login")}>
+
+          {!user && (
+            <div className="free-with-login-div">
+
+              <LockPersonIcon className="lock-icon" />
+
+              <div>
+                <BubbleChartIcon />
                 <p>{t("homeScreen.ask")}</p>
+              </div>
+|
+              <div>
+                <FavoriteBorderIcon />
                 <p>{t("homeScreen.save")}</p>
+              </div>
+|
+              <div>
+                <AccessTimeIcon />
                 <p>{t("homeScreen.history")}</p>
-                {
-                  !isRTL ? <ArrowForwardIcon /> : <ArrowBackIcon />
-                }
+              </div>
+
+              <Button variant="contained" className="free-with-login-btn" onClick={() => navigate("/login")}>
+                <LockOpenIcon />
+                <p>{t("auth.login.submit")}</p>
               </Button>
-            )}
-          </div>
+
+            </div>
+          )}
+
           <Dialog
             className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}
