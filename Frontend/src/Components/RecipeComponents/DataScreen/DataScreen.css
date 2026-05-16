@@ -162,34 +162,113 @@
 }
 
 .AskModelDiv {
-  border: 1px solid #c8c8c8;
-  border-radius: 16px;
-  padding: 0 16px;
+  border: 1px solid rgba(205, 169, 105, 0.48);
+  border-radius: 24px;
+  padding: 16px 18px;
   display: flex;
   align-items: center;
-  width: fit-content;
-  height: 48px;
-  margin-top: 16px;
-  align-content: center;
-  gap: 4px;
-  background: #fff;
-  align-self: flex-start;
+  width: 100%;
+  min-height: 76px;
+  margin: 18px 0 22px;
+  gap: 14px;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255, 196, 87, 0.28), transparent 34%),
+    radial-gradient(circle at 86% 82%, rgba(31, 138, 165, 0.16), transparent 38%),
+    linear-gradient(135deg, #fff7e8 0%, #fffaf2 42%, #f4ead8 100%);
+  box-shadow: 0 14px 34px rgba(135, 91, 34, 0.13);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.AskModelDiv::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 23px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.64), transparent 48%);
+  pointer-events: none;
 }
 
 .AskModelDiv:hover {
-  transform: translateY(-1px);
-  cursor: pointer;
+  transform: translateY(-2px);
+  border-color: rgba(31, 138, 165, 0.68);
+  box-shadow: 0 18px 44px rgba(28, 126, 148, 0.2);
 }
 
-.AskModelDiv h4 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 700;
+.AskModelDiv.rtl {
+  direction: rtl;
+}
+
+.AskModelDiv.ltr {
+  direction: ltr;
+}
+
+.AskModelIconWrap {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffffff, #d7f7ff);
+  border: 1px solid rgba(31, 138, 165, 0.25);
+  box-shadow: 0 8px 20px rgba(31, 138, 165, 0.15);
+  position: relative;
+  z-index: 1;
 }
 
 .ChefImage {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.AskModelText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.AskModelText h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #153841;
+}
+
+.AskModelText p {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #54717a;
+}
+
+.AskModelArrow {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #34c5df, #1f8aa5);
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 9px 22px rgba(31, 138, 165, 0.24);
+  position: relative;
+  z-index: 1;
 }
 
 .SendIconRtl {

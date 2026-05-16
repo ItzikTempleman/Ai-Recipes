@@ -274,7 +274,8 @@ const resources = {
         kcal: "kcal",
         time: "Prep time",
         ask: "Ask the chef",
-        thinking: "Thinking..."
+        thinking: "Thinking...",
+        letsTalk:"Let's talk about the "
       },
       difficulty: {
         easy: "Easy",
@@ -574,7 +575,8 @@ const resources = {
         kcal: 'קק"ל',
         time: "זמן הכנה",
         ask: "שאל את השף",
-        thinking: "...חושב"
+        thinking: "...חושב",
+        letsTalk:"בוא נדבר על ה"
       },
       difficulty: {
         easy: "קל",

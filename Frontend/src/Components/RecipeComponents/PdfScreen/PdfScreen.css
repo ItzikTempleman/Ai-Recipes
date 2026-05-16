@@ -37,7 +37,6 @@
   body.share-render-mode header,
   body.share-render-mode .ShareBtnContainer,
   body.share-render-mode .return-home-icon,
-  body.share-render-mode .AskModelDiv,
   body.share-render-mode .BackBtnContainer {
     display: none !important;
   }

@@ -179,13 +179,6 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
                 </>
               )
             )}
-
-            {user && (
-              <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
-                <img className="ChefImage" src={chef} />
-                <h4>{t("recipeUi.ask")}</h4>
-              </div>
-            )}
           </div> 
 
           <div className={`DataScreenInfoColumn ${isRTL ? "rtl" : "ltr"}`}> 
@@ -213,6 +206,21 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
             <div className="FilterBadgesRow">
               <FilterBadges filters={filters} isRTL={isRTL} />
             </div> 
+
+            {user && (
+              <div className={`AskModelDiv ${isRTL ? "rtl" : "ltr"}`} onClick={handleToggleAsk}>
+                <div className="AskModelIconWrap">
+                  <img className="ChefImage" src={chef} />
+                </div>
+
+                <div className="AskModelText">
+                  <h4>{t("recipeUi.ask")}</h4>
+                  <p>{isRTL ? "שאלו על תחליפים, טיפים ושדרוגים למתכון" : "Ask about swaps, tips, fixes, and cooking help"}</p>
+                </div>
+
+                <span className="AskModelArrow">{isRTL ? "←" : "→"}</span>
+              </div>
+            )}
 
             <div className="RecipeSneakPeakInfo" dir={isRTL ? "rtl" : "ltr"}>
               <div className="Calories">

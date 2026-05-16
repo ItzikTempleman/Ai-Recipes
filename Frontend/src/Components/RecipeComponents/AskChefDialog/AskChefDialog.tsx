@@ -5,7 +5,6 @@ import SendIcon from "@mui/icons-material/Send";
 import { RecipeModel } from "../../../Models/RecipeModel";
 import { recipeService } from "../../../Services/RecipeService";
 import { useTranslation } from "react-i18next";
-import chef from "../../../Assets/images/chef.png";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../Redux/Store";
 
@@ -96,7 +95,7 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
         <div className="AskPanel">
           <div className={`AskChat ${messages.length === 0 ? "isEmpty" : ""}`}>
             {messages.length === 0 && (
-               <img className="ChefImageBlankMessage" src={chef} />
+               <h2>{t("recipeUi.letsTalk")} {recipe.title}</h2>
             )}
 
             {messages.map((m, idx) => (
