@@ -12,6 +12,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { difficultyToString } from "../../../Utils/Utils";
 import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 type RecipeListContext = "default" | "suggestions" | "likes";
 
@@ -62,41 +64,42 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
     e.stopPropagation();
   }
 
-  return (
-    <div className="recipe-list-item" onClick={moveToInfo}>
-      <div className="recipe-media">
-        <img
-          className="card-image"
-          src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
-        />
+return (
+  <div className={`recipe-list-item ${uiClass}`} onClick={moveToInfo}>
+    <div className="recipe-media">
+      <img
+        className="card-image"
+        src={recipe.imageUrl ? recipe.imageUrl : "/no-image.png"}
+      />
 
-        <div className="top-right-actions">
-          {user && !isSuggestions && (
-            <IconButton
-              className="list-item-like-btn"
-              onClick={(e) => {
-                stopCardClick(e);
-                handleLikeState();
-              }}
-            >
-              {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-            </IconButton>
-          )}
+      <div className="top-right-actions">
+        {user && !isSuggestions && (
+          <IconButton
+            className="list-item-like-btn"
+            onClick={(e) => {
+              stopCardClick(e);
+              handleLikeState();
+            }}
+          >
+            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+        )}
 
-          {canDelete && (
-            <IconButton
-              className="delete-btn"
-              onClick={(e) => {
-                stopCardClick(e);
-                deleteRecipe(recipe.id);
-              }}
-            >
-              <DeleteOutlineOutlinedIcon />
-            </IconButton>
-          )}
-        </div>
+        {canDelete && (
+          <IconButton
+            className="delete-btn"
+            onClick={(e) => {
+              stopCardClick(e);
+              deleteRecipe(recipe.id);
+            }}
+          >
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
+        )}
       </div>
+    </div>
 
+    <div className="recipe-card-content">
       <h3
         className={`recipe-name ${titleClass} ${isSuggestions ? "suggestions" : ""}`}
         dir={titleDir}
@@ -124,7 +127,16 @@ export function RecipeListItem({ recipe, context = "default" }: RecipeProps) {
             </span>
           </div>
         </div>
+
+<div className="recipe-card-arrow">
+  {isRTL ? (
+    <ArrowBackIcon className="recipe-arrow-icon" />
+  ) : (
+    <ArrowForwardIcon className="recipe-arrow-icon" />
+  )}
+</div>
       </div>
     </div>
-  );
+  </div>
+);
 }

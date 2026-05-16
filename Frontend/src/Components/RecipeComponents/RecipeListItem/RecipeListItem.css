@@ -96,7 +96,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #717171;
+  color: #0075a8;
   font-size: 18px;
 }
 
@@ -146,38 +146,156 @@
 .time-row span {
   unicode-bidi: isolate !important;
 }
+.recipe-card-arrow {
+  display: none;
+}
+
+
 
 @media (max-width: 600px) {
   .recipe-list-item {
-    width: 90%;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none !important;
+    height: 150px;
+    min-height: 150px;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  }
+
+  .recipe-list-item.rtl {
+    flex-direction: row-reverse;
+  }
+
+  .recipe-media {
+    width: 52%;
+    min-width: 52%;
+    height: 150px;
   }
 
   .card-image {
-    height: 190px;
+    width: 100%;
+    height: 150px;
+    min-height: 150px;
+    object-fit: cover;
+  }
+
+  .recipe-card-content {
+    flex: 1;
+    min-width: 0;
+    height: 150px;
+    padding: 10px 12px 9px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
 
   .recipe-name {
-    margin: 8px 12px;
-    font-size: 20px;
+    margin: 0;
+    max-width: calc(100% - 74px);
+    font-size: 15px;
     line-height: 1.15;
-  }
-
-  .card-footer {
-    margin-top: 12px;
-    padding-bottom: 14px;
-  }
-
-  .time-and-hardship-level {
-    margin: 4px 0 10px 0 !important;
-    font-size: 13px;
+    color: #001a44;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .list-item-categories {
-    width: fit-content;
-    margin: auto;
-    padding: 6px 16px;
-    background-color: rgba(161, 216, 248, 0.206);
-    border-radius: 12px;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 7px 0 0;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
+  .recipe-list-item.rtl .list-item-categories {
+    justify-content: flex-end;
+  }
+
+  .category-list-item {
+    font-size: 11px;
+    line-height: 1;
+    color: #0075a8;
+    background: #dff3fb;
+    border-radius: 999px;
+    padding: 4px 8px;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .recipe-list-item.rtl .card-footer {
+    flex-direction: row-reverse;
+  }
+
+  .time-and-hardship-level {
+    width: auto !important;
+    margin: 0 !important;
+    justify-content: flex-start !important;
+    font-size: 11px;
+    color: #001a44;
+  }
+
+  .time-row {
+    gap: 4px !important;
+  }
+
+  .clock-icon {
+    font-size: 18px !important;
+  }
+
+ .recipe-card-arrow {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-arrow-icon {
+  font-size: 18px !important;
+  color: black;
+}
+  .top-right-actions {
+    top: 8px;
+    right: 8px;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .recipe-list-item.rtl .top-right-actions {
+    right: auto;
+    left: 8px;
+  }
+
+  .list-item-like-btn,
+  .delete-btn {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 3px !important;
+    border-radius: 10px !important;
+  }
+
+  .list-item-like-btn svg,
+  .delete-btn svg {
+    font-size: 19px !important;
   }
 }
