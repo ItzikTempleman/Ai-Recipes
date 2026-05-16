@@ -103,6 +103,7 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
       </div>
 
       <div className="HeaderRight">
+         <div className="HeaderActionsHaze">
         {shouldShowBadge && (
           <div
             className={`UsageBadge ${usage!.remaining === 0 ? "danger" : ""}`}
@@ -136,10 +137,11 @@ const usageLimit = usage?.limit ?? (isGuest ? 5 : 8);
             </div>
         
         )}
-
+ </div>
         <div className="MenuBtn">
           <DrawerLayout open={drawerOpen} setOpen={setDrawerOpen} />
         </div>
+     
       </div>
     </div>
   );

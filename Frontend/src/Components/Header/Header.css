@@ -266,11 +266,27 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     justify-self: start;
   }
 
+  .HeaderActionsHaze {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.22);
+}
+
 @media (max-width: 600px) {
   .HeaderTitleImage {
     display: none;
   }
-
+  .HeaderActionsHaze {
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
   .LanguageLink, .UsageBadge, .LoginBtn, .MenuBtn {
     border: none !important;
   }

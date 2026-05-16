@@ -72,7 +72,13 @@ const resources = {
         save: "Favorites",
         remember: "Recently viewed",
         freeWithLogin: "Free when login",
-        unlockTitle: "Unlock features"
+        unlockTitle: "Unlock features",
+        heroIntro: {
+          createSomethingTitle: "Let's create something",
+          deliciousTodayTitle: "delicious today ✨",
+          personalizedRecipesSubtitle: "AI-powered recipes tailored to your taste.",
+          simpleIngredientsSubtitle: "Simple ingredients, extraordinary meals.",
+        },
       },
       categories: {
         breakfast: "Breakfast",
@@ -120,7 +126,7 @@ const resources = {
         loadingWithImageLowerMessage: "This will take a minute",
         loadingNoImage: "Generating a recipe...",
         servings: "SERVINGS",
-        preparingMinimizedMessage:"Preparing the recipe in the background",
+        preparingMinimizedMessage: "Preparing the recipe in the background",
         cancel: "Cancel",
       },
       likeScreen: {
@@ -359,6 +365,12 @@ const resources = {
         remember: "נצפו לאחרונה",
         freeWithLogin: "חינם למשתמשים מחוברים",
         unlockTitle: "פתח פיצ׳רים",
+        heroIntro: {
+          createSomethingTitle: "בואו ניצור משהו",
+          deliciousTodayTitle: "טעים במיוחד היום ✨",
+          personalizedRecipesSubtitle: "מתכונים חכמים מבוססי AI שמותאמים לטעם שלך.",
+          simpleIngredientsSubtitle: "מרכיבים פשוטים, תוצאות יוצאות דופן.",
+        },
       },
       categories: {
         breakfast: "ארוחת בוקר",
@@ -408,7 +420,7 @@ const resources = {
         loadingWithImageLowerMessage: " ,זה יקח דקה ",
         loadingNoImage: "...מייצר מתכון",
         servings: "מנות",
-        preparingMinimizedMessage:"מכין את המתכון ברקע",
+        preparingMinimizedMessage: "מכין את המתכון ברקע",
         cancel: "ביטול",
       },
       likeScreen: {

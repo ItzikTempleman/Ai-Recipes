@@ -250,6 +250,14 @@ export function HomeScreen() {
             )}
           </div>
 
+
+
+<div className="intro-container">
+  <p className="intro-create-title">{t("homeScreen.heroIntro.createSomethingTitle")}</p>
+  <p className="intro-delicious-title">{t("homeScreen.heroIntro.deliciousTodayTitle")}</p>
+  <p>{t("homeScreen.heroIntro.personalizedRecipesSubtitle")}</p>
+  <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
+</div>
           <Button
             className="home-screen-generate-btn"
             onClick={openGenerateDialog}
