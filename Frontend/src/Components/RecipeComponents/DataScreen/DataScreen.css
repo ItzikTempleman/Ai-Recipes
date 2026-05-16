@@ -47,15 +47,17 @@
   gap: 8px;
 }
 
+/* English: share on right */
 .TopActions.ltr {
-  left: 14px;
-  right: auto;
+  right: 14px;
+  left: auto;
   flex-direction: row;
 }
 
+/* Hebrew: share on left */
 .TopActions.rtl {
-  right: 14px;
-  left: auto;
+  left: 14px;
+  right: auto;
   flex-direction: row;
 }
 
@@ -87,24 +89,24 @@
   transform: scaleX(-1);
 }
 
-.RecipeTopSection .ClearFormDiv {
+.RecipeTopSection .return-home-icon {
+  position: absolute;
   top: 14px;
-  color: red;
+  z-index: 60;
+  cursor: pointer;
+  color: rgb(90, 89, 89);
 }
 
-.DataScreen[dir="ltr"] .RecipeTopSection .ClearFormDiv {
-  right: 12px !important;
-  left: auto !important;
-}
-
-.DataScreen[dir="rtl"] .RecipeTopSection .ClearFormDiv {
+/* English: return on left */
+.DataScreen[dir="ltr"] .RecipeTopSection .return-home-icon {
   left: 12px !important;
   right: auto !important;
 }
 
-.ClearFormDiv.ltr {
-  right: 12px;
-  left: auto;
+/* Hebrew: return on right */
+.DataScreen[dir="rtl"] .RecipeTopSection .return-home-icon {
+  right: 12px !important;
+  left: auto !important;
 }
 
 .DataScreenTopContent {
@@ -391,7 +393,7 @@
 .Sugar,
 .Protein,
 .Time {
-  border: 1px solid #d0d0d0;
+  border: 1px solid #b1b1b1;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -405,7 +407,7 @@
   overflow: hidden;
   box-shadow: none;
   filter: none;
-  background: rgb(228, 228, 228);
+  background: rgb(255, 255, 255);
 }
 
 .Title {
@@ -773,19 +775,23 @@
   }
 
   .TopActions.ltr {
-    left: 12px;
+    right: 12px;
+    left: auto;
   }
 
   .TopActions.rtl {
-    right: 12px;
+    left: 12px;
+    right: auto;
   }
 
-  .RecipeTopSection .ClearFormDiv {
-    right: 10px;
+  .DataScreen[dir="ltr"] .RecipeTopSection .return-home-icon {
+    left: 10px !important;
+    right: auto !important;
   }
 
-  .DataScreen[dir="rtl"] .RecipeTopSection .ClearFormDiv {
-    left: 10px;
+  .DataScreen[dir="rtl"] .RecipeTopSection .return-home-icon {
+    right: 10px !important;
+    left: auto !important;
   }
 
   .DataScreenTopContent {
@@ -846,7 +852,6 @@
     margin-right: auto;
   }
 
-  
   .RecipeTopSection {
     padding: 54px 42px 18px 10px;
   }
@@ -859,13 +864,24 @@
     top: 18px;
   }
 
-  .RecipeTopSection .ClearFormDiv {
-    top: 14px;
-    right: 8px;
+  .TopActions.ltr {
+    right: 12px;
+    left: auto;
   }
 
-  .DataScreen[dir="rtl"] .RecipeTopSection .ClearFormDiv {
-    left: 8px;
+  .TopActions.rtl {
+    left: 12px;
+    right: auto;
+  }
+
+  .DataScreen[dir="ltr"] .RecipeTopSection .return-home-icon {
+    left: 8px !important;
+    right: auto !important;
+  }
+
+  .DataScreen[dir="rtl"] .RecipeTopSection .return-home-icon {
+    right: 8px !important;
+    left: auto !important;
   }
 
   .DataScreenTopContent {
@@ -918,13 +934,6 @@
     margin-top: 0;
   }
 
-  .RecipeTopSection .ClearFormDiv {
-  top: 14px;
-  right: 0px !important;
-  left: auto;
-}
-
-
   .RecipeTopSection {
     border-left: 0;
     border-right: 0;
@@ -949,13 +958,24 @@
     top: 18px;
   }
 
-  .RecipeTopSection .ClearFormDiv {
-    top: 14px;
+  .TopActions.ltr {
     right: 8px;
+    left: auto;
   }
 
-  .DataScreen[dir="rtl"] .RecipeTopSection .ClearFormDiv {
+  .TopActions.rtl {
     left: 8px;
+    right: auto;
+  }
+
+  .DataScreen[dir="ltr"] .RecipeTopSection .return-home-icon {
+    left: 8px !important;
+    right: auto !important;
+  }
+
+  .DataScreen[dir="rtl"] .RecipeTopSection .return-home-icon {
+    right: 8px !important;
+    left: auto !important;
   }
 
   .DataScreenTopContent {
@@ -998,7 +1018,6 @@
     border-bottom: none;
   }
 
-  /* ✅ ONLY CHANGE STARTS HERE */
   .RecipePreparationWideView {
     padding-left: 22px;
     padding-right: 22px;
@@ -1009,7 +1028,6 @@
     border-radius: 0;
     padding: 0;
   }
-  /* ✅ ONLY CHANGE ENDS HERE */
 
   .RecipeStepsGrid {
     display: block;

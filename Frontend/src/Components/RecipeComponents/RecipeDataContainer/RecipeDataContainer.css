@@ -11,7 +11,7 @@
   overflow-x: visible;
 }
 
-.ClearFormDiv {
+.return-home-icon {
   position: absolute;
   top: 16px;
   display: flex;
@@ -21,12 +21,12 @@
   z-index: 10;
 }
 
-.ClearFormDiv.rtl {
+.return-home-icon.rtl {
   right: 16px;
   left: auto;
 }
 
-.ClearFormDiv.ltr {
+.return-home-icon.ltr {
   right: 16px;
   left: auto;
 }

@@ -16,9 +16,11 @@ import { AppState } from "../../../Redux/Store";
 import { AskChefDialog } from "../AskChefDialog/AskChefDialog";
 import { normalizedIngredients, normalizeIngredientRow } from "../../../Utils/NormalizedIngredients";
 import { useNavigate } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
 import { normalizeAppLanguage, translateRecipeCategory } from "../../../Utils/TranslateCat";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 type RecipeProps = {
   recipe: RecipeModel;
   imageSrc: string;
@@ -140,13 +142,14 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
         </div>
 
         <div
-          className={`ClearFormDiv ${isRTL ? "rtl" : "ltr"}`}
+          className={`return-home-icon ${isRTL ? "rtl" : "ltr"}`}
           onClick={() => {
             onExitRecipe?.();
             navigate("/home");
           }}
         >
-          <CloseIcon />
+          { isRTL ?  <ArrowForwardIcon />: <ArrowBackIcon/>}
+           
         </div>
 
         <div className={`DataScreenTopContent ${isRTL ? "rtl" : "ltr"}`}> 

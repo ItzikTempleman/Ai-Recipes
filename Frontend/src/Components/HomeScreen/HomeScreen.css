@@ -156,7 +156,7 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
-  background: #d7ae1a !important;
+  background: #ffaa00 !important;
   color: white !important;
   border: none !important;
   border-radius: 999px !important;
@@ -177,10 +177,6 @@
   display: block !important;
 }
 
-.free-with-login-btn.MuiButton-root:hover {
-  background: #ffaa00 !important;
-  box-shadow: none !important;
-}
 
 .SelectListDiv {
   display: flex;
@@ -521,14 +517,14 @@
   }
 
   .free-login-message p {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.25;
     white-space: normal;
   }
 
   .free-login-message svg {
     flex: 0 0 auto;
-    font-size: 28px;
+    font-size: 22px;
   }
 
   .free-login-features {
@@ -536,7 +532,7 @@
     width: 100%;
     justify-content: flex-start;
     gap: 12px;
-    font-size: 13px;
+    font-size: 11px;
     min-width: 0;
   }
 
