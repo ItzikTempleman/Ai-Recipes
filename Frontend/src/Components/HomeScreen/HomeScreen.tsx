@@ -17,6 +17,7 @@ import { DietaryRestrictions, GlutenRestrictions, LactoseRestrictions, RecipeCat
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import titleImage from "../../Assets/images/title.png";
+import recipeImage from "../../Assets/images/home-screen-image.png";
 import { recipeSocketService } from "../../Services/RecipeSocketService";
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import CloseIcon from '@mui/icons-material/Close';
@@ -219,6 +220,12 @@ export function HomeScreen() {
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
       <div className={`home-screen-wrapper ${isRTL ? "rtl" : "ltr"}`}>
+
+                <div className="main-image-wrapper">
+          <img className="main-image" src={recipeImage} />
+
+        </div>
+
         <div>
           <img className="main-title" src={titleImage} />
 
