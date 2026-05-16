@@ -235,7 +235,25 @@ export function HomeScreen() {
         </div>
 
         <div className="SelectionDiv">
-          <div className="FeatureHint">
+
+
+          <div className="intro-container">
+            <p className="intro-create-title">{t("homeScreen.heroIntro.createSomethingTitle")}</p>
+            <p className="intro-delicious-title">{t("homeScreen.heroIntro.deliciousTodayTitle")}</p>
+            <p>{t("homeScreen.heroIntro.personalizedRecipesSubtitle")}</p>
+            <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
+          </div>
+
+          
+          <Button
+            className="home-screen-generate-btn"
+            onClick={openGenerateDialog}
+            variant="contained">
+            {t("homeScreen.generate")}
+            <AutoAwesome />
+          </Button>
+
+          <div className="feature-hint">
             {!user && (
               <Button
                 className="free-with-login-btn"
@@ -249,21 +267,6 @@ export function HomeScreen() {
               </Button>
             )}
           </div>
-
-          <div className="intro-container">
-            <p className="intro-create-title">{t("homeScreen.heroIntro.createSomethingTitle")}</p>
-            <p className="intro-delicious-title">{t("homeScreen.heroIntro.deliciousTodayTitle")}</p>
-            <p>{t("homeScreen.heroIntro.personalizedRecipesSubtitle")}</p>
-            <p>{t("homeScreen.heroIntro.simpleIngredientsSubtitle")}</p>
-          </div>
-          <Button
-            className="home-screen-generate-btn"
-            onClick={openGenerateDialog}
-            variant="contained">
-            {t("homeScreen.generate")}
-            <AutoAwesome />
-          </Button>
-
           <Dialog
             className="generate_dialog_root"
             PaperProps={{ className: "generate_dialog_paper" }}

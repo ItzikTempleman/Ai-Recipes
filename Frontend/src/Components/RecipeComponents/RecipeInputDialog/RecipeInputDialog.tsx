@@ -293,7 +293,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
               ) : (
                 <Button className="GenerateRecipeBtn" variant="contained" disableElevation type="submit" disabled={loading}>
                   {t("homeScreen.generate")}
-                  <AutoAwesome className="BtnIcon" />
+             
                 </Button>
               )}
             </form>

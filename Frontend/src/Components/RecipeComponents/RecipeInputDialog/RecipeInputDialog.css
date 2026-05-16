@@ -297,9 +297,9 @@
 
 .GenerateRecipeBtn {
   width: 100% !important;
-  height: 45px;
-  border-radius: 16px !important;
-  background: #1e80a0 !important;
+  height: 40px;
+  border-radius: 30px !important;
+  background: #376887 !important;
   text-transform: none;
   display: inline-flex;
   align-items: center;
