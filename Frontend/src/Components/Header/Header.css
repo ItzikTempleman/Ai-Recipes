@@ -66,15 +66,15 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 
 .HomeScreenBtn p,
 .HomeScreenBtn svg {
-  color: #1e80a0;
+  color: #464646;
 }
 
 .ReturnToRecipeSection svg {
-  color: #1e80a0;
+  color: #464646;
 }
 
 .ReturnToRecipeSection p {
-  color: #1e80a0;
+  color: #464646;
   font-size: 8px;
   font: weight 200;
 }

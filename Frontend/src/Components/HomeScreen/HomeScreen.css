@@ -178,7 +178,7 @@
 }
 
 .free-with-login-btn.MuiButton-root:hover {
-  background: #1e80a0 !important;
+  background: #ffaa00 !important;
   box-shadow: none !important;
 }
 
@@ -308,7 +308,7 @@
   overflow: visible;
 }
 
-.RecipeGrid > * {
+.RecipeGrid>* {
   width: 100%;
   max-width: 320px;
   justify-self: center;
@@ -428,20 +428,6 @@
   border-color: #0b7898 !important;
   box-shadow: 0 6px 14px rgba(11, 120, 152, 0.28);
   transform: translateY(-1px);
-}
-
-.CategoryChipClear {
-  height: 38px !important;
-  padding: 0 14px !important;
-  border-radius: 999px !important;
-  color: #d32f2f !important;
-  border: 1px solid #d32f2f !important;
-  background-color: white !important;
-  font-weight: 600;
-}
-
-.CategoryChipClear:hover {
-  background-color: rgb(245, 222, 222) !important;
 }
 
 .BackgroundGenerationBox {
@@ -639,38 +625,38 @@
     display: none;
   }
 
-/* Logged in → more spacing */
-.HomeScreen.user .home-screen-wrapper.ltr .home-screen-generate-btn,
-.HomeScreen.user .home-screen-wrapper.rtl .home-screen-generate-btn,
-.HomeScreen.user .home-screen-generate-btn {
-  margin: 130px auto 0 !important;
-}
+  /* Logged in → more spacing */
+  .HomeScreen.user .home-screen-wrapper.ltr .home-screen-generate-btn,
+  .HomeScreen.user .home-screen-wrapper.rtl .home-screen-generate-btn,
+  .HomeScreen.user .home-screen-generate-btn {
+    margin: 130px auto 0 !important;
+  }
 
-/* Guest / not logged in → less spacing */
-.HomeScreen.guest .home-screen-wrapper.ltr .home-screen-generate-btn,
-.HomeScreen.guest .home-screen-wrapper.rtl .home-screen-generate-btn,
-.HomeScreen.guest .home-screen-generate-btn {
-  margin: 40px auto 0 !important;
-}
+  /* Guest / not logged in → less spacing */
+  .HomeScreen.guest .home-screen-wrapper.ltr .home-screen-generate-btn,
+  .HomeScreen.guest .home-screen-wrapper.rtl .home-screen-generate-btn,
+  .HomeScreen.guest .home-screen-generate-btn {
+    margin: 40px auto 0 !important;
+  }
 
   .SelectListDiv {
-  position: relative;
-  z-index: 5;
-  margin-top: 20px;
-  padding: 0 10px;
-  width: 100%;
-  box-sizing: border-box;
-  justify-content: center;
-  gap: 10px;
-  overflow: visible;
+    position: relative;
+    z-index: 5;
+    margin-top: 20px;
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    gap: 10px;
+    overflow: visible;
   }
 
   .SelectListDiv.ltr,
   .SelectListDiv.rtl {
 
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
   }
 
   .RecipeGrid {
@@ -759,15 +745,14 @@
     white-space: nowrap !important;
   }
 
-
   .intro-container,
   .intro-delicious-title,
   .intro-container p,
   .intro-create-title {
     display: none;
   }
+
   .generate-login-mobile-order {
     flex-direction: column-reverse;
   }
-  
 }
