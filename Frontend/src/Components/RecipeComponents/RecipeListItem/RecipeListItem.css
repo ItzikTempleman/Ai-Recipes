@@ -85,19 +85,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   margin-top: 12px;
   width: 100%;
   text-align: center;
+  flex-wrap: wrap;
 }
 
 .category-list-item {
   margin: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #0075a8;
+  background: #dff3fb;
+  border-radius: 999px;
+  padding: 7px 16px;
   font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: lowercase;
+  white-space: nowrap;
 }
 
 .card-footer {
@@ -153,17 +161,16 @@
 
 
 @media (max-width: 600px) {
-.category-list-item {
+.recipe-list-item {
+  width: 100%;
+  max-width: none !important;
+  height: 150px;
+  min-height: 150px;
   margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #0075a8;
-  font-size: 11px;
-  line-height: 1.2;
-  background: transparent;
-  border-radius: 0;
-  padding: 0;
+  flex-direction: row;
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
 }
   .recipe-list-item.rtl {
     flex-direction: row-reverse;
@@ -202,36 +209,34 @@
     word-break: break-word;
   }
 
-  .list-item-categories {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-     gap: 6px;
-    margin: 7px 0 0;
-    padding: 0;
-    background-color: transparent;
-    border-radius: 0;
-  }
+.list-item-categories {
+  width: 100%;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 7px 0 0;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+}
+.recipe-list-item.rtl .list-item-categories {
+  justify-content: flex-end;
+}
 
-  .recipe-list-item.rtl .list-item-categories {
-    justify-content: flex-end;
-  }
-
-  .category-list-item {
-    font-size: 11px;
-    line-height: 1;
-    color: #0075a8;
-    background: #dff3fb;
-    border-radius: 999px;
-    padding: 4px 8px;
-  }
-
-  .separator {
-     display: inline;
+.category-list-item {
+  font-size: 11px;
+  line-height: 1;
   color: #0075a8;
-  opacity: 0.5;
-  margin: 0 3px;
-  }
+  background: #dff3fb;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-weight: 700;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+.separator {
+  display: none;
+}
 
   .card-footer {
     margin-top: auto;

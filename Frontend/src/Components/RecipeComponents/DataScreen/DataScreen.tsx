@@ -190,14 +190,13 @@ const selectedLanguage = normalizeAppLanguage(i18n.language);
               {recipe.description}
             </p>
 
-            <span className="Categories">
-              {(recipe.categories ?? []).map((c, i) => (
-                <h3 key={i} className="category-item">
-                  {translateRecipeCategory(c, selectedLanguage)}
-                  {i < recipe.categories.length - 1 && <span className="separator">|</span>}
-                </h3>
-              ))}
-            </span>
+          <div className="Categories">
+  {(recipe.categories ?? []).map((c, i) => (
+    <div key={i} className="category-item">
+      {translateRecipeCategory(c, selectedLanguage).toLowerCase()}
+    </div>
+  ))}
+</div>
 
             <div className="ServingsDiv" dir={isRTL ? "rtl" : "ltr"}>
               <h3>{t("generate.servings")} : {recipe.amountOfServings}</h3>

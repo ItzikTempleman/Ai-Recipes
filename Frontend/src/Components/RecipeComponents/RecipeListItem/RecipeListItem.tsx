@@ -108,25 +108,20 @@ return (
         {recipe.title}
       </h3>
 
-      <span className="list-item-categories">
-        {recipe.categories.map((c, i) => (
-          <h3 key={i} className="category-list-item">
-            {translateRecipeCategory(c, selectedLanguage)}
-            {i < recipe.categories.length - 1 && <span className="separator">|</span>}
-          </h3>
-        ))}
-      </span>
+<div className="list-item-categories">
+  {recipe.categories.map((c, i) => (
+    <div key={i} className="category-list-item">
+      {translateRecipeCategory(c, selectedLanguage).toLowerCase()}
+    </div>
+  ))}
+</div>
 
       <div className={`card-footer ${uiClass}`} dir={uiDir} lang={isRTL ? "he" : "en"}>
-        <div className={`time-and-hardship-level ${uiClass}`}>
-          <div className="time-row">
-            <AccessTimeIcon className="clock-icon" />
-            <span>
-              {recipe.prepTime} {t("units.minuteShort")} •{" "}
-              {difficultyToString(recipe.difficultyLevel)}
-            </span>
-          </div>
-        </div>
+<div className={`time-and-hardship-level ${uiClass}`}>
+  <div className="time-row">
+    <span>{difficultyToString(recipe.difficultyLevel)}</span>
+  </div>
+</div>
 
 <div className="recipe-card-arrow">
   {isRTL ? (
