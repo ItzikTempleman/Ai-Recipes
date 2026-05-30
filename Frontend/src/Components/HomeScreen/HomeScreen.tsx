@@ -76,7 +76,23 @@ export function HomeScreen() {
   const [appliedFilters, setAppliedFilters] = useState<Filters | null>(null);
   const [listState, setListState] = useState<ListState>(ListState.SUGGESTIONS);
   const [guestFiltersStash, setGuestFiltersStash] = useState<Filters | null>(null);
-  const [selectedCategories, setSelectedCategories] = useState<RecipeCategory[]>([]);
+  const [selectedMealCategory, setSelectedMealCategory] = useState<RecipeCategory | null>(null);
+  const [selectedFoodCategories, setSelectedFoodCategories] = useState<RecipeCategory[]>([]);
+
+  const MEAL_TIME_CATEGORIES = [
+    RecipeCategory.breakfast,
+    RecipeCategory.lunch,
+    RecipeCategory.supper,
+  ];
+
+  const FOOD_TYPE_CATEGORIES = [
+    RecipeCategory.deserts,
+    RecipeCategory.dairy,
+    RecipeCategory.vegan,
+    RecipeCategory.fish,
+    RecipeCategory.meat,
+  ];
+
 
   useEffect(() => {
     setOpen(shouldOpenGenerate);
@@ -125,14 +141,19 @@ export function HomeScreen() {
   const baseSuggestionsList = useMemo(() => {
     const list = Array.isArray(catalogItems) ? catalogItems : [];
 
-    if (selectedCategories.length === 0) return list;
+    const selectedFoodTypes = new Set(selectedFoodCategories);
 
-    const selected = new Set(selectedCategories);
     return list.filter((r) => {
       const cats = normalizeCategories((r as any).categories);
-      return cats.some((c) => selected.has(c));
+
+      const matchesMealTime = !selectedMealCategory || cats.includes(selectedMealCategory);
+
+      const matchesFoodType =
+        selectedFoodTypes.size === 0 || cats.some((c) => selectedFoodTypes.has(c));
+
+      return matchesMealTime && matchesFoodType;
     });
-  }, [catalogItems, selectedCategories]);
+  }, [catalogItems, selectedMealCategory, selectedFoodCategories]);
 
   const suggestionsList = useMemo(() => baseSuggestionsList, [baseSuggestionsList]);
 
@@ -214,12 +235,23 @@ export function HomeScreen() {
     return t("likeScreen.likedTitle") || t("likeScreen.noLikes");
   }, [user, listState, t, featuredFallback]);
 
-  const toggleCategory = (c: RecipeCategory) => {
-    setSelectedCategories((prev) => {
+  const toggleMealCategory = (c: RecipeCategory) => {
+    setSelectedMealCategory(c);
+  };
+
+  const clearAllCategories = () => {
+    setSelectedMealCategory(null);
+    setSelectedFoodCategories([]);
+  };
+
+  const toggleFoodCategory = (c: RecipeCategory) => {
+    setSelectedFoodCategories((prev) => {
       if (prev.includes(c)) return prev.filter((x) => x !== c);
       return [...prev, c];
     });
   };
+
+
 
   return (
     <div className={`HomeScreen ${user ? "user" : "guest"}`}>
@@ -393,27 +425,46 @@ export function HomeScreen() {
             </div>
           )}
 
-          {listState === ListState.SUGGESTIONS && (
-            <div className="CategoryChipsContainer">
-              <Chip
-                className={`Chip ${selectedCategories.length === 0 ? "selected" : ""}`}
-                label={t("categories.showAll")}
-                clickable
-                onClick={() => setSelectedCategories([])}
-              />
+{listState === ListState.SUGGESTIONS && (
+  <div className="CategoryChipsContainer">
+    <div className="CategorySection">
+      <div className="CategoryGroup">
+        {MEAL_TIME_CATEGORIES.map((c) => (
+          <Chip
+            className={`Chip ${selectedMealCategory === c ? "selected" : ""}`}
+            key={c}
+            label={t(`categories.${c}`) || c}
+            clickable
+            onClick={() => toggleMealCategory(c)}
+          />
+        ))}
+      </div>
+    </div>
 
-              {ALL_CATEGORIES.map((c) => (
-                <Chip
-                  className={`Chip ${selectedCategories.includes(c) ? "selected" : ""}`}
-                  key={c}
-                  label={t(`categories.${c}`) || c}
-                  clickable
-                  onClick={() => toggleCategory(c)}
-                />
-              ))}
+    <div className="CategorySection">
+      <div className="CategorySectionHeader">
+        <Chip
+          className={`Chip CategoryChipClear ${!selectedMealCategory && selectedFoodCategories.length === 0 ? "selected" : ""}`}
+          label={t("categories.showAll")}
+          clickable
+          onClick={clearAllCategories}
+        />
+      </div>
 
-            </div>
-          )}
+      <div className="CategoryGroup">
+        {FOOD_TYPE_CATEGORIES.map((c) => (
+          <Chip
+            className={`Chip ${selectedFoodCategories.includes(c) ? "selected" : ""}`}
+            key={c}
+            label={t(`categories.${c}`) || c}
+            clickable
+            onClick={() => toggleFoodCategory(c)}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+)}
 
           <div className="RecipeGrid">
             {activeList.map((recipe) => (

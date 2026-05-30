@@ -373,11 +373,45 @@
 .CategoryChipsContainer {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   margin-top: 12px;
   margin-bottom: 12px;
   justify-content: center;
+}
+
+.CategorySection {
+  width: min(100% - 32px, 760px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  border: 1px solid rgba(11, 120, 152, 0.18);
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(235, 248, 252, 0.72)
+  );
+  box-shadow: 0 6px 18px rgba(11, 120, 152, 0.08);
+}
+
+.CategorySectionTitle {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #153f61;
+  white-space: nowrap;
+}
+
+.CategoryGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
 
 .MuiChip-root.Chip {
@@ -492,6 +526,7 @@
   display: flex;
   flex-direction: column;
 }
+
 
 @media (max-width: 920px) {
   .free-with-login-div {
@@ -716,24 +751,43 @@
   }
 
   .CategoryChipsContainer {
-    width: 100vw;
-    max-width: 100vw;
+    width: 100%;
+    max-width: 100%;
     margin: 12px 0;
     padding: 0 12px;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    overflow: visible;
+  }
+
+  .CategorySection {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
-    overflow-x: scroll;
+    padding: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .CategorySectionTitle {
+    font-size: 0.9rem;
+  }
+
+  .CategoryGroup {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
-  .CategoryChipsContainer::-webkit-scrollbar {
+  .CategoryGroup::-webkit-scrollbar {
     display: none;
   }
 
