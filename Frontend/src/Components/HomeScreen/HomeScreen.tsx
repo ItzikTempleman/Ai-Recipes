@@ -32,16 +32,6 @@ enum ListState {
   FAVORITES
 }
 
-const ALL_CATEGORIES: RecipeCategory[] = [
-  RecipeCategory.breakfast,
-  RecipeCategory.lunch,
-  RecipeCategory.supper,
-  RecipeCategory.deserts,
-  RecipeCategory.dairy,
-  RecipeCategory.vegan,
-  RecipeCategory.fish,
-  RecipeCategory.meat
-];
 
 function normalizeCategories(input: unknown): RecipeCategory[] {
   if (Array.isArray(input)) return input as RecipeCategory[];
