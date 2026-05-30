@@ -14,6 +14,10 @@ export type LikeModel = {
     recipeId: number;
 }
 
+export type ShortRecipeChatTitleResponse = {
+  title: string;
+};
+
 export type RecipeModel = {
     id?: number;
     amountOfServings: number;

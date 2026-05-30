@@ -23,7 +23,7 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
   const [askError, setAskError] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [draft, setDraft] = useState("");
-
+const [chatTitle, setChatTitle] = useState(recipe.title);
   const endRef = useRef<HTMLDivElement | null>(null);
 
  const liveRecipe = useSelector((state: AppState) =>
@@ -49,6 +49,26 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
     setLoading(false);
   }, [recipe.id, open]);
 
+useEffect(() => {
+  if (!open) return;
+
+  let cancelled = false;
+
+  setChatTitle(recipe.title);
+
+  recipeService
+    .getShortRecipeChatTitle(recipe)
+    .then(title => {
+      if (!cancelled) setChatTitle(title);
+    })
+    .catch(() => {
+      if (!cancelled) setChatTitle(recipe.title);
+    });
+
+  return () => {
+    cancelled = true;
+  };
+}, [open, recipe.id, recipe.title]);
 
   useEffect(() => {
     if (!open) return;
@@ -95,7 +115,7 @@ export function AskChefDialog({ open, onClose, recipe, isRTL }: Props) {
         <div className="AskPanel">
           <div className={`AskChat ${messages.length === 0 ? "isEmpty" : ""}`}>
             {messages.length === 0 && (
-               <h2>{t("recipeUi.letsTalk")} {recipe.title}</h2>
+               <h2>{t("recipeUi.letsTalk")} {chatTitle}</h2>
             )}
 
             {messages.map((m, idx) => (

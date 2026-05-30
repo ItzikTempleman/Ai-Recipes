@@ -37,6 +37,7 @@ class RecipeController {
         this.router.get("/api/recipes/liked/count/:recipeId",verificationMiddleware.verifyLoggedIn,this.getRecipesTotalLikeCount);
         this.router.post("/api/recipe/:recipeId/ask",verificationMiddleware.verifyLoggedIn,this.askRecipeQuestion);
         this.router.get("/api/usage/recipes",ensureVisitorId,verificationMiddleware.verifyOptional,this.getRecipeUsageStatus);
+    this.router.get("/api/recipe/:recipeId/chat-title",verificationMiddleware.verifyLoggedIn,this.getShortRecipeChatTitle);
     }
 
     private async getUserRecipes(request: Request, response: Response) {
@@ -463,6 +464,19 @@ private async getRecipeUsageStatus(request: Request, response: Response): Promis
         const stats = await userService.getAdminStatistics();
         response.status(StatusCode.OK).json(stats);
     }
+
+    private async getShortRecipeChatTitle(request: Request, response: Response) {
+  const user = (request as any).user as UserModel;
+  const recipeId = Number(request.params.recipeId);
+
+  if (Number.isNaN(recipeId) || recipeId <= 0) {
+    response.status(StatusCode.BadRequest).send("Invalid recipeId");
+    return;
+  }
+
+  const title = await recipeService.getShortRecipeChatTitle(recipeId, user.id);
+  response.status(StatusCode.OK).json({ title });
+}
 
 }
 

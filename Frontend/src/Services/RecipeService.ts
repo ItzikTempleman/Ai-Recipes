@@ -6,7 +6,8 @@ import {
   GlutenRestrictions,
   DietaryRestrictions,
   ChatMsg,
-  AskRecipeResponse
+  AskRecipeResponse,
+  ShortRecipeChatTitleResponse
 } from "../Models/RecipeModel";
 import { appConfig } from "../Utils/AppConfig";
 import { store } from "../Redux/Store";
@@ -231,6 +232,16 @@ public async askRecipeQuestion(
 
   return data;
 }
+
+public async getShortRecipeChatTitle(recipe: RecipeModel): Promise<string> {
+  if (!recipe.id) return recipe.title;
+
+  const url = `${appConfig.askRecipeUrl}/${recipe.id}/chat-title`;
+  const { data } = await axios.get<ShortRecipeChatTitleResponse>(url, getAuth());
+
+  return data.title || recipe.title;
+}
+
 }
 
 export const recipeService = new RecipeService();

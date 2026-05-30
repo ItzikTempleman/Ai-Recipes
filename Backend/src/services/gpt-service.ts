@@ -817,6 +817,70 @@ class GptService {
       throw error;
     }
   }
+  public async getShortRecipeChatTitle(recipe: any): Promise<string> {
+  const fallback = this.makeShortRecipeTitleFallback(recipe?.title);
+
+  const modelToUse = appConfig.freeNoImageModelNumber || appConfig.modelNumber;
+  const keyToUse = appConfig.freeNoImageApiKey || appConfig.apiKey;
+
+  const prompt = `
+You receive a recipe title, description and ingredients.
+Return ONLY a natural 1-2 word dish name for a chat header.
+No punctuation. No quotes. No explanations.
+Keep the language of the original title.
+Remove restrictions like no sugar, no peanut butter, gluten free, lactose free, etc.
+Examples:
+"white chocolate cookies with caramel and no peanut butter and no added sugar and cherries on top" -> "Chocolate Cookies"
+"סלמון בתנור ללא גלוטן עם ירקות" -> "סלמון בתנור"
+`;
+
+  try {
+    const response = await axios.post(appConfig.gptUrl, {
+      model: modelToUse,
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: prompt },
+        {
+          role: "user",
+          content: JSON.stringify({
+            title: recipe?.title,
+            description: recipe?.description,
+            ingredients: recipe?.data?.ingredients ?? []
+          })
+        }
+      ]
+    }, {
+      headers: {
+        Authorization: "Bearer " + keyToUse,
+        "Content-Type": "application/json"
+      }
+    });
+
+    const raw = String(response.data?.choices?.[0]?.message?.content ?? "").trim();
+    const cleaned = raw
+      .replace(/^["'“”]+|["'“”]+$/g, "")
+      .replace(/[.!?]+$/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (!cleaned) return fallback;
+
+    const words = cleaned.split(/\s+/).slice(0, 3).join(" ");
+    return words || fallback;
+  } catch (err) {
+    console.error("getShortRecipeChatTitle error:", err);
+    return fallback;
+  }
+}
+
+private makeShortRecipeTitleFallback(title: string): string {
+  const cleaned = String(title ?? "")
+    .replace(/\b(no|without|free|sugar free|gluten free|lactose free|with|and)\b.*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return cleaned.split(/\s+/).slice(0, 2).join(" ") || "This Recipe";
+}
 }
 
 export const gptService = new GptService();

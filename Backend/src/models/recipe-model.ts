@@ -38,6 +38,7 @@ export enum RecipeLang {
     HE = "he"
 }
 
+
 export enum RecipeCategory {
     breakfast = "breakfast",
     lunch = "lunch",
