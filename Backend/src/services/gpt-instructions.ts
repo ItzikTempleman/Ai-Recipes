@@ -12,14 +12,26 @@ export function getInstructions(): string {
 
 Return one realistic, internally consistent recipe as JSON.
 
+Your job is not only to generate correct ingredients.
+Your job is to generate a recipe that reads like a real cookbook recipe.
+
+A real recipe has hierarchy:
+- the main component appears first
+- structural ingredients appear next
+- flavor builders appear after that
+- toppings, garnishes, condiments, and serving extras appear last
+- instructions give the most attention to the main dish, not to minor toppings or accessories
+
 Your reasoning order is mandatory:
 
 1. Understand the user's requested dish.
-2. Identify the dish identity and its component roles.
-3. Apply selected filters by transforming component roles, not by rejecting the dish.
-4. Generate a complete recipe.
-5. Validate the recipe against restrictions, ingredients, instructions, measurements, nutrition, timing, categories, and JSON shape.
-6. Return only one valid JSON object.
+2. Identify the dish identity.
+3. Identify the recipe hierarchy: main component, supporting components, assembly components, toppings, garnish, and serving extras.
+4. Identify component roles.
+5. Apply selected filters by transforming component roles, not by rejecting the dish.
+6. Generate a complete recipe using the hierarchy.
+7. Validate the recipe against restrictions, ingredient hierarchy, instruction hierarchy, measurements, nutrition, timing, categories, and JSON shape.
+8. Return only one valid JSON object.
 
 Do not behave like a keyword rule engine.
 Do not treat substrings inside food names as separate ingredients.
@@ -61,13 +73,37 @@ RECIPE COMPLETENESS:
 - Always include exact quantities.
 - Every instruction step must include technique, tool or vessel, heat level or temperature when relevant, timing, and doneness cues.
 
+RECIPE HIERARCHY:
+- A recipe is not a flat list of ingredients.
+- A recipe must communicate importance.
+- Main dish components must appear first and receive the most instructional detail.
+- Supporting components must appear after the main components.
+- Toppings, garnishes, condiments, and serving extras must appear last and receive minimal instructional detail.
+- Never place tomato, lettuce, pickles, syrup, garnish, or other extras above the main structure of the dish.
+- Never allow a minor sauce, garnish, or topping to dominate the instructions while the main component gets little detail.
+
 INGREDIENT ORDER:
-- Order ingredients by structural importance and quantity.
-- Main base or protein first.
-- Then major secondary components.
-- Then fats and liquids.
-- Then binders, sauces, aromatics.
-- Then spices, salt, acids, sweeteners, leaveners, and garnish last.
+- Order ingredients by culinary importance, not by random quantity and not only by instruction order.
+- The first ingredients should tell the user what the dish fundamentally is.
+- The lower an ingredient appears, the less important it should be to the identity of the dish.
+
+Ingredient order must be:
+1. Primary component
+2. Structural support components
+3. Sauces, creamy layers, or melting layers
+4. Flavor builders
+5. Assembly components
+6. Toppings
+7. Garnish
+8. Serving extras
+
+Examples:
+- Burger: patty ingredients first, then binder/seasoning, then melt or sauce, then bun, then lettuce/tomato/onion/pickles/condiments.
+- Pizza: dough ingredients first, then sauce, then main topping or melt layer, then finishing toppings and garnish.
+- Pancakes: batter ingredients first, then cooking fat, then syrup, fruit, powdered sugar, or garnish.
+- Meatballs, patties, falafel, fritters: main mixture first, then binders, aromatics, seasonings, sauce, serving extras, garnish.
+- Pasta: pasta and sauce structure first, then aromatics and seasonings, then garnish.
+- Soup or stew: main base and broth first, then vegetables/protein/grains, then aromatics, seasonings, garnish.
 
 TITLE:
 - The title must be a clean dish name.
@@ -146,8 +182,116 @@ Internal reasoning order:
    - signature texture
    - signature flavor profile
 
-3. COMPONENT ROLE MODEL
-   Classify ingredients by role before choosing final ingredients.
+3. RECIPE HIERARCHY MODEL
+   Before choosing final ingredients, determine the importance hierarchy of the dish.
+
+   A real recipe is not flat.
+   It has a main subject and supporting parts.
+
+   Identify:
+   - PRIMARY_COMPONENT
+   - STRUCTURAL_SUPPORT
+   - SAUCE_OR_MELT
+   - FLAVOR_BUILDERS
+   - ASSEMBLY_COMPONENTS
+   - TOPPINGS
+   - GARNISH
+   - SERVING_EXTRAS
+
+   PRIMARY_COMPONENT:
+   The component that defines the dish.
+   Examples:
+   - beef patty in a burger
+   - batter in pancakes
+   - dough in pizza
+   - pasta and sauce structure in pasta
+   - meatball mixture in meatballs
+   - rice and protein in a rice bowl
+   - broth and main solids in soup
+   - cake batter in cake
+
+   STRUCTURAL_SUPPORT:
+   Ingredients needed to build the main component.
+   Examples:
+   - eggs
+   - breadcrumbs
+   - flour
+   - broth
+   - major cooking liquid
+   - binder
+   - major fat
+   - starch
+   - dough support ingredients
+
+   SAUCE_OR_MELT:
+   Sauces, creamy layers, melting layers, and spreads that support the dish.
+   Examples:
+   - tomato sauce
+   - burger sauce
+   - cashew melt
+   - creamy sauce
+   - tahini sauce
+   - gravy
+
+   FLAVOR_BUILDERS:
+   Ingredients that create flavor but do not define the structure.
+   Examples:
+   - onion
+   - garlic
+   - herbs
+   - spices
+   - mustard
+   - lemon juice
+   - vinegar
+   - salt
+   - pepper
+
+   ASSEMBLY_COMPONENTS:
+   Components used to hold, wrap, or assemble the food.
+   Examples:
+   - burger bun
+   - pita
+   - tortilla
+   - sandwich bread
+   - wrap
+   - taco shell
+
+   TOPPINGS:
+   Add-ons placed on top or inside at assembly.
+   Examples:
+   - lettuce
+   - tomato slices
+   - onion slices
+   - pickles
+   - avocado slices
+   - olives
+   - jalapeño slices
+   - fruit topping
+
+   GARNISH:
+   Decorative or finishing ingredients.
+   Examples:
+   - parsley
+   - basil
+   - green onion
+   - sesame seeds
+   - powdered sugar
+
+   SERVING_EXTRAS:
+   Items added at serving or eaten alongside.
+   Examples:
+   - maple syrup
+   - hot sauce
+   - dipping sauce
+   - extra lemon wedges
+   - serving drizzle
+
+   The recipe must visually and procedurally communicate this hierarchy.
+   The main component must appear first and receive the most instruction detail.
+   Toppings, garnishes, condiments, and serving extras must appear last and receive minimal detail.
+
+4. COMPONENT ROLE MODEL
+   Classify ingredients by culinary role before choosing final ingredients.
 
    Component roles include:
    - PRIMARY_PROTEIN
@@ -166,11 +310,12 @@ Internal reasoning order:
    - SWEETENER
    - TOPPING
    - GARNISH
+   - SERVING_EXTRA
 
    Preserve roles whenever possible.
    If a selected filter forbids a normal ingredient, replace the ingredient while preserving its role.
 
-4. RESTRICTION TRANSFORMATION
+5. RESTRICTION TRANSFORMATION
    Restrictions transform components.
    Restrictions do not automatically destroy dish identity.
 
@@ -188,13 +333,32 @@ Internal reasoning order:
    - Do not apply restrictions that were not selected.
    - Do not rely on hardcoded dish exceptions.
 
-5. RECIPE GENERATION
-   Generate the complete recipe from the transformed component model.
+6. RECIPE CONSTRUCTION
+   Generate the complete recipe from the transformed component model and the recipe hierarchy.
 
-6. VALIDATION
+   The recipe must read like a human-written cookbook recipe.
+
+   The user should immediately understand:
+   - what the dish is
+   - what the main component is
+   - what supports the main component
+   - what is optional, decorative, or added at serving
+
+   Primary components receive the most detail.
+   Secondary components receive moderate detail.
+   Toppings, garnish, condiments, and serving extras receive minimal detail.
+
+   Never allow toppings, garnish, condiments, or decorative elements to visually dominate the recipe.
+   Never allow a minor sauce or topping to receive more instruction detail than the main dish.
+
+7. VALIDATION
    Before returning JSON, verify:
    - restrictions are satisfied
    - dish identity is preserved as much as possible
+   - recipe hierarchy is correct
+   - ingredients are ordered by culinary importance
+   - toppings and extras are last
+   - instructions emphasize the main component
    - ingredients and instructions match
    - categories match actual ingredients
    - measurements are realistic
@@ -383,6 +547,159 @@ FROM-SCRATCH CORE COMPONENTS:
 - For soups and stews, list the broth/liquid that remains in the final dish.
 - Store-bought minor components are acceptable only when normal for home cooking and not the main identity of the dish.
 
+INGREDIENT HIERARCHY:
+The ingredients array is displayed as a recipe ingredient list.
+It must look like a real cookbook recipe.
+
+Do not treat all ingredients as equally important.
+Do not place toppings near the top.
+Do not place garnish near the top.
+Do not place serving extras near the top.
+Do not place buns, syrup, lettuce, tomato slices, pickles, or condiments above the main dish structure.
+
+Order ingredients by culinary importance:
+
+1. PRIMARY COMPONENTS
+   The ingredients that define the dish.
+   Examples:
+   - beef
+   - chicken
+   - fish
+   - pasta
+   - rice
+   - flour
+   - dough ingredients
+   - potatoes
+   - lentils
+   - beans
+   - tofu
+   - mushrooms when used as the main component
+
+2. STRUCTURAL SUPPORT COMPONENTS
+   Ingredients required to build the main component.
+   Examples:
+   - eggs
+   - breadcrumbs
+   - broth
+   - stock
+   - major cooking liquid
+   - binders
+   - major fats
+   - leaveners
+   - starches
+
+3. SAUCES, CREAMY LAYERS, AND MELTING LAYERS
+   Components that support the main dish but are not the main structure.
+   Examples:
+   - tomato sauce
+   - burger sauce
+   - cashew melt
+   - pareve sauce
+   - cream sauce
+   - tahini sauce
+   - gravy
+
+4. FLAVOR BUILDERS
+   Ingredients that build flavor but are not the main identity.
+   Examples:
+   - onion
+   - garlic
+   - herbs
+   - spices
+   - mustard
+   - vinegar
+   - lemon juice
+   - salt
+   - pepper
+
+5. ASSEMBLY COMPONENTS
+   Components that hold or contain the dish.
+   Examples:
+   - burger bun
+   - pita
+   - tortilla
+   - sandwich bread
+   - taco shell
+   - wrap
+
+6. TOPPINGS
+   Add-ons placed on top or inside during assembly.
+   Examples:
+   - lettuce
+   - tomato slices
+   - onion slices
+   - pickles
+   - avocado slices
+   - olives
+   - jalapeño slices
+   - fruit topping
+
+7. GARNISH
+   Small finishing ingredients.
+   Examples:
+   - parsley
+   - basil
+   - green onion
+   - sesame seeds
+   - powdered sugar
+
+8. SERVING EXTRAS
+   Items added at the table or served alongside.
+   Examples:
+   - maple syrup
+   - hot sauce
+   - dipping sauce
+   - lemon wedges
+   - extra drizzle
+
+Dish-specific ordering rules:
+
+BURGERS AND SANDWICHES:
+- Patty or filling ingredients first.
+- Patty binder and seasoning next.
+- Sauce or melt layer next.
+- Bun or bread after the core and sauce.
+- Lettuce, tomato, onion, pickles, condiments, and garnish last.
+- Tomato must never appear near the top beside the beef.
+- Bun must not appear before the patty structure.
+
+PANCAKES, WAFFLES, AND CREPES:
+- Batter ingredients first.
+- Cooking fat next.
+- Maple syrup, powdered sugar, fruit toppings, whipped toppings, and garnish last.
+- Syrup must never appear above flour, eggs, milk, or batter ingredients.
+
+PIZZA:
+- Dough ingredients first.
+- Sauce ingredients next.
+- Melting layer or main topping layer next.
+- Finishing toppings and garnish last.
+
+MEATBALLS, PATTIES, FALAFEL, AND FRITTERS:
+- Main mixture ingredients first.
+- Binders next.
+- Aromatics and seasonings next.
+- Sauce next.
+- Serving components and garnish last.
+
+PASTA:
+- Pasta and sauce structure first.
+- Main protein or vegetables next when central.
+- Aromatics and seasonings next.
+- Garnish last.
+
+SALADS:
+- Main vegetable, grain, protein, or legume base first.
+- Major mix-ins next.
+- Dressing ingredients next.
+- Crunchy toppings and garnish last.
+
+SOUPS AND STEWS:
+- Main base, protein, legumes, grains, or vegetables first.
+- Broth or cooking liquid next.
+- Aromatics and seasonings next.
+- Garnish last.
+
 MEASUREMENT RULES:
 - Use practical home-cook units.
 - Use cups, tablespoons, teaspoons, pieces, slices, cloves, grams, ml, or liters as appropriate.
@@ -420,6 +737,46 @@ Ingredient names:
 - For eggs in Hebrew, write "ביצה", not "ביצת תרנגולת".
 - Do not use odd or overly formal Hebrew.
 
+INSTRUCTION HIERARCHY:
+Instructions must reflect culinary importance.
+
+The main component of the dish must receive the clearest and most detailed cooking guidance.
+
+Do not over-explain minor components while under-explaining the main component.
+Do not let sauce, garnish, toppings, or serving extras dominate the recipe.
+Do not give the main patty, dough, batter, pasta, soup base, or main filling only one vague line.
+
+Instruction detail must be allocated like this:
+
+PRIMARY COMPONENT:
+- receives the most detail
+- must include preparation
+- must include technique
+- must include heat level or temperature when relevant
+- must include timing
+- must include texture cues
+- must include doneness cues
+
+STRUCTURAL SUPPORT:
+- receives enough detail to make the recipe reliable
+- should not dominate unless it is technically essential to the dish
+
+SAUCE, CREAMY LAYER, OR MELT:
+- receives moderate detail
+- should be clear but shorter than the main component unless the sauce is the actual identity of the dish
+
+TOPPINGS, GARNISH, AND SERVING EXTRAS:
+- receive minimal detail
+- usually belong in one short prep or assembly step
+- should not receive multiple detailed steps unless they are central to the requested dish
+
+Examples:
+- Burger: most detail on forming and cooking the patty; moderate detail on melt or sauce; minimal detail on bun, tomato, lettuce, pickles, and assembly.
+- Pizza: most detail on dough and baking; moderate detail on sauce; minimal detail on garnish.
+- Pancakes: most detail on batter and cooking; minimal detail on syrup or fruit topping.
+- Pasta: most detail on pasta and sauce; minimal detail on garnish.
+- Meatballs: most detail on mixing, shaping, and cooking meatballs; moderate detail on sauce; minimal detail on garnish.
+
 INSTRUCTION FORMAT:
 - "instructions" must be an array of plain step strings.
 - Do not prefix steps with numbers, bullets, or dashes.
@@ -429,6 +786,9 @@ INSTRUCTION FORMAT:
 - Mention every ingredient used.
 - Do not mention ingredients not in the ingredients array.
 - If water is used only for boiling and discarded, do not list it in ingredients; mention "water for boiling" in the instructions.
+- The first substantial cooking step should usually focus on the primary component, unless a dough needs resting, a broth needs simmering, or another structural step must logically happen first.
+- Assembly should come after the core cooking steps.
+- Garnish and serving extras should appear at the end.
 
 COOKING FATS:
 - Choose a specific fat.
@@ -506,6 +866,13 @@ Before returning JSON, verify all of these:
 - Backend-compatible serialization is satisfied.
 - Categories match actual final ingredients.
 - Ingredients and instructions match exactly.
+- Ingredient order reflects recipe hierarchy.
+- Main ingredients appear first.
+- Toppings, garnish, condiments, and serving extras appear last.
+- The ingredient list reads like a real cookbook recipe, not a random list.
+- Instruction detail reflects recipe hierarchy.
+- The main component receives the clearest cooking detail.
+- Sauces, toppings, garnish, and serving extras do not dominate the instructions unless they are the actual requested dish.
 - Core dish component roles are present or validly transformed.
 - Title does not contain servings.
 - prepTime matches the instructions.
