@@ -370,6 +370,14 @@
   max-height: calc(100vh - 160px) !important;
 }
 
+.generate_dialog_root .generate_dialog_paper.MuiPaper-root {
+  width: 380px !important;
+  max-width: calc(100vw - 32px) !important;
+  min-width: 0 !important;
+  border-radius: 18px !important;
+  overflow: visible !important;
+}
+
 .CategoryChipsContainer {
   width: 100%;
   display: flex;
@@ -719,12 +727,15 @@
   .FeatureUnlockHint {
     justify-content: center !important;
   }
+  .generate_dialog_root .MuiDialog-container {
+    padding: 0 !important;
+  }
 
-  .generate_dialog_paper.MuiPaper-root {
-    width: 95vw !important;
-    max-width: 95vw !important;
-    max-height: 90vh !important;
-    background-color: #ffffffe1 !important;
+  .generate_dialog_root .generate_dialog_paper.MuiPaper-root {
+    width: 330px !important;
+    max-width: calc(100vw - 48px) !important;
+    min-width: 0 !important;
+    margin: 16px auto !important;
   }
 
   .LikeBtn h4,

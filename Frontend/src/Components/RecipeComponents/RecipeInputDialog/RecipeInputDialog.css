@@ -1,61 +1,47 @@
 .generate_dialog_paper,
 .generate_dialog_paper * {
-  font-family: system-ui, "Segoe UI", Arial, sans-serif !important;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+}
+
+.generate_dialog_paper.MuiPaper-root {
+  width: 380px !important;
+  max-width: calc(100vw - 32px) !important;
+  min-width: 0 !important;
+  border-radius: 18px !important;
+  overflow: visible !important;
 }
 
 .generate_dialog_paper .MuiDialogContent-root {
+  width: 100% !important;
   padding: 8px !important;
-  overflow-y: auto !important;
-  background-color: #ffffff !important;
   overflow-x: hidden !important;
-  
+  overflow-y: auto !important;
+  background: #fff !important;
 }
 
 .RecipeInputDialog {
-  
   width: 100%;
-  box-sizing: border-box;
+  max-width: 100%;
   overflow-x: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
-
-  
-}
-
-.DialogHeaderRow {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-.DialogHeaderRow.rtl {
-  justify-content: flex-start;
 }
 
 .GenerateContainer {
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-  gap: 4px; 
 }
 
 .GenerateContainer form {
   width: 100%;
 }
 
-
 .RecipeTextFieldBar {
   width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0px;
+  position: relative;
 }
 
 .RecipeTextField,
@@ -64,42 +50,148 @@
 }
 
 .RecipeTextField .MuiOutlinedInput-root {
-  height: 42px !important;
-  box-shadow: 0 10px 12px rgba(90, 90, 90, 0.472);
-  background-color: rgba(0, 195, 255, 0.11) !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  position: relative !important;
+  overflow: hidden !important;
   border-radius: 16px !important;
+  background: rgb(186, 226, 244) !important;
+  padding-left: 14px !important;
+  padding-right: 56px !important;
+  box-shadow:
+    0 10px 12px rgba(90, 90, 90, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  transition:
+    height 380ms cubic-bezier(.2, .9, .2, 1),
+    min-height 380ms cubic-bezier(.2, .9, .2, 1),
+    border-radius 380ms cubic-bezier(.2, .9, .2, 1),
+    background 380ms ease,
+    box-shadow 380ms cubic-bezier(.2, .9, .2, 1),
+    transform 380ms cubic-bezier(.2, .9, .2, 1);
 }
 
-/* REMOVE BORDER ONLY FROM TOP SEARCH FIELD */
-.RecipeTextField .MuiOutlinedInput-notchedOutline {
-  border: none !important;
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiOutlinedInput-root {
+  padding-left: 56px !important;
+  padding-right: 14px !important;
 }
 
+.RecipeTextField.expanded .MuiOutlinedInput-root {
+  height: 96px !important;
+  min-height: 96px !important;
+  border-radius: 28px !important;
+  transform: scale(1.012);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.95), transparent 34%),
+    radial-gradient(circle at 82% 8%, rgba(113, 226, 255, 0.72), transparent 38%),
+    linear-gradient(
+      135deg,
+      rgba(226, 250, 255, 0.88),
+      rgba(0, 195, 255, 0.32) 42%,
+      rgba(30, 128, 160, 0.38)
+    ) !important;
+  box-shadow:
+    0 24px 45px rgba(30, 128, 160, 0.28),
+    0 8px 18px rgba(0, 0, 0, 0.16),
+    inset 0 1px 1px rgba(255, 255, 255, 0.92),
+    inset 0 -12px 28px rgba(255, 255, 255, 0.22);
+}
+
+.RecipeTextField.expanded .MuiOutlinedInput-root::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.85),
+      transparent 32%,
+      rgba(255, 255, 255, 0.28) 58%,
+      transparent
+    );
+  z-index: 1;
+}
+
+.RecipeTextField .MuiOutlinedInput-notchedOutline,
 .RecipeTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
 .RecipeTextField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border: none !important;
 }
 
-.RecipeTextField .MuiOutlinedInput-root,
-.ExcludeTextField .MuiOutlinedInput-root {
-  height: 40px;
-  border-radius: 16px !important;
-  background-color: white;
+.RecipeTextField .MuiInputBase-input {
+  position: relative;
+  z-index: 2;
+  padding: 0 !important;
+  font-size: 16px !important;
+  font-weight: 600;
+  transition:
+    padding-top 380ms cubic-bezier(.2, .9, .2, 1),
+    font-size 380ms cubic-bezier(.2, .9, .2, 1),
+    font-weight 380ms cubic-bezier(.2, .9, .2, 1);
+}
+
+.RecipeTextField.expanded .MuiInputBase-input {
+  align-self: flex-start !important;
+  padding-top: 18px !important;
+  font-size: 18px !important;
+  font-weight: 800;
+}
+
+/* ABSOLUTE CENTERED IMAGE ICON */
+.RecipeTextField .MuiInputAdornment-root,
+.RecipeTextField .MuiInputAdornment-positionEnd {
+  position: absolute !important;
+  top: 50% !important;
+  right: 6px !important;
+  left: auto !important;
+  transform: translateY(-50%) !important;
+  height: 38px !important;
+  width: 38px !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 10 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: auto !important;
+}
+
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputAdornment-root,
+.RecipeTextFieldBar.rtl .RecipeTextField .MuiInputAdornment-positionEnd {
+  left: 6px !important;
+  right: auto !important;
+}
+
+.RecipeTextField.expanded .MuiInputAdornment-root,
+.RecipeTextField.expanded .MuiInputAdornment-positionEnd {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
 
 .GenerateImageSelector.MuiIconButton-root {
   width: 38px !important;
   height: 38px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  margin: 0 !important;
+  padding: 0 !important;
   border-radius: 14px !important;
   background: #1e80a0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition:
+    background 280ms ease,
+    box-shadow 280ms ease,
+    transform 380ms cubic-bezier(.2, .9, .2, 1);
 }
 
 .GenerateImageSelector.off {
-   background-color: rgba(0, 195, 255, 0.036) !important;
-
+  background: rgba(0, 195, 255, 0.08) !important;
 }
 
 .GenerateImageSelector svg {
@@ -112,6 +204,27 @@
   color: #1e80a0 !important;
 }
 
+
+
+.ExcludeGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 20px 0 10px;
+}
+
+.ExcludeTextField,
+.ExcludeTextField .MuiFormControl-root {
+  width: 100% !important;
+}
+
+.ExcludeTextField .MuiOutlinedInput-root {
+  height: 40px !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+
 .ErrorText {
   margin: 0;
   color: #d32f2f;
@@ -122,7 +235,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;  
+  gap: 8px;
   margin-top: 4px;
   position: relative;
   z-index: 2;
@@ -132,8 +245,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px; 
-  align-items: stretch;
+  gap: 8px;
 }
 
 .FiltersDropdown {
@@ -144,12 +256,12 @@
 .FilterBtn.MuiButton-root {
   width: 100%;
   height: 40px;
-  border-radius: 16px;
-  background: #fff;
-  color: #969696;
-  box-shadow: none;
+  margin: 10px 0 0 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  color: #969696 !important;
+  box-shadow: none !important;
   border: 1px solid #c1c1c1 !important;
-  margin: 10px 0 0 0; 
   gap: 6px;
   justify-content: center;
 }
@@ -167,24 +279,22 @@
 .PanelState.closed {
   display: none !important;
 }
+
 .PanelState.open {
   display: block !important;
 }
 
 .FilterPanelInnerSection {
   width: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 10px;              /* space between each filter section */
-  padding: 0;
+  gap: 10px;
 }
 
-/* each filter section wrapper */
 .FilterPanelInnerSection > div {
   position: relative;
-  padding-bottom: 14px;   /* a bit more breathing room */
-  margin-bottom: 6px;     /* extra separation between sections */
+  padding-bottom: 14px;
+  margin-bottom: 6px;
 }
 
 .FilterPanelInnerSection > div:not(:last-child)::after {
@@ -196,93 +306,62 @@
   height: 1px;
 }
 
-/* Toggle group layout */
 .FilterPanelInnerSection .MuiToggleButtonGroup-root {
   width: 100% !important;
   display: flex !important;
   flex-wrap: nowrap !important;
   justify-content: flex-start !important;
-
-  gap: 8px !important;          /* ✅ visible gap between buttons */
-  padding: 2px 2px !important;  /* small inset so edges don’t clip */
-
-  box-sizing: border-box;
+  gap: 8px !important;
+  padding: 2px !important;
   overflow-x: auto !important;
   overflow-y: visible !important;
   -webkit-overflow-scrolling: touch;
-
-  /* ensure rounded corners never get clipped */
-  overflow: visible !important;
 }
 
-/* Base toggle button style */
 .FilterPanelInnerSection .MuiToggleButton-root {
   flex: 0 0 auto !important;
   min-width: max-content !important;
-
+  padding: 8px 14px !important;
+  white-space: nowrap !important;
+  border-radius: 16px !important;
   background: #fff !important;
   border: 1px solid #8d8c8c !important;
   box-shadow: none !important;
-
-  padding: 8px 14px !important;
-  white-space: nowrap !important;
-
-  border-radius: 16px !important; 
 }
 
-/* Selected state */
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected,
 .FilterPanelInnerSection .MuiToggleButton-root.Mui-selected:hover {
   background: #1e80a0 !important;
   color: #fff !important;
 }
 
-/* With gaps, grouped overrides can be simplified */
-.FilterPanelInnerSection .MuiToggleButtonGroup-grouped {
-  margin: 0 !important;     /* no collapsing */
+.FilterPanelInnerSection .MuiToggleButtonGroup-grouped,
+.FilterPanelInnerSection .MuiToggleButtonGroup-grouped + .MuiToggleButtonGroup-grouped {
+  margin: 0 !important;
   border-radius: 16px !important;
 }
 
-/* In case MUI applies adjacency margins, neutralize */
-.FilterPanelInnerSection
-  .MuiToggleButtonGroup-grouped + .MuiToggleButtonGroup-grouped {
-  margin-left: 0 !important;
-}
-.ExcludeGroup {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;          
-  align-items: stretch;
-  margin: 20px 0 10px 0;
- 
+.dietaryPreferences,
+.healthGoals {
+  margin: 8px;
+  font-weight: 900;
 }
 
-.ExcludeGroup > div:last-child {
-  width: 100%;
-
-}
-
-
-.ExcludeTextField,
-.ExcludeTextField .MuiFormControl-root {
-  width: 100% !important;
-   
+.healthGoals {
+  margin-top: 0;
 }
 
 .Servings {
   width: 100%;
   height: 40px;
-  border-radius: 16px;
-    border: 1px solid #c1c1c1;
-    background: #fff !important;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0px 0 0 0;
-  padding: 0 12px;
-  box-sizing: border-box;
   gap: 8px;
+  border-radius: 16px;
+  border: 1px solid #c1c1c1;
+  background: #fff !important;
 }
 
 .Servings p {
@@ -293,7 +372,6 @@
 
 .QuantitySelector {
   height: 28px;
- 
   border: none !important;
   outline: none;
   background: rgba(255, 255, 255, 0.9);
@@ -306,15 +384,15 @@
 
 .GenerateRecipeBtn {
   width: 100% !important;
-  height: 40px;
-  border-radius: 30px !important;
+  height: 44px !important;
+  margin-top: 10px !important;
+  border-radius: 16px !important;
   background: #1e80a0 !important;
-  text-transform: none;
-  display: inline-flex;
+  text-transform: none !important;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 10px !important; 
 }
 
 .GenerateRecipeBtn.MuiButton-root {
@@ -327,85 +405,77 @@
 
 .LoadingWithoutImage,
 .ImageLoadingMessage {
+  width: 100%;
   margin: 0;
+  text-align: center;
   color: #666 !important;
   font-size: 18px;
-  width: 100%;
-  text-align: center;
 }
 
 .ProgressBar {
   width: 100%;
+  padding-top: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding-top: 8px;
 }
 
 .ProgressBar .MuiCircularProgress-root {
   color: #545454 !important;
 }
 
-.DoNotExitText,
+.ProgressBar h2,
 .ProgressBar h3,
-.ProgressBar h2 {
+.DoNotExitText {
   width: 100%;
   text-align: center;
+}
+
+.DoNotExitText {
+  color: red;
+}
+
+.CancelGenerationBtn.MuiButton-root {
+  width: 100% !important;
+  height: 44px !important;
+  margin-top: 18px !important;
+  border-radius: 16px !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
 }
 
 .RecipeInputScreenWithPreviousData .GenerateContainer {
   display: none;
 }
 
-.DoNotExitText {
-  color: red;
-}
-.RecipeTextField .MuiInputAdornment-positionEnd {
-  margin-inline-start: 0 !important; 
-  margin-inline-end: 0 !important;
-}
- 
-.RecipeTextField .MuiOutlinedInput-root {
-  padding-inline-end: 2px !important; 
-}
-
-
-.RecipeTextField .MuiInputAdornment-positionEnd .GenerateImageSelector.MuiIconButton-root {
-  margin: 0 !important;
-}
-
-.RecipeTextField .MuiInputAdornment-root {
-  padding: 0 !important;
-
-}
-
-.dietaryPreferences, .healthGoals{
-  font-weight: 900;
-    margin: 8px ;
-}
-.healthGoals{
-  margin-top: 0;
-}
-
-.CancelGenerationBtn.MuiButton-root {
-  margin-top: 18px !important;
-  width: 100% !important;
-  height: 44px !important;
-  border-radius: 16px !important;
-  font-weight: 700 !important;
-  font-size: 1rem !important;
-}
-
 @media (max-width: 600px) {
-  .generate_dialog_paper.MuiPaper-root {
-    width: 95vw !important;
-    max-width: 95vw !important;
-    max-height: 90vh !important;
+  .generate_dialog_root .MuiDialog-container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
+
+  .generate_dialog_root .generate_dialog_paper.MuiPaper-root {
+    width: 330px !important;
+    max-width: calc(100vw - 48px) !important;
+    min-width: 0 !important;
+    margin: 16px auto !important;
+    border-radius: 18px !important;
+  }
+
+
   .GenerateContainer {
+    width: 100%;
     max-width: 100%;
+  }
+
+  .RecipeTextField.expanded .MuiOutlinedInput-root {
+    height: 90px !important;
+    min-height: 90px !important;
+    border-radius: 24px !important;
+    transform: none;
   }
 }
