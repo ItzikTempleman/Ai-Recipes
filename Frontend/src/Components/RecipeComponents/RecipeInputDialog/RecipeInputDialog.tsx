@@ -74,7 +74,7 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
 
   const didResetOnEnterRef = useRef(false);
   const didResetAfterGenerateRef = useRef(false);
-
+ const [queryFocused, setQueryFocused] = useState(false);
 
   useEffect(() => {
     const onLangChange = (lng: string) => setIsRTL(lng?.startsWith("he"));
@@ -150,34 +150,35 @@ export function RecipeInputDialog({ onDone, onFiltersReady }: Props) {
             <form onSubmit={handleSubmit(send)} autoComplete="off">
 
               <div className={`RecipeTextFieldBar ${isRTL ? "rtl" : "ltr"}`}>
-                <TextField
-                  dir={isRTL ? "rtl" : "ltr"}
-                  className="RecipeTextField"
-                  size="small"
-                  placeholder={t("generate.labelGenerate")}
-                  {...register("query", { required: `${t("generate.requiredTitle")}` })}
-                  disabled={loading}
-                  InputProps={{
-                    dir: isRTL ? "rtl" : "ltr",
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          type="button"
-                          className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
-                          onClick={() => setHasImage((v) => !v)}
-                          disabled={loading}
-                          edge="end"
-                        >
-                          {hasImage ? <CameraEnhanceIcon /> : <NoPhotographyIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
-                  InputLabelProps={{
-                    style: { direction: isRTL ? "rtl" : "ltr", textAlign: isRTL ? "right" : "left" },
-                  }}
-                />
+<TextField
+  dir={isRTL ? "rtl" : "ltr"}
+  className={`RecipeTextField ${queryFocused ? "expanded" : ""}`}
+  size="small"
+  placeholder={t("generate.labelGenerate")}
+  {...register("query", { required: `${t("generate.requiredTitle")}` })}
+  disabled={loading}
+  onFocus={() => setQueryFocused(true)}
+  onBlur={(e) => {
+    if (!e.target.value.trim()) setQueryFocused(false);
+  }}
+  InputProps={{
+    dir: isRTL ? "rtl" : "ltr",
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          type="button"
+          className={`GenerateImageSelector ${hasImage ? "on" : "off"}`}
+          onClick={() => setHasImage((v) => !v)}
+          disabled={loading}
+          edge="end"
+        >
+          {hasImage ? <CameraEnhanceIcon /> : <NoPhotographyIcon />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+  inputProps={{ style: { textAlign: isRTL ? "right" : "left" } }}
+/>
               </div>
               <div className="ExcludeGroup" dir={isRTL ? "rtl" : "ltr"}>
                 <TextField
