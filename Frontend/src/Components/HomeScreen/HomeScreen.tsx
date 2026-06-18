@@ -322,21 +322,9 @@ export function HomeScreen() {
 
           <Dialog
             className="generate_dialog_root"
+            PaperProps={{ className: "generate_dialog_paper" }}
             open={open}
             onClose={closeGenerateDialog}
-            maxWidth={false}
-            fullWidth={false}
-            PaperProps={{
-              className: "generate_dialog_paper",
-              sx: {
-                width: { xs: "min(330px, calc(100vw - 48px))", sm: "380px" },
-                maxWidth: { xs: "calc(100vw - 48px)", sm: "380px" },
-                minWidth: 0,
-                margin: { xs: "16px auto", sm: "80px 32px 24px" },
-                borderRadius: "18px",
-                overflow: "visible",
-              },
-            }}
           >
             <RecipeInputDialog
               onDone={() => {
