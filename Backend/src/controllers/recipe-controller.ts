@@ -379,7 +379,7 @@ class RecipeController {
             response.status(StatusCode.BadRequest).send("Invalid recipeId");
             return;
         }
-
+  
         const model = new AskModel(request.body);
         model.validate();
 
