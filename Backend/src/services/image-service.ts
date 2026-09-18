@@ -177,7 +177,7 @@ export async function generateImage(recipe: any): Promise<GPTImage> {
 
     try {
       const result = await openaiImages.images.generate({
-        model: "gpt-image-1.5",
+        model: "gpt-image-2.5-sunburst-2026-09-08",
         prompt: promptText,
         size: "1024x1024",
         quality: "medium"

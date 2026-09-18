@@ -30,7 +30,7 @@ class AppConfig {
   public readonly freeNoImageApiKey = process.env.NO_IMAGE_API_KEY;
 
   // Use the exact model that already works in your project.
-  public readonly modelNumber = process.env.MODEL_NUMBER || "gpt-5.2";
+  public readonly modelNumber = process.env.MODEL_NUMBER || "gpt-5.6-terra";
 
   // Do NOT guess a different mini/image model here.
   // Reuse the same known-good text model unless/until you explicitly verify another one.
